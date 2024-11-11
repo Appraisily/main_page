@@ -12,6 +12,7 @@ import ServicesPage from './pages/Services';
 import Expertise from './pages/Expertise';
 import HowItWorks from './pages/HowItWorks';
 import Report from './pages/Report';
+import Terms from './pages/Terms';
 import Testimonials from './components/Testimonials';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
@@ -23,6 +24,7 @@ import RecentAppraisals from './components/RecentAppraisals';
 import MarketAnalysis from './components/MarketAnalysis';
 import ServiceSelection from './pages/ServiceSelection';
 import Screener from './screener/src/App';
+import Landing from './pages/Landing';
 import { useTawkTo } from './hooks/useTawkTo';
 import { useScrollToTop } from './hooks/useScrollToTop';
 
@@ -70,6 +72,8 @@ export function App() {
               <Route path="/report/:sessionId" element={<Report />} />
               <Route path="/start" element={<ServiceSelection />} />
               <Route path="/screener/*" element={<Screener />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/landing" element={<Landing />} />
             </Routes>
           </main>
           <Footer />

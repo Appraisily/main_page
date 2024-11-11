@@ -5,12 +5,10 @@ import Services from './components/Services';
 import Process from './components/Process';
 import Gallery from './components/Gallery';
 import Appraisers from './components/Appraisers';
-import Testimonials from './components/Testimonials';
 import SampleReport from './components/SampleReport';
 import Pricing from './components/Pricing';
+import Testimonials from './components/Testimonials';
 import InstantAnalysis from './components/InstantAnalysis';
-import RegularAppraisal from './pages/RegularAppraisal';
-import TaxDeductionAppraisal from './pages/TaxDeductionAppraisal';
 import { useTawkTo } from './hooks/useTawkTo';
 
 function App() {

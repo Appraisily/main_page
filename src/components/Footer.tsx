@@ -41,6 +41,11 @@ export default function Footer() {
                   Terms of Service
                 </Link>
               </li>
+              <li>
+                <Link to="/landing" className="text-base text-gray-300 hover:text-white">
+                  Landing Page
+                </Link>
+              </li>
             </ul>
           </div>
 

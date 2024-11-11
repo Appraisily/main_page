@@ -1,29 +1,46 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 interface Props {
-  fallbackImage: string;
+  fallbackImage?: string;
 }
 
 export default function VideoBackground({ fallbackImage }: Props) {
   const [currentVideo, setCurrentVideo] = useState(0);
   const [videosLoaded, setVideosLoaded] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
   
   const videos = [
     '/videos/hero1.mp4',
     '/videos/hero2.mp4',
     '/videos/hero3.mp4'
   ];
+  
+  const preloadRefs = useRef<HTMLVideoElement[]>([]);
 
-  // Preload videos
+  // Preload the background image
   useEffect(() => {
-    const videoElements = videos.map(() => {
-      const video = document.createElement('video');
-      video.preload = 'auto';
-      return video;
-    });
+    const img = new Image();
+    img.src = 'https://ik.imagekit.io/appraisily/WebPage/hero_background.jpg?updatedAt=1731365708569';
+    img.onload = () => setImageLoaded(true);
 
+    // Add preload link for LCP image
+    const preloadLink = document.createElement('link');
+    preloadLink.rel = 'preload';
+    preloadLink.as = 'image';
+    preloadLink.href = 'https://ik.imagekit.io/appraisily/WebPage/hero_background.jpg?updatedAt=1731365708569';
+    document.head.appendChild(preloadLink);
+
+    return () => {
+      document.head.removeChild(preloadLink);
+    };
+  }, []);
+
+  useEffect(() => {
+    preloadRefs.current = videos.map((_, i) => preloadRefs.current[i] ?? document.createElement('video'));
     let loadedCount = 0;
+
     const handleLoad = () => {
       loadedCount++;
       if (loadedCount === videos.length) {
@@ -31,14 +48,17 @@ export default function VideoBackground({ fallbackImage }: Props) {
       }
     };
 
-    videoElements.forEach((video, index) => {
+    preloadRefs.current.forEach((video, index) => {
       video.src = videos[index];
+      video.preload = 'auto';
+      video.load();
       video.addEventListener('loadeddata', handleLoad);
     });
 
     return () => {
-      videoElements.forEach((video, index) => {
+      preloadRefs.current.forEach((video) => {
         video.removeEventListener('loadeddata', handleLoad);
+        video.remove();
       });
     };
   }, []);
@@ -49,56 +69,40 @@ export default function VideoBackground({ fallbackImage }: Props) {
     const video = videoRef.current;
 
     const handleEnded = () => {
-      setCurrentVideo((prev) => (prev + 1) % videos.length);
+      const nextVideo = (currentVideo + 1) % videos.length;
+      setCurrentVideo(nextVideo);
+      
+      if (video) {
+        video.src = videos[nextVideo];
+        video.load();
+        video.play().catch(error => {
+          console.error('Error playing video:', error);
+        });
+      }
     };
 
     video.addEventListener('ended', handleEnded);
     
-    // Set initial video and play
+    // Play initial video
     video.src = videos[currentVideo];
     video.load();
-    
-    const playVideo = async () => {
-      try {
-        await video.play();
-      } catch (error) {
-        console.error('Error playing video:', error);
-      }
-    };
-
-    playVideo();
+    video.play().catch(error => {
+      console.error('Error playing initial video:', error);
+    });
 
     return () => {
       video.removeEventListener('ended', handleEnded);
     };
   }, [videosLoaded, currentVideo]);
 
-  // Update video source when currentVideo changes
-  useEffect(() => {
-    if (!videoRef.current || !videosLoaded) return;
-
-    const video = videoRef.current;
-    video.src = videos[currentVideo];
-    video.load();
-    
-    const playVideo = async () => {
-      try {
-        await video.play();
-      } catch (error) {
-        console.error('Error playing video:', error);
-      }
-    };
-
-    playVideo();
-  }, [currentVideo, videosLoaded]);
-
   return (
     <div className="absolute inset-0">
       <img
+        ref={imageRef}
         className={`h-full w-full object-cover transition-opacity duration-1000 ${
           videosLoaded ? 'opacity-0' : 'opacity-100'
         }`}
-        src={fallbackImage}
+        src="https://ik.imagekit.io/appraisily/WebPage/hero_background.jpg?updatedAt=1731365708569"
         alt="Background"
         loading="eager"
         decoding="async"
@@ -108,9 +112,9 @@ export default function VideoBackground({ fallbackImage }: Props) {
         <video
           ref={videoRef}
           className="absolute inset-0 h-full w-full object-cover"
-          playsInline
-          muted
           autoPlay
+          muted
+          playsInline
         />
       )}
       <div className="absolute inset-0 bg-gradient-to-r from-gray-900/90 to-gray-900/70" />
