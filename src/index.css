@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply antialiased text-gray-900;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-100 text-gray-900 px-4 py-2 rounded-md hover:bg-gray-200 transition;
+  }
+}
+
+@layer utilities {
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+}
+
+@keyframes blob {
+  0% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate(-50%, -50%) scale(1.2) rotate(120deg);
+  }
+  66% {
+    transform: translate(-50%, -50%) scale(0.8) rotate(240deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1) rotate(360deg);
+  }
+}
+
+.animate-blob {
+  animation: blob 20s infinite linear;
+}
+
+.bg-grid-gray-100\/25 {
+  background-image: linear-gradient(to right, rgb(243 244 246 / 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(243 244 246 / 0.1) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+}
