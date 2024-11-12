@@ -1,6 +1,5 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
 import ImageUploader from './components/ImageUploader';
 import ResultsDisplay from './components/ResultsDisplay';
 import { useImageAnalysis } from './hooks/useImageAnalysis';
@@ -10,9 +9,16 @@ export default function Screener() {
   const {
     uploadImage,
     loading,
-    error,
     isUploading,
-    report
+    customerImage,
+    similarImages,
+    analysis,
+    enhancedAnalysis,
+    offerText,
+    isAnalyzing,
+    isEnhancing,
+    generateAnalysis,
+    enhanceAnalysis
   } = useImageAnalysis();
 
   return (
@@ -23,11 +29,18 @@ export default function Screener() {
             <ImageUploader 
               onUpload={uploadImage}
               isUploading={isUploading}
-              error={error}
+              customerImage={customerImage}
             />
-            {report && (
+            {similarImages && similarImages.length > 0 && (
               <ResultsDisplay 
-                report={report}
+                similarImages={similarImages}
+                analysis={analysis}
+                enhancedAnalysis={enhancedAnalysis}
+                offerText={offerText}
+                onGenerateAnalysis={generateAnalysis}
+                onEnhanceAnalysis={enhanceAnalysis}
+                isAnalyzing={isAnalyzing}
+                isEnhancing={isEnhancing}
               />
             )}
           </div>
