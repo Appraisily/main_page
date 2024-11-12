@@ -110,6 +110,7 @@ export default function Team() {
                     src={member.image}
                     alt={member.name}
                     className="w-full aspect-[3/4] object-cover rounded-2xl"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-gray-900/75 via-gray-900/0" />
                   <div className="absolute bottom-0 p-6 text-white">

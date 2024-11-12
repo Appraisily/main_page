@@ -1,12 +1,13 @@
 import React from 'react';
 import { Award, Star, Shield } from 'lucide-react';
+import { IMAGES } from '../lib/images';
 import ImageKit from './ui/ImageKit';
 
 export default function Team() {
   const appraisers = [
     {
       name: 'Andrés Gómez, BSc, MSc',
-      image: 'Appraisers/andres.png',
+      image: IMAGES.team.andres,
       credentials: 'Certified Art and Antique Appraiser',
       quote: 'Expertly valuing your treasures to safeguard your investment.',
       specialties: ['Fine Art', 'Antiques', 'Modern Art'],
@@ -14,7 +15,7 @@ export default function Team() {
     },
     {
       name: 'Charlotte Williams',
-      image: 'Appraisers/charlotte.png',
+      image: IMAGES.team.charlotte,
       credentials: 'BSc in Art History',
       quote: 'Delivering detailed, accurate appraisals with ease and efficiency.',
       specialties: ['Contemporary Art', 'Sculptures', 'Paintings'],
@@ -22,7 +23,7 @@ export default function Team() {
     },
     {
       name: 'Adrian Dupont',
-      image: 'Appraisers/adrian.png',
+      image: IMAGES.team.adrian,
       credentials: 'European Fine Art and Antiques Specialist',
       quote: 'Our appraisals, accompanied by detailed reports and photographs, reveal the key facts behind your unique finds.',
       specialties: ['European Art', 'Classical Art', 'Religious Art'],
@@ -51,11 +52,9 @@ export default function Team() {
                 className="flex flex-col items-center rounded-2xl bg-gray-50 p-8 text-center ring-1 ring-inset ring-gray-200 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer"
               >
                 <div className="relative mx-auto w-24 h-24 rounded-full overflow-hidden mb-6">
-                  <ImageKit
+                  <img
                     src={appraiser.image}
                     alt={appraiser.name}
-                    width={256}
-                    height={256}
                     className="w-full h-full object-cover"
                   />
                 </div>

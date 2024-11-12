@@ -1,34 +1,68 @@
 import React from 'react';
-import { format } from 'date-fns';
-import { useWordPressAppraisals } from '../hooks/useWordPressAppraisals';
-import { Clock, DollarSign, ArrowRight, Loader2 } from 'lucide-react';
+import { ArrowRight, DollarSign, ExternalLink } from 'lucide-react';
+import { IMAGES } from '../lib/images';
+
+const appraisals = [
+  {
+    id: 1,
+    image: IMAGES.gallery.gallery1,
+    title: "Surrealist Abstract by Tom Kidd",
+    description: "Original hand-made surrealist abstract painting by Tom Kidd (B.1955). Renowned for his fine quality work, Kidd's piece was directly purchased from the artist and was featured as a book cover.",
+    value: 2200,
+    url: "https://www.appraisily.com/appraisals/1-9/"
+  },
+  {
+    id: 2,
+    image: IMAGES.gallery.gallery2,
+    title: "17th Century Dutch Portrait",
+    description: "Early to mid 17th-century painting attributed to Dutch Golden Age painter Frans Hals the Elder. Features a dignified individual seated with a possible string instrument, adorned in period clothing.",
+    value: 85000,
+    url: "https://www.appraisily.com/appraisals/1-8/"
+  },
+  {
+    id: 3,
+    image: IMAGES.gallery.gallery3,
+    title: "Adriaen Brouwer Tavern Scene",
+    description: "17th century Dutch tavern interior by Flemish master Adriaen Brouwer (c. 1605 – 1638). Known for his unique style and mastery of chiaroscuro, displaying fantastic imagination with mysterious luminosity.",
+    value: 6000,
+    url: "https://www.appraisily.com/appraisals/1-7/"
+  },
+  {
+    id: 4,
+    image: IMAGES.gallery.gallery4,
+    title: "Forest Scene by Himmy",
+    description: "Mid to late 20th century oil painting by German artist Himmy, depicting a serene forest path with two figures. Features tranquil earthy tones and masterful composition.",
+    value: 800,
+    url: "https://www.appraisily.com/appraisals/1-6/"
+  },
+  {
+    id: 5,
+    image: IMAGES.gallery.gallery5,
+    title: "Sunrise Dancers Holbein",
+    description: "Contemporary piece by Patrice Le Pera depicting traditional dancers at dawn. Women in traditional attire carry green plants through a vibrant landscape, symbolizing community and tradition.",
+    value: 7000,
+    url: "https://www.appraisily.com/appraisals/1-4/"
+  },
+  {
+    id: 6,
+    image: IMAGES.gallery.gallery6,
+    title: "Designer Life by Wiley Ross",
+    description: "36×24 oil on glass painting with back light illumination by Springfield artist Wiley Ross. Modern portrait with abstract elements against vibrant red and orange background.",
+    value: 5800,
+    url: "https://www.appraisily.com/appraisals/1-3/"
+  }
+];
 
 export default function RecentAppraisals() {
-  const { appraisals, loading, error } = useWordPressAppraisals();
-
-  if (loading) {
-    return (
-      <div className="py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 flex justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return null; // Hide section if there's an error
-  }
-
   return (
-    <section className="py-24 bg-gray-50">
+    <section className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+        <div className="mx-auto max-w-2xl text-center mb-16">
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Recent Appraisals
           </h2>
-          <p className="mt-4 text-lg text-gray-600">
-            Browse through our latest professional valuations
+          <p className="mt-6 text-lg leading-8 text-gray-600">
+            Browse through our latest professional valuations to see examples of our detailed analysis and expertise.
           </p>
         </div>
 
@@ -36,53 +70,51 @@ export default function RecentAppraisals() {
           {appraisals.map((appraisal) => (
             <a
               key={appraisal.id}
-              href={appraisal.link}
+              href={appraisal.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
+              className="group relative overflow-hidden rounded-2xl bg-gray-100 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
             >
-              {appraisal.acf.main && (
-                <div className="aspect-w-16 aspect-h-9 bg-gray-100">
-                  <img
-                    src={appraisal.acf.main}
-                    alt={appraisal.title.rendered}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-              )}
-              <div className="p-6">
-                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors line-clamp-2">
-                  {appraisal.title.rendered}
-                </h3>
-                
-                <div className="mt-4 flex items-center justify-between">
-                  <div className="flex items-center text-sm text-gray-500">
-                    <Clock className="h-4 w-4 mr-1" />
-                    {format(new Date(appraisal.date), 'MMM d, yyyy')}
+              <div className="aspect-[3/2]">
+                <img
+                  src={appraisal.image}
+                  alt={appraisal.title}
+                  className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-110"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/60 to-transparent"></div>
+              </div>
+              <div className="absolute bottom-0 p-6 w-full">
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold text-white group-hover:text-[#007bff] transition-colors line-clamp-2">
+                      {appraisal.title}
+                    </h3>
+                    <ExternalLink className="h-5 w-5 text-white opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 ml-4" />
                   </div>
-                  <div className="flex items-center text-blue-600 font-medium">
+                  <p className="text-sm text-gray-300 line-clamp-2">
+                    {appraisal.description}
+                  </p>
+                  <div className="mt-2 flex items-center text-[#007bff] bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 w-fit">
                     <DollarSign className="h-4 w-4 mr-1" />
-                    {Number(appraisal.acf.value) === 0 ? 'Not Available' : appraisal.acf.value}
+                    <span className="font-semibold">
+                      {appraisal.value.toLocaleString()}
+                    </span>
                   </div>
-                </div>
-
-                <div className="mt-4 flex items-center text-blue-600 group-hover:gap-2 transition-all">
-                  <span className="text-sm font-medium">View Details</span>
-                  <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
               </div>
             </a>
           ))}
         </div>
 
-        <div className="mt-12 text-center">
+        <div className="mt-16 text-center">
           <a
-            href="https://www.appraisily.com/appraisals"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
+            href="https://services.appraisily.com"
+            className="inline-flex items-center gap-2 rounded-md bg-[#007bff] px-6 py-3 text-lg font-semibold text-white shadow-sm hover:bg-[#0056b3] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#007bff] transition-all duration-200"
           >
-            View All Appraisals <ArrowRight className="ml-2 h-4 w-4" />
+            Start Your Appraisal Now
+            <ArrowRight className="h-5 w-5" />
           </a>
         </div>
       </div>

@@ -24,7 +24,6 @@ import RecentAppraisals from './components/RecentAppraisals';
 import MarketAnalysis from './components/MarketAnalysis';
 import ServiceSelection from './pages/ServiceSelection';
 import Screener from './screener/src/App';
-import Landing from './pages/Landing';
 import { useTawkTo } from './hooks/useTawkTo';
 import { useScrollToTop } from './hooks/useScrollToTop';
 
@@ -73,7 +72,6 @@ export function App() {
               <Route path="/start" element={<ServiceSelection />} />
               <Route path="/screener/*" element={<Screener />} />
               <Route path="/terms" element={<Terms />} />
-              <Route path="/landing" element={<Landing />} />
             </Routes>
           </main>
           <Footer />

@@ -105,14 +105,14 @@ export default function Hero() {
   ];
 
   return (
-    <div className="relative min-h-screen overflow-hidden pt-24 bg-white">
+    <div className="relative min-h-screen overflow-hidden pt-24 bg-gray-50">
       {/* Background elements */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_#3b82f6,_transparent_70%)] opacity-[0.07]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,_#3b82f6,_transparent_70%)] opacity-[0.07]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_#3b82f6,_transparent_70%)] opacity-[0.15]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,_#3b82f6,_transparent_70%)] opacity-[0.15]"></div>
       </div>
       
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNTkuNSA2MEgwVjBoNjB2NjBoLS41ek01OSAxSDFWNTloNThWMXoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIgb3BhY2l0eT0iLjAyIi8+PC9zdmc+')] [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]"></div>
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNTkuNSA2MEgwVjBoNjB2NjBoLS41ek01OSAxSDFWNTloNThWMXoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIgb3BhY2l0eT0iLjA1Ii8+PC9zdmc+')] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]"></div>
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
         <div className="text-center">
@@ -199,7 +199,7 @@ export default function Hero() {
                     style={{
                       width: Math.abs(service.position.x),
                       height: '1px',
-                      background: 'linear-gradient(to right, transparent, rgba(59, 130, 246, 0.1))',
+                      background: 'linear-gradient(to right, transparent, rgba(59, 130, 246, 0.2))',
                       transform: `rotate(${Math.atan2(service.position.y, service.position.x) * (180 / Math.PI)}deg)`,
                       transformOrigin: service.position.x > 0 ? 'left' : 'right'
                     }}

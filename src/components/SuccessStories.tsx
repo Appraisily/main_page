@@ -51,13 +51,13 @@ export default function SuccessStories() {
 
           <div className="relative">
             <img
-              src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&q=80&w=800&h=600"
-              alt="Antique painting being appraised"
+              src="https://ik.imagekit.io/appraisily/WebPage/report.jpg?updatedAt=1731365708557"
+              alt="Sample appraisal report"
               className="rounded-xl shadow-lg"
             />
             <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-4">
               <p className="text-sm text-gray-600">
-                Example of an artwork appraised through our service
+                Example of a professional appraisal report from our service
               </p>
             </div>
           </div>
