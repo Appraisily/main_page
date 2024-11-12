@@ -1,13 +1,13 @@
 import React, { useCallback } from 'react';
-import { Upload, Image as ImageIcon, Loader2 } from 'lucide-react';
+import { Upload, X, Loader2 } from 'lucide-react';
 
 interface ImageUploaderProps {
-  onUpload: (file: File) => void;
+  onUpload: (file: File) => Promise<any>;
   isUploading: boolean;
-  customerImage: string | null;
+  customerImage?: string | null;
 }
 
-const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, isUploading, customerImage }) => {
+export default function ImageUploader({ onUpload, isUploading, customerImage }: ImageUploaderProps) {
   const handleDrop = useCallback(
     (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault();
@@ -19,7 +19,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, isUploading, cu
     [onUpload]
   );
 
-  const handleFileInput = useCallback(
+  const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (file) {
@@ -34,8 +34,8 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, isUploading, cu
       <div
         className={`rounded-2xl bg-white p-8 shadow-lg ring-1 transition-all duration-200 ${
           isUploading
-            ? 'ring-[rgb(0,123,255)]'
-            : 'ring-gray-200 hover:ring-[rgb(0,123,255)]'
+            ? 'ring-blue-600'
+            : 'ring-gray-200 hover:ring-blue-600'
         }`}
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
@@ -51,7 +51,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, isUploading, cu
               {isUploading && (
                 <div className="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-lg">
                   <div className="text-center space-y-3">
-                    <Loader2 className="w-8 h-8 text-[rgb(0,123,255)] animate-spin mx-auto" />
+                    <Loader2 className="w-8 h-8 text-blue-600 animate-spin mx-auto" />
                     <div className="bg-white/90 px-4 py-2 rounded-full shadow-sm">
                       <p className="text-sm font-medium text-gray-700">Processing image...</p>
                       <p className="text-xs text-gray-500">Getting AI analysis results</p>
@@ -62,11 +62,11 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, isUploading, cu
             </div>
           ) : (
             <>
-              <div className="rounded-lg bg-[rgb(0,123,255)]/10 p-3">
+              <div className="rounded-lg bg-blue-50 p-3">
                 {isUploading ? (
-                  <Loader2 className="w-6 h-6 text-[rgb(0,123,255)] animate-spin" />
+                  <Loader2 className="w-6 h-6 text-blue-600 animate-spin" />
                 ) : (
-                  <Upload className="w-6 h-6 text-[rgb(0,123,255)]" />
+                  <Upload className="w-6 h-6 text-blue-600" />
                 )}
               </div>
               <div className="text-center">
@@ -83,7 +83,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, isUploading, cu
           <input
             type="file"
             accept="image/*"
-            onChange={handleFileInput}
+            onChange={handleChange}
             className="hidden"
             id="file-upload"
             disabled={isUploading}
@@ -94,15 +94,13 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onUpload, isUploading, cu
                      transition-all duration-200 cursor-pointer flex items-center gap-2
                      ${isUploading 
                        ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                       : 'bg-[rgb(0,123,255)] text-white hover:bg-[rgb(0,123,255)]/90'}`}
+                       : 'bg-blue-600 text-white hover:bg-blue-700'}`}
           >
-            <ImageIcon className="w-4 h-4" />
+            <Upload className="w-4 h-4" />
             {customerImage ? 'Upload Another Image' : 'Select Image'}
           </label>
         </div>
       </div>
     </div>
   );
-};
-
-export default ImageUploader;
+}
