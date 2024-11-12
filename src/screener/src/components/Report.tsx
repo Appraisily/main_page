@@ -3,9 +3,25 @@ import { useParams } from 'react-router-dom';
 import { useImageAnalysis } from '../hooks/useImageAnalysis';
 import { Loader2, Image as ImageIcon, ArrowRight } from 'lucide-react';
 
+interface ReportData {
+  imageUrl: string;
+  analysis: string;
+  enhancedAnalysis: string;
+  offerText: string;
+  similarImages: string[];
+}
+
 export default function Report() {
   const { sessionId } = useParams();
-  const { report, loading, error } = useImageAnalysis();
+  const { loading, customerImage, similarImages, analysis, enhancedAnalysis, offerText } = useImageAnalysis();
+
+  const reportData: ReportData = {
+    imageUrl: customerImage || '',
+    analysis,
+    enhancedAnalysis,
+    offerText,
+    similarImages
+  };
 
   if (loading) {
     return (
@@ -21,7 +37,7 @@ export default function Report() {
     );
   }
 
-  if (error || !report) {
+  if (!reportData.imageUrl) {
     return (
       <div className="min-h-screen bg-gray-50 pt-24 pb-12">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -49,7 +65,7 @@ export default function Report() {
           <div className="flex flex-col lg:flex-row gap-8">
             <div className="lg:w-1/2">
               <img
-                src={report.imageUrl}
+                src={reportData.imageUrl}
                 alt="Uploaded artwork"
                 className="rounded-lg w-full object-cover"
               />
@@ -57,7 +73,7 @@ export default function Report() {
             <div className="lg:w-1/2">
               <h1 className="text-2xl font-bold text-gray-900 mb-4">Initial Analysis</h1>
               <div className="prose prose-blue max-w-none">
-                <p className="text-gray-600 whitespace-pre-wrap">{report.analysis}</p>
+                <p className="text-gray-600 whitespace-pre-wrap">{reportData.analysis}</p>
               </div>
             </div>
           </div>
@@ -67,7 +83,7 @@ export default function Report() {
         <div className="bg-white rounded-2xl shadow-sm p-8 mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Similar Works</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {report.similarImages.map((imageUrl, index) => (
+            {reportData.similarImages.map((imageUrl, index) => (
               <div key={index} className="rounded-lg overflow-hidden border border-gray-200">
                 <img
                   src={imageUrl}
@@ -83,7 +99,7 @@ export default function Report() {
         <div className="bg-white rounded-2xl shadow-sm p-8 mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Detailed Analysis</h2>
           <div className="prose prose-blue max-w-none">
-            <p className="text-gray-600 whitespace-pre-wrap">{report.enhancedAnalysis}</p>
+            <p className="text-gray-600 whitespace-pre-wrap">{reportData.enhancedAnalysis}</p>
           </div>
         </div>
 
@@ -93,10 +109,10 @@ export default function Report() {
             Get a Professional Appraisal
           </h2>
           <div className="prose prose-blue max-w-2xl mx-auto mb-6">
-            <p className="text-gray-600 whitespace-pre-wrap">{report.offerText}</p>
+            <p className="text-gray-600 whitespace-pre-wrap">{reportData.offerText}</p>
           </div>
           <a
-            href="/start"
+            href="https://services.appraisily.com"
             className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
           >
             Start Professional Appraisal <ArrowRight className="ml-2 h-5 w-5" />
