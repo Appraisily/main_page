@@ -13,7 +13,9 @@ interface ServiceDetails {
   exampleReportUrl: string;
 }
 
-const services: Record<string, ServiceDetails> = {
+type ServiceType = 'regular' | 'insurance' | 'tax';
+
+const services: Record<ServiceType, ServiceDetails> = {
   regular: {
     features: [
       {
@@ -78,8 +80,6 @@ const services: Record<string, ServiceDetails> = {
     exampleReportUrl: 'https://drive.google.com/file/d/1n-JCAEZJaZDOzQ3mF4GRPmatRKrUsoUn/',
   },
 };
-
-type ServiceType = keyof typeof services;
 
 export default function ServiceSelection() {
   const [selectedService, setSelectedService] = useState<ServiceType | null>(null);
