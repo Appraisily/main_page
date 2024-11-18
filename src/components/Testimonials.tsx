@@ -4,42 +4,42 @@ import { Star } from 'lucide-react';
 const reviews = [
   {
     id: 1,
-    image: "https://www.appraisily.com/wp-content/uploads/2022/06/review1-2.jpg",
+    image: "https://ik.imagekit.io/appraisily/WebPage/review1.jpg?tr=w-800,h-600,q-70",
     author: "Sarah M.",
     rating: 5,
     text: "Exceptional service! The appraisal was thorough and professional. Highly recommend!"
   },
   {
     id: 2,
-    image: "https://www.appraisily.com/wp-content/uploads/2022/06/review2-1.jpg",
+    image: "https://ik.imagekit.io/appraisily/WebPage/review2.jpg?tr=w-800,h-600,q-70",
     author: "James R.",
     rating: 5,
     text: "Quick turnaround and very detailed report. Worth every penny!"
   },
   {
     id: 3,
-    image: "https://www.appraisily.com/wp-content/uploads/2022/06/review3-1.jpg",
+    image: "https://ik.imagekit.io/appraisily/WebPage/review3.jpg?tr=w-800,h-600,q-70",
     author: "Emily K.",
     rating: 5,
     text: "The expertise and attention to detail was impressive. Great communication throughout."
   },
   {
     id: 4,
-    image: "https://www.appraisily.com/wp-content/uploads/2022/06/review4-1.jpg",
+    image: "https://ik.imagekit.io/appraisily/WebPage/review4.jpg?tr=w-800,h-600,q-70",
     author: "Michael P.",
     rating: 5,
     text: "Very professional service. The report exceeded my expectations!"
   },
   {
     id: 5,
-    image: "https://www.appraisily.com/wp-content/uploads/2022/06/review5-1.jpg",
+    image: "https://ik.imagekit.io/appraisily/WebPage/review5.jpg?tr=w-800,h-600,q-70",
     author: "Lisa T.",
     rating: 5,
     text: "Fantastic experience from start to finish. Highly knowledgeable team!"
   },
   {
     id: 6,
-    image: "https://www.appraisily.com/wp-content/uploads/2022/06/review6-1.jpg",
+    image: "https://ik.imagekit.io/appraisily/WebPage/review6.jpg?tr=w-800,h-600,q-70",
     author: "David W.",
     rating: 5,
     text: "The most comprehensive art appraisal service I've used. Excellent value!"
@@ -74,7 +74,8 @@ export default function Testimonials() {
                 <img
                   src={review.image}
                   alt={`${review.author}'s review on Trustpilot`}
-                  className="mt-6 rounded-lg shadow-sm"
+                  className="mt-6 rounded-lg shadow-sm w-full h-48 object-cover"
+                  loading="lazy"
                 />
                 <p className="mt-6 text-base leading-7 text-gray-600">"{review.text}"</p>
               </div>
@@ -82,7 +83,7 @@ export default function Testimonials() {
                 <p className="text-sm font-semibold text-gray-900">{review.author}</p>
                 <div className="mt-1 flex items-center gap-x-2">
                   <img
-                    src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-white.svg"
+                    src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg"
                     alt="Trustpilot"
                     className="h-5"
                   />

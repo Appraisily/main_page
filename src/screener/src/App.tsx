@@ -46,6 +46,7 @@ export default function Screener() {
           </div>
         </div>
       } />
+      <Route path="/analyze/:sessionId" element={<AnalyzePage />} />
       <Route path="/report/:sessionId" element={<Report />} />
     </Routes>
   );

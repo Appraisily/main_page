@@ -32,7 +32,7 @@ export default function Navbar() {
           <div className="flex items-center">
             <Link to="/" className="flex items-center gap-3">
               <img 
-                src="https://ik.imagekit.io/appraisily/WebPage/logo%20(1).jpg?updatedAt=1730826345943" 
+                src="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?updatedAt=1731919266638" 
                 alt="Appraisily Logo" 
                 className="h-8 w-auto"
               />
@@ -55,7 +55,7 @@ export default function Navbar() {
             ))}
             <Link
               to="/start"
-              className="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-full text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors gap-1"
+              className="inline-flex items-center justify-center px-5 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors gap-1.5 shadow-sm hover:shadow-md"
             >
               Start Appraisal <ArrowRight className="h-4 w-4" />
             </Link>
@@ -65,7 +65,7 @@ export default function Navbar() {
           <div className="md:hidden flex items-center space-x-4">
             <Link
               to="/start"
-              className="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-full text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm"
             >
               Start
             </Link>

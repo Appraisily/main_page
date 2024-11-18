@@ -1,15 +1,12 @@
 import React, { useState, useCallback } from 'react';
-import { Upload, X, Sparkles, User, Fingerprint, MapPin, Stamp, Calendar, Search, Camera, Star, Loader2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { useImageAnalysis } from '../hooks/useImageAnalysis';
+import { Upload, Search, Sparkles, User, Fingerprint, MapPin, Stamp, Calendar, Camera, Star, Loader2 } from 'lucide-react';
 
 const IMAGEKIT_URL = 'https://ik.imagekit.io/appraisily/WebPage';
 
 export default function Hero() {
   const [dragActive, setDragActive] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const { uploadImage, loading, error } = useImageAnalysis();
-  const navigate = useNavigate();
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -46,10 +43,31 @@ export default function Hero() {
     if (!selectedFile) return;
 
     try {
-      const result = await uploadImage(selectedFile);
-      navigate(`/report/${result.sessionId}`);
-    } catch (err) {
-      console.error('Error analyzing image:', err);
+      setIsUploading(true);
+
+      // Create a FormData object to send the file
+      const formData = new FormData();
+      formData.append('image', selectedFile);
+
+      // Upload to temporary storage and get URL
+      const response = await fetch('https://appraisals-web-services-backend-856401495068.us-central1.run.app/upload-temp', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to upload image');
+      }
+
+      const { tempUrl, sessionId } = await response.json();
+
+      // Redirect to screener with the session ID
+      window.location.href = `https://screener.appraisily.com/analyze/${sessionId}`;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      // Here you might want to show an error message to the user
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -120,18 +138,28 @@ export default function Hero() {
             <Sparkles className="w-4 h-4 mr-2" />
             Free Instant Analysis • No Registration Required
           </div>
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl mb-6">
-            Discover Your Art's True Value
-          </h1>
+
+          {/* Heading with inline logo */}
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <img
+              src="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?updatedAt=1731919266638"
+              alt="Appraisily Logo"
+              className="h-12 w-auto"
+            />
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+              Discover Your Art's True Value
+            </h1>
+          </div>
+
           <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
             Upload a photo of your artwork or antique and get instant AI-powered insights. No account needed, completely free.
           </p>
 
           {/* Social Proof Section */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8">
-            <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-12">
+            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-sm">
               <img
-                src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-white.svg"
+                src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg"
                 alt="Trustpilot"
                 className="h-6 sm:h-7"
               />
@@ -143,11 +171,12 @@ export default function Hero() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-sm">
               <img
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/24px-Google_%22G%22_Logo.svg.png"
+                src="https://www.gstatic.com/images/branding/product/2x/googleg_48dp.png"
                 alt="Google"
                 className="h-6"
+                style={{ aspectRatio: '1/1' }}
               />
               <div className="flex items-center">
                 {[...Array(5)].map((_, i) => (
@@ -238,14 +267,14 @@ export default function Hero() {
                       onClick={handleRemoveFile}
                       className="absolute top-2 right-2 p-1 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-700"
                     >
-                      <X className="h-4 w-4" />
+                      <Upload className="h-4 w-4" />
                     </button>
                     <button
                       onClick={handleAnalyze}
-                      disabled={loading}
+                      disabled={isUploading}
                       className="px-6 py-1.5 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700 transition-colors flex items-center gap-2"
                     >
-                      {loading ? (
+                      {isUploading ? (
                         <>
                           <Loader2 className="h-4 w-4 animate-spin" />
                           Analyzing...
