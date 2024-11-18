@@ -29,7 +29,7 @@ export default function AnalyzePage() {
         if (data.success) {
           setImageUrl(data.tempUrl);
           // Automatically start the analysis process
-          await generateAnalysis(sessionId);
+          await generateAnalysis();
         }
       } catch (error) {
         console.error('Error fetching image:', error);
@@ -81,8 +81,8 @@ export default function AnalyzePage() {
             analysis={analysis}
             enhancedAnalysis={enhancedAnalysis}
             offerText={offerText}
-            onGenerateAnalysis={() => generateAnalysis(sessionId)}
-            onEnhanceAnalysis={() => enhanceAnalysis(sessionId)}
+            onGenerateAnalysis={generateAnalysis}
+            onEnhanceAnalysis={enhanceAnalysis}
             isAnalyzing={isAnalyzing}
             isEnhancing={isEnhancing}
           />

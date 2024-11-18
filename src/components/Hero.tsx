@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Upload, Search, Sparkles, User, Fingerprint, MapPin, Stamp, Calendar, Camera, Star, Loader2 } from 'lucide-react';
 
-const IMAGEKIT_URL = 'https://ik.imagekit.io/appraisily/WebPage';
+const IMAGEKIT_URL = 'https://ik.imagekit.io/appraisily';
 
 export default function Hero() {
   const [dragActive, setDragActive] = useState(false);
@@ -77,7 +77,7 @@ export default function Hero() {
       name: 'Maker Analysis',
       description: 'Identify potential creator',
       icon: User,
-      image: `${IMAGEKIT_URL}/appraisily.com_an_image_for_an_online_art_appraisal_service_tha_fc752f0c-9845-4187-892b-41cb30e447e1.png?tr=w-200,h-200`,
+      image: `${IMAGEKIT_URL}/WebPage/maker_analysis.jpg?tr=w-200,h-200`,
       position: { x: 350, y: -100 }
     },
     {
@@ -85,7 +85,7 @@ export default function Hero() {
       name: 'Signature Check',
       description: 'Analyze signatures',
       icon: Fingerprint,
-      image: `${IMAGEKIT_URL}/appraisily.com_an_image_for_an_online_art_appraisal_service_tha_937ed6cc-0969-479b-aec9-a9a371d8cc8b.png?tr=w-200,h-200`,
+      image: `${IMAGEKIT_URL}/WebPage/signature_check.jpg?tr=w-200,h-200`,
       position: { x: 350, y: 100 }
     },
     {
@@ -93,7 +93,7 @@ export default function Hero() {
       name: 'Origin Analysis',
       description: 'Determine likely origin',
       icon: MapPin,
-      image: `${IMAGEKIT_URL}/appraisily.com_an_image_for_an_online_art_appraisal_service_tha_aa009cf3-7aa8-493f-a3e5-6dee036f5311.png?tr=w-200,h-200`,
+      image: `${IMAGEKIT_URL}/WebPage/origin_analysis.jpg?tr=w-200,h-200`,
       position: { x: -350, y: -100 }
     },
     {
@@ -101,7 +101,7 @@ export default function Hero() {
       name: 'Marks Recognition',
       description: 'Identify maker marks',
       icon: Stamp,
-      image: `${IMAGEKIT_URL}/appraisily.com_an_image_for_an_online_art_appraisal_service_tha_8561145d-60b4-468e-9094-c0cdea16e440.png?tr=w-200,h-200`,
+      image: `${IMAGEKIT_URL}/WebPage/marks_recognition.jpg?tr=w-200,h-200`,
       position: { x: -350, y: 100 }
     },
     {
@@ -109,7 +109,7 @@ export default function Hero() {
       name: 'Age Analysis',
       description: 'Estimate creation period',
       icon: Calendar,
-      image: `${IMAGEKIT_URL}/appraisily.com_an_image_for_an_online_art_appraisal_service_tha_90c3d603-4bed-4911-987d-7579f27bfc6b.png?tr=w-200,h-200`,
+      image: `${IMAGEKIT_URL}/WebPage/age_analysis.jpg?tr=w-200,h-200`,
       position: { x: 0, y: -150 }
     },
     {
@@ -117,7 +117,7 @@ export default function Hero() {
       name: 'Visual Search',
       description: 'Find similar artworks',
       icon: Search,
-      image: `${IMAGEKIT_URL}/appraisily.com_an_image_for_an_online_art_appraisal_service_tha_6ac023f3-b669-4d66-a044-e2295cf25a1d.png?tr=w-200,h-200`,
+      image: `${IMAGEKIT_URL}/WebPage/visual_search.jpg?tr=w-200,h-200`,
       position: { x: 0, y: 150 }
     }
   ];
@@ -132,7 +132,7 @@ export default function Hero() {
       
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNTkuNSA2MEgwVjBoNjB2NjBoLS41ek01OSAxSDFWNTloNThWMXoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIgb3BhY2l0eT0iLjA1Ii8+PC9zdmc+')] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]"></div>
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-50 text-blue-600 text-sm font-medium mb-6">
             <Sparkles className="w-4 h-4 mr-2" />
@@ -140,13 +140,13 @@ export default function Hero() {
           </div>
 
           {/* Heading with inline logo */}
-          <div className="flex items-center justify-center gap-4 mb-6">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
             <img
               src="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?updatedAt=1731919266638"
               alt="Appraisily Logo"
               className="h-12 w-auto"
             />
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-gray-900">
               Discover Your Art's True Value
             </h1>
           </div>
@@ -157,7 +157,7 @@ export default function Hero() {
 
           {/* Social Proof Section */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-12">
-            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-sm">
+            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-sm w-full sm:w-auto">
               <img
                 src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg"
                 alt="Trustpilot"
@@ -171,7 +171,7 @@ export default function Hero() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-sm">
+            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-sm w-full sm:w-auto">
               <img
                 src="https://www.gstatic.com/images/branding/product/2x/googleg_48dp.png"
                 alt="Google"
@@ -188,7 +188,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="relative max-w-[1200px] mx-auto h-[28rem] md:h-[32rem]">
+        <div className="relative max-w-[1200px] mx-auto min-h-[28rem] md:h-[32rem]">
           {/* Service Cards - Hidden on mobile, visible on larger screens */}
           <div className="hidden md:block">
             {services.map((service) => {
@@ -307,8 +307,8 @@ export default function Hero() {
             </form>
           </div>
 
-          {/* Mobile Service Grid - Redesigned to be more compact */}
-          <div className="mt-48 md:hidden">
+          {/* Mobile Service Grid */}
+          <div className="mt-48 md:hidden px-4">
             <div className="grid grid-cols-2 gap-3">
               {services.map((service) => {
                 const IconComponent = service.icon;
