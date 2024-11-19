@@ -10,23 +10,29 @@ declare global {
 export const useTawkTo = () => {
   useEffect(() => {
     const loadTawkTo = () => {
-      // Only load if user scrolls or after 5 seconds
+      // Only load if user has scrolled or after 5 seconds
       const shouldLoad = () => {
         try {
+          // Initialize Tawk API
+          window.Tawk_API = window.Tawk_API || {};
+          window.Tawk_LoadStart = new Date();
+
+          // Create script element with CSP nonce
           const s1 = document.createElement("script");
           s1.async = true;
           s1.src = 'https://embed.tawk.to/63a083dbb0d6371309d528e2/1gklg645r';
           s1.charset = 'UTF-8';
           s1.setAttribute('crossorigin', '*');
+          s1.setAttribute('nonce', 'tawk-script'); // Add CSP nonce
+          
+          // Error handling
           s1.onerror = () => {
             console.warn('Tawk.to chat widget failed to load');
             s1.remove();
           };
-          
+
+          // Append script to head
           document.head.appendChild(s1);
-          
-          window.Tawk_API = window.Tawk_API || {};
-          window.Tawk_LoadStart = new Date();
 
           // Remove event listeners
           window.removeEventListener('scroll', shouldLoad);

@@ -25,7 +25,7 @@
 [build.processing.images]
   compress = true
 
-# Cache control headers
+# Security Headers with updated CSP
 [[headers]]
   for = "/*"
   [headers.values]
@@ -33,7 +33,23 @@
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Content-Security-Policy = "default-src 'self' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; font-src 'self' data: https:;"
+    Content-Security-Policy = """
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://*.tawk.to https://embed.tawk.to;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      img-src 'self' data: https: blob:;
+      font-src 'self' data: https://fonts.gstatic.com;
+      connect-src 'self' https: wss://*.tawk.to;
+      frame-src 'self' https://*.tawk.to;
+      worker-src 'self' blob:;
+      child-src blob:;
+      media-src 'self' https:;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+      frame-ancestors 'none';
+      upgrade-insecure-requests;
+    """
 
 # Cache static assets
 [[headers]]

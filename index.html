@@ -2,14 +2,62 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'self' https:;
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://*.tawk.to https://embed.tawk.to;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+      img-src 'self' data: https: blob:;
+      font-src 'self' data: https://fonts.gstatic.com;
+      connect-src 'self' https: wss://*.tawk.to;
+      frame-src 'self' https://*.tawk.to;
+      worker-src 'self' blob:;
+      child-src blob:;
+      media-src 'self' https:;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+      frame-ancestors 'none';
+      upgrade-insecure-requests;
+    ">
+    
     <!-- Preload critical assets -->
     <link rel="preload" as="image" href="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?updatedAt=1731919266638" />
     <link rel="preload" as="style" href="/src/index.css" />
     <link rel="preload" as="script" href="/src/main.tsx" type="module" />
     
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://ik.imagekit.io">
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://embed.tawk.to">
+    <link rel="preconnect" href="https://va.tawk.to">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?updatedAt=1731919266638" />
+    
+    <!-- Title -->
+    <title>Appraisily | Professional Art & Antique Appraisals</title>
+
+    <!-- Critical CSS -->
+    <style>
+      /* Add critical CSS here */
+      .bg-white { background-color: #fff; }
+      .text-gray-900 { color: #111827; }
+      .min-h-screen { min-height: 100vh; }
+      .flex { display: flex; }
+      .items-center { align-items: center; }
+      .justify-center { justify-content: center; }
+      .p-4 { padding: 1rem; }
+      .text-lg { font-size: 1.125rem; }
+      .font-medium { font-weight: 500; }
+      .text-blue-600 { color: #2563eb; }
+    </style>
+
     <!-- Defer non-critical scripts -->
     <script defer src="https://www.googletagmanager.com/gtag/js?id=G-V8T1NRDNC6"></script>
-    <script defer>
+    <script>
       window.addEventListener('load', function() {
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -19,22 +67,6 @@
         });
       });
     </script>
-    
-    <link rel="icon" type="image/png" href="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?updatedAt=1731919266638" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Appraisily | Professional Art & Antique Appraisals</title>
-    
-    <!-- Preconnect to external domains -->
-    <link rel="preconnect" href="https://ik.imagekit.io">
-    <link rel="preconnect" href="https://www.googletagmanager.com">
-
-    <!-- Critical CSS -->
-    <style>
-      /* Add critical CSS here */
-      .bg-white { background-color: #fff; }
-      .text-gray-900 { color: #111827; }
-      /* Add more critical styles */
-    </style>
   </head>
   <body>
     <div id="root"></div>

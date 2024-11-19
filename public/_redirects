@@ -2,8 +2,11 @@
 # Redirects and Proxies for Appraisily.com
 # ========================================
 
-# 1. Proxy of Specific Routes to WordPress
+# 1. WordPress Content Redirects
 # ------------------------------------------
+
+# Redirect WordPress content to resources subdomain
+/wp-content/* https://resources.appraisily.com/wp-content/:splat 301!
 
 # Proxy all routes that begin with /posts/ to WordPress
 /posts/* https://resources.appraisily.com/posts/:splat 200
@@ -14,46 +17,20 @@
 # Proxy all routes that begin with /success-payment/ to WordPress
 /success-payment/* https://resources.appraisily.com/success-payment/:splat 200
 
-# 2. Sitemap Redirect
-# ------------------
-
-# Redirect sitemap.xml to resources subdomain
-/sitemap.xml https://resources.appraisily.com/sitemap_index.xml 301
-
-# 3. Redirection of /wp-admin to WordPress
+# 2. WordPress Admin Redirects
 # ---------------------------------------
 
-# Redirect any access to /wp-admin/* to the URL corresponding in WordPress
+# Redirect any access to /wp-admin/* to WordPress
 /wp-admin/* https://resources.appraisily.com/wp-admin/:splat 301!
 
-# 4. Redirection of www.resources.appraisily.com
+# 3. Subdomain Redirects
 # --------------------------------------------------------
 
-# Redirect all requests to www.resources.appraisily.com/* to resources.appraisily.com/* 
-# Note: Make sure you've configured a page rule in Cloudflare if you prefer handling it there
+# Redirect www.resources to resources
 www.resources.appraisily.com/* https://resources.appraisily.com/:splat 301!
 
-# 5. Other Permanent Redirections (301)
-# ----------------------------------------
-
-# Example of redirection from an old page to a new one
-/old-page/ /new-page/ 301
-
-# Add more redirections as needed
-/another-old-page/ /another-new-page/ 301
-
-# 6. Redirection for the Root of the Subdomain with www (Optional)
-# -------------------------------------------------------------
-
-# If you want www.resources.appraisily.com to also redirect correctly
-www.resources.appraisily.com https://resources.appraisily.com 301!
-
-# 7. SPA Fallback
+# 4. SPA Fallback
 # --------------
 
 # Redirect all other routes to index.html for client-side routing
 /* /index.html 200
-
-# ========================================
-# End of Redirects File
-# ========================================
