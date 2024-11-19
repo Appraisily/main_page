@@ -86,6 +86,7 @@ export default function Testimonials() {
                     src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg"
                     alt="Trustpilot"
                     className="h-5"
+                    loading="lazy"
                   />
                   <span className="text-sm text-gray-500">Verified Review</span>
                 </div>
