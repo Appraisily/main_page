@@ -23,7 +23,6 @@ import SuccessStories from './components/SuccessStories';
 import RecentAppraisals from './components/RecentAppraisals';
 import MarketAnalysis from './components/MarketAnalysis';
 import ServiceSelection from './pages/ServiceSelection';
-import Screener from './screener/src/App';
 import { useTawkTo } from './hooks/useTawkTo';
 import { useScrollToTop } from './hooks/useScrollToTop';
 
@@ -70,7 +69,6 @@ export function App() {
               <Route path="/how-it-works" element={<HowItWorks />} />
               <Route path="/report/:sessionId" element={<Report />} />
               <Route path="/start" element={<ServiceSelection />} />
-              <Route path="/screener/*" element={<Screener />} />
               <Route path="/terms" element={<Terms />} />
             </Routes>
           </main>

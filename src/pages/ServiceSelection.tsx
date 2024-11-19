@@ -104,31 +104,36 @@ export default function ServiceSelection() {
       <div className="w-full max-w-7xl mx-auto px-6 lg:px-8 py-24">
         {/* Social Proof Section */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-12">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-sm w-full sm:w-auto">
             <img
-              src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-white.svg"
+              src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg"
               alt="Trustpilot"
               className="h-6 sm:h-7"
+              loading="lazy"
             />
             <div className="flex items-center">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="h-4 w-4 fill-current text-[#00b67a]" />
               ))}
-              <span className="ml-2 text-sm font-medium text-gray-600">4.9/5 (2.5k+ reviews)</span>
+              <span className="ml-2 text-sm font-medium text-gray-600">4.9/5 (100+ reviews)</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-sm w-full sm:w-auto">
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/24px-Google_%22G%22_Logo.svg.png"
+              src="https://www.gstatic.com/images/branding/product/2x/googleg_48dp.png"
               alt="Google"
               className="h-6"
+              width="24"
+              height="24"
+              loading="lazy"
+              style={{ aspectRatio: '1/1' }}
             />
             <div className="flex items-center">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} className="h-4 w-4 fill-current text-[#fbbc05]" />
               ))}
-              <span className="ml-2 text-sm font-medium text-gray-600">4.8/5 (1.8k+ reviews)</span>
+              <span className="ml-2 text-sm font-medium text-gray-600">4.8/5 (100+ reviews)</span>
             </div>
           </div>
         </div>
@@ -148,7 +153,7 @@ export default function ServiceSelection() {
               key={type}
               onClick={() => handleServiceSelect(type)}
               className={cn(
-                "flex-1 py-6 px-4 text-lg font-medium rounded-xl border-2 transition-all duration-200 outline-none focus:outline-none shadow-sm hover:shadow-md",
+                "flex-1 py-6 px-4 text-lg font-medium rounded-md border-2 transition-all duration-200 outline-none focus:outline-none shadow-sm hover:shadow-md",
                 selectedService === type
                   ? "border-blue-600 bg-blue-600 text-white shadow-blue-600/20"
                   : "border-gray-200 text-gray-700 hover:border-blue-600 hover:text-blue-600 bg-white"

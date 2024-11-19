@@ -35,6 +35,7 @@ export default function Navbar() {
                 src="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?updatedAt=1731919266638" 
                 alt="Appraisily Logo" 
                 className="h-8 w-auto"
+                loading="eager"
               />
               <span className="text-xl font-semibold text-gray-900">Appraisily</span>
             </Link>
@@ -55,7 +56,7 @@ export default function Navbar() {
             ))}
             <Link
               to="/start"
-              className="inline-flex items-center justify-center px-5 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors gap-1.5 shadow-sm hover:shadow-md"
+              className="inline-flex items-center justify-center px-5 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors gap-1.5 shadow-sm hover:shadow-md"
             >
               Start Appraisal <ArrowRight className="h-4 w-4" />
             </Link>
@@ -65,7 +66,7 @@ export default function Navbar() {
           <div className="md:hidden flex items-center space-x-4">
             <Link
               to="/start"
-              className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm"
+              className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm"
             >
               Start
             </Link>

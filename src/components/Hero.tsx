@@ -95,6 +95,7 @@ export default function Hero() {
 
     try {
       setIsUploading(true);
+
       const formData = new FormData();
       formData.append('image', selectedFile);
 
@@ -108,6 +109,7 @@ export default function Hero() {
       }
 
       const { tempUrl, sessionId } = await response.json();
+
       window.location.href = `https://screener.appraisily.com/analyze/${sessionId}`;
     } catch (error) {
       console.error('Error uploading image:', error);
@@ -118,7 +120,6 @@ export default function Hero() {
 
   return (
     <div className="relative min-h-screen overflow-hidden pt-24 bg-gray-50">
-      {/* Background elements */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_#3b82f6,_transparent_70%)] opacity-[0.15]"></div>
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_80%,_#3b82f6,_transparent_70%)] opacity-[0.15]"></div>
@@ -133,7 +134,6 @@ export default function Hero() {
             Free Instant Analysis • No Registration Required
           </div>
 
-          {/* Heading with inline logo */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
             <img
               src={`${IMAGEKIT_URL}/logo_new.png?updatedAt=1731919266638`}
@@ -142,7 +142,7 @@ export default function Hero() {
               width="48"
               height="48"
               loading="eager"
-              fetchpriority="high"
+              importance="high"
             />
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-gray-900">
               Discover Your Art's True Value
@@ -153,7 +153,6 @@ export default function Hero() {
             Upload a photo of your artwork or antique and get instant AI-powered insights. No account needed, completely free.
           </p>
 
-          {/* Social Proof Section */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-12">
             <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-sm w-full sm:w-auto">
               <img
@@ -192,7 +191,6 @@ export default function Hero() {
         </div>
 
         <div className="relative max-w-[1200px] mx-auto min-h-[28rem] md:h-[32rem]">
-          {/* Service Cards - Hidden on mobile, visible on larger screens */}
           <div className="hidden md:block">
             {services.map((service) => {
               const IconComponent = service.icon;
@@ -212,7 +210,7 @@ export default function Hero() {
                           src={service.image}
                           alt={service.name}
                           className="w-full h-full object-cover"
-                          loading="eager"
+                          loading="lazy"
                         />
                         <div className="absolute inset-0 bg-gradient-to-b from-black/0 to-black/10 group-hover:to-black/5 transition-colors"></div>
                       </div>
@@ -241,7 +239,6 @@ export default function Hero() {
             })}
           </div>
 
-          {/* Enhanced Center Upload Area */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-xs z-10">
             <div className="absolute -inset-4 bg-gradient-to-tr from-blue-600/20 to-blue-400/10 rounded-2xl opacity-90 blur-md"></div>
             <div className="absolute -inset-4 border-2 border-blue-200 rounded-2xl"></div>
@@ -310,7 +307,6 @@ export default function Hero() {
             </form>
           </div>
 
-          {/* Mobile Service Grid */}
           <div className="mt-48 md:hidden px-4">
             <div className="grid grid-cols-2 gap-3">
               {services.map((service) => {
