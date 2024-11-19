@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, Suspense } from 'react';
 import { Upload, Search, User, Fingerprint, MapPin, Stamp, Calendar, Camera, Star } from 'lucide-react';
 import ServicePanels from './ServicePanels';
 
@@ -63,30 +63,28 @@ export default function Hero() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden pt-24 bg-gradient-to-b from-gray-50 to-white">
-      {/* Background Elements */}
-      <div className="absolute inset-0">
-        {/* Gradient Blobs */}
-        <div className="absolute inset-0">
-          <div className="absolute -top-48 right-0 w-96 h-96 bg-blue-400/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob" />
-          <div className="absolute -bottom-48 left-0 w-96 h-96 bg-blue-300/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-500/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000" />
-        </div>
+    <div className="relative min-h-[calc(100vh-4rem)] pt-16 bg-gradient-to-b from-gray-50 to-white">
+      {/* Preload critical background images */}
+      <link 
+        rel="preload" 
+        as="image" 
+        href="data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E..." 
+        type="image/svg+xml" 
+      />
 
-        {/* Grid Pattern */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNTkuNSA2MEgwVjBoNjB2NjBoLS41ek01OSAxSDFWNTloNThWMXoiIGZpbGw9IiMwMDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIgb3BhY2l0eT0iLjA1Ii8+PC9zdmc+')] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]" />
-      </div>
-
-      {/* Content */}
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16">
-          {/* Social Proof */}
+      {/* Critical content first */}
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          {/* Social Proof - Optimized */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-12">
-            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-sm">
+            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-sm w-full sm:w-auto">
               <img
                 src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg"
                 alt="Trustpilot"
                 className="h-6 sm:h-7"
+                loading="eager"
+                width="100"
+                height="24"
               />
               <div className="flex items-center">
                 {[...Array(5)].map((_, i) => (
@@ -96,12 +94,15 @@ export default function Hero() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-sm">
+            <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-sm w-full sm:w-auto">
               <img
                 src="https://www.gstatic.com/images/branding/product/2x/googleg_48dp.png"
                 alt="Google"
                 className="h-6"
                 style={{ aspectRatio: '1/1' }}
+                width="24"
+                height="24"
+                loading="eager"
               />
               <div className="flex items-center">
                 {[...Array(5)].map((_, i) => (
@@ -112,7 +113,6 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Main Title */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-gray-900 mb-6">
             Discover Your Treasures' Worth
           </h1>
@@ -121,7 +121,7 @@ export default function Hero() {
             Upload a photo of your artwork or antique and get instant AI-powered insights. No account needed, completely free.
           </p>
 
-          {/* Upload Section */}
+          {/* Optimized upload section */}
           <div className="max-w-md mx-auto mb-16">
             <form
               onDragEnter={handleDrag}
@@ -143,10 +143,13 @@ export default function Hero() {
                       src={URL.createObjectURL(selectedFile)}
                       alt="Preview"
                       className="max-h-16 mb-2 rounded"
+                      loading="eager"
+                      decoding="async"
                     />
                     <button
                       onClick={handleRemoveFile}
                       className="absolute top-2 right-2 p-1 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-700"
+                      aria-label="Remove selected file"
                     >
                       <Upload className="h-4 w-4" />
                     </button>
@@ -188,9 +191,18 @@ export default function Hero() {
               </div>
             </form>
           </div>
+        </div>
 
-          {/* Service Panels */}
-          <ServicePanels />
+        {/* Service Panels */}
+        <ServicePanels />
+      </div>
+
+      {/* Background elements - loaded with low priority */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute inset-0">
+          <div className="absolute -top-48 right-0 w-96 h-96 bg-blue-400/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob" />
+          <div className="absolute -bottom-48 left-0 w-96 h-96 bg-blue-300/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-500/30 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000" />
         </div>
       </div>
     </div>

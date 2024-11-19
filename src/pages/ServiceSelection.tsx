@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { ServiceDetails } from '@/components/ServiceDetails';
-import { Star } from 'lucide-react';
+import { Star, Info, ArrowRight } from 'lucide-react';
 
 interface Feature {
   title: string;
@@ -81,6 +81,18 @@ const services: Record<ServiceType, ServiceDetails> = {
   },
 };
 
+const serviceLabels = {
+  regular: 'Regular Appraisal',
+  insurance: 'Insurance Appraisal',
+  tax: 'Tax Appraisal'
+};
+
+const serviceDescriptions = {
+  regular: 'Standard valuation for collectors and sellers',
+  insurance: 'Detailed reports for insurance coverage',
+  tax: 'IRS-compliant appraisals for donations'
+};
+
 export default function ServiceSelection() {
   const [selectedService, setSelectedService] = useState<ServiceType | null>(null);
   const [showCheckout, setShowCheckout] = useState(false);
@@ -100,72 +112,77 @@ export default function ServiceSelection() {
   };
 
   return (
-    <div className="bg-gradient-to-b from-gray-50 to-white">
-      <div className="w-full max-w-7xl mx-auto px-6 lg:px-8 py-24">
-        {/* Social Proof Section */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-12">
-          <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-sm w-full sm:w-auto">
-            <img
-              src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg"
-              alt="Trustpilot"
-              className="h-6 sm:h-7"
-              loading="lazy"
-            />
-            <div className="flex items-center">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="h-4 w-4 fill-current text-[#00b67a]" />
-              ))}
-              <span className="ml-2 text-sm font-medium text-gray-600">4.9/5 (100+ reviews)</span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-sm w-full sm:w-auto">
-            <img
-              src="https://www.gstatic.com/images/branding/product/2x/googleg_48dp.png"
-              alt="Google"
-              className="h-6"
-              width="24"
-              height="24"
-              loading="lazy"
-              style={{ aspectRatio: '1/1' }}
-            />
-            <div className="flex items-center">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="h-4 w-4 fill-current text-[#fbbc05]" />
-              ))}
-              <span className="ml-2 text-sm font-medium text-gray-600">4.8/5 (100+ reviews)</span>
-            </div>
+    <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        {/* Compact Social Proof for Mobile */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-sm">
+          <div className="flex items-center gap-2">
+            <Star className="h-4 w-4 text-yellow-400 fill-current" />
+            <span className="text-sm font-medium text-gray-600">4.9/5 from 100+ reviews</span>
           </div>
         </div>
 
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-6">
+        <div className="text-center mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 mb-4">
             Select Your Appraisal Service
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Choose the service that best fits your needs. Each option includes comprehensive evaluation by our certified experts.
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+            Choose the service that best fits your needs
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 mb-12 max-w-3xl mx-auto">
+        {/* Enhanced Service Selection Cards */}
+        <div className="space-y-4 mb-8">
           {(Object.keys(services) as ServiceType[]).map((type) => (
             <button
               key={type}
               onClick={() => handleServiceSelect(type)}
               className={cn(
-                "flex-1 py-6 px-4 text-lg font-medium rounded-md border-2 transition-all duration-200 outline-none focus:outline-none shadow-sm hover:shadow-md",
+                "w-full text-left p-4 rounded-xl transition-all duration-200",
+                "focus:outline-none focus:ring-2 focus:ring-blue-500",
+                "active:scale-[0.99] touch-action-manipulation",
                 selectedService === type
-                  ? "border-blue-600 bg-blue-600 text-white shadow-blue-600/20"
-                  : "border-gray-200 text-gray-700 hover:border-blue-600 hover:text-blue-600 bg-white"
+                  ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20"
+                  : "bg-white text-gray-900 hover:bg-gray-50 border border-gray-200"
               )}
             >
-              {type.charAt(0).toUpperCase() + type.slice(1)} Appraisal
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-semibold text-lg">{serviceLabels[type]}</h3>
+                  <p className={cn(
+                    "text-sm mt-1",
+                    selectedService === type ? "text-blue-100" : "text-gray-600"
+                  )}>
+                    {serviceDescriptions[type]}
+                  </p>
+                </div>
+                <ArrowRight className={cn(
+                  "h-5 w-5 transition-transform",
+                  selectedService === type ? "transform rotate-90" : ""
+                )} />
+              </div>
+
+              {/* Quick Info Button */}
+              <button 
+                className={cn(
+                  "mt-2 inline-flex items-center text-sm gap-1",
+                  selectedService === type ? "text-blue-100" : "text-blue-600"
+                )}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // Show info modal/tooltip
+                }}
+              >
+                <Info className="h-4 w-4" />
+                Learn more
+              </button>
             </button>
           ))}
         </div>
 
+        {/* Service Details Section */}
         {selectedService && (
-          <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+          <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 animate-in fade-in duration-200">
             <ServiceDetails
               type={selectedService}
               features={services[selectedService].features}
@@ -177,19 +194,19 @@ export default function ServiceSelection() {
           </div>
         )}
 
-        {/* Additional Trust Indicators */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-          <div className="bg-white p-6 rounded-xl shadow-sm">
-            <div className="text-2xl font-bold text-blue-600 mb-2">50K+</div>
-            <div className="text-gray-600">Successful Appraisals</div>
+        {/* Trust Indicators */}
+        <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-4 text-center text-sm">
+          <div className="bg-white p-4 rounded-lg shadow-sm">
+            <div className="font-bold text-blue-600">50K+</div>
+            <div className="text-gray-600">Appraisals</div>
           </div>
-          <div className="bg-white p-6 rounded-xl shadow-sm">
-            <div className="text-2xl font-bold text-blue-600 mb-2">15+</div>
-            <div className="text-gray-600">Certified Experts</div>
+          <div className="bg-white p-4 rounded-lg shadow-sm">
+            <div className="font-bold text-blue-600">15+</div>
+            <div className="text-gray-600">Experts</div>
           </div>
-          <div className="bg-white p-6 rounded-xl shadow-sm">
-            <div className="text-2xl font-bold text-blue-600 mb-2">30+</div>
-            <div className="text-gray-600">Countries Served</div>
+          <div className="bg-white p-4 rounded-lg shadow-sm sm:col-span-1 col-span-2">
+            <div className="font-bold text-blue-600">30+</div>
+            <div className="text-gray-600">Countries</div>
           </div>
         </div>
       </div>
