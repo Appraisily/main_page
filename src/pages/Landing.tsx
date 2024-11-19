@@ -1,14 +1,20 @@
 import React from 'react';
-import Hero from '../landing/components/Hero';
-import WhyChooseUs from '../landing/components/WhyChooseUs';
-import Services from '../landing/components/Services';
-import Process from '../landing/components/Process';
-import Gallery from '../landing/components/Gallery';
-import Appraisers from '../landing/components/Appraisers';
-import SampleReport from '../landing/components/SampleReport';
-import Pricing from '../landing/components/Pricing';
-import Testimonials from '../landing/components/Testimonials';
-import InstantAnalysis from '../landing/components/InstantAnalysis';
+import Hero from '../components/Hero';
+import WhyChooseUs from '../components/WhyChooseUs';
+import Services from '../components/Services';
+import Process from '../components/Process';
+import Gallery from '../components/Gallery';
+import Team from '../components/Team';
+import ServicesOverview from '../components/Services';
+import Expertise from '../components/Expertise';
+import HowItWorks from '../components/HowItWorks';
+import Testimonials from '../components/Testimonials';
+import Contact from '../components/Contact';
+import Features from '../components/Features';
+import ProcessSteps from '../components/ProcessSteps';
+import SuccessStories from '../components/SuccessStories';
+import RecentAppraisals from '../components/RecentAppraisals';
+import MarketAnalysis from '../components/MarketAnalysis';
 import { useTawkTo } from '../hooks/useTawkTo';
 
 export default function Landing() {
@@ -21,11 +27,15 @@ export default function Landing() {
       <Services />
       <Process />
       <Gallery />
-      <Appraisers />
-      <SampleReport />
-      <Pricing />
+      <Team />
+      <Features />
+      <ProcessSteps />
+      <MarketAnalysis />
+      <ServicesOverview />
+      <RecentAppraisals />
+      <SuccessStories />
       <Testimonials />
-      <InstantAnalysis />
+      <Contact />
     </div>
   );
 }
