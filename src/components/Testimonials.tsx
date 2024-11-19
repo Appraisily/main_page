@@ -22,27 +22,6 @@ const reviews = [
     author: "Emily K.",
     rating: 5,
     text: "The expertise and attention to detail was impressive. Great communication throughout."
-  },
-  {
-    id: 4,
-    image: "https://ik.imagekit.io/appraisily/WebPage/review4.jpg?tr=w-800,h-600,q-70",
-    author: "Michael P.",
-    rating: 5,
-    text: "Very professional service. The report exceeded my expectations!"
-  },
-  {
-    id: 5,
-    image: "https://ik.imagekit.io/appraisily/WebPage/review5.jpg?tr=w-800,h-600,q-70",
-    author: "Lisa T.",
-    rating: 5,
-    text: "Fantastic experience from start to finish. Highly knowledgeable team!"
-  },
-  {
-    id: 6,
-    image: "https://ik.imagekit.io/appraisily/WebPage/review6.jpg?tr=w-800,h-600,q-70",
-    author: "David W.",
-    rating: 5,
-    text: "The most comprehensive art appraisal service I've used. Excellent value!"
   }
 ];
 
@@ -66,16 +45,17 @@ export default function Testimonials() {
               className="flex flex-col justify-between rounded-2xl bg-white p-8 shadow-sm ring-1 ring-gray-200 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
             >
               <div>
-                <div className="flex items-center gap-x-2">
+                <div className="flex items-center gap-x-2" aria-label={`Rating: ${review.rating} out of 5 stars`}>
                   {[...Array(review.rating)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 fill-current text-yellow-400" />
+                    <Star key={i} className="h-5 w-5 fill-current text-yellow-400" aria-hidden="true" />
                   ))}
                 </div>
                 <img
                   src={review.image}
-                  alt={`${review.author}'s review on Trustpilot`}
+                  alt={`Artwork reviewed by ${review.author}`}
                   className="mt-6 rounded-lg shadow-sm w-full h-48 object-cover"
                   loading="lazy"
+                  decoding="async"
                 />
                 <p className="mt-6 text-base leading-7 text-gray-600">"{review.text}"</p>
               </div>
@@ -95,15 +75,16 @@ export default function Testimonials() {
           ))}
         </div>
 
-        <div className="mt-16 flex justify-center">
+        <div className="mt-16 text-center">
           <a
-            href="https://www.trustpilot.com"
+            href="https://www.trustpilot.com/review/appraisily.com"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"
+            aria-label="Read all Appraisily reviews on Trustpilot"
           >
             <span className="text-sm font-semibold">View all reviews on Trustpilot</span>
-            <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fillRule="evenodd" d="M5 10a.75.75 0 01.75-.75h6.638L10.23 7.29a.75.75 0 111.04-1.08l3.5 3.25a.75.75 0 010 1.08l-3.5 3.25a.75.75 0 11-1.04-1.08l2.158-1.96H5.75A.75.75 0 015 10z" clipRule="evenodd" />
             </svg>
           </a>

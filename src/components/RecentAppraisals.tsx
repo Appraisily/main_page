@@ -74,16 +74,17 @@ export default function RecentAppraisals() {
               target="_blank"
               rel="noopener noreferrer"
               className="group relative overflow-hidden rounded-2xl bg-gray-100 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              aria-label={`View detailed appraisal for ${appraisal.title}`}
             >
               <div className="aspect-[3/2]">
                 <img
                   src={appraisal.image}
-                  alt={appraisal.title}
+                  alt={`Appraised artwork: ${appraisal.title}`}
                   className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-110"
                   loading="lazy"
                   decoding="async"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/60 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/60 to-transparent" aria-hidden="true"></div>
               </div>
               <div className="absolute bottom-0 p-6 w-full">
                 <div className="flex flex-col gap-2">
@@ -91,13 +92,16 @@ export default function RecentAppraisals() {
                     <h3 className="text-lg font-semibold text-white group-hover:text-[#007bff] transition-colors line-clamp-2">
                       {appraisal.title}
                     </h3>
-                    <ExternalLink className="h-5 w-5 text-white opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 ml-4" />
+                    <ExternalLink 
+                      className="h-5 w-5 text-white opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 ml-4" 
+                      aria-hidden="true"
+                    />
                   </div>
                   <p className="text-sm text-gray-300 line-clamp-2">
                     {appraisal.description}
                   </p>
                   <div className="mt-2 flex items-center text-[#007bff] bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 w-fit">
-                    <DollarSign className="h-4 w-4 mr-1" />
+                    <DollarSign className="h-4 w-4 mr-1" aria-hidden="true" />
                     <span className="font-semibold">
                       {appraisal.value.toLocaleString()}
                     </span>
@@ -112,9 +116,10 @@ export default function RecentAppraisals() {
           <a
             href="https://services.appraisily.com"
             className="inline-flex items-center gap-2 rounded-md bg-[#007bff] px-6 py-3 text-lg font-semibold text-white shadow-sm hover:bg-[#0056b3] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#007bff] transition-all duration-200"
+            aria-label="Start your art appraisal now"
           >
             Start Your Appraisal Now
-            <ArrowRight className="h-5 w-5" />
+            <ArrowRight className="h-5 w-5" aria-hidden="true" />
           </a>
         </div>
       </div>

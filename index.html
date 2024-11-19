@@ -4,14 +4,20 @@
     <meta charset="UTF-8" />
     <!-- Preload critical assets -->
     <link rel="preload" as="image" href="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?updatedAt=1731919266638" />
+    <link rel="preload" as="style" href="/src/index.css" />
+    <link rel="preload" as="script" href="/src/main.tsx" type="module" />
     
     <!-- Defer non-critical scripts -->
     <script defer src="https://www.googletagmanager.com/gtag/js?id=G-V8T1NRDNC6"></script>
     <script defer>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-V8T1NRDNC6');
+      window.addEventListener('load', function() {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-V8T1NRDNC6', {
+          send_page_view: false // We'll send page views manually
+        });
+      });
     </script>
     
     <link rel="icon" type="image/png" href="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?updatedAt=1731919266638" />
@@ -21,6 +27,14 @@
     <!-- Preconnect to external domains -->
     <link rel="preconnect" href="https://ik.imagekit.io">
     <link rel="preconnect" href="https://www.googletagmanager.com">
+
+    <!-- Critical CSS -->
+    <style>
+      /* Add critical CSS here */
+      .bg-white { background-color: #fff; }
+      .text-gray-900 { color: #111827; }
+      /* Add more critical styles */
+    </style>
   </head>
   <body>
     <div id="root"></div>

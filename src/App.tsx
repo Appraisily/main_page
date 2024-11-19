@@ -1,80 +1,113 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import ValueProposition from './components/ValueProposition';
-import About from './components/About';
-import ServicesOverview from './components/Services';
-import Team from './pages/Team';
-import ServicesPage from './pages/Services';
-import Expertise from './pages/Expertise';
-import HowItWorks from './pages/HowItWorks';
-import Report from './pages/Report';
-import Terms from './pages/Terms';
-import Testimonials from './components/Testimonials';
-import Contact from './components/Contact';
+import Landing from './pages/Landing';
 import Footer from './components/Footer';
 import SEO from './components/SEO';
-import Features from './components/Features';
-import ProcessSteps from './components/ProcessSteps';
-import SuccessStories from './components/SuccessStories';
-import RecentAppraisals from './components/RecentAppraisals';
-import MarketAnalysis from './components/MarketAnalysis';
-import ServiceSelection from './pages/ServiceSelection';
-import { useTawkTo } from './hooks/useTawkTo';
-import { useScrollToTop } from './hooks/useScrollToTop';
 
-function HomePage() {
+// Loading component
+const PageLoader = () => (
+  <div className="min-h-screen bg-white flex items-center justify-center">
+    <div className="animate-pulse">Loading...</div>
+  </div>
+);
+
+// Lazy load other pages
+const Team = React.lazy(() => import('./pages/Team').then(module => ({ default: module.default })));
+const ServicesPage = React.lazy(() => import('./pages/Services').then(module => ({ default: module.default })));
+const Expertise = React.lazy(() => import('./pages/Expertise').then(module => ({ default: module.default })));
+const HowItWorks = React.lazy(() => import('./pages/HowItWorks').then(module => ({ default: module.default })));
+const Report = React.lazy(() => import('./pages/Report').then(module => ({ default: module.default })));
+const Terms = React.lazy(() => import('./pages/Terms').then(module => ({ default: module.default })));
+const ServiceSelection = React.lazy(() => import('./pages/ServiceSelection').then(module => ({ default: module.default })));
+
+export default function App() {
   return (
-    <>
-      <Hero />
-      <ValueProposition />
-      <Features />
-      <ProcessSteps />
-      <MarketAnalysis />
-      <ServicesOverview />
-      <RecentAppraisals />
-      <SuccessStories />
-      <Testimonials />
-      <Contact />
-    </>
-  );
-}
-
-export function App() {
-  // Initialize Tawk.to chat
-  useTawkTo();
-  
-  // Scroll to top on route change
-  useScrollToTop();
-
-  return (
-    <HelmetProvider>
-      <TooltipProvider>
-        <div className="min-h-screen bg-white">
-          <SEO 
-            title="Appraisily | Professional Art & Antique Appraisals"
-            description="Leading online art and antique appraisal firm with certified experts. Professional valuations for collectors, institutions, and private clients worldwide."
-          />
-          <Navbar />
-          <main>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/services" element={<ServicesPage />} />
-              <Route path="/expertise" element={<Expertise />} />
-              <Route path="/team" element={<Team />} />
-              <Route path="/how-it-works" element={<HowItWorks />} />
-              <Route path="/report/:sessionId" element={<Report />} />
-              <Route path="/start" element={<ServiceSelection />} />
-              <Route path="/terms" element={<Terms />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </TooltipProvider>
-    </HelmetProvider>
+    <ErrorBoundary>
+      <HelmetProvider>
+        <TooltipProvider>
+          <div className="min-h-screen bg-white">
+            <SEO 
+              title="Appraisily | Professional Art & Antique Appraisals"
+              description="Leading online art and antique appraisal firm with certified experts. Professional valuations for collectors, institutions, and private clients worldwide."
+            />
+            <Navbar />
+            <main>
+              <Routes>
+                <Route path="/" element={<Landing />} />
+                <Route
+                  path="/about"
+                  element={
+                    <Suspense fallback={<PageLoader />}>
+                      <Team />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/services"
+                  element={
+                    <Suspense fallback={<PageLoader />}>
+                      <ServicesPage />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/expertise"
+                  element={
+                    <Suspense fallback={<PageLoader />}>
+                      <Expertise />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/team"
+                  element={
+                    <Suspense fallback={<PageLoader />}>
+                      <Team />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/how-it-works"
+                  element={
+                    <Suspense fallback={<PageLoader />}>
+                      <HowItWorks />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/report/:sessionId"
+                  element={
+                    <Suspense fallback={<PageLoader />}>
+                      <Report />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/start"
+                  element={
+                    <Suspense fallback={<PageLoader />}>
+                      <ServiceSelection />
+                    </Suspense>
+                  }
+                />
+                <Route
+                  path="/terms"
+                  element={
+                    <Suspense fallback={<PageLoader />}>
+                      <Terms />
+                    </Suspense>
+                  }
+                />
+              </Routes>
+            </main>
+            <Footer />
+          </div>
+        </TooltipProvider>
+      </HelmetProvider>
+    </ErrorBoundary>
   );
 }

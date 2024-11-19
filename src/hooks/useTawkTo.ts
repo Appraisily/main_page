@@ -10,32 +10,50 @@ declare global {
 export const useTawkTo = () => {
   useEffect(() => {
     const loadTawkTo = () => {
-      try {
-        const s1 = document.createElement("script");
-        s1.async = true;
-        s1.src = 'https://embed.tawk.to/63a083dbb0d6371309d528e2/1gklg645r';
-        s1.charset = 'UTF-8';
-        s1.setAttribute('crossorigin', '*');
-        s1.onerror = () => {
-          console.warn('Tawk.to chat widget failed to load');
-          // Remove the failed script
-          s1.remove();
-        };
-        
-        document.head.appendChild(s1);
-        
-        window.Tawk_API = window.Tawk_API || {};
-        window.Tawk_LoadStart = new Date();
-      } catch (error) {
-        console.warn('Error loading Tawk.to chat:', error);
-      }
+      // Only load if user scrolls or after 5 seconds
+      const shouldLoad = () => {
+        try {
+          const s1 = document.createElement("script");
+          s1.async = true;
+          s1.src = 'https://embed.tawk.to/63a083dbb0d6371309d528e2/1gklg645r';
+          s1.charset = 'UTF-8';
+          s1.setAttribute('crossorigin', '*');
+          s1.onerror = () => {
+            console.warn('Tawk.to chat widget failed to load');
+            s1.remove();
+          };
+          
+          document.head.appendChild(s1);
+          
+          window.Tawk_API = window.Tawk_API || {};
+          window.Tawk_LoadStart = new Date();
+
+          // Remove event listeners
+          window.removeEventListener('scroll', shouldLoad);
+          clearTimeout(timer);
+        } catch (error) {
+          console.warn('Error loading Tawk.to chat:', error);
+        }
+      };
+
+      // Load on scroll
+      window.addEventListener('scroll', shouldLoad, { once: true });
+      
+      // Load after 5 seconds if no scroll
+      const timer = setTimeout(shouldLoad, 5000);
+
+      return () => {
+        window.removeEventListener('scroll', shouldLoad);
+        clearTimeout(timer);
+      };
     };
 
-    // Delay loading of chat widget to prioritize core content
-    const timer = setTimeout(loadTawkTo, 3000);
-    
-    return () => {
-      clearTimeout(timer);
-    };
+    // Only load if user interacts or after initial page load
+    if (document.readyState === 'complete') {
+      loadTawkTo();
+    } else {
+      window.addEventListener('load', loadTawkTo);
+      return () => window.removeEventListener('load', loadTawkTo);
+    }
   }, []);
 };

@@ -15,6 +15,7 @@ import MarketAnalysis from '../components/MarketAnalysis';
 import { useTawkTo } from '../hooks/useTawkTo';
 
 export default function Landing() {
+  // Initialize chat widget
   useTawkTo();
 
   return (
