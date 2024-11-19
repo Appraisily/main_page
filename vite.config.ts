@@ -1,10 +1,9 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { splitVendorChunkPlugin } from 'vite';
 
 export default defineConfig({
-  plugins: [react(), splitVendorChunkPlugin()],
+  plugins: [react()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -12,32 +11,40 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'ui-vendor': [
-            '@radix-ui/react-dialog',
-            '@radix-ui/react-tooltip',
-            'class-variance-authority',
-            'clsx',
-            'lucide-react'
-          ],
-          'utils-vendor': ['date-fns', '@supabase/supabase-js']
-        }
-      }
-    },
-    chunkSizeWarningLimit: 1000,
+    sourcemap: false, // Disable sourcemaps in production
     minify: 'terser',
     terserOptions: {
       compress: {
         drop_console: true,
         drop_debugger: true
       }
-    }
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor': [
+            'react',
+            'react-dom',
+            'react-router-dom',
+            '@radix-ui/react-tooltip',
+            'lucide-react'
+          ],
+          'utils': [
+            'date-fns',
+            '@supabase/supabase-js',
+            'uuid'
+          ]
+        }
+      }
+    },
+    chunkSizeWarningLimit: 1000
   },
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom']
+  server: {
+    port: 5173,
+    host: true
+  },
+  preview: {
+    port: 4173,
+    host: true
   }
 });
