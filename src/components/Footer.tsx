@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden">
+    <footer className="relative overflow-hidden bg-white">
       {/* Background Elements */}
       <div className="absolute inset-0">
         {/* Base gradient */}
@@ -29,10 +29,11 @@ export default function Footer() {
                 src="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?updatedAt=1731919266638"
                 alt="Appraisily Logo"
                 className="h-8 w-auto mr-3"
+                loading="lazy"
               />
               <span className="text-2xl font-bold text-gray-900">Appraisily</span>
             </div>
-            <p className="mt-4 text-gray-600 max-w-md">
+            <p className="mt-4 text-gray-900 max-w-md">
               Professional online art and antique appraisals. Get accurate valuations from certified experts within 48 hours.
             </p>
             <div className="mt-6">
@@ -52,22 +53,22 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/services" className="text-gray-600 hover:text-blue-600 transition-colors">
+                <Link to="/services" className="text-gray-900 hover:text-blue-600 transition-colors">
                   Services
                 </Link>
               </li>
               <li>
-                <Link to="/how-it-works" className="text-gray-600 hover:text-blue-600 transition-colors">
+                <Link to="/how-it-works" className="text-gray-900 hover:text-blue-600 transition-colors">
                   How It Works
                 </Link>
               </li>
               <li>
-                <Link to="/screener" className="text-gray-600 hover:text-blue-600 transition-colors">
+                <Link to="/screener" className="text-gray-900 hover:text-blue-600 transition-colors">
                   Free AI Art Analysis
                 </Link>
               </li>
               <li>
-                <Link to="/terms" className="text-gray-600 hover:text-blue-600 transition-colors">
+                <Link to="/terms" className="text-gray-900 hover:text-blue-600 transition-colors">
                   Terms of Service
                 </Link>
               </li>
@@ -82,19 +83,19 @@ export default function Footer() {
             <ul className="space-y-3">
               <li className="flex items-center">
                 <Mail className="h-5 w-5 text-blue-600 mr-2" />
-                <a href="mailto:info@appraisily.com" className="text-gray-600 hover:text-blue-600 transition-colors">
+                <a href="mailto:info@appraisily.com" className="text-gray-900 hover:text-blue-600 transition-colors">
                   info@appraisily.com
                 </a>
               </li>
             </ul>
             <div className="mt-6 flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-blue-600 transition-colors">
+              <a href="#" className="text-blue-600 hover:text-blue-700 transition-colors">
                 <Facebook className="h-6 w-6" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-blue-600 transition-colors">
+              <a href="#" className="text-blue-600 hover:text-blue-700 transition-colors">
                 <Twitter className="h-6 w-6" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-blue-600 transition-colors">
+              <a href="#" className="text-blue-600 hover:text-blue-700 transition-colors">
                 <Instagram className="h-6 w-6" />
               </a>
             </div>
@@ -104,14 +105,14 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="mt-8 pt-8 border-t border-blue-100">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-600 text-sm">
+            <p className="text-gray-900 text-sm">
               © {new Date().getFullYear()} Appraisily. All rights reserved.
             </p>
             <div className="flex items-center gap-6">
-              <Link to="/privacy" className="text-sm text-gray-600 hover:text-blue-600 transition-colors">
+              <Link to="/privacy" className="text-sm text-gray-900 hover:text-blue-600 transition-colors">
                 Privacy Policy
               </Link>
-              <Link to="/terms" className="text-sm text-gray-600 hover:text-blue-600 transition-colors">
+              <Link to="/terms" className="text-sm text-gray-900 hover:text-blue-600 transition-colors">
                 Terms of Service
               </Link>
             </div>

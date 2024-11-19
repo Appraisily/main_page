@@ -99,7 +99,7 @@ export default function Testimonials() {
             href="https://www.trustpilot.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-[#007bff] hover:text-[#0056b3] transition-colors"
+            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"
           >
             <span className="text-sm font-semibold">View all reviews on Trustpilot</span>
             <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

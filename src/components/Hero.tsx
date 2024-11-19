@@ -1,7 +1,58 @@
 import React, { useState, useCallback } from 'react';
 import { Upload, Search, Sparkles, User, Fingerprint, MapPin, Stamp, Calendar, Camera, Star, Loader2 } from 'lucide-react';
 
-const IMAGEKIT_URL = 'https://ik.imagekit.io/appraisily';
+const IMAGEKIT_URL = 'https://ik.imagekit.io/appraisily/WebPage';
+
+const services = [
+  {
+    id: 'maker',
+    name: 'Maker Analysis',
+    description: 'Identify potential creator',
+    icon: User,
+    image: `${IMAGEKIT_URL}/maker?updatedAt=1732004009063`,
+    position: { x: 350, y: -100 }
+  },
+  {
+    id: 'signature',
+    name: 'Signature Check',
+    description: 'Analyze signatures',
+    icon: Fingerprint,
+    image: `${IMAGEKIT_URL}/signature?updatedAt=1732003919574`,
+    position: { x: 350, y: 100 }
+  },
+  {
+    id: 'origin',
+    name: 'Origin Analysis',
+    description: 'Determine likely origin',
+    icon: MapPin,
+    image: `${IMAGEKIT_URL}/origin?updatedAt=1732003994998`,
+    position: { x: -350, y: -100 }
+  },
+  {
+    id: 'marks',
+    name: 'Marks Recognition',
+    description: 'Identify maker marks',
+    icon: Stamp,
+    image: `${IMAGEKIT_URL}/marks?updatedAt=1732003867308`,
+    position: { x: -350, y: 100 }
+  },
+  {
+    id: 'age',
+    name: 'Age Analysis',
+    description: 'Estimate creation period',
+    icon: Calendar,
+    image: `${IMAGEKIT_URL}/age?updatedAt=1732003886959`,
+    position: { x: 0, y: -150 }
+  },
+  {
+    id: 'visual',
+    name: 'Visual Search',
+    description: 'Find similar artworks',
+    icon: Search,
+    image: `${IMAGEKIT_URL}/visual?updatedAt=1732003934468`,
+    position: { x: 0, y: 150 }
+  }
+];
 
 export default function Hero() {
   const [dragActive, setDragActive] = useState(false);
@@ -44,12 +95,9 @@ export default function Hero() {
 
     try {
       setIsUploading(true);
-
-      // Create a FormData object to send the file
       const formData = new FormData();
       formData.append('image', selectedFile);
 
-      // Upload to temporary storage and get URL
       const response = await fetch('https://appraisals-web-services-backend-856401495068.us-central1.run.app/upload-temp', {
         method: 'POST',
         body: formData,
@@ -60,67 +108,13 @@ export default function Hero() {
       }
 
       const { tempUrl, sessionId } = await response.json();
-
-      // Redirect to screener with the session ID
       window.location.href = `https://screener.appraisily.com/analyze/${sessionId}`;
     } catch (error) {
       console.error('Error uploading image:', error);
-      // Here you might want to show an error message to the user
     } finally {
       setIsUploading(false);
     }
   };
-
-  const services = [
-    {
-      id: 'maker',
-      name: 'Maker Analysis',
-      description: 'Identify potential creator',
-      icon: User,
-      image: `${IMAGEKIT_URL}/WebPage/maker_analysis.jpg?tr=w-200,h-200`,
-      position: { x: 350, y: -100 }
-    },
-    {
-      id: 'signature',
-      name: 'Signature Check',
-      description: 'Analyze signatures',
-      icon: Fingerprint,
-      image: `${IMAGEKIT_URL}/WebPage/signature_check.jpg?tr=w-200,h-200`,
-      position: { x: 350, y: 100 }
-    },
-    {
-      id: 'origin',
-      name: 'Origin Analysis',
-      description: 'Determine likely origin',
-      icon: MapPin,
-      image: `${IMAGEKIT_URL}/WebPage/origin_analysis.jpg?tr=w-200,h-200`,
-      position: { x: -350, y: -100 }
-    },
-    {
-      id: 'marks',
-      name: 'Marks Recognition',
-      description: 'Identify maker marks',
-      icon: Stamp,
-      image: `${IMAGEKIT_URL}/WebPage/marks_recognition.jpg?tr=w-200,h-200`,
-      position: { x: -350, y: 100 }
-    },
-    {
-      id: 'age',
-      name: 'Age Analysis',
-      description: 'Estimate creation period',
-      icon: Calendar,
-      image: `${IMAGEKIT_URL}/WebPage/age_analysis.jpg?tr=w-200,h-200`,
-      position: { x: 0, y: -150 }
-    },
-    {
-      id: 'visual',
-      name: 'Visual Search',
-      description: 'Find similar artworks',
-      icon: Search,
-      image: `${IMAGEKIT_URL}/WebPage/visual_search.jpg?tr=w-200,h-200`,
-      position: { x: 0, y: 150 }
-    }
-  ];
 
   return (
     <div className="relative min-h-screen overflow-hidden pt-24 bg-gray-50">
@@ -142,9 +136,13 @@ export default function Hero() {
           {/* Heading with inline logo */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
             <img
-              src="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?updatedAt=1731919266638"
+              src={`${IMAGEKIT_URL}/logo_new.png?updatedAt=1731919266638`}
               alt="Appraisily Logo"
               className="h-12 w-auto"
+              width="48"
+              height="48"
+              loading="eager"
+              fetchpriority="high"
             />
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-gray-900">
               Discover Your Art's True Value
@@ -162,12 +160,15 @@ export default function Hero() {
                 src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg"
                 alt="Trustpilot"
                 className="h-6 sm:h-7"
+                width="100"
+                height="28"
+                loading="lazy"
               />
               <div className="flex items-center">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="h-4 w-4 fill-current text-[#00b67a]" />
                 ))}
-                <span className="ml-2 text-sm font-medium text-gray-600">4.9/5 (2.5k+ reviews)</span>
+                <span className="ml-2 text-sm font-medium text-gray-600">4.9/5 (100+ reviews)</span>
               </div>
             </div>
 
@@ -176,13 +177,15 @@ export default function Hero() {
                 src="https://www.gstatic.com/images/branding/product/2x/googleg_48dp.png"
                 alt="Google"
                 className="h-6"
-                style={{ aspectRatio: '1/1' }}
+                width="24"
+                height="24"
+                loading="lazy"
               />
               <div className="flex items-center">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="h-4 w-4 fill-current text-[#fbbc05]" />
                 ))}
-                <span className="ml-2 text-sm font-medium text-gray-600">4.8/5 (1.8k+ reviews)</span>
+                <span className="ml-2 text-sm font-medium text-gray-600">4.8/5 (100+ reviews)</span>
               </div>
             </div>
           </div>
@@ -315,12 +318,20 @@ export default function Hero() {
                 return (
                   <div
                     key={service.id}
-                    className="bg-white rounded-lg p-3 shadow-sm border border-gray-100"
+                    className="bg-white rounded-lg p-4 shadow-sm border border-gray-100"
                   >
-                    <div className="flex items-center gap-2 mb-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="relative w-10 h-10 rounded-lg overflow-hidden">
+                        <img
+                          src={service.image}
+                          alt={service.name}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                      </div>
                       <IconComponent className="h-4 w-4 text-blue-600" />
-                      <h3 className="font-medium text-gray-900 text-sm">{service.name}</h3>
                     </div>
+                    <h3 className="font-medium text-gray-900 text-sm mb-1">{service.name}</h3>
                     <p className="text-xs text-gray-500">{service.description}</p>
                   </div>
                 );
