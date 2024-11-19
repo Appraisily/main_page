@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       animation: {
-        blob: "blob 20s infinite linear",
+        blob: "blob 7s infinite",
       },
       colors: {
         border: "hsl(var(--border))",
@@ -81,6 +81,6 @@ export default {
     },
   },
   plugins: [
-    require('@tailwindcss/typography'),
+    require('@tailwindcss/typography')
   ],
 }
