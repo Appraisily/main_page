@@ -9,13 +9,11 @@ import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 export default defineConfig(({ mode }) => ({
   plugins: [
     react({
-      // Simplified Babel config to avoid duplicates
       babel: {
         plugins: [
           mode === 'production' && 'babel-plugin-transform-remove-prop-types',
         ].filter(Boolean),
       },
-      // Fast refresh only in development
       fastRefresh: mode !== 'production',
     }),
     ViteImageOptimizer({
@@ -41,7 +39,26 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
+    },
+    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json']
+  },
+  server: {
+    port: 5173,
+    host: true,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,OPTIONS,PATCH,DELETE,POST,PUT',
+      'Access-Control-Allow-Headers': 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    },
+    fs: {
+      strict: true,
+      allow: ['..']
     }
+  },
+  esbuild: {
+    loader: 'tsx',
+    include: /src\/.*\.[tj]sx?$/,
+    exclude: [],
   },
   build: {
     target: 'es2015',
@@ -82,10 +99,6 @@ export default defineConfig(({ mode }) => ({
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom', '@radix-ui/react-tooltip', 'lucide-react'],
     exclude: ['@analytics/google-analytics']
-  },
-  server: {
-    port: 5173,
-    host: true
   },
   preview: {
     port: 4173,

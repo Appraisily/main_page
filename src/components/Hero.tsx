@@ -7,7 +7,6 @@ export default function Hero() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
-  // Add missing handler functions
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -125,6 +124,9 @@ export default function Hero() {
               <div className="p-6">
                 <form
                   onDragEnter={handleDrag}
+                  onDragLeave={handleDrag}
+                  onDragOver={handleDrag}
+                  onDrop={handleDrop}
                   onSubmit={(e) => e.preventDefault()}
                   className="relative"
                 >
@@ -134,10 +136,6 @@ export default function Hero() {
                         ? 'bg-blue-50 border-blue-400 scale-[1.02]' 
                         : 'bg-gray-50 border-gray-300'
                     } border-2 border-dashed hover:border-blue-400 hover:bg-blue-50/50`}
-                    onDragEnter={handleDrag}
-                    onDragLeave={handleDrag}
-                    onDragOver={handleDrag}
-                    onDrop={handleDrop}
                   >
                     {selectedFile ? (
                       <div className="h-full flex flex-col items-center justify-center p-4">
@@ -148,12 +146,14 @@ export default function Hero() {
                           loading="eager"
                         />
                         <button
+                          type="button"
                           onClick={handleRemoveFile}
                           className="absolute top-2 right-2 p-1 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-700"
                         >
                           <Upload className="h-4 w-4" />
                         </button>
                         <button
+                          type="button"
                           onClick={handleAnalyze}
                           disabled={isUploading}
                           className="px-6 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors flex items-center gap-2 shadow-sm"
@@ -176,7 +176,10 @@ export default function Hero() {
                         <p className="text-sm font-medium text-gray-900 mb-3">
                           Drop your photo here
                         </p>
-                        <button className="px-6 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-black transition-colors shadow-sm">
+                        <button 
+                          type="button"
+                          className="px-6 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-black transition-colors shadow-sm"
+                        >
                           Browse Files
                         </button>
                         <input
