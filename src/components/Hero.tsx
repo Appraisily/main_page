@@ -7,7 +7,52 @@ export default function Hero() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
-  // ... handleDrag, handleDrop, handleChange, handleRemoveFile, handleAnalyze functions remain the same ...
+  // Add missing handler functions
+  const handleDrag = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      setSelectedFile(e.dataTransfer.files[0]);
+    }
+  }, []);
+
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    if (e.target.files && e.target.files[0]) {
+      setSelectedFile(e.target.files[0]);
+    }
+  }, []);
+
+  const handleRemoveFile = useCallback(() => {
+    setSelectedFile(null);
+  }, []);
+
+  const handleAnalyze = useCallback(async () => {
+    if (!selectedFile) return;
+    
+    setIsUploading(true);
+    try {
+      // Implement your file upload/analysis logic here
+      // For example:
+      // await uploadAndAnalyzeFile(selectedFile);
+    } catch (error) {
+      console.error('Error analyzing file:', error);
+    } finally {
+      setIsUploading(false);
+    }
+  }, [selectedFile]);
 
   return (
     <div className="relative min-h-[calc(100vh-4rem)] pt-16">
