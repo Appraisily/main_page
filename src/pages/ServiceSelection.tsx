@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { ServiceDetails } from '@/components/ServiceDetails';
-import { Star, Info, ArrowRight } from 'lucide-react';
+import { Star, Info, ArrowRight, Shield, Clock, CreditCard } from 'lucide-react';
 
 interface Feature {
   title: string;
@@ -112,61 +112,70 @@ export default function ServiceSelection() {
   };
 
   return (
-    <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        {/* Compact Social Proof for Mobile */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-8 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-sm">
-          <div className="flex items-center gap-2">
-            <Star className="h-4 w-4 text-yellow-400 fill-current" />
-            <span className="text-sm font-medium text-gray-600">4.9/5 from 100+ reviews</span>
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+        {/* Enhanced Social Proof */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+          <div className="bg-white/10 backdrop-blur-md rounded-xl p-4 flex items-center gap-4 w-full sm:w-auto border border-white/20 shadow-lg transform hover:scale-105 transition-all duration-300">
+            <div className="flex items-center gap-2">
+              <Star className="h-5 w-5 text-yellow-400" />
+              <span className="text-white font-medium">4.9/5 from 100+ reviews</span>
+            </div>
+            <div className="h-8 w-px bg-white/20" />
+            <div className="flex items-center gap-2">
+              <Shield className="h-5 w-5 text-blue-400" />
+              <span className="text-white font-medium">Certified Experts</span>
+            </div>
           </div>
         </div>
 
-        <div className="text-center mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 mb-4">
+        <div className="text-center mb-12">
+          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-6 tracking-tight">
             Select Your Appraisal Service
           </h1>
-          <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
-            Choose the service that best fits your needs
+          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+            Choose the service that best fits your needs. Each option includes expert analysis and detailed documentation.
           </p>
         </div>
 
         {/* Enhanced Service Selection Cards */}
-        <div className="space-y-4 mb-8">
+        <div className="space-y-4 mb-12">
           {(Object.keys(services) as ServiceType[]).map((type) => (
             <button
               key={type}
               onClick={() => handleServiceSelect(type)}
               className={cn(
-                "w-full text-left p-4 rounded-xl transition-all duration-200",
+                "w-full text-left p-6 rounded-xl transition-all duration-300",
                 "focus:outline-none focus:ring-2 focus:ring-blue-500",
-                "active:scale-[0.99] touch-action-manipulation",
+                "transform hover:scale-[1.02] active:scale-[0.99]",
                 selectedService === type
-                  ? "bg-blue-600 text-white shadow-lg shadow-blue-600/20"
-                  : "bg-white text-gray-900 hover:bg-gray-50 border border-gray-200"
+                  ? "bg-blue-600 text-white shadow-xl shadow-blue-600/20 border-2 border-blue-400"
+                  : "bg-white/10 backdrop-blur-md text-white border border-white/20 hover:bg-white/20"
               )}
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="font-semibold text-lg">{serviceLabels[type]}</h3>
+                  <h3 className="font-bold text-xl mb-1">{serviceLabels[type]}</h3>
                   <p className={cn(
-                    "text-sm mt-1",
-                    selectedService === type ? "text-blue-100" : "text-gray-600"
+                    "text-base",
+                    selectedService === type ? "text-blue-100" : "text-gray-300"
                   )}>
                     {serviceDescriptions[type]}
                   </p>
                 </div>
                 <ArrowRight className={cn(
-                  "h-5 w-5 transition-transform",
-                  selectedService === type ? "transform rotate-90" : ""
+                  "h-6 w-6 transition-transform duration-300",
+                  selectedService === type ? "rotate-90" : ""
                 )} />
               </div>
 
               {/* Quick Info Button */}
               <button 
                 className={cn(
-                  "mt-2 inline-flex items-center text-sm gap-1",
-                  selectedService === type ? "text-blue-100" : "text-blue-600"
+                  "mt-4 inline-flex items-center text-sm gap-2 px-3 py-1 rounded-lg",
+                  selectedService === type 
+                    ? "bg-blue-500/30 text-white hover:bg-blue-500/40" 
+                    : "bg-white/10 text-gray-300 hover:bg-white/20"
                 )}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -182,7 +191,7 @@ export default function ServiceSelection() {
 
         {/* Service Details Section */}
         {selectedService && (
-          <div className="bg-white rounded-xl shadow-sm p-4 sm:p-6 animate-in fade-in duration-200">
+          <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 sm:p-8 animate-in fade-in duration-300 border border-white/20 shadow-xl">
             <ServiceDetails
               type={selectedService}
               features={services[selectedService].features}
@@ -194,19 +203,39 @@ export default function ServiceSelection() {
           </div>
         )}
 
-        {/* Trust Indicators */}
-        <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 gap-4 text-center text-sm">
-          <div className="bg-white p-4 rounded-lg shadow-sm">
-            <div className="font-bold text-blue-600">50K+</div>
-            <div className="text-gray-600">Appraisals</div>
+        {/* Enhanced Trust Indicators */}
+        <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 gap-6">
+          <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 transform hover:scale-105 transition-all duration-300">
+            <div className="text-2xl font-bold text-blue-400 mb-2">50K+</div>
+            <div className="text-gray-300">Appraisals</div>
           </div>
-          <div className="bg-white p-4 rounded-lg shadow-sm">
-            <div className="font-bold text-blue-600">15+</div>
-            <div className="text-gray-600">Experts</div>
+          <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 transform hover:scale-105 transition-all duration-300">
+            <div className="text-2xl font-bold text-blue-400 mb-2">15+</div>
+            <div className="text-gray-300">Experts</div>
           </div>
-          <div className="bg-white p-4 rounded-lg shadow-sm sm:col-span-1 col-span-2">
-            <div className="font-bold text-blue-600">30+</div>
-            <div className="text-gray-600">Countries</div>
+          <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20 transform hover:scale-105 transition-all duration-300 sm:col-span-1 col-span-2">
+            <div className="text-2xl font-bold text-blue-400 mb-2">30+</div>
+            <div className="text-gray-300">Countries</div>
+          </div>
+        </div>
+
+        {/* Payment Methods */}
+        <div className="mt-12 flex flex-col items-center gap-4">
+          <div className="text-gray-400 text-sm">Secure Payment Methods</div>
+          <div className="flex flex-wrap justify-center gap-6 items-center">
+            <div className="bg-white/10 backdrop-blur-md rounded-lg px-4 py-2 border border-white/20">
+              <CreditCard className="h-6 w-6 text-gray-300" />
+            </div>
+            <img 
+              src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" 
+              alt="PayPal" 
+              className="h-6 opacity-80" 
+            />
+            <img 
+              src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" 
+              alt="Apple Pay" 
+              className="h-6 opacity-80" 
+            />
           </div>
         </div>
       </div>
