@@ -10,9 +10,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     react({
       babel: {
-        plugins: [
-          mode === 'production' && 'babel-plugin-transform-remove-prop-types',
-        ].filter(Boolean),
+        plugins: []
       },
       fastRefresh: mode !== 'production',
     }),

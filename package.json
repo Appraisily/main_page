@@ -23,7 +23,6 @@
     "react-helmet-async": "^2.0.4",
     "react-router-dom": "^6.22.2",
     "tailwind-merge": "^2.2.1",
-    "terser": "^5.27.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
@@ -35,7 +34,6 @@
     "@types/uuid": "^9.0.8",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.18",
-    "babel-plugin-transform-remove-prop-types": "^0.4.24",
     "postcss": "^8.4.35",
     "rollup-plugin-visualizer": "^5.12.0",
     "tailwindcss": "^3.4.1",
