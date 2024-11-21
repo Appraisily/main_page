@@ -22,7 +22,7 @@ export default function Hero() {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-
+    
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       setSelectedFile(e.dataTransfer.files[0]);
     }
@@ -39,33 +39,49 @@ export default function Hero() {
     setSelectedFile(null);
   }, []);
 
-  const handleAnalyze = useCallback(async () => {
+  const handleAnalyze = async () => {
     if (!selectedFile) return;
     
     setIsUploading(true);
     try {
-      // Implement your file upload/analysis logic here
+      await new Promise(resolve => setTimeout(resolve, 1000));
     } catch (error) {
       console.error('Error analyzing file:', error);
     } finally {
       setIsUploading(false);
     }
-  }, [selectedFile]);
+  };
 
   return (
-    <div className="relative min-h-[calc(100vh-4rem)] pt-16">
-      {/* Background with subtle gradient and pattern */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#f8faff] to-white" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#3b82f610_1px,transparent_1px),linear-gradient(to_bottom,#3b82f610_1px,transparent_1px)] bg-[size:4rem_4rem]" />
-        <div className="absolute right-0 top-0 -z-10 transform translate-x-1/3 -translate-y-1/4">
-          <div className="w-96 h-96 bg-blue-400/10 rounded-full blur-3xl" />
+    <div className="relative isolate min-h-[calc(100vh-4rem)] pt-24">
+      {/* Abstract Background Elements */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        {/* Base gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-white" />
+        
+        {/* Abstract Shapes */}
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] opacity-[0.07]">
+          <div className="absolute inset-0 bg-blue-600 rounded-full transform translate-x-1/3 -translate-y-1/4" />
         </div>
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] opacity-[0.05]">
+          <div className="absolute inset-0 bg-blue-600 rounded-full transform -translate-x-1/3 translate-y-1/4" />
+        </div>
+        <div className="absolute top-1/2 left-1/2 w-[500px] h-[500px] opacity-[0.07]">
+          <div className="absolute inset-0 bg-blue-400 rounded-full transform -translate-x-1/2 -translate-y-1/2" />
+        </div>
+
+        {/* Subtle Grid Pattern */}
+        <div 
+          className="absolute inset-0 bg-[linear-gradient(to_right,#3b82f608_1px,transparent_1px),linear-gradient(to_bottom,#3b82f608_1px,transparent_1px)] bg-[size:4rem_4rem]"
+          style={{
+            maskImage: 'radial-gradient(circle at center, black 30%, transparent 70%)'
+          }}
+        />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Trust Indicators */}
-        <TrustIndicators className="mb-12" />
+        <TrustIndicators className="mb-16" />
 
         <div className="text-center mb-12">
           {/* Main Title with gradient */}
@@ -87,7 +103,7 @@ export default function Hero() {
             </div>
 
             {/* Upload Panel */}
-            <div className="relative bg-white rounded-xl shadow-lg border border-blue-100">
+            <div className="relative bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-blue-100">
               <div className="p-6">
                 <form
                   onDragEnter={handleDrag}
@@ -138,9 +154,9 @@ export default function Hero() {
                     ) : (
                       <div className="h-full flex flex-col items-center justify-center p-4">
                         <div className="p-2 rounded-full bg-blue-50 mb-2">
-                          <Camera className="h-5 w-5 text-blue-600" />
+                          <Camera className="h-6 w-6 text-blue-600" />
                         </div>
-                        <p className="text-sm font-medium text-gray-900 mb-3">
+                        <p className="text-sm font-medium text-gray-900 mb-1">
                           Drop your photo here
                         </p>
                         <button 
