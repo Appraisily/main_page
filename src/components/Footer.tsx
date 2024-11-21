@@ -1,6 +1,27 @@
 import React from 'react';
-import { Facebook, Twitter, Instagram, Mail, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Facebook, Twitter, Instagram, Mail, ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
+
+const links = {
+  quickLinks: [
+    { name: 'Services', href: '/services' },
+    { name: 'How It Works', href: '/how-it-works' },
+    { name: 'Free AI Art Analysis', href: '/screener' },
+    { name: 'Terms of Service', href: '/terms' }
+  ],
+  legal: [
+    { name: 'Privacy Policy', href: '/privacy' },
+    { name: 'Terms of Service', href: '/terms' }
+  ],
+  social: [
+    { name: 'Facebook', icon: Facebook, href: '#' },
+    { name: 'Twitter', icon: Twitter, href: '#' },
+    { name: 'Instagram', icon: Instagram, href: '#' }
+  ]
+};
 
 export default function Footer() {
   return (
@@ -20,10 +41,9 @@ export default function Footer() {
       </div>
 
       <div className="relative max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
-          <div className="col-span-1 md:col-span-2">
+          <div className="col-span-1 md:col-span-2 space-y-6">
             <div className="flex items-center">
               <img 
                 src="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?updatedAt=1731919266638"
@@ -33,89 +53,94 @@ export default function Footer() {
               />
               <span className="text-2xl font-bold text-gray-900">Appraisily</span>
             </div>
-            <p className="mt-4 text-gray-900 max-w-md">
+            <p className="text-gray-600 max-w-md">
               Professional online art and antique appraisals. Get accurate valuations from certified experts within 48 hours.
             </p>
-            <div className="mt-6">
-              <a
-                href="https://services.appraisily.com"
-                className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors gap-2 shadow-lg shadow-blue-500/20"
-              >
-                Start Appraisal <ArrowRight className="h-4 w-4" />
+            <Button 
+              asChild
+              variant="default"
+              className="bg-gray-900 hover:bg-gray-800"
+            >
+              <a href="https://services.appraisily.com">
+                Start Appraisal <ArrowRight className="ml-2 h-4 w-4" />
               </a>
-            </div>
+            </Button>
           </div>
           
           {/* Quick Links */}
-          <div>
-            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
+          <div className="space-y-4">
+            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
               Quick Links
             </h3>
             <ul className="space-y-3">
-              <li>
-                <Link to="/services" className="text-gray-900 hover:text-blue-600 transition-colors">
-                  Services
-                </Link>
-              </li>
-              <li>
-                <Link to="/how-it-works" className="text-gray-900 hover:text-blue-600 transition-colors">
-                  How It Works
-                </Link>
-              </li>
-              <li>
-                <Link to="/screener" className="text-gray-900 hover:text-blue-600 transition-colors">
-                  Free AI Art Analysis
-                </Link>
-              </li>
-              <li>
-                <Link to="/terms" className="text-gray-900 hover:text-blue-600 transition-colors">
-                  Terms of Service
-                </Link>
-              </li>
+              {links.quickLinks.map((link) => (
+                <li key={link.name}>
+                  <Link 
+                    to={link.href}
+                    className={cn(
+                      "text-gray-600 hover:text-gray-900 transition-colors",
+                      "text-sm"
+                    )}
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Contact Info */}
-          <div>
-            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
+          <div className="space-y-4">
+            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
               Contact Us
             </h3>
-            <ul className="space-y-3">
-              <li className="flex items-center">
-                <Mail className="h-5 w-5 text-blue-600 mr-2" />
-                <a href="mailto:info@appraisily.com" className="text-gray-900 hover:text-blue-600 transition-colors">
-                  info@appraisily.com
-                </a>
-              </li>
-            </ul>
-            <div className="mt-6 flex space-x-4">
-              <a href="#" className="text-blue-600 hover:text-blue-700 transition-colors">
-                <Facebook className="h-6 w-6" />
+            <div className="space-y-3">
+              <a 
+                href="mailto:info@appraisily.com"
+                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors text-sm"
+              >
+                <Mail className="h-4 w-4 mr-2" />
+                info@appraisily.com
               </a>
-              <a href="#" className="text-blue-600 hover:text-blue-700 transition-colors">
-                <Twitter className="h-6 w-6" />
-              </a>
-              <a href="#" className="text-blue-600 hover:text-blue-700 transition-colors">
-                <Instagram className="h-6 w-6" />
-              </a>
+              <div className="flex space-x-4">
+                {links.social.map((social) => {
+                  const Icon = social.icon;
+                  return (
+                    <a
+                      key={social.name}
+                      href={social.href}
+                      className="text-gray-600 hover:text-gray-900 transition-colors"
+                      aria-label={`Visit our ${social.name} page`}
+                    >
+                      <Icon className="h-5 w-5" />
+                    </a>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
         
         {/* Bottom Bar */}
-        <div className="mt-8 pt-8 border-t border-blue-100">
+        <div className="mt-8 pt-8">
+          <Separator className="mb-8" />
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-900 text-sm">
-              © {new Date().getFullYear()} Appraisily. All rights reserved.
-            </p>
-            <div className="flex items-center gap-6">
-              <Link to="/privacy" className="text-sm text-gray-900 hover:text-blue-600 transition-colors">
-                Privacy Policy
-              </Link>
-              <Link to="/terms" className="text-sm text-gray-900 hover:text-blue-600 transition-colors">
-                Terms of Service
-              </Link>
+            <div className="flex items-center space-x-1 text-sm">
+              <span className="text-gray-600">©</span>
+              <span className="text-gray-900 font-medium">{new Date().getFullYear()} Appraisily.</span>
+              <span className="text-gray-600">All rights reserved.</span>
             </div>
+            <nav className="flex items-center gap-6">
+              {links.legal.map((link) => (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </nav>
           </div>
         </div>
       </div>
