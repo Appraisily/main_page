@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Upload, Search, Camera, Star, Shield, Users, Award } from 'lucide-react';
 import ServicePanels from './ServicePanels';
+import TrustIndicators from './TrustIndicators';
 
 export default function Hero() {
   const [dragActive, setDragActive] = useState(false);
@@ -44,8 +45,6 @@ export default function Hero() {
     setIsUploading(true);
     try {
       // Implement your file upload/analysis logic here
-      // For example:
-      // await uploadAndAnalyzeFile(selectedFile);
     } catch (error) {
       console.error('Error analyzing file:', error);
     } finally {
@@ -65,40 +64,8 @@ export default function Hero() {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Social Proof - Now more prominent */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          <div className="flex items-center gap-4 bg-white rounded-xl px-6 py-3 shadow-sm border border-blue-100">
-            <div className="flex items-center gap-2">
-              <img
-                src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg"
-                alt="Trustpilot"
-                className="h-5"
-                loading="eager"
-                width="80"
-                height="20"
-              />
-              <div className="flex items-center">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-current text-[#00b67a]" />
-                ))}
-                <span className="ml-2 text-sm font-medium">4.9/5</span>
-              </div>
-            </div>
-            <div className="h-8 w-px bg-gray-200" />
-            <div className="flex items-center gap-2">
-              <Users className="h-5 w-5 text-blue-600" />
-              <span className="text-sm font-medium">100+ Reviews</span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4 bg-white rounded-xl px-6 py-3 shadow-sm border border-blue-100">
-            <Award className="h-5 w-5 text-blue-600" />
-            <span className="text-sm font-medium">USPAP Certified</span>
-            <div className="h-8 w-px bg-gray-200" />
-            <Shield className="h-5 w-5 text-blue-600" />
-            <span className="text-sm font-medium">Expert Appraisers</span>
-          </div>
-        </div>
+        {/* Trust Indicators */}
+        <TrustIndicators className="mb-12" />
 
         <div className="text-center mb-12">
           {/* Main Title with gradient */}

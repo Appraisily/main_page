@@ -1,13 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { Menu, X, ArrowRight } from 'lucide-react';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { Menu, X, ArrowRight } from 'lucide-react';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu"
+import { cn } from '@/lib/utils';
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [isScrolled, setIsScrolled] = React.useState(false);
   const location = useLocation();
 
-  useEffect(() => {
+  React.useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
     };
@@ -16,7 +25,7 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
+  const navItems = [
     { name: 'About', href: '/about' },
     { name: 'Services', href: '/services' },
     { name: 'Expertise', href: '/expertise' },
@@ -24,11 +33,13 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-200 ${
-      isScrolled ? 'bg-white shadow-md' : 'bg-white/80 backdrop-blur-md'
-    }`}>
+    <nav className={cn(
+      "fixed w-full z-50 transition-all duration-200",
+      isScrolled ? "bg-white shadow-md" : "bg-white/80 backdrop-blur-md"
+    )}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
+          {/* Logo */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center gap-3">
               <img 
@@ -41,22 +52,31 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.href}
-                className={`text-gray-700 hover:text-blue-600 transition-colors ${
-                  location.pathname === link.href ? 'text-blue-600' : ''
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-4">
+            <NavigationMenu>
+              <NavigationMenuList>
+                {navItems.map((item) => (
+                  <NavigationMenuItem key={item.name}>
+                    <Link
+                      to={item.href}
+                      className={cn(
+                        "px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                        location.pathname === item.href
+                          ? "text-blue-600 bg-blue-50"
+                          : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+                      )}
+                    >
+                      {item.name}
+                    </Link>
+                  </NavigationMenuItem>
+                ))}
+              </NavigationMenuList>
+            </NavigationMenu>
+
             <Link
               to="/start"
-              className="inline-flex items-center justify-center px-5 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors gap-1.5 shadow-sm hover:shadow-md"
+              className="inline-flex items-center justify-center px-4 py-2 ml-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors gap-1.5 shadow-sm hover:shadow-md"
             >
               Start Appraisal <ArrowRight className="h-4 w-4" />
             </Link>
@@ -87,18 +107,21 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden" id="mobile-menu" role="navigation" aria-label="Mobile navigation">
-          <div className="px-2 pt-2 pb-3 space-y-1">
-            {navLinks.map((link) => (
+          <div className="px-2 pt-2 pb-3 space-y-1 bg-white shadow-lg">
+            {navItems.map((item) => (
               <Link
-                key={link.name}
-                to={link.href}
-                className={`block px-3 py-2 text-gray-700 hover:text-blue-600 hover:bg-gray-50 ${
-                  location.pathname === link.href ? 'text-blue-600' : ''
-                }`}
+                key={item.name}
+                to={item.href}
+                className={cn(
+                  "block px-3 py-2 rounded-md text-base font-medium transition-colors",
+                  location.pathname === item.href
+                    ? "text-blue-600 bg-blue-50"
+                    : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+                )}
                 onClick={() => setIsOpen(false)}
-                aria-current={location.pathname === link.href ? 'page' : undefined}
+                aria-current={location.pathname === item.href ? 'page' : undefined}
               >
-                {link.name}
+                {item.name}
               </Link>
             ))}
           </div>

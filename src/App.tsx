@@ -5,6 +5,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import Landing from './pages/Landing';
+import About from './pages/About';
 import Footer from './components/Footer';
 import SEO from './components/SEO';
 
@@ -16,13 +17,13 @@ const PageLoader = () => (
 );
 
 // Lazy load other pages
-const Team = React.lazy(() => import('./pages/Team').then(module => ({ default: module.default })));
-const ServicesPage = React.lazy(() => import('./pages/Services').then(module => ({ default: module.default })));
-const Expertise = React.lazy(() => import('./pages/Expertise').then(module => ({ default: module.default })));
-const HowItWorks = React.lazy(() => import('./pages/HowItWorks').then(module => ({ default: module.default })));
-const Report = React.lazy(() => import('./pages/Report').then(module => ({ default: module.default })));
-const Terms = React.lazy(() => import('./pages/Terms').then(module => ({ default: module.default })));
-const ServiceSelection = React.lazy(() => import('./pages/ServiceSelection').then(module => ({ default: module.default })));
+const Team = React.lazy(() => import('./pages/Team'));
+const ServicesPage = React.lazy(() => import('./pages/Services'));
+const Expertise = React.lazy(() => import('./pages/Expertise'));
+const HowItWorks = React.lazy(() => import('./pages/HowItWorks'));
+const Report = React.lazy(() => import('./pages/Report'));
+const Terms = React.lazy(() => import('./pages/Terms'));
+const ServiceSelection = React.lazy(() => import('./pages/ServiceSelection'));
 
 export default function App() {
   return (
@@ -38,14 +39,7 @@ export default function App() {
             <main>
               <Routes>
                 <Route path="/" element={<Landing />} />
-                <Route
-                  path="/about"
-                  element={
-                    <Suspense fallback={<PageLoader />}>
-                      <Team />
-                    </Suspense>
-                  }
-                />
+                <Route path="/about" element={<About />} />
                 <Route
                   path="/services"
                   element={
