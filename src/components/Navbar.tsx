@@ -76,7 +76,7 @@ export default function Navbar() {
 
             <Link
               to="/start"
-              className="inline-flex items-center justify-center px-4 py-2 ml-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors gap-1.5 shadow-sm hover:shadow-md"
+              className="inline-flex items-center justify-center px-4 py-2 ml-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors gap-1.5 shadow-sm hover:shadow-md"
             >
               Start Appraisal <ArrowRight className="h-4 w-4" />
             </Link>
@@ -86,7 +86,7 @@ export default function Navbar() {
           <div className="md:hidden flex items-center space-x-4">
             <Link
               to="/start"
-              className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm"
+              className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors shadow-sm"
             >
               Start
             </Link>
@@ -95,10 +95,9 @@ export default function Navbar() {
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
               aria-expanded={isOpen}
               aria-controls="mobile-menu"
-              aria-label={isOpen ? "Close main menu" : "Open main menu"}
             >
               <span className="sr-only">{isOpen ? "Close main menu" : "Open main menu"}</span>
-              {isOpen ? <X className="h-6 w-6" aria-hidden="true" /> : <Menu className="h-6 w-6" aria-hidden="true" />}
+              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
         </div>
@@ -106,7 +105,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden" id="mobile-menu" role="navigation" aria-label="Mobile navigation">
+        <div className="md:hidden" id="mobile-menu">
           <div className="px-2 pt-2 pb-3 space-y-1 bg-white shadow-lg">
             {navItems.map((item) => (
               <Link
@@ -119,7 +118,6 @@ export default function Navbar() {
                     : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
                 )}
                 onClick={() => setIsOpen(false)}
-                aria-current={location.pathname === item.href ? 'page' : undefined}
               >
                 {item.name}
               </Link>

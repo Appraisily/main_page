@@ -1,219 +1,213 @@
-import { useState } from 'react';
-import { Calendar } from './Calendar';
-import { DateSelector } from './DateSelector';
-import { Button } from './ui/button';
-import { VideoModal } from './VideoModal';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from './ui/tooltip';
-import { FileText, Lock, ShieldCheck, Clock, Upload, CreditCard, CheckCircle, CreditCardIcon } from 'lucide-react';
-
-interface Feature {
-  title: string;
-  description: string;
-}
+import React from 'react';
+import { cn } from '@/lib/utils';
+import { 
+  Search, 
+  FileText, 
+  UserCheck, 
+  FileDown, 
+  Clock,
+  ShieldCheck,
+  Calendar,
+  Scale,
+  AlertTriangle,
+  FileCheck,
+  Zap,
+  MessagesSquare,
+  BadgeCheck,
+  Building2,
+  Receipt,
+  FileSpreadsheet,
+  Landmark,
+  ScrollText,
+  ArrowRight
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import ServiceCalendar from './ServiceCalendar';
+import { addDays, format } from 'date-fns';
+import type { LucideIcon } from 'lucide-react';
 
 interface ServiceDetailsProps {
+  service: {
+    title: string;
+    description: string;
+    features: string[];
+    icon: LucideIcon;
+  };
   type: 'regular' | 'insurance' | 'tax';
-  features: Feature[];
-  exampleReportUrl: string;
-  showCheckout: boolean;
-  selectedDate: string | null;
-  onDateSelect: (date: string, price: number) => void;
+  selectedDate: Date | undefined;
+  onDateSelect: (date: Date) => void;
+  onGetStarted: () => void;
 }
 
-const videoIds = {
-  regular: 'mHxD5DzRKM8',
-  insurance: 'OM_zTNac890',
-  tax: 'polLX9YL6uo'
+// Map features to their corresponding icons
+const featureIcons: Record<string, LucideIcon> = {
+  'Detailed condition report': FileText,
+  'Market value assessment': Scale,
+  'Digital documentation': FileDown,
+  'Expert analysis': UserCheck,
+  'PDF report delivery': FileDown,
+  '48-hour turnaround': Clock,
+  'Insurance-grade documentation': Receipt,
+  'Replacement value': Scale,
+  'Risk assessment': AlertTriangle,
+  'Digital certification': BadgeCheck,
+  'Priority processing': Zap,
+  'Expert consultation': MessagesSquare,
+  'IRS compliance': Landmark,
+  'Fair market value': Scale,
+  'Detailed documentation': FileText,
+  'Expert testimony': Building2,
+  'Tax form assistance': FileSpreadsheet,
+  'Rush service available': Clock
 };
 
-export function ServiceDetails({ 
-  type, 
-  features, 
-  exampleReportUrl, 
-  showCheckout, 
+export default function ServiceDetails({
+  service,
+  type,
   selectedDate,
-  onDateSelect 
+  onDateSelect,
+  onGetStarted
 }: ServiceDetailsProps) {
-  const [selectedPrice, setSelectedPrice] = useState(59);
-
-  const showDateSelector = type === 'insurance' || type === 'tax';
-
-  const getCheckoutUrl = () => {
-    if (type === 'regular') {
-      return selectedPrice === 59 
-        ? 'https://buy.stripe.com/9AQaIKd925jC6Ag6pQ'
-        : 'https://buy.stripe.com/28o16a0mg7rK0bS4gh';
-    }
-    
-    switch (type) {
-      case 'insurance':
-        return 'https://buy.stripe.com/7sI2ce2uo13m4s87tW';
-      case 'tax':
-        return 'https://buy.stripe.com/6oE2cefha3bu1fW15z';
-      default:
-        return '';
-    }
-  };
+  const today = new Date();
+  const dateOptions = [
+    { label: 'Today', date: today, price: 59 },
+    { label: 'Tomorrow', date: addDays(today, 1), price: 59 },
+    { label: format(addDays(today, 2), 'MMM d'), date: addDays(today, 2), price: 59 }
+  ];
 
   const handleCheckout = () => {
-    const checkoutUrl = getCheckoutUrl();
-    if (checkoutUrl) {
-      window.location.href = checkoutUrl;
+    if (selectedDate) {
+      onGetStarted();
     }
   };
 
-  const handleDateSelection = (date: string, price: number) => {
-    const finalPrice = type === 'regular' ? price : 59;
-    onDateSelect(date, finalPrice);
-    setSelectedPrice(finalPrice);
-  };
-
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      <div className="space-y-8">
-        <div className="space-y-6">
-          <h2 className="text-2xl font-semibold text-gray-900">This service includes:</h2>
-          <ul className="space-y-5">
-            {features.map((feature, index) => (
-              <li key={index} className="flex items-start gap-3 group">
-                <span className="flex-shrink-0 w-7 h-7 rounded-full bg-blue-50 text-blue-600 font-medium flex items-center justify-center text-sm">
-                  {index + 1}
-                </span>
-                <div className="flex items-start gap-2 pt-0.5 flex-1">
-                  <span className="text-gray-900 font-medium">{feature.title}</span>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button 
-                        type="button"
-                        className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-50 hover:bg-blue-100 transition-colors mt-0.5"
-                      >
-                        <span className="text-blue-600 text-xs font-bold">?</span>
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent side="right" className="max-w-xs bg-white text-gray-900 border border-gray-200 shadow-lg p-3">
-                      <p>{feature.description}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="pt-6 border-t border-gray-100 flex flex-wrap gap-4">
-          <a
-            href={exampleReportUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors duration-200 font-medium"
-          >
-            <FileText className="h-4 w-4" strokeWidth={1.5} />
-            <span>Download an example report</span>
-          </a>
-          <VideoModal videoId={videoIds[type]} />
-        </div>
-      </div>
-
-      <div>
-        {showDateSelector ? (
-          <DateSelector 
-            selectedDate={selectedDate} 
-            onDateSelect={(date) => handleDateSelection(date, 59)}
-          />
-        ) : (
-          <Calendar 
-            onDateSelect={handleDateSelection}
-          />
-        )}
-      </div>
-
-      {showCheckout && selectedDate && (
-        <div className="lg:col-span-2">
-          <div className="bg-blue-50 rounded-xl p-6 space-y-6">
-            <div className="space-y-4">
-              <div className="flex justify-between items-center border-b border-blue-100 pb-4">
-                <span className="text-lg font-semibold text-gray-900">Total:</span>
-                <div className="text-right flex items-center gap-3">
-                  {(type === 'insurance' || type === 'tax') && (
-                    <span className="text-xl font-medium text-gray-400 line-through">$89</span>
-                  )}
-                  <div>
-                    <span className="text-3xl font-bold text-blue-600">${selectedPrice}</span>
-                    <span className="text-gray-600 ml-2">One-Time-Fee</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="flex gap-3 text-gray-600 items-start">
-                  <Clock className="h-5 w-5 text-blue-600 flex-shrink-0" strokeWidth={1.5} />
-                  <span>Receive your appraisal by noon EST</span>
-                </div>
-                <div className="flex gap-3 text-gray-600 items-start">
-                  <CreditCard className="h-5 w-5 text-blue-600 flex-shrink-0" strokeWidth={1.5} />
-                  <span>Select appraisal quantity on the next page</span>
-                </div>
-                <div className="flex gap-3 text-gray-600 items-start">
-                  <Upload className="h-5 w-5 text-blue-600 flex-shrink-0" strokeWidth={1.5} />
-                  <span>Upload photos and details post-checkout</span>
-                </div>
-              </div>
-            </div>
-
-            <Button 
-              className="w-full py-6 bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-3 shadow-lg shadow-blue-600/20 text-lg font-medium"
-              onClick={handleCheckout}
+  const renderFeaturesList = (features: string[]) => (
+    <div className="space-y-3">
+      <h3 className="text-sm font-medium text-gray-900">
+        What's included with your appraisal:
+      </h3>
+      <div className="grid gap-2">
+        {features.map((feature) => {
+          const Icon = featureIcons[feature] || Search;
+          return (
+            <div
+              key={feature}
+              className="flex items-center gap-2.5 p-2.5 rounded-md bg-gray-50/50 border border-gray-100 hover:bg-gray-50 transition-colors"
             >
-              <Lock className="h-5 w-5" strokeWidth={1.5} />
-              <span>Secure Checkout</span>
-              <ShieldCheck className="h-5 w-5" strokeWidth={1.5} />
-            </Button>
-
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm pt-4 border-t border-blue-100">
-                <div className="flex items-center gap-2 text-gray-600">
-                  <CheckCircle className="h-4 w-4 text-green-500" strokeWidth={1.5} />
-                  <span>Fully refundable fee if not satisfied</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-500">
-                  <CreditCard className="h-4 w-4" strokeWidth={1.5} />
-                  <span>Secure payment processing</span>
+              <div className="flex-shrink-0">
+                <div className="p-1.5 rounded-md bg-white shadow-sm">
+                  <Icon className="h-4 w-4 text-gray-500" />
                 </div>
               </div>
-
-              {/* Payment Methods */}
-              <div className="flex flex-col items-center gap-2">
-                <div className="text-sm text-gray-500">We accept</div>
-                <div className="flex flex-wrap items-center justify-center gap-6">
-                  <div className="flex items-center gap-1.5 text-gray-600">
-                    <CreditCardIcon className="h-5 w-5" />
-                    <span>Credit Card</span>
-                  </div>
-                  <img 
-                    src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" 
-                    alt="PayPal" 
-                    className="h-5 object-contain" 
-                  />
-                  <img 
-                    src="https://upload.wikimedia.org/wikipedia/commons/3/39/Google_Pay_%28GPay%29_Logo_%282018-2020%29.svg" 
-                    alt="Google Pay" 
-                    className="h-5" 
-                  />
-                  <img 
-                    src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" 
-                    alt="Apple Pay" 
-                    className="h-5" 
-                  />
-                </div>
-              </div>
+              <span className="text-sm text-gray-600">{feature}</span>
             </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+
+  const renderDateSelection = () => (
+    <div className="space-y-6">
+      <div className="grid grid-cols-3 gap-3">
+        {dateOptions.map((option) => (
+          <button
+            key={option.label}
+            onClick={() => onDateSelect(option.date)}
+            className={cn(
+              "flex flex-col items-center justify-center p-4 rounded-lg border-2 transition-all",
+              selectedDate && format(selectedDate, 'yyyy-MM-dd') === format(option.date, 'yyyy-MM-dd')
+                ? "border-gray-900 bg-gray-900 text-white"
+                : "border-gray-200 hover:border-gray-300 bg-white"
+            )}
+          >
+            <Calendar className={cn(
+              "h-5 w-5 mb-1",
+              selectedDate && format(selectedDate, 'yyyy-MM-dd') === format(option.date, 'yyyy-MM-dd')
+                ? "text-white"
+                : "text-gray-400"
+            )} />
+            <span className="text-sm font-medium">{option.label}</span>
+            <div className="mt-1 flex items-center gap-1">
+              <span className="text-xs line-through opacity-75">$119</span>
+              <span className={cn(
+                "text-sm font-semibold",
+                selectedDate && format(selectedDate, 'yyyy-MM-dd') === format(option.date, 'yyyy-MM-dd')
+                  ? "text-white"
+                  : "text-green-600"
+              )}>
+                ${option.price}
+              </span>
+            </div>
+          </button>
+        ))}
+      </div>
+
+      {selectedDate && (
+        <div className="space-y-3">
+          <Button 
+            onClick={handleCheckout}
+            className="w-full bg-gray-900 text-white hover:bg-gray-800"
+          >
+            Continue to Checkout
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+          
+          <div className="flex items-center justify-center gap-1.5 text-xs text-gray-500">
+            <ShieldCheck className="h-3.5 w-3.5" />
+            <span>100% Satisfaction Guarantee</span>
           </div>
         </div>
       )}
+    </div>
+  );
+
+  return (
+    <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Regular Service Layout */}
+        {type === 'regular' && (
+          <>
+            <div className="bg-gray-50 rounded-lg p-6">
+              {renderFeaturesList(service.features)}
+            </div>
+
+            <div className="flex items-start">
+              <ServiceCalendar
+                selectedDate={selectedDate}
+                onSelect={onDateSelect}
+                onCheckout={handleCheckout}
+              />
+            </div>
+          </>
+        )}
+
+        {/* Insurance Service Layout */}
+        {type === 'insurance' && (
+          <>
+            <div className="space-y-6">
+              {renderDateSelection()}
+            </div>
+
+            <div className="bg-gray-50 rounded-lg p-6">
+              {renderFeaturesList(service.features)}
+            </div>
+          </>
+        )}
+
+        {/* Tax Service Layout */}
+        {type === 'tax' && (
+          <>
+            <div className="space-y-6">
+              {renderDateSelection()}
+            </div>
+
+            <div className="bg-gray-50 rounded-lg p-6">
+              {renderFeaturesList(service.features)}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }

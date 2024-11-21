@@ -97,13 +97,13 @@ export default function Hero() {
           <div className="relative max-w-md mx-auto mb-16">
             {/* Free Analysis Label */}
             <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-              <span className="inline-block bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium shadow-sm">
+              <span className="inline-block bg-white text-gray-900 px-4 py-1 rounded-full text-sm font-medium shadow-sm border border-gray-200">
                 Free Instant Analysis
               </span>
             </div>
 
             {/* Upload Panel */}
-            <div className="relative bg-white/80 backdrop-blur-sm rounded-xl shadow-lg border border-blue-100">
+            <div className="relative bg-white rounded-xl shadow-lg border border-gray-200">
               <div className="p-6">
                 <form
                   onDragEnter={handleDrag}

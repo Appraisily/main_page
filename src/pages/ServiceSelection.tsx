@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { cn } from '@/lib/utils';
-import { ServiceDetails } from '@/components/ServiceDetails';
-import { Star, Shield, Clock, CreditCard, CheckCircle, ArrowRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Star, Shield, Clock, CreditCard, Lock } from 'lucide-react';
+import TrustBadges from '@/components/TrustBadges';
+import ServiceCard from '@/components/ServiceCard';
+import ServiceDetails from '@/components/ServiceDetails';
+import { Separator } from '@/components/ui/separator';
 
 type ServiceType = 'regular' | 'insurance' | 'tax';
 
 const services = {
   regular: {
     title: 'Regular Appraisal',
-    description: 'Standard valuation for collectors and sellers',
-    price: '$59',
+    description: 'Perfect for collectors and sellers',
     icon: Star,
     features: [
       'Detailed condition report',
@@ -23,8 +23,7 @@ const services = {
   },
   insurance: {
     title: 'Insurance Appraisal',
-    description: 'Detailed reports for insurance coverage',
-    price: '$89',
+    description: 'Insurance-ready documentation',
     icon: Shield,
     features: [
       'Insurance-grade documentation',
@@ -37,8 +36,7 @@ const services = {
   },
   tax: {
     title: 'Tax Appraisal',
-    description: 'IRS-compliant appraisals for donations',
-    price: '$129',
+    description: 'IRS-compliant valuations',
     icon: Clock,
     features: [
       'IRS compliance',
@@ -52,157 +50,86 @@ const services = {
 };
 
 export default function ServiceSelection() {
-  const [selectedService, setSelectedService] = useState<ServiceType | null>(null);
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [selectedService, setSelectedService] = useState<ServiceType>('regular');
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
-  const handleServiceSelect = (service: ServiceType) => {
-    setSelectedService(service);
-    setSelectedDate(null);
+  const getCheckoutUrl = (type: ServiceType) => {
+    const urls = {
+      regular: 'https://buy.stripe.com/9AQaIKd925jC6Ag6pQ',
+      insurance: 'https://buy.stripe.com/7sI2ce2uo13m4s87tW',
+      tax: 'https://buy.stripe.com/6oE2cefha3bu1fW15z'
+    };
+    return urls[type];
   };
 
-  const handleDateSelect = (date: string, price: number) => {
-    setSelectedDate(date);
+  const handleGetStarted = () => {
+    if (selectedService === 'regular' && !selectedDate) {
+      return;
+    }
+    window.location.href = getCheckoutUrl(selectedService);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Trust Indicators */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          <div className="bg-white rounded-xl px-6 py-3 shadow-sm border border-gray-100 flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Star className="h-5 w-5 text-yellow-400" />
-              <span className="text-gray-900 font-medium">4.9/5 from 100+ reviews</span>
-            </div>
-            <div className="hidden sm:block h-8 w-px bg-gray-200" />
-            <div className="hidden sm:flex items-center gap-2">
-              <Shield className="h-5 w-5 text-blue-600" />
-              <span className="text-gray-900 font-medium">Certified Experts</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl mb-4">
-            Choose Your Appraisal Service
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Select the service that best fits your needs. Each option includes expert analysis and detailed documentation.
-          </p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Trust Badges */}
+        <TrustBadges className="mb-12" />
 
         {/* Service Selection */}
-        <div className="grid gap-6 md:grid-cols-3 mb-12">
-          {(Object.entries(services) as [ServiceType, typeof services.regular][]).map(([type, service]) => {
-            const Icon = service.icon;
-            const isSelected = selectedService === type;
-            
-            return (
-              <motion.button
-                key={type}
-                onClick={() => handleServiceSelect(type)}
-                className={cn(
-                  "relative w-full text-left p-6 rounded-2xl transition-all duration-300",
-                  "focus:outline-none focus:ring-2 focus:ring-blue-500",
-                  "hover:shadow-lg",
-                  isSelected
-                    ? "bg-blue-600 text-white shadow-xl shadow-blue-600/20"
-                    : "bg-white text-gray-900 shadow-sm hover:shadow-md"
-                )}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <Icon className={cn(
-                    "h-6 w-6",
-                    isSelected ? "text-white" : "text-blue-600"
-                  )} />
-                  <div>
-                    <h3 className="font-semibold text-lg">{service.title}</h3>
-                    <p className={cn(
-                      "text-sm",
-                      isSelected ? "text-blue-100" : "text-gray-600"
-                    )}>
-                      {service.description}
-                    </p>
-                  </div>
-                </div>
-
-                <div className={cn(
-                  "text-2xl font-bold mb-4",
-                  isSelected ? "text-white" : "text-gray-900"
-                )}>
-                  {service.price}
-                </div>
-
-                <ul className="space-y-2">
-                  {service.features.map((feature) => (
-                    <li key={feature} className="flex items-center gap-2 text-sm">
-                      <CheckCircle className={cn(
-                        "h-4 w-4 flex-shrink-0",
-                        isSelected ? "text-blue-200" : "text-blue-600"
-                      )} />
-                      <span className={isSelected ? "text-blue-100" : "text-gray-600"}>
-                        {feature}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className={cn(
-                  "absolute top-4 right-4 transition-transform",
-                  isSelected ? "rotate-90" : ""
-                )}>
-                  <ArrowRight className="h-5 w-5" />
-                </div>
-              </motion.button>
-            );
-          })}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {(Object.entries(services) as [ServiceType, typeof services.regular][]).map(([type, service]) => (
+            <ServiceCard
+              key={type}
+              type={type}
+              title={service.title}
+              description={service.description}
+              icon={service.icon}
+              isSelected={selectedService === type}
+              onSelect={() => setSelectedService(type)}
+            />
+          ))}
         </div>
 
         {/* Service Details */}
-        <AnimatePresence>
-          {selectedService && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100"
-            >
-              <ServiceDetails
-                type={selectedService}
-                features={services[selectedService].features.map(text => ({
-                  title: text,
-                  description: text
-                }))}
-                exampleReportUrl="https://drive.google.com/file/d/1n-JCAEZJaZDOzQ3mF4GRPmatRKrUsoUn/"
-                showCheckout={true}
-                selectedDate={selectedDate}
-                onDateSelect={handleDateSelect}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <div className="mt-8">
+          <ServiceDetails
+            service={services[selectedService]}
+            type={selectedService}
+            selectedDate={selectedDate}
+            onDateSelect={setSelectedDate}
+            onGetStarted={handleGetStarted}
+          />
+        </div>
 
         {/* Payment Methods */}
-        <div className="mt-12 flex flex-col items-center gap-4">
-          <div className="text-sm text-gray-500">Secure payment methods</div>
-          <div className="flex flex-wrap justify-center items-center gap-6">
-            <div className="flex items-center gap-2 text-gray-600">
-              <CreditCard className="h-5 w-5" />
-              <span>Credit Card</span>
+        <div className="mt-12">
+          <div className="flex flex-col items-center gap-6 p-4 rounded-lg bg-gray-50 border border-gray-100">
+            <div className="flex items-center gap-2 text-sm text-gray-500">
+              <Lock className="h-4 w-4" />
+              <span>Secure payment processing by Stripe</span>
             </div>
-            <img 
-              src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" 
-              alt="PayPal" 
-              className="h-5" 
-            />
-            <img 
-              src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" 
-              alt="Apple Pay" 
-              className="h-5" 
-            />
+            <Separator className="bg-gray-200" />
+            <div className="flex flex-wrap justify-center items-center gap-8">
+              <div className="flex items-center gap-2 text-gray-600">
+                <CreditCard className="h-5 w-5" />
+                <span>Credit Card</span>
+              </div>
+              <img 
+                src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" 
+                alt="PayPal" 
+                className="h-5" 
+              />
+              <img 
+                src="https://upload.wikimedia.org/wikipedia/commons/3/39/Google_Pay_%28GPay%29_Logo_%282018-2020%29.svg" 
+                alt="Google Pay" 
+                className="h-5" 
+              />
+              <img 
+                src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" 
+                alt="Apple Pay" 
+                className="h-5" 
+              />
+            </div>
           </div>
         </div>
       </div>

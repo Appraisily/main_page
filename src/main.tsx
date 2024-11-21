@@ -1,10 +1,8 @@
-import { StrictMode, lazy, Suspense } from 'react';
+import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
+import App from './App';
 import './index.css';
-
-// Lazy load App component
-const App = lazy(() => import('./App'));
 
 // Create root outside of render to avoid recreation
 const rootElement = document.getElementById('root');
@@ -17,17 +15,11 @@ import('./lib/analytics').then(({ initializeAnalytics }) => {
   initializeAnalytics();
 });
 
-// Render app with loading fallback
+// Render app
 root.render(
-  <StrictMode>
+  <React.StrictMode>
     <BrowserRouter>
-      <Suspense fallback={
-        <div className="min-h-screen bg-white flex items-center justify-center">
-          <div className="animate-pulse">Loading...</div>
-        </div>
-      }>
-        <App />
-      </Suspense>
+      <App />
     </BrowserRouter>
-  </StrictMode>
+  </React.StrictMode>
 );
