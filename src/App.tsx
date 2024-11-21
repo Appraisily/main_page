@@ -4,9 +4,19 @@ import { HelmetProvider } from 'react-helmet-async';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
-import Landing from './pages/Landing';
 import Footer from './components/Footer';
 import SEO from './components/SEO';
+
+// Import pages
+import Landing from './pages/Landing';
+import About from './pages/About';
+import Team from './pages/Team';
+import Services from './pages/Services';
+import Expertise from './pages/Expertise';
+import HowItWorks from './pages/HowItWorks';
+import Report from './pages/Report';
+import Terms from './pages/Terms';
+import ServiceSelection from './pages/ServiceSelection';
 
 // Loading component
 const PageLoader = () => (
@@ -14,15 +24,6 @@ const PageLoader = () => (
     <div className="animate-pulse">Loading...</div>
   </div>
 );
-
-// Lazy load other pages
-const Team = React.lazy(() => import('./pages/Team').then(module => ({ default: module.default })));
-const ServicesPage = React.lazy(() => import('./pages/Services').then(module => ({ default: module.default })));
-const Expertise = React.lazy(() => import('./pages/Expertise').then(module => ({ default: module.default })));
-const HowItWorks = React.lazy(() => import('./pages/HowItWorks').then(module => ({ default: module.default })));
-const Report = React.lazy(() => import('./pages/Report').then(module => ({ default: module.default })));
-const Terms = React.lazy(() => import('./pages/Terms').then(module => ({ default: module.default })));
-const ServiceSelection = React.lazy(() => import('./pages/ServiceSelection').then(module => ({ default: module.default })));
 
 export default function App() {
   return (
@@ -38,70 +39,46 @@ export default function App() {
             <main>
               <Routes>
                 <Route path="/" element={<Landing />} />
-                <Route
-                  path="/about"
-                  element={
-                    <Suspense fallback={<PageLoader />}>
-                      <Team />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/services"
-                  element={
-                    <Suspense fallback={<PageLoader />}>
-                      <ServicesPage />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/expertise"
-                  element={
-                    <Suspense fallback={<PageLoader />}>
-                      <Expertise />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/team"
-                  element={
-                    <Suspense fallback={<PageLoader />}>
-                      <Team />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/how-it-works"
-                  element={
-                    <Suspense fallback={<PageLoader />}>
-                      <HowItWorks />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/report/:sessionId"
-                  element={
-                    <Suspense fallback={<PageLoader />}>
-                      <Report />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/start"
-                  element={
-                    <Suspense fallback={<PageLoader />}>
-                      <ServiceSelection />
-                    </Suspense>
-                  }
-                />
-                <Route
-                  path="/terms"
-                  element={
-                    <Suspense fallback={<PageLoader />}>
-                      <Terms />
-                    </Suspense>
-                  }
-                />
+                <Route path="/about" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <About />
+                  </Suspense>
+                } />
+                <Route path="/team" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Team />
+                  </Suspense>
+                } />
+                <Route path="/services" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Services />
+                  </Suspense>
+                } />
+                <Route path="/expertise" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Expertise />
+                  </Suspense>
+                } />
+                <Route path="/how-it-works" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <HowItWorks />
+                  </Suspense>
+                } />
+                <Route path="/report/:sessionId" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Report />
+                  </Suspense>
+                } />
+                <Route path="/terms" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Terms />
+                  </Suspense>
+                } />
+                <Route path="/start" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <ServiceSelection />
+                  </Suspense>
+                } />
               </Routes>
             </main>
             <Footer />

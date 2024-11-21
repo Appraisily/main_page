@@ -7,6 +7,7 @@ Professional art and antique appraisal platform built with React, TypeScript, an
 - [Overview](#overview)
 - [Features](#features)
 - [Getting Started](#getting-started)
+- [Component Guidelines](#component-guidelines)
 - [API Documentation](#api-documentation)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
@@ -40,6 +41,41 @@ npm install
 ```bash
 npm run dev
 ```
+
+## Component Guidelines
+
+### Using shadcn/ui Components
+
+This project uses [shadcn/ui](https://ui.shadcn.com/) for consistent, accessible UI components. Follow these steps when adding new components:
+
+1. Initialize shadcn/ui (only needed once):
+```bash
+npx shadcn-ui@latest init
+```
+
+2. Add components as needed:
+```bash
+npx shadcn-ui@latest add [component-name]
+```
+
+Example:
+```bash
+npx shadcn-ui@latest add button
+npx shadcn-ui@latest add dialog
+```
+
+3. Import and use components:
+```tsx
+import { Button } from "@/components/ui/button"
+```
+
+### Component Best Practices
+
+- Keep components small and focused
+- Use TypeScript interfaces for props
+- Follow shadcn/ui styling conventions
+- Maintain consistent naming conventions
+- Implement proper accessibility features
 
 ## API Documentation
 
@@ -103,6 +139,7 @@ const response = await axios.post('https://appraisals-web-services-backend-85640
 - TypeScript
 - Vite
 - Tailwind CSS
+- shadcn/ui
 - Lucide Icons
 - React Router
 - React Hook Form

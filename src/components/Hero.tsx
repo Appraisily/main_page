@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Upload, Search, Camera, Star, Shield, Users, Award } from 'lucide-react';
 import ServicePanels from './ServicePanels';
+import TrustIndicators from './TrustIndicators';
 
 export default function Hero() {
   const [dragActive, setDragActive] = useState(false);
@@ -21,7 +22,7 @@ export default function Hero() {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-
+    
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       setSelectedFile(e.dataTransfer.files[0]);
     }
@@ -38,67 +39,49 @@ export default function Hero() {
     setSelectedFile(null);
   }, []);
 
-  const handleAnalyze = useCallback(async () => {
+  const handleAnalyze = async () => {
     if (!selectedFile) return;
     
     setIsUploading(true);
     try {
-      // Implement your file upload/analysis logic here
-      // For example:
-      // await uploadAndAnalyzeFile(selectedFile);
+      await new Promise(resolve => setTimeout(resolve, 1000));
     } catch (error) {
       console.error('Error analyzing file:', error);
     } finally {
       setIsUploading(false);
     }
-  }, [selectedFile]);
+  };
 
   return (
-    <div className="relative min-h-[calc(100vh-4rem)] pt-16">
-      {/* Background with subtle gradient and pattern */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#f8faff] to-white" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#3b82f610_1px,transparent_1px),linear-gradient(to_bottom,#3b82f610_1px,transparent_1px)] bg-[size:4rem_4rem]" />
-        <div className="absolute right-0 top-0 -z-10 transform translate-x-1/3 -translate-y-1/4">
-          <div className="w-96 h-96 bg-blue-400/10 rounded-full blur-3xl" />
+    <div className="relative isolate min-h-[calc(100vh-4rem)] pt-24">
+      {/* Abstract Background Elements */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        {/* Base gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-white" />
+        
+        {/* Abstract Shapes */}
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] opacity-[0.07]">
+          <div className="absolute inset-0 bg-blue-600 rounded-full transform translate-x-1/3 -translate-y-1/4" />
         </div>
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] opacity-[0.05]">
+          <div className="absolute inset-0 bg-blue-600 rounded-full transform -translate-x-1/3 translate-y-1/4" />
+        </div>
+        <div className="absolute top-1/2 left-1/2 w-[500px] h-[500px] opacity-[0.07]">
+          <div className="absolute inset-0 bg-blue-400 rounded-full transform -translate-x-1/2 -translate-y-1/2" />
+        </div>
+
+        {/* Subtle Grid Pattern */}
+        <div 
+          className="absolute inset-0 bg-[linear-gradient(to_right,#3b82f608_1px,transparent_1px),linear-gradient(to_bottom,#3b82f608_1px,transparent_1px)] bg-[size:4rem_4rem]"
+          style={{
+            maskImage: 'radial-gradient(circle at center, black 30%, transparent 70%)'
+          }}
+        />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Social Proof - Now more prominent */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          <div className="flex items-center gap-4 bg-white rounded-xl px-6 py-3 shadow-sm border border-blue-100">
-            <div className="flex items-center gap-2">
-              <img
-                src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg"
-                alt="Trustpilot"
-                className="h-5"
-                loading="eager"
-                width="80"
-                height="20"
-              />
-              <div className="flex items-center">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-current text-[#00b67a]" />
-                ))}
-                <span className="ml-2 text-sm font-medium">4.9/5</span>
-              </div>
-            </div>
-            <div className="h-8 w-px bg-gray-200" />
-            <div className="flex items-center gap-2">
-              <Users className="h-5 w-5 text-blue-600" />
-              <span className="text-sm font-medium">100+ Reviews</span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4 bg-white rounded-xl px-6 py-3 shadow-sm border border-blue-100">
-            <Award className="h-5 w-5 text-blue-600" />
-            <span className="text-sm font-medium">USPAP Certified</span>
-            <div className="h-8 w-px bg-gray-200" />
-            <Shield className="h-5 w-5 text-blue-600" />
-            <span className="text-sm font-medium">Expert Appraisers</span>
-          </div>
-        </div>
+        {/* Trust Indicators */}
+        <TrustIndicators className="mb-16" />
 
         <div className="text-center mb-12">
           {/* Main Title with gradient */}
@@ -114,13 +97,13 @@ export default function Hero() {
           <div className="relative max-w-md mx-auto mb-16">
             {/* Free Analysis Label */}
             <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
-              <span className="inline-block bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium shadow-sm">
+              <span className="inline-block bg-white text-gray-900 px-4 py-1 rounded-full text-sm font-medium shadow-sm border border-gray-200">
                 Free Instant Analysis
               </span>
             </div>
 
             {/* Upload Panel */}
-            <div className="relative bg-white rounded-xl shadow-lg border border-blue-100">
+            <div className="relative bg-white rounded-xl shadow-lg border border-gray-200">
               <div className="p-6">
                 <form
                   onDragEnter={handleDrag}
@@ -171,9 +154,9 @@ export default function Hero() {
                     ) : (
                       <div className="h-full flex flex-col items-center justify-center p-4">
                         <div className="p-2 rounded-full bg-blue-50 mb-2">
-                          <Camera className="h-5 w-5 text-blue-600" />
+                          <Camera className="h-6 w-6 text-blue-600" />
                         </div>
-                        <p className="text-sm font-medium text-gray-900 mb-3">
+                        <p className="text-sm font-medium text-gray-900 mb-1">
                           Drop your photo here
                         </p>
                         <button 

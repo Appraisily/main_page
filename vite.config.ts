@@ -8,12 +8,7 @@ import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 
 export default defineConfig(({ mode }) => ({
   plugins: [
-    react({
-      babel: {
-        plugins: []
-      },
-      fastRefresh: mode !== 'production',
-    }),
+    react(),
     ViteImageOptimizer({
       jpg: { quality: 80 },
       png: { quality: 80 },
@@ -37,8 +32,7 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
-    },
-    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json']
+    }
   },
   server: {
     port: 5173,
@@ -47,35 +41,19 @@ export default defineConfig(({ mode }) => ({
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,OPTIONS,PATCH,DELETE,POST,PUT',
       'Access-Control-Allow-Headers': 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-    },
-    fs: {
-      strict: true,
-      allow: ['..']
     }
-  },
-  esbuild: {
-    loader: 'tsx',
-    include: /src\/.*\.[tj]sx?$/,
-    exclude: [],
   },
   build: {
     target: 'es2015',
     outDir: 'dist',
     assetsDir: 'assets',
     cssCodeSplit: true,
-    sourcemap: false,
+    sourcemap: mode === 'development',
     minify: 'terser',
     terserOptions: {
       compress: {
         drop_console: true,
-        drop_debugger: true,
-        pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn'],
-      },
-      mangle: {
-        safari10: true
-      },
-      format: {
-        comments: false
+        drop_debugger: true
       }
     },
     rollupOptions: {
@@ -84,22 +62,13 @@ export default defineConfig(({ mode }) => ({
           'react-core': ['react', 'react-dom'],
           'react-router': ['react-router-dom'],
           'ui-core': ['@radix-ui/react-tooltip', 'lucide-react'],
-          'utils': ['clsx', 'tailwind-merge'],
-          'analytics': ['./src/lib/analytics']
-        },
-        chunkFileNames: 'assets/[name]-[hash].js',
-        entryFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash][extname]'
+          'utils': ['clsx', 'tailwind-merge']
+        }
       },
       plugins: [terser()]
     }
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', '@radix-ui/react-tooltip', 'lucide-react'],
-    exclude: ['@analytics/google-analytics']
-  },
-  preview: {
-    port: 4173,
-    host: true
+    include: ['react', 'react-dom', 'react-router-dom', '@radix-ui/react-tooltip', 'lucide-react']
   }
 }));
