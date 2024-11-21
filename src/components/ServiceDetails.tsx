@@ -82,21 +82,21 @@ export default function ServiceDetails({
   };
 
   const renderFeaturesList = (features: string[]) => (
-    <div className="space-y-3">
+    <div className="space-y-2">
       <h3 className="text-sm font-medium text-gray-900">
         What's included with your appraisal:
       </h3>
-      <div className="grid gap-2">
+      <div className="grid gap-1.5">
         {features.map((feature) => {
           const Icon = featureIcons[feature] || Search;
           return (
             <div
               key={feature}
-              className="flex items-center gap-2.5 p-2.5 rounded-md bg-gray-50/50 border border-gray-100 hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-2.5 p-2 rounded-md bg-gray-50/50 border border-gray-100 hover:bg-gray-50 transition-colors"
             >
               <div className="flex-shrink-0">
                 <div className="p-1.5 rounded-md bg-white shadow-sm">
-                  <Icon className="h-4 w-4 text-gray-500" />
+                  <Icon className="h-4 w-4 text-[#007bff]" />
                 </div>
               </div>
               <span className="text-sm text-gray-600">{feature}</span>
@@ -109,33 +109,39 @@ export default function ServiceDetails({
 
   const renderDateSelection = () => (
     <div className="space-y-6">
-      <div className="grid grid-cols-3 gap-3">
+      <div className="flex flex-col space-y-3">
         {dateOptions.map((option) => (
           <button
             key={option.label}
             onClick={() => onDateSelect(option.date)}
             className={cn(
-              "flex flex-col items-center justify-center p-4 rounded-lg border-2 transition-all",
+              "flex items-center justify-between p-4 rounded-lg border transition-all w-full",
               selectedDate && format(selectedDate, 'yyyy-MM-dd') === format(option.date, 'yyyy-MM-dd')
-                ? "border-gray-900 bg-gray-900 text-white"
+                ? "border-gray-900 bg-white hover:bg-gray-50"
                 : "border-gray-200 hover:border-gray-300 bg-white"
             )}
           >
-            <Calendar className={cn(
-              "h-5 w-5 mb-1",
-              selectedDate && format(selectedDate, 'yyyy-MM-dd') === format(option.date, 'yyyy-MM-dd')
-                ? "text-white"
-                : "text-gray-400"
-            )} />
-            <span className="text-sm font-medium">{option.label}</span>
-            <div className="mt-1 flex items-center gap-1">
-              <span className="text-xs line-through opacity-75">$119</span>
-              <span className={cn(
-                "text-sm font-semibold",
+            <div className="flex items-center gap-3">
+              <Calendar className={cn(
+                "h-5 w-5",
                 selectedDate && format(selectedDate, 'yyyy-MM-dd') === format(option.date, 'yyyy-MM-dd')
-                  ? "text-white"
-                  : "text-green-600"
+                  ? "text-gray-900"
+                  : "text-gray-400"
+              )} />
+              <span className={cn(
+                "text-sm font-medium",
+                selectedDate && format(selectedDate, 'yyyy-MM-dd') === format(option.date, 'yyyy-MM-dd')
+                  ? "text-gray-900"
+                  : "text-gray-600"
               )}>
+                {option.label}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-sm line-through text-gray-400">
+                $119
+              </span>
+              <span className="text-sm font-semibold text-green-600">
                 ${option.price}
               </span>
             </div>
@@ -147,7 +153,8 @@ export default function ServiceDetails({
         <div className="space-y-3">
           <Button 
             onClick={handleCheckout}
-            className="w-full bg-gray-900 text-white hover:bg-gray-800"
+            className="w-full h-12 text-base"
+            size="lg"
           >
             Continue to Checkout
             <ArrowRight className="ml-2 h-4 w-4" />
@@ -185,7 +192,7 @@ export default function ServiceDetails({
         {/* Insurance Service Layout */}
         {type === 'insurance' && (
           <>
-            <div className="space-y-6">
+            <div className="flex flex-col justify-center h-full">
               {renderDateSelection()}
             </div>
 
@@ -198,7 +205,7 @@ export default function ServiceDetails({
         {/* Tax Service Layout */}
         {type === 'tax' && (
           <>
-            <div className="space-y-6">
+            <div className="flex flex-col justify-center h-full">
               {renderDateSelection()}
             </div>
 

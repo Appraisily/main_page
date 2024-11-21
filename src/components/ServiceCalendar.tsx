@@ -11,6 +11,15 @@ interface ServiceCalendarProps {
   onCheckout: () => void;
 }
 
+interface DayProps {
+  date?: Date;
+  displayMonth?: Date;
+  selected?: boolean;
+  disabled?: boolean;
+  hidden?: boolean;
+  [key: string]: any;
+}
+
 export default function ServiceCalendar({ selectedDate, onSelect, onCheckout }: ServiceCalendarProps) {
   const today = new Date();
   const nextAvailableDate = addDays(today, 7);
@@ -47,7 +56,9 @@ export default function ServiceCalendar({ selectedDate, onSelect, onCheckout }: 
         }}
         defaultMonth={today}
         components={{
-          Day: ({ date, ...props }: any) => {
+          Day: ({ date, displayMonth: _, ...props }: DayProps) => {
+            if (!date) return null;
+            
             const { selected, disabled, hidden, ...domProps } = props;
             const isUnavailable = isDateUnavailable(date);
             const isPast = isBefore(date, today) && !isSameDay(date, today);
@@ -72,7 +83,8 @@ export default function ServiceCalendar({ selectedDate, onSelect, onCheckout }: 
             }
 
             return (
-              <div
+              <button
+                type="button"
                 {...domProps}
                 className={cn(
                   "h-10 w-full p-0 relative cursor-pointer hover:bg-gray-100 rounded-lg transition-colors",
@@ -96,7 +108,7 @@ export default function ServiceCalendar({ selectedDate, onSelect, onCheckout }: 
                     </span>
                   )}
                 </div>
-              </div>
+              </button>
             );
           }
         }}
