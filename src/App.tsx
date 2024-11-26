@@ -6,6 +6,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SEO from './components/SEO';
+import { ChatWidget } from './components/Chat/ChatWidget';
 
 // Import pages
 import Landing from './pages/Landing';
@@ -82,6 +83,7 @@ export default function App() {
               </Routes>
             </main>
             <Footer />
+            <ChatWidget />
           </div>
         </TooltipProvider>
       </HelmetProvider>
