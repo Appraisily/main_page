@@ -1,3 +1,12 @@
+// Extend Window interface to include dataLayer
+declare global {
+  interface Window {
+    dataLayer: any[];
+    Tawk_API?: any;
+    Tawk_LoadStart?: Date;
+  }
+}
+
 // Lazy load Google Analytics
 export const initializeAnalytics = () => {
   const loadGoogleAnalytics = () => {
@@ -8,7 +17,7 @@ export const initializeAnalytics = () => {
 
     script.onload = () => {
       window.dataLayer = window.dataLayer || [];
-      function gtag(...args: any[]) {
+      function gtag(...args: unknown[]) {
         window.dataLayer.push(args);
       }
       gtag('js', new Date());
