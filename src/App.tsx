@@ -6,6 +6,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SEO from './components/SEO';
+import { useGTM } from './lib/gtm/hooks/useGTM';
 
 // Import pages
 import Landing from './pages/Landing';
@@ -26,6 +27,9 @@ const PageLoader = () => (
 );
 
 export default function App() {
+  // Initialize GTM page tracking
+  useGTM();
+
   return (
     <ErrorBoundary>
       <HelmetProvider>
