@@ -2,6 +2,8 @@
 declare global {
   interface Window {
     dataLayer: any[];
+    Tawk_API?: any;
+    Tawk_LoadStart?: Date;
   }
 }
 
