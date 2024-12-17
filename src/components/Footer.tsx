@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Mail, ArrowRight } from 'lucide-react';
+import { useAnalytics } from '@/hooks/useAnalytics';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
@@ -24,6 +25,8 @@ const links = {
 };
 
 export default function Footer() {
+  const { trackStartAppraisal } = useAnalytics();
+
   return (
     <footer className="relative overflow-hidden bg-white">
       {/* Background Elements */}
@@ -59,6 +62,7 @@ export default function Footer() {
             <Button 
               asChild
               variant="default"
+              onClick={trackStartAppraisal}
               className="bg-gray-900 hover:bg-gray-800"
             >
               <a href="https://services.appraisily.com">
