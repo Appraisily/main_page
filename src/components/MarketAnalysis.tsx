@@ -1,10 +1,8 @@
 import React from 'react';
 import { Award, Star, Globe } from 'lucide-react';
-import { useAnalytics } from '@/hooks/useAnalytics';
 import { IMAGES } from '../lib/images';
 
 export default function MarketAnalysis() {
-  const { trackStartAppraisal } = useAnalytics();
   const expertInfo = {
     name: 'Andrés Gómez',
     title: 'Lead Art Appraiser',
@@ -37,7 +35,6 @@ export default function MarketAnalysis() {
             </p>
             <a
               href="https://services.appraisily.com"
-              onClick={trackStartAppraisal}
               className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200"
             >
               Start Your Appraisal

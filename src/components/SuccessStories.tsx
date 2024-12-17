@@ -1,10 +1,7 @@
 import React from 'react';
 import { FileText, ArrowRight } from 'lucide-react';
-import { useAnalytics } from '@/hooks/useAnalytics';
 
 export default function SuccessStories() {
-  const { trackStartAppraisal } = useAnalytics();
-
   return (
     <section className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">

@@ -1,6 +1,5 @@
 import React from 'react';
 import { ArrowRight, DollarSign, ExternalLink } from 'lucide-react';
-import { useAnalytics } from '@/hooks/useAnalytics';
 import { IMAGES } from '../lib/images';
 
 const appraisals = [
@@ -55,8 +54,6 @@ const appraisals = [
 ];
 
 export default function RecentAppraisals() {
-  const { trackStartAppraisal } = useAnalytics();
-
   return (
     <section className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -118,7 +115,6 @@ export default function RecentAppraisals() {
         <div className="mt-16 text-center">
           <a
             href="https://services.appraisily.com"
-            onClick={trackStartAppraisal}
             className="inline-flex items-center gap-2 rounded-md bg-[#007bff] px-6 py-3 text-lg font-semibold text-white shadow-sm hover:bg-[#0056b3] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#007bff] transition-all duration-200"
             aria-label="Start your art appraisal now"
           >
