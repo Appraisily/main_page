@@ -1,7 +1,10 @@
 import React from 'react';
 import { FileText, ArrowRight } from 'lucide-react';
+import { useAnalytics } from '@/hooks/useAnalytics';
 
 export default function SuccessStories() {
+  const { trackStartAppraisal } = useAnalytics();
+
   return (
     <section className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -38,8 +41,9 @@ export default function SuccessStories() {
               <a
                 href="https://drive.google.com/file/d/1n-JCAEZJaZDOzQ3mF4GRPmatRKrUsoUn/view"
                 target="_blank"
+                className="view-sample-report-button"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200 group"
+                className="view-sample-report-button inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200 group"
               >
                 View Sample Report <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </a>
