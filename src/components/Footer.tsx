@@ -56,15 +56,13 @@ export default function Footer() {
             <p className="text-gray-600 max-w-md">
               Professional online art and antique appraisals. Get accurate valuations from certified experts within 48 hours.
             </p>
-            <Button 
-              asChild
-              variant="default"
-              className="bg-gray-900 hover:bg-gray-800"
+            <a
+              href="https://services.appraisily.com"
+              id="start-appraisal-nav"
+              className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors gap-1.5 shadow-sm hover:shadow-md"
             >
-              <a href="https://services.appraisily.com">
-                Start Appraisal <ArrowRight className="ml-2 h-4 w-4" />
-              </a>
-            </Button>
+              Start Appraisal <ArrowRight className="h-4 w-4" />
+            </a>
           </div>
           
           {/* Quick Links */}
