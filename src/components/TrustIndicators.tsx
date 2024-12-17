@@ -10,26 +10,26 @@ interface TrustIndicatorProps {
 export default function TrustIndicators({ className }: TrustIndicatorProps) {
   return (
     <div className={cn("flex flex-wrap justify-center gap-3", className)}>
-      {/* Trustpilot Rating */}
+      {/* Google Reviews Rating */}
       <div className="inline-flex items-center gap-3 bg-white/80 backdrop-blur-sm rounded-lg border border-gray-100/50 px-4 py-2 shadow-sm">
         <div className="flex items-center gap-2">
           <img
-            src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg"
-            alt="Trustpilot"
-            className="h-4"
+            src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png"
+            alt="Google"
+            className="h-5 w-auto"
             loading="eager"
-            width="64"
-            height="16"
+            width="92"
+            height="30"
           />
           <div className="flex items-center">
             {[...Array(5)].map((_, i) => (
               <Star 
                 key={i} 
-                className="h-3.5 w-3.5 fill-[#00b67a] text-[#00b67a]" 
+                className="h-3.5 w-3.5 fill-[#fbbc04] text-[#fbbc04]" 
                 aria-hidden="true"
               />
             ))}
-            <span className="ml-1.5 text-sm font-medium text-gray-900">4.9/5</span>
+            <span className="ml-1.5 text-sm font-medium text-gray-900">4.8/5</span>
           </div>
         </div>
         <Separator orientation="vertical" className="h-5 bg-gray-200" />
