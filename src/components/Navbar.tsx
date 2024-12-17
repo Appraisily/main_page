@@ -76,6 +76,7 @@ export default function Navbar() {
 
             <Link
               to="/start"
+              id="start-appraisal-nav"
               className="inline-flex items-center justify-center px-4 py-2 ml-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors gap-1.5 shadow-sm hover:shadow-md"
             >
               Start Appraisal <ArrowRight className="h-4 w-4" />
@@ -86,6 +87,7 @@ export default function Navbar() {
           <div className="md:hidden flex items-center space-x-4">
             <Link
               to="/start"
+              id="start-appraisal-nav-mobile"
               className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors shadow-sm"
             >
               Start
