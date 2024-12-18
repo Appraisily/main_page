@@ -48,8 +48,9 @@ export default function PaymentDetails({ sessionId }: PaymentDetailsProps) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center p-8">
+      <div className="flex flex-col items-center justify-center p-12 text-center">
         <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+        <p className="mt-4 text-sm text-gray-600">Loading payment details...</p>
       </div>
     );
   }

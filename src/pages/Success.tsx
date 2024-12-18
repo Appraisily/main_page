@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import PaymentDetails from '@/components/PaymentDetails';
 import AppraisalUploadForm from '@/components/upload/AppraisalUploadForm';
-import { Shield } from 'lucide-react';
+import { Shield, Loader2 } from 'lucide-react';
 
 export default function Success() {
   const location = useLocation();
@@ -29,7 +29,7 @@ export default function Success() {
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-12">
       <div className="max-w-3xl mx-auto px-6">
-        <div className="bg-white rounded-lg p-8">
+        <div className="bg-white rounded-lg p-8 relative">
           {/* Payment Details */}
           <PaymentDetails sessionId={sessionId} />
 

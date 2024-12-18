@@ -13,13 +13,13 @@ interface StripeSession {
 export function useStripeSession(sessionId: string | null) {
   const [session, setSession] = useState<StripeSession | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | undefined>();
   const fetchController = useRef<AbortController | null>(null);
 
   useEffect(() => {
     if (!sessionId) {
       setLoading(false);
-      setError('No session ID provided.');
+      setError(undefined);
       return;
     }
 
@@ -32,6 +32,9 @@ export function useStripeSession(sessionId: string | null) {
     fetchController.current = new AbortController();
 
     async function fetchSession() {
+      setLoading(true);
+      setError(undefined);
+
       try {
         const response = await fetch(
           `https://payment-processor-856401495068.us-central1.run.app/stripe/session/${sessionId}`,
@@ -48,6 +51,7 @@ export function useStripeSession(sessionId: string | null) {
           const errorData = await response.text();
           throw new Error(`Failed to fetch session: ${errorData}`);
         }
+        setError(undefined);
 
         const stripeSession = await response.json();
 
@@ -69,6 +73,7 @@ export function useStripeSession(sessionId: string | null) {
         // Only set error if it's not an abort error
         if (err instanceof Error && err.name !== 'AbortError') {
           setError(err.message);
+          setSession(null);
         }
       } finally {
         setLoading(false);
