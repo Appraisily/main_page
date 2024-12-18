@@ -32,6 +32,12 @@ export default function PaymentDetails({ sessionId }: PaymentDetailsProps) {
             name: session.customer.name
           }
         });
+        // Push a separate event to indicate data is ready
+        window.dataLayer?.push({
+          event: 'purchase_data_ready',
+          sessionId: sessionId
+        });
+
       }
     }
 
