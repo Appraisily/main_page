@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface StripeSession {
   customer: {
@@ -14,6 +14,7 @@ export function useStripeSession(sessionId: string | null) {
   const [session, setSession] = useState<StripeSession | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const fetchController = useRef<AbortController | null>(null);
 
   useEffect(() => {
     if (!sessionId) {
@@ -22,16 +23,26 @@ export function useStripeSession(sessionId: string | null) {
       return;
     }
 
+    // Abort previous fetch if it exists
+    if (fetchController.current) {
+      fetchController.current.abort();
+    }
+
+    // Create new abort controller for this fetch
+    fetchController.current = new AbortController();
+
     async function fetchSession() {
-      console.log('Fetching session:', { sessionId });
-      
       try {
-        const response = await fetch(`https://payment-processor-856401495068.us-central1.run.app/stripe/session/${sessionId}`, {
-          headers: {
-            'x-shared-secret': 'sk_shared_5f9a4b2c8e7d6f3a1b9c4d5e8f7a2b3c4d5e6f7',
-            'Accept': 'application/json'
+        const response = await fetch(
+          `https://payment-processor-856401495068.us-central1.run.app/stripe/session/${sessionId}`,
+          {
+            headers: {
+              'x-shared-secret': 'sk_shared_5f9a4b2c8e7d6f3a1b9c4d5e8f7a2b3c4d5e6f7',
+              'Accept': 'application/json'
+            },
+            signal: fetchController.current?.signal
           }
-        });
+        );
 
         if (!response.ok) {
           const errorData = await response.text();
@@ -43,7 +54,6 @@ export function useStripeSession(sessionId: string | null) {
         if (!stripeSession) {
           throw new Error('Session not found in Stripe.');
         }
-        console.log('Session retrieved:', stripeSession);
 
         // Transform Stripe session into our interface
         setSession({
@@ -56,15 +66,24 @@ export function useStripeSession(sessionId: string | null) {
           payment_status: stripeSession.payment_status || ''
         });
       } catch (err) {
-        console.error('Session fetch error:', err);
-        setError(err instanceof Error ? err.message : 'Failed to load session');
+        // Only set error if it's not an abort error
+        if (err instanceof Error && err.name !== 'AbortError') {
+          setError(err.message);
+        }
       } finally {
         setLoading(false);
       }
     }
 
     fetchSession();
-  }, [sessionId]);
+
+    // Cleanup function to abort fetch on unmount or sessionId change
+    return () => {
+      if (fetchController.current) {
+        fetchController.current.abort();
+      }
+    };
+  }, [sessionId]); // Only re-run if sessionId changes
 
   return { session, loading, error };
 }
