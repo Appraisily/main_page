@@ -35,7 +35,6 @@ export default function MarketAnalysis() {
             </p>
             <a
               href="https://services.appraisily.com"
-              id="start-appraisal-nav"
               className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200"
             >
               Start Your Appraisal

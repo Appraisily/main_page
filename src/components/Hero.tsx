@@ -168,7 +168,7 @@ export default function Hero() {
                         <input
                           type="file"
                           accept="image/*"
-                          className="upload-image-button absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                           onChange={handleChange}
                           aria-label="Upload artwork photo"
                         />
