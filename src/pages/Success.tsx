@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import PaymentDetails from '@/components/PaymentDetails';
-import UploadForm from '@/components/upload/UploadForm';
+import AppraisalUploadForm from '@/components/upload/AppraisalUploadForm';
 import { Shield } from 'lucide-react';
 
 export default function Success() {
@@ -42,7 +42,7 @@ export default function Success() {
           </div>
 
           {/* Upload Form */}
-          <UploadForm sessionId={sessionId} />
+          <AppraisalUploadForm sessionId={sessionId} />
         </div>
       </div>
     </div>

@@ -15,6 +15,7 @@ import Team from './pages/Team';
 import Success from './pages/Success';
 import Services from './pages/Services';
 import Expertise from './pages/Expertise';
+import Dashboard from './pages/Dashboard';
 import HowItWorks from './pages/HowItWorks';
 import Report from './pages/Report';
 import Terms from './pages/Terms';
@@ -102,6 +103,11 @@ export default function App() {
                 <Route path="/terms" element={
                   <Suspense fallback={<PageLoader />}>
                     <Terms />
+                  </Suspense>
+                } />
+                <Route path="/dashboard" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Dashboard />
                   </Suspense>
                 } />
                 <Route path="/start" element={

@@ -15,16 +15,24 @@ import MarketAnalysis from '../components/MarketAnalysis';
 import { Link } from 'react-router-dom';
 
 export default function Landing() {
+  const isDev = import.meta.env.DEV;
+
   return (
     <div className="min-h-screen bg-white">
       {/* Debug Link - Only visible in development */}
-      {import.meta.env.DEV && (
+      {isDev && (
         <div className="fixed bottom-4 left-4 z-50">
           <Link
             to="/success-payment?session_id=cs_live_a1pi2YjX8Nr6lH53ACyeqX6bIx6REfRLBGrJ1ThzXj6C6UEJytdKOyiMxf"
             className="bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-gray-800 text-sm"
           >
             Debug: Success Payment
+          </Link>
+          <Link
+            to="/dashboard?email=ratonxi@gmail.com"
+            className="bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-gray-800 text-sm"
+          >
+            Debug: Dashboard
           </Link>
         </div>
       )}
