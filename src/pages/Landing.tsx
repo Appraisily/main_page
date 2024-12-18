@@ -21,10 +21,10 @@ export default function Landing() {
       {import.meta.env.DEV && (
         <div className="fixed bottom-4 left-4 z-50">
           <Link
-            to="/success?session_id=cs_live_a1pi2YjX8Nr6lH53ACyeqX6bIx6REfRLBGrJ1ThzXj6C6UEJytdKOyiMxf"
+            to="/success-payment?session_id=cs_live_a1pi2YjX8Nr6lH53ACyeqX6bIx6REfRLBGrJ1ThzXj6C6UEJytdKOyiMxf"
             className="bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-gray-800 text-sm"
           >
-            Debug: Success Page
+            Debug: Success Payment
           </Link>
         </div>
       )}

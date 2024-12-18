@@ -64,7 +64,7 @@ export default function App() {
             <main>
               <Routes>
                 <Route path="/" element={<Landing />} />
-               <Route path="/success" element={
+               <Route path="/success-payment" element={
                  <Suspense fallback={<PageLoader />}>
                    <Success />
                  </Suspense>

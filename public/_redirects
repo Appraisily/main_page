@@ -15,7 +15,6 @@
 /appraisals/* https://resources.appraisily.com/appraisals/:splat 200
 
 # Proxy all routes that begin with /success-payment/ to WordPress
-/success-payment/* https://resources.appraisily.com/success-payment/:splat 200
 
 # 2. WordPress Admin Redirects
 # ---------------------------------------
