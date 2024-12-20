@@ -2,29 +2,35 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { fetchAppraisals } from '@/lib/api/dashboardApi';
-import type { AppraisalPost, DashboardFilters } from '@/lib/types/dashboard';
+import type { AppraisalPost } from '@/lib/types/dashboard';
+import type { DashboardFilters } from '@/lib/types/dashboard';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import AppraisalCard from '@/components/dashboard/AppraisalCard';
 
 export default function Dashboard() {
   const [searchParams] = useSearchParams();
   const email = searchParams.get('email');
-  const [filters, setFilters] = useState<DashboardFilters>({
-    sortBy: 'date',
-    sortOrder: 'desc'
-  });
+  const loadingRef = React.useRef(false);
   
   const [appraisals, setAppraisals] = useState<AppraisalPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [filters, setFilters] = useState<DashboardFilters>({
+    status: 'publish',
+    sortBy: 'date',
+    sortOrder: 'desc'
+  });
 
   useEffect(() => {
     const loadAppraisals = async () => {
+      // Skip loading if no email
       if (!email) {
-        setError('No email provided');
-        setLoading(false);
         return;
       }
+
+      // Prevent duplicate loads
+      if (loadingRef.current) return;
+      loadingRef.current = true;
 
       try {
         setLoading(true);
@@ -32,14 +38,19 @@ export default function Dashboard() {
         setAppraisals(data);
         setError(null);
       } catch (err) {
-        console.error('Failed to load appraisals:', err);
         setError('Failed to load appraisals');
       } finally {
         setLoading(false);
+        loadingRef.current = false;
       }
     };
 
     loadAppraisals();
+    
+    return () => {
+      // Reset loading state on cleanup
+      loadingRef.current = false;
+    };
   }, [email, filters]);
 
   if (!email) {

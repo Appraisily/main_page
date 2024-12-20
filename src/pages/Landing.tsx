@@ -28,8 +28,9 @@ export default function Landing() {
           >
             Debug: Success Payment
           </Link>
+          {' '}
           <Link
-            to="/dashboard?email=cmillsjr@cmcllc.biz"
+            to="/dashboard?email=jimhackley54@yahoo.com"
             className="bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-gray-800 text-sm"
           >
             Debug: Dashboard

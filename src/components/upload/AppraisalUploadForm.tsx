@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Loader2, AlertCircle } from 'lucide-react';
 import { useStripeSession } from '@/hooks/useStripeSession';
 import { validateFile } from '@/lib/validation/fileValidation';
@@ -11,6 +12,7 @@ interface AppraisalUploadFormProps {
 }
 
 export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormProps) {
+  const navigate = useNavigate();
   const { session } = useStripeSession(sessionId);
   const [description, setDescription] = useState('');
   const [files, setFiles] = useState<{
@@ -61,9 +63,7 @@ export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormPr
 
       if (response.success) {
         setUploadProgress({ status: 'success', progress: 100 });
-        // Clear form
-        setFiles({});
-        setDescription('');
+        navigate('/dashboard');
       } else {
         throw new Error(response.error || 'Upload failed');
       }
@@ -152,6 +152,18 @@ export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormPr
       >
         {uploadProgress.status === 'uploading' ? 'Uploading...' : 'Submit Appraisal'}
       </button>
+
+      {/* Support Email */}
+      <p className="text-sm text-gray-500 text-center mt-8">
+        Having trouble uploading? Send your images to{' '}
+        <a 
+          href={`mailto:info@appraisily.com?subject=Data for appraisal ${sessionId}`}
+          className="text-blue-600 hover:text-blue-700"
+        >
+          info@appraisily.com
+        </a>{' '}
+        with subject "Data for appraisal {sessionId}"
+      </p>
     </form>
   );
 }

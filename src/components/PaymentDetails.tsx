@@ -5,16 +5,17 @@ import { hashEmail } from '@/lib/analytics';
 
 interface PaymentDetailsProps {
   sessionId: string;
+  sharedSecret: string;
 }
 
-export default function PaymentDetails({ sessionId }: PaymentDetailsProps) {
-  const { session, loading, error } = useStripeSession(sessionId);
+export default function PaymentDetails({ sessionId, sharedSecret }: PaymentDetailsProps) {
+  const { session, loading, error } = useStripeSession(sessionId, sharedSecret);
 
   // Push analytics data when session is loaded
   useEffect(() => {
     async function pushAnalytics() {
-      if (session?.customer.email) {
-        const emailHash = await hashEmail(session.customer.email);
+      if (session?.customer_details.email) {
+        const emailHash = await hashEmail(session.customer_details.email);
         
         window.dataLayer?.push({
           event: 'purchase_complete',
@@ -29,7 +30,7 @@ export default function PaymentDetails({ sessionId }: PaymentDetailsProps) {
           },
           customer_data: {
             email_hash: emailHash,
-            name: session.customer.name
+            name: session.customer_details.name
           }
         });
         // Push a separate event to indicate data is ready
@@ -48,9 +49,11 @@ export default function PaymentDetails({ sessionId }: PaymentDetailsProps) {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center p-12 text-center">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
-        <p className="mt-4 text-sm text-gray-600">Loading payment details...</p>
+      <div className="rounded-lg border border-gray-100 bg-white p-6 mb-8 shadow-sm">
+        <div className="flex flex-col items-center justify-center p-6">
+          <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+          <p className="mt-4 text-sm text-gray-600">Loading payment details...</p>
+        </div>
       </div>
     );
   }
@@ -78,7 +81,7 @@ export default function PaymentDetails({ sessionId }: PaymentDetailsProps) {
             Payment Successful
           </h2>
           <div className="space-y-2">
-            <p className="text-gray-600">Thank you, <span className="font-medium text-gray-900">{session.customer.name}</span>, for your appraisal request.</p>
+            <p className="text-gray-600">Thank you, <span className="font-medium text-gray-900">{session.customer_details.name}</span>, for your appraisal request.</p>
             <div className="flex flex-col gap-1.5 text-sm">
               <div className="flex items-center justify-between border-t border-gray-100 pt-2">
                 <span className="text-gray-500">Amount paid</span>
@@ -86,7 +89,7 @@ export default function PaymentDetails({ sessionId }: PaymentDetailsProps) {
               </div>
               <div className="flex items-center justify-between border-t border-gray-100 pt-2">
                 <span className="text-gray-500">Email</span>
-                <span className="font-medium text-gray-900">{session.customer.email}</span>
+                <span className="font-medium text-gray-900">{session.customer_details.email}</span>
               </div>
             </div>
           </div>
