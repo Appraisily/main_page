@@ -48,8 +48,10 @@ export default function UploadForm({ sessionId }: UploadFormProps) {
         throw new Error('Upload failed');
       }
 
-      // Redirect to dashboard
-      navigate(`/dashboard?email=${encodeURIComponent(session?.customer.email || '')}`);
+      // Show success message or clear form instead of redirecting
+      alert('Upload successful! Our team will begin processing your appraisal.');
+      setFiles({});
+      setDescription('');
     } catch (error) {
       console.error('Upload error:', error);
       alert('Upload failed. Please try again or contact support.');

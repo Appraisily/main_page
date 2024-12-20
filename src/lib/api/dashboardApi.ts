@@ -4,8 +4,8 @@ const API_URL = 'https://resources.appraisily.com/wp-json/wp/v2';
 
 export const fetchAppraisals = async (email: string, filters?: DashboardFilters): Promise<AppraisalPost[]> => {
   try {
-    console.log('Fetching appraisals for email:', email);
-    console.log('Using filters:', filters);
+    console.debug('[Dashboard] Fetching appraisals for email:', email);
+    console.debug('[Dashboard] Using filters:', filters);
 
     // Build query parameters
     const params = new URLSearchParams({      
@@ -24,11 +24,10 @@ export const fetchAppraisals = async (email: string, filters?: DashboardFilters)
       params.append('order', filters.sortOrder || 'desc');
     }
 
-    const url = `${API_URL}/appraisals?${params.toString()}`;
-    console.log('Making request to:', url);
+    console.debug('[Dashboard] Request URL:', `${API_URL}/appraisals?${params.toString()}`);
 
     const response = await fetch(`${API_URL}/appraisals?${params.toString()}`);
-    console.log('Response status:', response.status);
+    console.debug('[Dashboard] Response status:', response.status);
     
     if (!response.ok) {
       console.error('API request failed:', response.statusText);
@@ -36,8 +35,14 @@ export const fetchAppraisals = async (email: string, filters?: DashboardFilters)
     }
 
     const data = await response.json();
-    console.log('API response data:', data);
-    return data;
+    console.debug('[Dashboard] Response data:', data);
+    
+    // Filter results by email on the client side as well
+    const filteredData = data.filter(post => 
+      post.acf?.customer_email?.toLowerCase() === email.toLowerCase()
+    );
+    
+    return filteredData;
   } catch (error) {
     console.error('Error fetching appraisals:', error);
     throw error;

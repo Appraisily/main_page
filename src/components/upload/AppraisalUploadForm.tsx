@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Loader2, AlertCircle } from 'lucide-react';
 import { useStripeSession } from '@/hooks/useStripeSession';
 import { validateFile } from '@/lib/validation/fileValidation';
@@ -12,7 +11,6 @@ interface AppraisalUploadFormProps {
 }
 
 export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormProps) {
-  const navigate = useNavigate();
   const { session } = useStripeSession(sessionId);
   const [description, setDescription] = useState('');
   const [files, setFiles] = useState<{
@@ -63,7 +61,9 @@ export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormPr
 
       if (response.success) {
         setUploadProgress({ status: 'success', progress: 100 });
-        navigate('/dashboard');
+        // Clear form
+        setFiles({});
+        setDescription('');
       } else {
         throw new Error(response.error || 'Upload failed');
       }

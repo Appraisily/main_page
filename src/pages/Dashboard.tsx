@@ -2,13 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { fetchAppraisals } from '@/lib/api/dashboardApi';
-import type { AppraisalPost } from '@/lib/types/dashboard';
+import type { AppraisalPost, DashboardFilters } from '@/lib/types/dashboard';
 import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import AppraisalCard from '@/components/dashboard/AppraisalCard';
 
 export default function Dashboard() {
   const [searchParams] = useSearchParams();
   const email = searchParams.get('email');
+  const [filters, setFilters] = useState<DashboardFilters>({
+    sortBy: 'date',
+    sortOrder: 'desc'
+  });
   
   const [appraisals, setAppraisals] = useState<AppraisalPost[]>([]);
   const [loading, setLoading] = useState(true);
@@ -24,7 +28,7 @@ export default function Dashboard() {
 
       try {
         setLoading(true);
-        const data = await fetchAppraisals(email);
+        const data = await fetchAppraisals(email, filters);
         setAppraisals(data);
         setError(null);
       } catch (err) {
@@ -36,7 +40,7 @@ export default function Dashboard() {
     };
 
     loadAppraisals();
-  }, [email]);
+  }, [email, filters]);
 
   if (!email) {
     return (
