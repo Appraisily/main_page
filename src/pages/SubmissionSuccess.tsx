@@ -1,10 +1,12 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { CheckCircle2, ArrowRight } from 'lucide-react';
+import { CheckCircle2, ArrowRight, LayoutDashboard } from 'lucide-react';
+import { useStripeSession } from '@/hooks/useStripeSession';
 
 export default function SubmissionSuccess() {
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get('session_id') || '';
+  const { session, loading } = useStripeSession(sessionId);
 
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-12">
@@ -28,17 +30,28 @@ export default function SubmissionSuccess() {
               <p className="font-mono text-gray-600">{sessionId}</p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-6">
               <p className="text-sm text-gray-600">
                 Please keep this reference number for future correspondence.
               </p>
-              <a
-                href="/"
-                className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-              >
-                Return to Home
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </a>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                {session?.customer_details?.email && (
+                  <a
+                    href={`/dashboard?email=${encodeURIComponent(session.customer_details.email)}`}
+                    className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                  >
+                    View Dashboard
+                    <LayoutDashboard className="ml-2 h-5 w-5" />
+                  </a>
+                )}
+                <a
+                  href="/"
+                  className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                >
+                  Return to Home
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </a>
+              </div>
             </div>
           </div>
         </div>

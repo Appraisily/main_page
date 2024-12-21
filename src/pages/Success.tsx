@@ -1,12 +1,11 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import PaymentDetails from '@/components/PaymentDetails';
 import AppraisalUploadForm from '@/components/upload/AppraisalUploadForm';
 import { Upload } from 'lucide-react';
 
 export default function Success() {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
+  const [searchParams] = useSearchParams();
   const sessionId = searchParams.get('session_id');
 
   if (!sessionId) {
