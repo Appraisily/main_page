@@ -10,10 +10,7 @@ interface StripeSession {
   payment_status: string;
 }
 
-export function useStripeSession(
-  sessionId: string | null,
-  sharedSecret?: string
-) {
+export function useStripeSession(sessionId: string | null) {
   const [session, setSession] = useState<StripeSession | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | undefined>();
@@ -22,13 +19,7 @@ export function useStripeSession(
   useEffect(() => {
     if (!sessionId) {
       setLoading(false);
-      setError(undefined);
-      return;
-    }
-    
-    if (!sharedSecret) {
-      setError('Missing authentication credentials');
-      setLoading(false);
+      setError('No session ID provided');
       return;
     }
 
@@ -49,28 +40,23 @@ export function useStripeSession(
           `https://payment-processor-856401495068.us-central1.run.app/stripe/session/${sessionId}`,
           {
             headers: {
-              'x-shared-secret': sharedSecret,
-              'Accept': 'application/json'
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${import.meta.env.VITE_STRIPE_SHARED_SECRET}`
             },
             signal: fetchController.current?.signal
           }
         );
-
-        // Debug raw response
-        const rawResponse = await response.text();
         
         if (!response.ok) {
-          throw new Error(`Failed to fetch session: ${rawResponse}`);
+          throw new Error(`Failed to fetch session: ${response.status}`);
         }
 
-        // Parse response if it's JSON
-        const stripeSession = JSON.parse(rawResponse);
+        const stripeSession = await response.json();
 
         if (!stripeSession) {
           throw new Error('Session not found in Stripe.');
         }
 
-        // Server response already matches our interface
         setSession(stripeSession);
       } catch (err) {
         // Only set error if it's not an abort error
@@ -91,7 +77,7 @@ export function useStripeSession(
         fetchController.current.abort();
       }
     };
-  }, [sessionId, sharedSecret]); // Re-run if sessionId or sharedSecret changes
+  }, [sessionId]); // Re-run if sessionId changes
 
   return { session, loading, error };
 }

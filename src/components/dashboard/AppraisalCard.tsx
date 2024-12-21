@@ -17,7 +17,7 @@ interface AppraisalCardProps {
 
 export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
   const title = decodeHtmlEntities(appraisal.title.rendered);
-  const truncatedTitle = truncateWords(title, 5);
+  const truncatedTitle = truncateWords(title, 10);
 
   return (
     <Card className="group">

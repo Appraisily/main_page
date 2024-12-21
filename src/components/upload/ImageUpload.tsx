@@ -1,6 +1,12 @@
-import React, { useState, useRef } from 'react';
-import { Upload, Image as ImageIcon } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Upload, Image as ImageIcon, Info } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Card } from "@/components/ui/card";
 
 interface ImageUploadProps {
   id: string;
@@ -10,6 +16,7 @@ interface ImageUploadProps {
   required?: boolean;
   onChange: (file: File | undefined) => void;
   exampleImage?: string;
+  exampleTooltip?: string;
 }
 
 export default function ImageUpload({
@@ -19,12 +26,21 @@ export default function ImageUpload({
   accept,
   required,
   onChange,
-  exampleImage
+  exampleImage,
+  exampleTooltip
 }: ImageUploadProps) {
   const [preview, setPreview] = useState<string>();
   const [isDragging, setIsDragging] = useState(false);
-  const [showExample, setShowExample] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Clean up preview URL on unmount
+  useEffect(() => {
+    return () => {
+      if (preview) {
+        URL.revokeObjectURL(preview);
+      }
+    };
+  }, [preview]);
 
   const handleFileChange = (file: File | undefined) => {
     if (file) {
@@ -61,27 +77,43 @@ export default function ImageUpload({
   };
 
   return (
-    <div className="space-y-2">
-      <div className="flex justify-between items-center">
+    <Card className="p-6">
+      <div className="flex justify-between items-center mb-2">
         <label htmlFor={id} className="block text-sm font-medium text-gray-900">
           {label} {required && <span className="text-red-500">*</span>}
         </label>
         {exampleImage && (
-          <button
-            type="button"
-            className="text-sm text-blue-600 hover:text-blue-700"
-            onMouseEnter={() => setShowExample(true)}
-            onMouseLeave={() => setShowExample(false)}
-          >
-            See example
-          </button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1.5 transition-colors"
+              >
+                <Info className="h-4 w-4" />
+                See example
+              </button>
+            </TooltipTrigger>
+            <TooltipContent side="top" align="end" className="w-[300px] p-0">
+              <div className="space-y-2">
+                {exampleTooltip && (
+                  <p className="text-sm p-4 border-b">{exampleTooltip}</p>
+                )}
+                <img
+                  src={exampleImage}
+                  alt="Example"
+                  className="w-full rounded-b-lg"
+                  loading="lazy"
+                />
+              </div>
+            </TooltipContent>
+          </Tooltip>
         )}
       </div>
 
       <div
         className={cn(
-          "relative border-2 border-dashed rounded-lg p-4 transition-colors",
-          isDragging ? "border-blue-400 bg-blue-50" : "border-gray-200 hover:border-blue-400",
+          "relative border-2 border-dashed rounded-lg transition-all duration-200",
+          isDragging ? "border-primary bg-primary/5" : "border-muted hover:border-primary",
           preview ? "bg-gray-50" : "bg-white"
         )}
         onDragEnter={handleDrag}
@@ -103,18 +135,21 @@ export default function ImageUpload({
             <img
               src={preview}
               alt="Preview"
-              className="w-full h-full object-contain rounded-lg"
+              className="w-full h-full object-contain rounded-lg shadow-sm"
             />
             <button
               type="button"
               onClick={() => {
+                if (preview) {
+                  URL.revokeObjectURL(preview);
+                }
                 setPreview(undefined);
                 onChange(undefined);
                 if (inputRef.current) {
                   inputRef.current.value = '';
                 }
               }}
-              className="absolute top-2 right-2 p-1 bg-white rounded-full shadow-sm hover:bg-gray-100"
+              className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-sm hover:bg-gray-100 transition-colors"
             >
               <Upload className="h-4 w-4 text-gray-500" />
             </button>
@@ -122,29 +157,20 @@ export default function ImageUpload({
         ) : (
           <label
             htmlFor={id}
-            className="flex flex-col items-center justify-center py-8 cursor-pointer"
+            className="flex flex-col items-center justify-center p-8 cursor-pointer"
           >
-            <ImageIcon className="h-12 w-12 text-gray-400 mb-4" />
-            <span className="text-sm font-medium text-gray-900">
+            <div className="p-3 rounded-full bg-blue-50 mb-4">
+              <ImageIcon className="h-8 w-8 text-blue-600" />
+            </div>
+            <span className="text-sm font-medium">
               Drop your image here or click to upload
             </span>
-            <span className="text-sm text-gray-500 mt-1">
+            <span className="text-sm text-muted-foreground mt-1">
               {description}
             </span>
           </label>
         )}
       </div>
-
-      {/* Example Image Tooltip */}
-      {showExample && exampleImage && (
-        <div className="absolute z-50 bg-white rounded-lg shadow-xl p-2 border border-gray-200">
-          <img
-            src={exampleImage}
-            alt="Example"
-            className="max-w-sm rounded"
-          />
-        </div>
-      )}
-    </div>
+    </Card>
   );
 }

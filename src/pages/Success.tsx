@@ -2,13 +2,12 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import PaymentDetails from '@/components/PaymentDetails';
 import AppraisalUploadForm from '@/components/upload/AppraisalUploadForm';
-import { Shield, Loader2 } from 'lucide-react';
+import { Upload } from 'lucide-react';
 
 export default function Success() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const sessionId = searchParams.get('session_id');
-  const sharedSecret = import.meta.env.VITE_STRIPE_SHARED_SECRET;
 
   if (!sessionId) {
     return (
@@ -30,23 +29,27 @@ export default function Success() {
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-12">
       <div className="max-w-3xl mx-auto px-6">
-        <div className="bg-white rounded-lg p-8 relative">
+        <div className="space-y-6">
           {/* Payment Details */}
-          <PaymentDetails 
-            sessionId={sessionId}
-            sharedSecret={sharedSecret}
-          />
+          <PaymentDetails sessionId={sessionId} />
 
-          {/* Header */}
-          <div className="flex items-center gap-3 mb-8">
-            <Shield className="h-8 w-8 text-blue-600" />
-            <h1 className="text-2xl font-bold text-gray-900">
-              Upload Your Artwork Images
-            </h1>
+          {/* Upload Form Container */}
+          <div className="bg-white rounded-lg p-8">
+            {/* Title Section */}
+            <div className="flex items-center gap-4 mb-8 pb-6 border-b">
+              <div className="p-3 bg-primary/10 rounded-full">
+                <Upload className="h-6 w-6 text-blue-600" />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold text-gray-900">
+                  Upload Your Artwork Images
+                </h2>
+              </div>
+            </div>
+
+            {/* Upload Form */}
+            <AppraisalUploadForm sessionId={sessionId} />
           </div>
-
-          {/* Upload Form */}
-          <AppraisalUploadForm sessionId={sessionId} />
         </div>
       </div>
     </div>

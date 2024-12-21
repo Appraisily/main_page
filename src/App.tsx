@@ -20,6 +20,7 @@ import HowItWorks from './pages/HowItWorks';
 import Report from './pages/Report';
 import Terms from './pages/Terms';
 import ServiceSelection from './pages/ServiceSelection';
+import SubmissionSuccess from './pages/SubmissionSuccess';
 
 // Loading component
 const PageLoader = () => (
@@ -103,6 +104,11 @@ export default function App() {
                 <Route path="/terms" element={
                   <Suspense fallback={<PageLoader />}>
                     <Terms />
+                  </Suspense>
+                } />
+                <Route path="/submission-success" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <SubmissionSuccess />
                   </Suspense>
                 } />
                 <Route path="/dashboard" element={

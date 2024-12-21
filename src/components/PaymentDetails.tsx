@@ -4,12 +4,11 @@ import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { hashEmail } from '@/lib/analytics';
 
 interface PaymentDetailsProps {
-  sessionId: string;
-  sharedSecret: string;
+  sessionId: string; 
 }
 
-export default function PaymentDetails({ sessionId, sharedSecret }: PaymentDetailsProps) {
-  const { session, loading, error } = useStripeSession(sessionId, sharedSecret);
+export default function PaymentDetails({ sessionId }: PaymentDetailsProps) {
+  const { session, loading, error } = useStripeSession(sessionId);
 
   // Push analytics data when session is loaded
   useEffect(() => {
