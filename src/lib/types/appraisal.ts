@@ -1,6 +1,6 @@
 export interface AppraisalRequest {
   session_id: string;
-  customer_email: string;
+  customer_email?: string;
   customer_name?: string;
   description?: string;
   images: {
