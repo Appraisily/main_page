@@ -12,6 +12,7 @@ import SEO from './components/SEO';
 import Landing from './pages/Landing';
 import About from './pages/About';
 import Team from './pages/Team';
+import Screener from './pages/Screener';
 import Success from './pages/Success';
 import Services from './pages/Services';
 import Expertise from './pages/Expertise';
@@ -66,6 +67,7 @@ export default function App() {
             <main>
               <Routes>
                 <Route path="/" element={<Landing />} />
+                <Route path="/screener" element={<Screener />} />
                <Route path="/success-payment" element={
                  <Suspense fallback={<PageLoader />}>
                    <Success />

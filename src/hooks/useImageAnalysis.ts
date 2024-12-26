@@ -1,23 +1,12 @@
 import { useState } from 'react';
 
-const API_URL = 'https://appraisals-web-services-backend-856401495068.us-central1.run.app';
+const API_URL = 'https://appraisals-web-services-backend-856401495068.us-central1.run.app/upload-temp';
 
-interface UploadResponse {
+interface TempUploadResponse {
   success: boolean;
-  customerImageUrl: string;
-  similarImageUrls: string[];
   sessionId: string;
-}
-
-interface AnalysisResponse {
-  success: boolean;
-  analysis: string;
-}
-
-interface EnhancedAnalysisResponse {
-  success: boolean;
-  enhancedAnalysis: string;
-  offerText: string;
+  tempUrl: string;
+  message?: string;
 }
 
 export function useImageAnalysis() {
@@ -32,7 +21,7 @@ export function useImageAnalysis() {
       const formData = new FormData();
       formData.append('image', file);
 
-      const response = await fetch(`${API_URL}/upload-image`, {
+      const response = await fetch(API_URL, {
         method: 'POST',
         body: formData,
       });
@@ -41,59 +30,14 @@ export function useImageAnalysis() {
         throw new Error('Failed to upload image');
       }
 
-      const data: UploadResponse = await response.json();
+      const data: TempUploadResponse = await response.json();
       
       if (!data.success) {
         throw new Error('Upload failed');
       }
 
-      // Generate initial analysis
-      const analysisResponse = await fetch(`${API_URL}/generate-analysis`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ sessionId: data.sessionId }),
-      });
-
-      if (!analysisResponse.ok) {
-        throw new Error('Failed to generate analysis');
-      }
-
-      const analysisData: AnalysisResponse = await analysisResponse.json();
-
-      if (!analysisData.success) {
-        throw new Error('Analysis generation failed');
-      }
-
-      // Enhance the analysis
-      const enhanceResponse = await fetch(`${API_URL}/enhance-analysis`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          sessionId: data.sessionId,
-          analysisText: analysisData.analysis,
-        }),
-      });
-
-      if (!enhanceResponse.ok) {
-        throw new Error('Failed to enhance analysis');
-      }
-
-      const enhancedData: EnhancedAnalysisResponse = await enhanceResponse.json();
-
-      if (!enhancedData.success) {
-        throw new Error('Analysis enhancement failed');
-      }
-
       return {
-        imageUrl: data.customerImageUrl,
-        similarImages: data.similarImageUrls,
-        analysis: analysisData.analysis,
-        enhancedAnalysis: enhancedData.enhancedAnalysis,
-        offerText: enhancedData.offerText,
+        tempUrl: data.tempUrl,
         sessionId: data.sessionId,
       };
     } catch (err) {

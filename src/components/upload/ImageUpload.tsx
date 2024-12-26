@@ -168,6 +168,12 @@ export default function ImageUpload({
             <span className="text-sm text-muted-foreground mt-1">
               {description}
             </span>
+            <button 
+              type="button" 
+              className="upload-image-button px-6 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-black transition-colors shadow-sm"
+            >
+              Browse Files
+            </button>
           </label>
         )}
       </div>

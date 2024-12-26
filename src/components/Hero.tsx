@@ -1,9 +1,13 @@
 import React, { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Upload, Search, Camera, Star, Shield, Users, Award } from 'lucide-react';
+import { useImageAnalysis } from '@/hooks/useImageAnalysis';
 import ServicePanels from './ServicePanels';
 import TrustIndicators from './TrustIndicators';
 
 export default function Hero() {
+  const navigate = useNavigate();
+  const { uploadImage } = useImageAnalysis();
   const [dragActive, setDragActive] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -44,7 +48,8 @@ export default function Hero() {
     
     setIsUploading(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const result = await uploadImage(selectedFile);
+      navigate(`/screener?sessionId=${result.sessionId}`);
     } catch (error) {
       console.error('Error analyzing file:', error);
     } finally {
