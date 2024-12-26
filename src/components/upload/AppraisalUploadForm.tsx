@@ -16,10 +16,10 @@ export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormPr
   const navigate = useNavigate();
   const [description, setDescription] = useState('');
   const [files, setFiles] = useState<{
-    main?: File;
+    main: File | undefined;
     signature?: File;
     age?: File;
-  }>({});
+  }>({ main: undefined });
   const [uploadProgress, setUploadProgress] = useState<UploadProgressType>({
     status: 'idle',
     progress: 0

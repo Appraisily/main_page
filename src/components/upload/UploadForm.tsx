@@ -32,7 +32,7 @@ export default function UploadForm({ sessionId }: UploadFormProps) {
     try {
       const formData = new FormData();
       formData.append('session_id', sessionId);
-      formData.append('email', session?.customer_details.email || '');
+      formData.append('email', session?.customer_details?.email || '');
       formData.append('description', description);
 
       if (files.front) formData.append('front_artwork', files.front);
@@ -49,7 +49,7 @@ export default function UploadForm({ sessionId }: UploadFormProps) {
       }
 
       // Redirect to dashboard
-      navigate(`/dashboard?email=${encodeURIComponent(session?.customer_details.email || '')}`);
+      navigate(`/dashboard?email=${encodeURIComponent(session?.customer_details?.email || '')}`);
     } catch (error) {
       console.error('Upload error:', error);
       alert('Upload failed. Please try again or contact support.');
