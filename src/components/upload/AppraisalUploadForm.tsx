@@ -45,7 +45,8 @@ export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormPr
     // Reset steps
     setUploadSteps(steps => steps.map(step => ({ ...step, status: 'pending' })));
 
-    if (!files.main) {
+    const mainFile = files.main;
+    if (!mainFile) {
       setUploadProgress({
         status: 'error',
         progress: 0,
@@ -57,7 +58,7 @@ export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormPr
     // Start validation
     updateStepStatus('validation', 'processing');
     // Validate main image
-    const mainValidation = validateFile(files.main);
+    const mainValidation = validateFile(mainFile);
     if (!mainValidation.isValid) {
       updateStepStatus('validation', 'error');
       setUploadProgress({
@@ -77,7 +78,11 @@ export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormPr
       const response = await submitAppraisal({
         session_id: sessionId,
         description,
-        images: files
+        images: {
+          main: mainFile,
+          signature: files.signature,
+          age: files.age
+        }
       }, (progress) => {
         setUploadProgress({ status: 'uploading', progress });
       });
