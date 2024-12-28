@@ -7,7 +7,6 @@ export default function ImageUploader() {
   const [dragActive, setDragActive] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { uploadImage, loading, error } = useImageAnalysis();
-  const navigate = useNavigate();
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -23,16 +22,19 @@ export default function ImageUploader() {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      setSelectedFile(e.dataTransfer.files[0]);
+      const file = e.dataTransfer.files[0];
+      setSelectedFile(file);
+      handleAnalyze(file);
     }
   }, []);
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     if (e.target.files && e.target.files[0]) {
-      setSelectedFile(e.target.files[0]);
+      const file = e.target.files[0];
+      setSelectedFile(file);
+      handleAnalyze(file);
     }
   }, []);
 
@@ -40,17 +42,14 @@ export default function ImageUploader() {
     setSelectedFile(null);
   }, []);
 
-  const handleAnalyze = async () => {
-    if (!selectedFile) return;
-
+  const handleAnalyze = async (file: File) => {
     try {
-      const result = await uploadImage(selectedFile);
-      navigate(`/report/${result.sessionId}`);
+      await uploadImage(file);
     } catch (err) {
-      console.error('Error analyzing image:', err);
+      console.error('Error analyzing file:', err);
     }
   };
-
+  
   return (
     <div className="relative">
       <div className="absolute -inset-4 bg-gradient-to-tr from-blue-600/20 to-blue-400/10 rounded-2xl opacity-90 blur-md"></div>
@@ -82,20 +81,16 @@ export default function ImageUploader() {
               >
                 <X className="h-4 w-4" />
               </button>
-              <button
-                onClick={handleAnalyze}
-                disabled={loading}
-                className="px-6 py-1.5 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700 transition-colors flex items-center gap-2"
-              >
+              <div className="px-6 py-1.5 bg-blue-600 text-white rounded-full text-sm flex items-center gap-2">
                 {loading ? (
                   <>
                     <Loader2 className="h-4 w-4 animate-spin" />
                     Analyzing...
                   </>
                 ) : (
-                  'Analyze Now'
+                  'Uploading...'
                 )}
-              </button>
+              </div>
             </div>
           ) : (
             <div className="h-full flex flex-col items-center justify-center p-4">
