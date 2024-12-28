@@ -31,15 +31,15 @@ export function useImageAnalysis() {
       }
 
       const data: TempUploadResponse = await response.json();
-      
+
       if (!data.success) {
         throw new Error('Upload failed');
       }
-
-      return {
-        tempUrl: data.tempUrl,
-        sessionId: data.sessionId,
-      };
+      
+      // Redirect to screener domain
+      window.location.href = `https://screener.appraisily.com/?sessionId=${data.sessionId}`;
+      
+      return data;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       throw err;

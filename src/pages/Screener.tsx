@@ -1,25 +1,17 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import React from 'react';
+import ImageUploader from '../components/ImageUploader';
 
 export default function Screener() {
-  const [searchParams] = useSearchParams();
-  const sessionId = searchParams.get('sessionId');
-  const [iframeHeight, setIframeHeight] = useState('calc(100vh - 4rem)');
-
-  const screenerUrl = useMemo(() => {
-    const baseUrl = 'https://screener.appraisily.com';
-    return sessionId ? `${baseUrl}?sessionId=${sessionId}` : baseUrl;
-  }, [sessionId]);
-
   return (
-    <div className="w-full">
-      <iframe
-        src={screenerUrl}
-        title="Art Screener"
-        className="w-full border-0"
-        style={{ height: iframeHeight }}
-        allow="camera; microphone; fullscreen"
-      />
+    <div className="min-h-screen bg-gray-50 pt-24 pb-12">
+      <div className="max-w-3xl mx-auto px-6">
+        <div className="bg-white rounded-lg p-8 shadow-sm">
+          <h1 className="text-2xl font-bold text-gray-900 mb-6">
+            Upload Your Artwork
+          </h1>
+          <ImageUploader />
+        </div>
+      </div>
     </div>
   );
 }
