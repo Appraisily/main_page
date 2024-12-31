@@ -31,8 +31,7 @@ www.resources.appraisily.com/* https://resources.appraisily.com/:splat 301!
 # 4. SPA Fallback
 # --------------
 
-# Redirect all other routes to index.html for client-side routing
-/* /index.html 200
+
 
 # Si la URL contiene wsidchk
 /*?wsidchk=:anything   /  301
@@ -4915,3 +4914,5 @@ www.resources.appraisily.com/* https://resources.appraisily.com/:splat 301!
 /the-ultimate-guide-to-certified-antique-appraisers-how-to-find-the-right-expert-for-your-valuables  https://resources.appraisily.com/the-ultimate-guide-to-certified-antique-appraisers-how-to-find-the-right-expert-for-your-valuables/  301
 /unlocking-the-worth-a-collectors-guide-to-chokin-art-plate-value  https://resources.appraisily.com/unlocking-the-worth-a-collectors-guide-to-chokin-art-plate-value/  301
 
+# Redirect all other routes to index.html for client-side routing
+/* /index.html 200
