@@ -35,13 +35,6 @@ export default function Landing() {
           >
             Debug: Dashboard
           </Link>
-          {' '}
-          <Link
-            to="/screener"
-            className="bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-gray-800 text-sm"
-          >
-            Debug: Screener
-          </Link>
         </div>
       )}
       <Hero />
