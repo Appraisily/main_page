@@ -34,6 +34,26 @@ www.resources.appraisily.com/* https://resources.appraisily.com/:splat 301!
 # Redirect all other routes to index.html for client-side routing
 /* /index.html 200
 
+# Si la URL contiene wsidchk
+/*?wsidchk=:anything   /  301
+
+# Si la URL contiene pdata
+/*?pdata=:anything     /  301
+
+# “print-posts=print” => quitar parámetros
+/*?print-posts=:anything   /:splat  301
+
+# Comentarios /comment-page-
+/comment-page-*:splat  /  301
+
+# /feed/ => redirigir al home
+/*/feed/   /   301
+
+
+
+
+
+
 # Redirect all posts 
 
 
