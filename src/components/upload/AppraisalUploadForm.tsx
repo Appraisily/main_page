@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Loader2, AlertCircle } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useStripeSession } from '@/hooks/useStripeSession';
 import { validateFile } from '@/lib/validation/fileValidation';
 import { submitAppraisal } from '@/lib/api/appraisalApi';
-import { UploadProgress as UploadProgressType } from '@/lib/types/appraisal';
-import UploadProgress, { UploadStep } from './UploadProgress';
 import ImageUpload from './ImageUpload';
 
 interface AppraisalUploadFormProps {
@@ -20,59 +18,27 @@ export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormPr
     signature?: File;
     age?: File;
   }>({ main: undefined });
-  const [uploadProgress, setUploadProgress] = useState<UploadProgressType>({
-    status: 'idle',
-    progress: 0
-  });
-  const [uploadSteps, setUploadSteps] = useState<UploadStep[]>([
-    { id: 'validation', label: 'Validating files', status: 'pending' },
-    { id: 'preparation', label: 'Preparing upload', status: 'pending' },
-    { id: 'upload', label: 'Uploading files', status: 'pending' },
-    { id: 'processing', label: 'Processing appraisal', status: 'pending' }
-  ]);
-
-  const updateStepStatus = (stepId: string, status: UploadStep['status']) => {
-    setUploadSteps(steps => 
-      steps.map(step => 
-        step.id === stepId ? { ...step, status } : step
-      )
-    );
-  };
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Reset steps
-    setUploadSteps(steps => steps.map(step => ({ ...step, status: 'pending' })));
-
     const mainFile = files.main;
     if (!mainFile) {
-      setUploadProgress({
-        status: 'error',
-        progress: 0,
-        error: 'Please upload at least the main artwork image'
-      });
+      setError('Please upload at least the main artwork image');
       return;
     }
 
-    // Start validation
-    updateStepStatus('validation', 'processing');
     // Validate main image
     const mainValidation = validateFile(mainFile);
     if (!mainValidation.isValid) {
-      updateStepStatus('validation', 'error');
-      setUploadProgress({
-        status: 'error',
-        progress: 0,
-        error: mainValidation.error
-      });
+      setError(mainValidation.error);
       return;
     }
-    updateStepStatus('validation', 'completed');
 
-    // Start preparation
-    updateStepStatus('preparation', 'processing');
-    setUploadProgress({ status: 'uploading', progress: 0 });
+    setIsSubmitting(true);
+    setError(null);
 
     try {
       const response = await submitAppraisal({
@@ -83,26 +49,17 @@ export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormPr
           signature: files.signature,
           age: files.age
         }
-      }, (progress) => {
-        setUploadProgress({ status: 'uploading', progress });
       });
 
       if (response.success) {
-        updateStepStatus('upload', 'completed');
-        updateStepStatus('processing', 'completed');
-        setUploadProgress({ status: 'success', progress: 100 });
         navigate(`/submission-success?session_id=${sessionId}`);
       } else {
         throw new Error(response.error || 'Upload failed');
       }
     } catch (error) {
-      updateStepStatus('upload', 'error');
-      updateStepStatus('processing', 'error');
-      setUploadProgress({
-        status: 'error',
-        progress: 0,
-        error: error instanceof Error ? error.message : 'An unknown error occurred'
-      });
+      setError(error instanceof Error ? error.message : 'An unknown error occurred');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -160,20 +117,26 @@ export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormPr
       </div>
 
       {/* Upload Progress */}
-      {uploadProgress.status !== 'idle' && (
-        <UploadProgress 
-          steps={uploadSteps}
-          currentProgress={uploadProgress.status === 'uploading' ? uploadProgress.progress : undefined}
-        />
+      {error && (
+        <div className="text-sm text-red-600 text-center">
+          {error}
+        </div>
       )}
 
       {/* Submit Button */}
       <button
         type="submit"
-        disabled={uploadProgress.status === 'uploading'}
+        disabled={isSubmitting}
         className="w-full rounded-md bg-primary px-4 py-3 text-primary-foreground font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
       >
-        {uploadProgress.status === 'uploading' ? 'Uploading...' : 'Submit Appraisal'}
+        {isSubmitting ? (
+          <div className="flex items-center justify-center gap-2">
+            <Loader2 className="h-5 w-5 animate-spin" />
+            <span>Submitting...</span>
+          </div>
+        ) : (
+          'Submit Appraisal'
+        )}
       </button>
 
       {/* Support Email */}

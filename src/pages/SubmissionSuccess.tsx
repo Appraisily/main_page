@@ -1,12 +1,12 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { CheckCircle2, ArrowRight, LayoutDashboard } from 'lucide-react';
+import { CheckCircle2, ArrowRight, LayoutDashboard, Loader2 } from 'lucide-react';
 import { useStripeSession } from '@/hooks/useStripeSession';
 
 export default function SubmissionSuccess() {
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get('session_id') || '';
-  const { session, loading } = useStripeSession(sessionId);
+  const { session, loading, error } = useStripeSession(sessionId);
 
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-12">
@@ -35,15 +35,24 @@ export default function SubmissionSuccess() {
                 Please keep this reference number for future correspondence.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                {session?.customer_details?.email && (
+                {loading ? (
+                  <div className="flex items-center gap-2 text-gray-600">
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                    <span>Loading...</span>
+                  </div>
+                ) : session?.customer_details?.email ? (
                   <a
                     href={`/dashboard?email=${encodeURIComponent(session.customer_details.email)}`}
-                    className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                    className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors"
                   >
-                    View Dashboard
-                    <LayoutDashboard className="ml-2 h-5 w-5" />
+                    <LayoutDashboard className="mr-2 h-5 w-5" />
+                    Go to Dashboard
                   </a>
-                )}
+                ) : error ? (
+                  <p className="text-sm text-red-600">
+                    Unable to load dashboard link. Please try again later.
+                  </p>
+                ) : null}
                 <a
                   href="/"
                   className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"

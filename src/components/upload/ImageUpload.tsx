@@ -31,6 +31,7 @@ export default function ImageUpload({
 }: ImageUploadProps) {
   const [preview, setPreview] = useState<string>();
   const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Clean up preview URL on unmount
@@ -165,11 +166,12 @@ export default function ImageUpload({
             <span className="text-sm font-medium">
               Drop your image here or click to upload
             </span>
-            <span className="text-sm text-muted-foreground mt-1">
+            <span className="text-sm text-muted-foreground mt-1 mb-4">
               {description}
             </span>
             <button 
               type="button" 
+              onClick={() => inputRef.current?.click()}
               className="upload-image-button px-6 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-black transition-colors shadow-sm"
             >
               Browse Files
