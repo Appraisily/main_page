@@ -1,9 +1,10 @@
-export interface StripeSession {
-  customer_details: {
-    name: string;
-    email: string;
-  };
-  amount_total: number;
-  currency: string;
-  payment_status: string;
+export interface StripeSessionResponse {
+  event: 'conversion';
+  transactionTotal: number;
+  transactionId: string;
+  transactionCurrency: string;
+  userEmail: string;
+  userPhone?: string;
+  userFirstName: string;
+  userLastName: string;
 }

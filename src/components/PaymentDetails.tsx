@@ -13,31 +13,36 @@ export default function PaymentDetails({ sessionId }: PaymentDetailsProps) {
   // Push analytics data when session is loaded
   useEffect(() => {
     async function pushAnalytics() {
-      if (session?.customer_details.email) {
-        const emailHash = await hashEmail(session.customer_details.email);
-        
+      if (session?.userEmail) {
+        console.log('Pushing to dataLayer:', {
+          event: 'purchase_data_ready',
+          sessionId: session.transactionId,
+          transaction_total: session.transactionTotal,
+          customer_email: session.userEmail
+        });
+
+        if (!window.dataLayer) {
+          console.warn('DataLayer not initialized: window.dataLayer is undefined');
+        }
+
         window.dataLayer?.push({
-          event: 'purchase_complete',
+          event: 'purchase_data_ready',
+          sessionId: session.transactionId,
           ecommerce: {
-            transaction_id: sessionId,
-            value: session.amount_total / 100,
-            currency: session.currency,
+            transaction_id: session.transactionId,
+            value: session.transactionTotal,
+            currency: session.transactionCurrency,
             items: [{
               item_name: 'Art Appraisal Service',
-              price: session.amount_total / 100
+              price: session.transactionTotal
             }]
           },
           customer_data: {
-            email_hash: emailHash,
-            name: session.customer_details.name
+            email: session.userEmail,
+            phone: session.userPhone,
+            name: `${session.userFirstName} ${session.userLastName}`
           }
         });
-        // Push a separate event to indicate data is ready
-        window.dataLayer?.push({
-          event: 'purchase_data_ready',
-          sessionId: sessionId
-        });
-
       }
     }
 
@@ -70,26 +75,27 @@ export default function PaymentDetails({ sessionId }: PaymentDetailsProps) {
   }
 
   return (
-    <div className="rounded-lg border border-green-100 bg-white p-6 mb-8 shadow-sm">
+    <div className="rounded-lg border border-green-100 bg-white p-8 mb-8 shadow-sm">
       <div className="flex items-start gap-4">
-        <div className="rounded-full bg-green-50 p-2">
+        <div className="rounded-full bg-green-50 p-3">
           <CheckCircle2 className="h-5 w-5 text-green-500" />
         </div>
         <div>
           <h2 className="text-lg font-semibold text-gray-900 mb-3">
-            Payment Successful
+            Payment Processed Successfully
           </h2>
-          <div className="space-y-2">
-            <p className="text-gray-600">Thank you, <span className="font-medium text-gray-900">{session.customer_details.name}</span>, for your appraisal request.</p>
-            <div className="flex flex-col gap-1.5 text-sm">
-              <div className="flex items-center justify-between border-t border-gray-100 pt-2">
-                <span className="text-gray-500">Amount paid</span>
-                <span className="font-medium text-gray-900">${session.amount_total / 100} {session.currency.toUpperCase()}</span>
-              </div>
-              <div className="flex items-center justify-between border-t border-gray-100 pt-2">
-                <span className="text-gray-500">Email</span>
-                <span className="font-medium text-gray-900">{session.customer_details.email}</span>
-              </div>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-gray-500">Amount paid</span>
+              <span className="font-medium text-gray-900">
+                ${session.transactionTotal.toFixed(2)} {session.transactionCurrency}
+              </span>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-gray-500">Name</span>
+              <span className="text-gray-900">
+                {session.userFirstName} {session.userLastName}
+              </span>
             </div>
           </div>
         </div>

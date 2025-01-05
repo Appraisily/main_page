@@ -43,7 +43,7 @@ export default function SubmissionSuccess() {
                 ) : session?.customer_details?.email ? (
                   <a
                     href={`/dashboard?email=${encodeURIComponent(session.customer_details.email)}`}
-                    className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors"
+                    className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors mr-4"
                   >
                     <LayoutDashboard className="mr-2 h-5 w-5" />
                     Go to Dashboard

@@ -1,17 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 
-interface StripeSession {
-  customer_details: {
-    name: string;
-    email: string;
-  };
-  amount_total: number;
-  currency: string;
-  payment_status: string;
-}
+import { StripeSessionResponse } from '@/lib/types/stripe';
 
 export function useStripeSession(sessionId: string | null) {
-  const [session, setSession] = useState<StripeSession | null>(null);
+  const [session, setSession] = useState<StripeSessionResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | undefined>();
   const fetchController = useRef<AbortController | null>(null);
@@ -39,7 +31,7 @@ export function useStripeSession(sessionId: string | null) {
 
       try {
         const response = await fetch(
-          `https://payment-processor-856401495068.us-central1.run.app/stripe/session/${sessionId}`,
+          `https://payment-processor-856401495068.us-central1.run.app/stripe/expandedsession/${sessionId}`,
           {
             headers: {
               'x-shared-secret': 'sk_shared_5f9a4b2c8e7d6f3a1b9c4d5e8f7a2b3c4d5e6f7'
@@ -59,6 +51,31 @@ export function useStripeSession(sessionId: string | null) {
         }
 
         setSession(stripeSession);
+
+        // Fire Google Ads conversion tracking
+        const gtagData = {
+          event: 'purchase_data_ready',
+          ecommerce: {
+            transaction_id: stripeSession.transactionId,
+            value: stripeSession.transactionTotal,
+            currency: stripeSession.transactionCurrency,
+            items: [{
+              item_name: 'Art Appraisal Service',
+              price: stripeSession.transactionTotal
+            }]
+          },
+          customer_data: {
+            email: stripeSession.userEmail,
+            phone: stripeSession.userPhone,
+            name: `${stripeSession.userFirstName} ${stripeSession.userLastName}`
+          }
+        };
+
+        // Push to dataLayer
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push(gtagData);
+
+        console.log('Pushed to dataLayer:', gtagData);
       } catch (err) {
         // Only set error if it's not an abort error
         if (err instanceof Error && err.name !== 'AbortError') {
