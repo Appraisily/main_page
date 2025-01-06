@@ -10,47 +10,6 @@ interface PaymentDetailsProps {
 export default function PaymentDetails({ sessionId }: PaymentDetailsProps) {
   const { session, loading, error } = useStripeSession(sessionId);
 
-  // Push analytics data when session is loaded
-  useEffect(() => {
-    async function pushAnalytics() {
-      if (session?.userEmail) {
-        console.log('Pushing to dataLayer:', {
-          event: 'purchase_data_ready',
-          sessionId: session.transactionId,
-          transaction_total: session.transactionTotal,
-          customer_email: session.userEmail
-        });
-
-        if (!window.dataLayer) {
-          console.warn('DataLayer not initialized: window.dataLayer is undefined');
-        }
-
-        window.dataLayer?.push({
-          event: 'purchase_data_ready',
-          sessionId: session.transactionId,
-          ecommerce: {
-            transaction_id: session.transactionId,
-            value: session.transactionTotal,
-            currency: session.transactionCurrency,
-            items: [{
-              item_name: 'Art Appraisal Service',
-              price: session.transactionTotal
-            }]
-          },
-          customer_data: {
-            email: session.userEmail,
-            phone: session.userPhone,
-            name: `${session.userFirstName} ${session.userLastName}`
-          }
-        });
-      }
-    }
-
-    if (session) {
-      pushAnalytics();
-    }
-  }, [session, sessionId]);
-
   if (loading) {
     return (
       <div className="rounded-lg border border-gray-100 bg-white p-6 mb-8 shadow-sm">

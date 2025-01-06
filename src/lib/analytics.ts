@@ -1,4 +1,8 @@
-// Hash function using SHA-256
+/**
+ * Hash an email address using SHA-256
+ * @param email The email address to hash
+ * @returns A promise that resolves to the hashed email as a hex string
+ */
 export async function hashEmail(email: string): Promise<string> {
   const encoder = new TextEncoder();
   const data = encoder.encode(email);
@@ -7,7 +11,6 @@ export async function hashEmail(email: string): Promise<string> {
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-// Extend Window interface to include dataLayer
 declare global {
   interface Window {
     dataLayer: any[];

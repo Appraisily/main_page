@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { hashEmail } from '@/lib/analytics';
 
 import { StripeSessionResponse } from '@/lib/types/stripe';
 
@@ -52,30 +53,42 @@ export function useStripeSession(sessionId: string | null) {
 
         setSession(stripeSession);
 
-        // Fire Google Ads conversion tracking
-        const gtagData = {
-          event: 'purchase_data_ready',
-          ecommerce: {
-            transaction_id: stripeSession.transactionId,
-            value: stripeSession.transactionTotal,
-            currency: stripeSession.transactionCurrency,
-            items: [{
-              item_name: 'Art Appraisal Service',
-              price: stripeSession.transactionTotal
-            }]
-          },
-          customer_data: {
-            email: stripeSession.userEmail,
-            phone: stripeSession.userPhone,
-            name: `${stripeSession.userFirstName} ${stripeSession.userLastName}`
-          }
-        };
+        try {
+          // Hash the email
+          const hashedEmail = await hashEmail(stripeSession.userEmail);
 
-        // Push to dataLayer
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push(gtagData);
+          // Initialize dataLayer if needed
+          window.dataLayer = window.dataLayer || [];
 
-        console.log('Pushed to dataLayer:', gtagData);
+          // First push the ecommerce data
+          const ecommerceData = {
+            ecommerce: {
+              transaction_id: sessionId,
+              value: stripeSession.transactionTotal,
+              currency: stripeSession.transactionCurrency,
+              items: [{
+                item_name: 'Art Appraisal Service',
+                price: stripeSession.transactionTotal
+              }]
+            },
+            customer_data: {
+              email_hash: hashedEmail,
+              phone: stripeSession.userPhone,
+              name: `${stripeSession.userFirstName} ${stripeSession.userLastName}`
+            }
+          };
+
+          // Push ecommerce data first
+          window.dataLayer.push(ecommerceData);
+
+          // Then trigger the event separately
+          window.dataLayer.push({ 
+            event: 'purchase_data_ready',
+            transaction_id: sessionId
+          });
+        } catch (hashError) {
+          console.error('Error hashing email:', hashError);
+        }
       } catch (err) {
         // Only set error if it's not an abort error
         if (err instanceof Error && err.name !== 'AbortError') {
