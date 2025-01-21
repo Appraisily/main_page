@@ -1,12 +1,3 @@
-declare global {
-  interface Window {
-    dataLayer: any[];
-    Tawk_API?: any;
-    Tawk_LoadStart?: Date;
-    gtag?: (...args: any[]) => void;
-  }
-}
-
 /**
  * Hash an email address using SHA-256
  * @param email The email address to hash
@@ -18,6 +9,15 @@ export async function hashEmail(email: string): Promise<string> {
   const hashBuffer = await crypto.subtle.digest('SHA-256', data);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+declare global {
+  interface Window {
+    dataLayer: any[];
+    Tawk_API?: any;
+    Tawk_LoadStart?: Date;
+    gtag?: (...args: any[]) => void;
+  }
 }
 
 // Lazy load Google Analytics
