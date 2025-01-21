@@ -5,11 +5,18 @@
   site_id = "a74570dc-3d68-4ed5-8e6f-50e83a967712"
   prod_branch = "main"
 
+[functions]
+  directory = "netlify/edge-functions"
+
+[[edge_functions]]
+  path = "/*"
+  function = "proxy-resources"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  force = false
 
 [build.processing]
   skip_processing = false
