@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build": "tsc && vite build && npm run copy-edge-functions",
+    "preview": "vite preview",
+    "copy-edge-functions": "cp -r netlify/edge-functions dist/edge-functions"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.0.5",
