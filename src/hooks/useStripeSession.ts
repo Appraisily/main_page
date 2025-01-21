@@ -35,7 +35,7 @@ export function useStripeSession(sessionId: string | null) {
           `https://payment-processor-856401495068.us-central1.run.app/stripe/expandedsession/${sessionId}`,
           {
             headers: {
-              'x-shared-secret': import.meta.env.VITE_STRIPE_SHARED_SECRET || ''
+              'x-shared-secret': import.meta.env.VITE_STRIPE_SHARED_SECRET
             },
             signal: controller.signal
           }
