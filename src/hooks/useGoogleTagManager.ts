@@ -1,12 +1,5 @@
 import { useEffect } from 'react';
 
-declare global {
-  interface Window {
-    dataLayer?: any[];
-    gtag?: (...args: any[]) => void;
-  }
-}
-
 export const useGoogleTagManager = (gtmId: string) => {
   useEffect(() => {
     function initGTM() {

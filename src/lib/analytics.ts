@@ -11,14 +11,6 @@ export async function hashEmail(email: string): Promise<string> {
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-declare global {
-  interface Window {
-    dataLayer: any[];
-    Tawk_API?: any;
-    Tawk_LoadStart?: Date;
-  }
-}
-
 // Lazy load Google Analytics
 export const initializeAnalytics = () => {
   const loadGoogleAnalytics = () => {
