@@ -16,7 +16,6 @@ declare global {
     dataLayer: any[];
     Tawk_API?: any;
     Tawk_LoadStart?: Date;
-    gtag?: (...args: any[]) => void;
   }
 }
 

@@ -7,18 +7,4 @@ export interface StripeSessionResponse {
   userPhone?: string;
   userFirstName: string;
   userLastName: string;
-  customer_details?: {
-    email: string;
-    phone?: string;
-    name?: string;
-  };
-}
-
-export interface StripeSession {
-  id: string;
-  customer_details: {
-    email: string;
-    phone?: string;
-    name?: string;
-  };
 }

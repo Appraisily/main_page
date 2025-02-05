@@ -70,8 +70,5 @@ export default defineConfig(({ mode }) => ({
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom', '@radix-ui/react-tooltip', 'lucide-react']
-  },
-  define: {
-    'import.meta.env.VITE_STRIPE_SHARED_SECRET': 'undefined'
   }
 }));
