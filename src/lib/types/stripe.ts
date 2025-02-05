@@ -1,5 +1,8 @@
 export interface StripeSessionResponse {
   event: 'conversion';
+  customer_details?: {
+    email: string;
+  };
   transactionTotal: number;
   transactionId: string;
   transactionCurrency: string;

@@ -1,4 +1,4 @@
-import { StripeSession } from '../types/stripe';
+import { StripeSessionResponse } from '../types/stripe';
 
 const API_URL = 'https://payment-processor-856401495068.us-central1.run.app';
 

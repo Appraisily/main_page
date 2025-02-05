@@ -13,7 +13,7 @@ export async function hashEmail(email: string): Promise<string> {
 
 declare global {
   interface Window {
-    dataLayer: any[];
+    dataLayer?: any[];
     Tawk_API?: any;
     Tawk_LoadStart?: Date;
   }
