@@ -1,13 +1,13 @@
 [build]
   command = "npm run build"
   publish = "dist"
-  environment = { 
-    NODE_VERSION = "20",
-    SECRETS_SCAN_OMIT_PATHS = "dist/assets/*",
-    SECRETS_SCAN_ENABLED = "false"
-  }
   site_id = "a74570dc-3d68-4ed5-8e6f-50e83a967712"
   prod_branch = "main"
+
+[build.environment]
+  NODE_VERSION = "20"
+  SECRETS_SCAN_OMIT_PATHS = "dist/assets/*"
+  SECRETS_SCAN_ENABLED = "false"
 
 [[redirects]]
   from = "/*"
