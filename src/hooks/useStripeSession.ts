@@ -32,17 +32,19 @@ export function useStripeSession(sessionId: string | null) {
 
       try {
         const response = await fetch(
-          `https://payment-processor-856401495068.us-central1.run.app/stripe/expandedsession/${sessionId}`,
+          `https://payment-processor-856401495068.us-central1.run.app/stripe/session/${sessionId}`,
           {
             headers: {
-              'x-shared-secret': import.meta.env.VITE_STRIPE_SHARED_SECRET
+              'x-shared-secret': import.meta.env.VITE_STRIPE_SHARED_SECRET || '',
+              'Content-Type': 'application/json'
             },
             signal: controller.signal
           }
         );
         
         if (!response.ok) {
-          throw new Error(`Failed to fetch session: ${response.status}`);
+          const errorText = await response.text();
+          throw new Error(`Failed to fetch session: ${response.status} - ${errorText}`);
         }
 
         const stripeSession = await response.json();
@@ -55,7 +57,7 @@ export function useStripeSession(sessionId: string | null) {
 
         try {
           // Hash the email
-          const hashedEmail = await hashEmail(stripeSession.userEmail);
+          const hashedEmail = await hashEmail(stripeSession.customer_details?.email || '');
 
           // Initialize dataLayer if needed
           window.dataLayer = window.dataLayer || [];
@@ -64,17 +66,17 @@ export function useStripeSession(sessionId: string | null) {
           const ecommerceData = {
             ecommerce: {
               transaction_id: sessionId,
-              value: stripeSession.transactionTotal,
-              currency: stripeSession.transactionCurrency,
+              value: stripeSession.amount_total / 100, // Convert from cents
+              currency: stripeSession.currency,
               items: [{
                 item_name: 'Art Appraisal Service',
-                price: stripeSession.transactionTotal
+                price: stripeSession.amount_total / 100
               }]
             },
             customer_data: {
               email_hash: hashedEmail,
-              phone: stripeSession.userPhone,
-              name: `${stripeSession.userFirstName} ${stripeSession.userLastName}`
+              phone: stripeSession.customer_details?.phone || '',
+              name: stripeSession.customer_details?.name || ''
             }
           };
 
