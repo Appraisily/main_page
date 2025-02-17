@@ -1,12 +1,67 @@
 import { useState, useEffect, useRef } from 'react';
 import { hashEmail } from '@/lib/analytics';
-import { StripeSessionResponse } from '@/lib/types/stripe';
+import type { StripeSessionResponse } from '@/lib/types/stripe';
+
+const FALLBACK_TRANSACTION_AMOUNT = 5900; // $59.00 in cents
 
 export function useStripeSession(sessionId: string | null) {
   const [session, setSession] = useState<StripeSessionResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | undefined>();
   const fetchController = useRef<AbortController | null>(null);
+  const analyticsTriggered = useRef<boolean>(false);
+
+  const pushAnalyticsEvent = async (data: StripeSessionResponse | null) => {
+    if (analyticsTriggered.current || !sessionId) return;
+    
+    try {
+      // Initialize dataLayer
+      window.dataLayer = window.dataLayer || [];
+      
+      // Prepare analytics data with fallbacks
+      const analyticsData = {
+        ecommerce: {
+          transaction_id: sessionId,
+          value: data ? data.transactionTotal / 100 : FALLBACK_TRANSACTION_AMOUNT / 100,
+          currency: data?.transactionCurrency || 'USD',
+          items: [{
+            item_name: 'Art Appraisal Service',
+            price: data ? data.transactionTotal / 100 : FALLBACK_TRANSACTION_AMOUNT / 100
+          }]
+        }
+      };
+
+      // Add customer data if available
+      if (data?.userEmail) {
+        const hashedEmail = await hashEmail(data.userEmail);
+        analyticsData.customer_data = {
+          email_hash: hashedEmail,
+          name: `${data.userFirstName} ${data.userLastName}`.trim()
+        };
+      }
+
+      // Push ecommerce data
+      window.dataLayer.push(analyticsData);
+
+      // Trigger purchase event
+      window.dataLayer.push({
+        event: 'purchase_confirmation',
+        transaction_id: sessionId
+      });
+
+      analyticsTriggered.current = true;
+    } catch (error) {
+      console.error('Failed to push analytics event:', error);
+      
+      // Fallback: Push minimal event data
+      window.dataLayer?.push({
+        event: 'purchase_confirmation',
+        transaction_id: sessionId
+      });
+      
+      analyticsTriggered.current = true;
+    }
+  };
 
   useEffect(() => {
     if (!sessionId) {
@@ -66,47 +121,17 @@ export function useStripeSession(sessionId: string | null) {
         };
 
         setSession(transformedSession);
-
-        try {
-          // Hash the email
-          const hashedEmail = await hashEmail(stripeSession.email || '');
-
-          // Initialize dataLayer if needed
-          window.dataLayer = window.dataLayer || [];
-
-          // First push the ecommerce data
-          const ecommerceData = {
-            ecommerce: {
-              transaction_id: sessionId,
-              value: transformedSession.transactionTotal / 100, // Convert from cents
-              currency: transformedSession.transactionCurrency,
-              items: [{
-                item_name: 'Art Appraisal Service',
-                price: transformedSession.transactionTotal / 100
-              }]
-            },
-            customer_data: {
-              email_hash: hashedEmail,
-              name: `${transformedSession.userFirstName} ${transformedSession.userLastName}`.trim()
-            }
-          };
-
-          // Push ecommerce data first
-          window.dataLayer.push(ecommerceData);
-
-          // Then trigger the event separately
-          window.dataLayer.push({ 
-            event: 'purchase_data_ready',
-            transaction_id: sessionId
-          });
-        } catch (hashError) {
-          console.error('Error hashing email:', hashError);
-        }
+        
+        // Push analytics event with full data
+        await pushAnalyticsEvent(transformedSession);
       } catch (err) {
         // Only set error if it's not an abort error
         if (err instanceof Error && err.name !== 'AbortError') {
           setSession(null);
           setError(err.message);
+          
+          // Push analytics event with fallback data
+          await pushAnalyticsEvent(null);
         }
       } finally {
         if (!controller.signal.aborted) {

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useStripeSession } from '@/hooks/useStripeSession';
 import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { formatCurrency } from '@/lib/utils/text';
 import { hashEmail } from '@/lib/analytics';
 
 interface PaymentDetailsProps {
@@ -47,7 +48,7 @@ export default function PaymentDetails({ sessionId }: PaymentDetailsProps) {
             <div className="flex items-center justify-between text-sm">
               <span className="text-gray-500">Amount paid</span>
               <span className="font-medium text-gray-900">
-                ${session.transactionTotal.toFixed(2)} {session.transactionCurrency}
+                {formatCurrency(session.transactionTotal / 100, session.transactionCurrency)}
               </span>
             </div>
             <div className="flex items-center justify-between text-sm">
