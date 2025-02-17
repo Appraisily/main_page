@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { hashEmail } from '@/lib/analytics';
-
 import { StripeSessionResponse } from '@/lib/types/stripe';
 
 export function useStripeSession(sessionId: string | null) {
@@ -46,18 +45,31 @@ export function useStripeSession(sessionId: string | null) {
           const errorText = await response.text();
           throw new Error(`Failed to fetch session: ${response.status} - ${errorText}`);
         }
-
         const stripeSession = await response.json();
 
         if (!stripeSession) {
           throw new Error('Session not found');
         }
 
-        setSession(stripeSession);
+        // Transform the response to match our expected format
+        const transformedSession: StripeSessionResponse = {
+          event: 'conversion',
+          customer_details: {
+            email: stripeSession.email
+          },
+          transactionTotal: stripeSession.amount_total || 0,
+          transactionId: stripeSession.id,
+          transactionCurrency: stripeSession.currency || 'usd',
+          userEmail: stripeSession.email,
+          userFirstName: stripeSession.customer_details?.name?.split(' ')[0] || '',
+          userLastName: stripeSession.customer_details?.name?.split(' ').slice(1).join(' ') || ''
+        };
+
+        setSession(transformedSession);
 
         try {
           // Hash the email
-          const hashedEmail = await hashEmail(stripeSession.customer_details?.email || '');
+          const hashedEmail = await hashEmail(stripeSession.email || '');
 
           // Initialize dataLayer if needed
           window.dataLayer = window.dataLayer || [];
@@ -66,17 +78,16 @@ export function useStripeSession(sessionId: string | null) {
           const ecommerceData = {
             ecommerce: {
               transaction_id: sessionId,
-              value: stripeSession.amount_total / 100, // Convert from cents
-              currency: stripeSession.currency,
+              value: transformedSession.transactionTotal / 100, // Convert from cents
+              currency: transformedSession.transactionCurrency,
               items: [{
                 item_name: 'Art Appraisal Service',
-                price: stripeSession.amount_total / 100
+                price: transformedSession.transactionTotal / 100
               }]
             },
             customer_data: {
               email_hash: hashedEmail,
-              phone: stripeSession.customer_details?.phone || '',
-              name: stripeSession.customer_details?.name || ''
+              name: `${transformedSession.userFirstName} ${transformedSession.userLastName}`.trim()
             }
           };
 
