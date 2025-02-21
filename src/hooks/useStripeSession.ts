@@ -7,16 +7,18 @@ const DEV_SHARED_KEY = 'sk_shared_5f9a4b2c8e7d6f3a1b9c4d5e8f7a2b3c4d5e6f7';
 
 const mockSessionData: Record<string, StripeSessionResponse> = {
   'cs_live_b1lDTlUrm70sYbfdDJGgvkh6hPjdJXdEi9w0FBgS2F33pw63KCXs4IV6vO': {
-    event: 'conversion',
     customer_details: {
-      email: 'test@example.com'
+      name: 'Test User',
+      email: 'test@example.com',
     },
-    transactionTotal: 17700,
-    transactionId: 'cs_live_b1lDTlUrm70sYbfdDJGgvkh6hPjdJXdEi9w0FBgS2F33pw63KCXs4IV6vO',
-    transactionCurrency: 'usd',
-    userEmail: 'test@example.com',
-    userFirstName: 'Test',
-    userLastName: 'User',
+    amount_total: 17700,
+    currency: 'usd',
+    payment_status: 'paid',
+    client_reference_id: 'bulk_test123',
+    metadata: {
+      appraisal_type: 'regular',
+      items_count: '3'
+    }
   }
 }
 const FALLBACK_TRANSACTION_AMOUNT = 5900; // $59.00 in cents
@@ -39,15 +41,15 @@ export function useStripeSession(sessionId: string | null) {
       const analyticsData = {
         ecommerce: {
           transaction_id: sessionId,
-          value: data ? data.transactionTotal : FALLBACK_TRANSACTION_AMOUNT,
-          currency: data?.transactionCurrency || 'USD',
+          value: data ? data.amount_total : FALLBACK_TRANSACTION_AMOUNT,
+          currency: data?.currency || 'USD',
           items: [{
             item_name: 'Art Appraisal Service',
-            price: data ? data.transactionTotal : FALLBACK_TRANSACTION_AMOUNT
+            price: data ? data.amount_total : FALLBACK_TRANSACTION_AMOUNT
           }],
-          customer_data: data?.userEmail ? {
-            email_hash: await hashEmail(data.userEmail),
-            name: `${data.userFirstName} ${data.userLastName}`.trim()
+          customer_data: data?.customer_details?.email ? {
+            email_hash: await hashEmail(data.customer_details.email),
+            name: data.customer_details.name
           } : undefined
         }
       };
@@ -114,28 +116,14 @@ export function useStripeSession(sessionId: string | null) {
         }
         const stripeSession = await response.json();
 
-        if (!stripeSession) {
+        if (!stripeSession || !stripeSession.amount_total) {
           throw new Error('Session not found');
         }
 
-        // Transform the response to match our expected format
-        const transformedSession: StripeSessionResponse = {
-          event: 'conversion',
-          customer_details: {
-            email: stripeSession.email
-          },
-          transactionTotal: stripeSession.amount_total || 0,
-          transactionId: stripeSession.id,
-          transactionCurrency: stripeSession.currency || 'usd',
-          userEmail: stripeSession.email,
-          userFirstName: stripeSession.customer_details?.name?.split(' ')[0] || '',
-          userLastName: stripeSession.customer_details?.name?.split(' ').slice(1).join(' ') || ''
-        };
-
-        setSession(transformedSession);
+        setSession(stripeSession);
         
         // Push analytics event with full data
-        await pushAnalyticsEvent(transformedSession);
+        await pushAnalyticsEvent(stripeSession);
       } catch (err) {
         // Only set error if it's not an abort error
         if (err instanceof Error && err.name !== 'AbortError') {
