@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 const CHUNK_SIZE = 5 * 1024 * 1024; // 5MB chunks
 const UPLOAD_ENDPOINT = 'https://payment-processor-856401495068.us-central1.run.app/upload';
 
-interface UploadOptions {
+export interface UploadOptions {
   file: File;
   onProgress?: (progress: number) => void;
   onSuccess?: (url: string) => void;
@@ -14,7 +14,7 @@ interface UploadOptions {
   onResume?: () => void;
 }
 
-interface UploadController {
+export interface UploadController {
   start: () => void;
   pause: () => void;
   resume: () => void;

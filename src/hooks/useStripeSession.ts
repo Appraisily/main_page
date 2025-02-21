@@ -27,18 +27,13 @@ export function useStripeSession(sessionId: string | null) {
           items: [{
             item_name: 'Art Appraisal Service',
             price: data ? data.transactionTotal / 100 : FALLBACK_TRANSACTION_AMOUNT / 100
-          }]
+          }],
+          customer_data: data?.userEmail ? {
+            email_hash: await hashEmail(data.userEmail),
+            name: `${data.userFirstName} ${data.userLastName}`.trim()
+          } : undefined
         }
       };
-
-      // Add customer data if available
-      if (data?.userEmail) {
-        const hashedEmail = await hashEmail(data.userEmail);
-        analyticsData.customer_data = {
-          email_hash: hashedEmail,
-          name: `${data.userFirstName} ${data.userLastName}`.trim()
-        };
-      }
 
       // Push ecommerce data
       window.dataLayer.push(analyticsData);
