@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useStripeSession } from '@/hooks/useStripeSession';
 import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
-import { formatCurrency } from '@/lib/utils/text';
-import { hashEmail } from '@/lib/analytics';
+import { formatCurrency } from '@/lib/utils/text'; 
 
 interface PaymentDetailsProps {
   sessionId: string; 
@@ -48,15 +47,23 @@ export default function PaymentDetails({ sessionId }: PaymentDetailsProps) {
             <div className="flex items-center justify-between text-sm">
               <span className="text-gray-500">Amount paid</span>
               <span className="font-medium text-gray-900">
-                {formatCurrency(session.transactionTotal, session.transactionCurrency)}
+                {formatCurrency(session.amount_total, session.currency)}
               </span>
             </div>
             <div className="flex items-center justify-between text-sm">
               <span className="text-gray-500">Name</span>
               <span className="text-gray-900">
-                {session.userFirstName} {session.userLastName}
+                {session.customer_details?.name || 'N/A'}
               </span>
             </div>
+            {session.metadata?.items_count && (
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-500">Items</span>
+                <span className="text-gray-900">
+                  {session.metadata.items_count}
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>

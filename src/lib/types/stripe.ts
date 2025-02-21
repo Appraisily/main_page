@@ -1,14 +1,14 @@
 export interface StripeSessionResponse {
-  event: 'conversion';
   customer_details?: {
+    name: string;
     email: string;
   };
-  transactionTotal: number;
-  transactionId: string;
-  transactionCurrency: string;
-  userEmail: string;
-  userPhone?: string;
-  userFirstName: string;
-  userLastName: string;
+  amount_total: number;
+  currency: string;
+  payment_status: string;
   client_reference_id?: string;
+  metadata?: {
+    appraisal_type?: string;
+    items_count?: string;
+  };
 }
