@@ -1,7 +1,8 @@
 import React from 'react';
 import { Loader2, Check, X, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { updateItemDescription } from '@/lib/api/bulkUploadApi'; 
+import { updateItemDescription } from '@/lib/api/bulkUploadApi';
+import type { UploadStatus } from '@/lib/types/appraisal';
 
 export interface UploadedItem {
   id: string;
@@ -12,7 +13,7 @@ export interface UploadedItem {
     type: 'main' | 'signature' | 'age';
     label: string;
   }[];
-  uploadStatus: 'pending' | 'uploading' | 'success' | 'error' | 'saving';
+  uploadStatus: UploadStatus;
   uploadProgress?: number;
   uploadError?: string;
   description?: string;
@@ -116,17 +117,17 @@ export function ItemGrid({
                     {/* Upload Status Indicator */}
                     <div className="absolute top-2 left-2">
                       {item.uploadStatus === 'uploading' && (
-                        <div key="uploading" className="bg-white rounded-full p-2 shadow-sm">
+                        <div className="bg-white rounded-full p-2 shadow-sm">
                           <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
                         </div>
                       )}
-                      {item.uploadStatus === 'success' && (
-                        <div key="success" className="bg-green-100 rounded-full p-2 shadow-sm">
+                      {(item.uploadStatus === 'success' || item.uploadStatus === 'processed') && (
+                        <div className="bg-green-100 rounded-full p-2 shadow-sm">
                           <Check className="h-5 w-5 text-green-600" />
                         </div>
                       )}
                       {item.uploadStatus === 'error' && (
-                        <div key="error" className="bg-red-100 rounded-full p-2 shadow-sm">
+                        <div className="bg-red-100 rounded-full p-2 shadow-sm">
                           <X className="h-5 w-5 text-red-600" />
                         </div>
                       )}
