@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { useGoogleTagManager } from './hooks/useGoogleTagManager';
+import ScrollRestoration from './components/ScrollRestoration';
 import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -66,6 +67,7 @@ export default function App() {
               title="Appraisily | Professional Art & Antique Appraisals"
               description="Leading online art and antique appraisal firm with certified experts. Professional valuations for collectors, institutions, and private clients worldwide."
             />
+            <ScrollRestoration />
             <Navbar />
             <main>
               <Routes>
