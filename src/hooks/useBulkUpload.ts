@@ -1,7 +1,28 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { initBulkSession, restoreSession } from '@/lib/api/bulkUploadApi';
-import type { UploadedItem } from '@/components/upload/BulkUpload/ItemGrid';
+import type { BulkUploadResponse } from '@/lib/types/appraisal';
+
+export type UploadStatus = 'error' | 'pending' | 'uploading' | 'success' | 'saving' | 'processed';
+
+export interface UploadedItem {
+  id: string;
+  images: {
+    id: string;
+    preview: string;
+    file?: File;
+    type: 'main' | 'signature' | 'age';
+    label: string;
+  }[];
+  uploadStatus: UploadStatus;
+  uploadProgress?: number;
+  uploadError?: string;
+  description?: string;
+  localDescription?: string;
+  category?: string;
+  descriptionStatus?: 'saving' | 'saved' | 'error';
+  descriptionError?: string;
+}
 
 export function useBulkUpload() {
   const navigate = useNavigate();
@@ -49,7 +70,7 @@ export function useBulkUpload() {
     setIsRestoringSession(true);
     try {
       const response = await restoreSession(id);
-      if (response.success) {
+      if (response.success && response.items) {
         setSessionId(id);
         setItems(response.items.map(item => ({
           images: [{
@@ -57,7 +78,7 @@ export function useBulkUpload() {
             preview: item.file_url,
             type: 'main',
             label: 'Main Photo'
-          }],
+          }] as UploadedItem['images'],
           id: item.item_id,
           uploadStatus: item.status as UploadStatus,
           description: item.description || '',
@@ -65,7 +86,7 @@ export function useBulkUpload() {
         })));
       }
     } catch (err) {
-      setError('Failed to restore session');
+      setError(err instanceof Error ? err.message : 'Failed to restore session');
     } finally {
       setIsRestoringSession(false);
     }
