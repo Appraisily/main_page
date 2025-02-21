@@ -26,10 +26,12 @@ export interface BulkUploadResponse {
     description?: string;
     category?: string;
     appraisal_type?: string;
-    status: 'error' | 'pending' | 'uploading' | 'success' | 'saving' | 'processed';
+    status: UploadStatus;
   }>;
   error?: string;
 }
+
+export type UploadStatus = 'error' | 'pending' | 'uploading' | 'success' | 'saving' | 'processed';
 
 export interface AppraisalResponse {
   success: boolean;

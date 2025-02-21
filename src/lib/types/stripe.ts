@@ -10,4 +10,5 @@ export interface StripeSessionResponse {
   userPhone?: string;
   userFirstName: string;
   userLastName: string;
+  client_reference_id?: string;
 }

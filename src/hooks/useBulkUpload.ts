@@ -31,8 +31,6 @@ export function useBulkUpload() {
   const [items, setItems] = useState<UploadedItem[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  type UploadStatus = 'error' | 'pending' | 'uploading' | 'success' | 'saving' | 'processed';
-
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const urlSessionId = params.get('session_id');
