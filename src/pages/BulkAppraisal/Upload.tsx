@@ -103,7 +103,8 @@ export default function BulkUploadPage() {
         test: 'https://buy.stripe.com/cN2aIK8SMaDW4s87u1'
       };
 
-      const paymentLink = `${useTestPayment ? paymentLinks.test : paymentLinks[appraisalType]}?prefilled_promo_code=FRIENDS20&client_reference_id=bulk_${sessionId}`;
+      // Remove the bulk_ prefix since it's already added by the backend
+      const paymentLink = `${useTestPayment ? paymentLinks.test : paymentLinks[appraisalType]}?prefilled_promo_code=FRIENDS20&client_reference_id=${sessionId}`;
       window.location.href = paymentLink;
     } catch (err) {
       setError('Upload failed. Please try again.');

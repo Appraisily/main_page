@@ -30,6 +30,12 @@
 [build.processing.images]
   compress = true
 
+# Handle client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
 # Updated Security Headers with more permissive CSP
 [[headers]]
   for = "/*"
