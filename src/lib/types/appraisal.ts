@@ -10,6 +10,27 @@ export interface AppraisalRequest {
   }
 }
 
+export interface BulkUploadRequest {
+  session_id: string;
+  file: File;
+  description?: string;
+  category?: string;
+  appraisal_type?: 'regular' | 'insurance' | 'tax';
+}
+
+export interface BulkUploadResponse {
+  success: boolean;
+  items: Array<{
+    item_id: string;
+    file_url: string;
+    description?: string;
+    category?: string;
+    appraisal_type?: string;
+    status: 'pending' | 'processed';
+  }>;
+  error?: string;
+}
+
 export interface AppraisalResponse {
   success: boolean;
   post_id?: number;

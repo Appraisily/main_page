@@ -16,6 +16,10 @@ import Success from './pages/Success';
 import Services from './pages/Services';
 import Expertise from './pages/Expertise';
 import Dashboard from './pages/Dashboard';
+import BulkAppraisal from './pages/BulkAppraisal';
+import BulkUpload from './pages/BulkAppraisal/Upload';
+import BulkReview from './pages/BulkAppraisal/Review';
+import SessionRestore from './pages/BulkAppraisal/SessionRestore';
 import HowItWorks from './pages/HowItWorks';
 import Report from './pages/Report';
 import Terms from './pages/Terms';
@@ -119,6 +123,26 @@ export default function App() {
                 <Route path="/start" element={
                   <Suspense fallback={<PageLoader />}>
                     <ServiceSelection />
+                  </Suspense>
+                } />
+                <Route path="/bulk-appraisal" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <BulkAppraisal />
+                  </Suspense>
+                } />
+                <Route path="/bulk-appraisal/:sessionId" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <SessionRestore />
+                  </Suspense>
+                } />
+                <Route path="/bulk-appraisal/upload" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <BulkUpload />
+                  </Suspense>
+                } />
+                <Route path="/bulk-appraisal/review" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <BulkReview />
                   </Suspense>
                 } />
               </Routes>

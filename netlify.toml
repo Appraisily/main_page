@@ -9,10 +9,9 @@
   SECRETS_SCAN_OMIT_PATHS = "dist/assets/*"
   SECRETS_SCAN_ENABLED = "false"
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+[[edge_functions]]
+  path = "/*"
+  function = "proxy"
 
 [build.processing]
   skip_processing = false
