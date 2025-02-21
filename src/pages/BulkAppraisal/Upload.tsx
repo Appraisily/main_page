@@ -190,21 +190,19 @@ export default function BulkUploadPage() {
 
           <div className="space-y-6">
             <PaymentNotice />
-            {/* Test Payment Option - Only visible in development */}
-            {import.meta.env.DEV && (
-              <div className="flex items-center gap-2 p-4 bg-yellow-50 border border-yellow-100 rounded-lg">
-                <input
-                  type="checkbox"
-                  id="useTestPayment"
-                  checked={useTestPayment}
-                  onChange={(e) => setUseTestPayment(e.target.checked)}
-                  className="h-4 w-4 text-blue-600 rounded border-gray-300"
-                />
-                <label htmlFor="useTestPayment" className="text-sm font-medium text-yellow-800">
-                  Use test payment link (Development only)
-                </label>
-              </div>
-            )}
+            {/* Test Payment Option */}
+            <div className="flex items-center gap-2 p-4 bg-yellow-50 border border-yellow-100 rounded-lg">
+              <input
+                type="checkbox"
+                id="useTestPayment"
+                checked={useTestPayment}
+                onChange={(e) => setUseTestPayment(e.target.checked)}
+                className="h-4 w-4 text-blue-600 rounded border-gray-300"
+              />
+              <label htmlFor="useTestPayment" className="text-sm font-medium text-yellow-800">
+                Use test payment link
+              </label>
+            </div>
             <ActionButtons
               onCancel={() => navigate('/bulk-appraisal')}
               onSubmit={handleSubmit}
