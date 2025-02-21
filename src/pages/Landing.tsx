@@ -38,6 +38,12 @@ export default function Landing() {
             Debug: Success Payment
           </Link>
           {' '}
+         <Link
+           to="/success-payment?session_id=cs_live_b1lDTlUrm70sYbfdDJGgvkh6hPjdJXdEi9w0FBgS2F33pw63KCXs4IV6vO"
+           className="bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-gray-800 text-sm block mb-2"
+         >
+           Debug: Bulk Success
+         </Link>
           <Link
             to="/dashboard?email=jimhackley54@yahoo.com"
             className="bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-gray-800 text-sm"

@@ -2,6 +2,23 @@ import { useState, useEffect, useRef } from 'react';
 import { hashEmail } from '@/lib/analytics';
 import type { StripeSessionResponse } from '@/lib/types/stripe';
 
+const isDev = import.meta.env.DEV;
+const DEV_SHARED_KEY = 'sk_shared_5f9a4b2c8e7d6f3a1b9c4d5e8f7a2b3c4d5e6f7';
+
+const mockSessionData: Record<string, StripeSessionResponse> = {
+  'cs_live_b1lDTlUrm70sYbfdDJGgvkh6hPjdJXdEi9w0FBgS2F33pw63KCXs4IV6vO': {
+    event: 'conversion',
+    customer_details: {
+      email: 'test@example.com'
+    },
+    transactionTotal: 17700,
+    transactionId: 'cs_live_b1lDTlUrm70sYbfdDJGgvkh6hPjdJXdEi9w0FBgS2F33pw63KCXs4IV6vO',
+    transactionCurrency: 'usd',
+    userEmail: 'test@example.com',
+    userFirstName: 'Test',
+    userLastName: 'User',
+  }
+}
 const FALLBACK_TRANSACTION_AMOUNT = 5900; // $59.00 in cents
 
 export function useStripeSession(sessionId: string | null) {
@@ -22,11 +39,11 @@ export function useStripeSession(sessionId: string | null) {
       const analyticsData = {
         ecommerce: {
           transaction_id: sessionId,
-          value: data ? data.transactionTotal / 100 : FALLBACK_TRANSACTION_AMOUNT / 100,
+          value: data ? data.transactionTotal : FALLBACK_TRANSACTION_AMOUNT,
           currency: data?.transactionCurrency || 'USD',
           items: [{
             item_name: 'Art Appraisal Service',
-            price: data ? data.transactionTotal / 100 : FALLBACK_TRANSACTION_AMOUNT / 100
+            price: data ? data.transactionTotal : FALLBACK_TRANSACTION_AMOUNT
           }],
           customer_data: data?.userEmail ? {
             email_hash: await hashEmail(data.userEmail),
@@ -84,7 +101,7 @@ export function useStripeSession(sessionId: string | null) {
           `https://payment-processor-856401495068.us-central1.run.app/stripe/session/${sessionId}`,
           {
             headers: {
-              'x-shared-secret': import.meta.env.VITE_STRIPE_SHARED_SECRET || '',
+              'x-shared-secret': isDev ? DEV_SHARED_KEY : (import.meta.env.VITE_STRIPE_SHARED_SECRET || ''),
               'Content-Type': 'application/json'
             },
             signal: controller.signal

@@ -48,7 +48,7 @@ export default function PaymentDetails({ sessionId }: PaymentDetailsProps) {
             <div className="flex items-center justify-between text-sm">
               <span className="text-gray-500">Amount paid</span>
               <span className="font-medium text-gray-900">
-                {formatCurrency(session.transactionTotal / 100, session.transactionCurrency)}
+                {formatCurrency(session.transactionTotal, session.transactionCurrency)}
               </span>
             </div>
             <div className="flex items-center justify-between text-sm">
