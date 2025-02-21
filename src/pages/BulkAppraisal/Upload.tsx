@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Upload, Loader2 } from 'lucide-react';
 import { finalizeBulkUpload, updateSessionEmail } from '@/lib/api/bulkUploadApi';
-import { useBulkUpload } from '@/hooks/useBulkUpload';
+import { useBulkUpload, type UploadedItem } from '@/hooks/useBulkUpload';
 import { useFileUpload } from '@/hooks/useFileUpload';
 import { SessionInfo } from '@/components/upload/SessionInfo';
 import { SessionRestoreForm } from '@/components/upload/BulkUpload/SessionRestoreForm';
@@ -19,6 +19,7 @@ export default function BulkUploadPage() {
   const [email, setEmail] = useState('');
   const [emailSaved, setEmailSaved] = useState(false);
   const [appraisalType, setAppraisalType] = useState<AppraisalType>('regular');
+  const [isUploading, setIsUploading] = useState(false);
 
   const {
     sessionId,
@@ -30,12 +31,7 @@ export default function BulkUploadPage() {
     handleSessionRestore
   } = useBulkUpload();
 
-  const {
-    isUploading,
-    setIsUploading,
-    handleFileSelect,
-    handleRemoveItem
-  } = useFileUpload({
+  const { handleFileSelect, handleRemoveItem } = useFileUpload({
     sessionId,
     appraisalType,
     setError,
@@ -177,7 +173,7 @@ export default function BulkUploadPage() {
           <ItemGrid
             items={items}
             sessionId={sessionId}
-            onRemoveItem={handleRemoveItem}
+            onRemoveItem={(id: string) => handleRemoveItem(id)}
             onDescriptionChange={(id, description, status) => {
               setItems(prev => prev.map(i => 
                 i.id === id ? { 

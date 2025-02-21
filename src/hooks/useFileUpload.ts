@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { validateFile } from '@/lib/validation/fileValidation';
 import { uploadFile } from '@/lib/api/bulkUploadApi';
-import type { UploadedItem } from '@/components/upload/BulkUpload/ItemGrid';
+import type { UploadedItem, UploadStatus } from '@/hooks/useBulkUpload';
 import type { AppraisalType } from '@/components/upload/BulkUpload/AppraisalTypeSelector';
 
 interface UseFileUploadProps {
@@ -12,8 +12,6 @@ interface UseFileUploadProps {
 }
 
 export function useFileUpload({ sessionId, appraisalType, setError, setItems }: UseFileUploadProps) {
-  const [isUploading, setIsUploading] = useState(false);
-
   const handleFileSelect = async (files: FileList) => {
     if (!sessionId) {
       setError('Upload session not initialized');
@@ -108,8 +106,6 @@ export function useFileUpload({ sessionId, appraisalType, setError, setItems }: 
   };
 
   return {
-    isUploading,
-    setIsUploading,
     handleFileSelect,
     handleRemoveItem
   };
