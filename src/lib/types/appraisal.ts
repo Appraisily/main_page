@@ -26,7 +26,7 @@ export interface BulkUploadResponse {
     description?: string;
     category?: string;
     appraisal_type?: string;
-    status: 'pending' | 'processed';
+    status: 'error' | 'pending' | 'uploading' | 'success' | 'saving' | 'processed';
   }>;
   error?: string;
 }
