@@ -19,33 +19,26 @@ const appraisalTypes: AppraisalOption[] = [
     title: 'Regular Appraisal',
     description: 'Standard valuation for collectors and sellers',
     icon: Scale,
-    basePrice: 5900 // $59.00
+    basePrice: 4720 // $47.20 (20% off $59)
   },
   {
     id: 'insurance',
     title: 'Insurance Appraisal',
     description: 'Detailed documentation for insurance purposes',
     icon: Shield,
-    basePrice: 5900 // $59.00
+    basePrice: 4720 // $47.20 (20% off $59)
   },
   {
     id: 'tax',
     title: 'Tax Appraisal',
     description: 'IRS-compliant valuations for tax purposes',
     icon: FileCheck,
-    basePrice: 5900 // $59.00
+    basePrice: 4720 // $47.20 (20% off $59)
   }
 ];
 
-const BULK_DISCOUNT_THRESHOLD = 3;
-const BULK_DISCOUNT_PERCENTAGE = 0.20; // 20% discount
-
-function calculatePrice(basePrice: number, itemCount: number): { price: number; hasDiscount: boolean } {
-  const hasDiscount = itemCount >= BULK_DISCOUNT_THRESHOLD;
-  const price = hasDiscount 
-    ? basePrice * (1 - BULK_DISCOUNT_PERCENTAGE)
-    : basePrice;
-  return { price, hasDiscount };
+function calculatePrice(basePrice: number): { price: number } {
+  return { price: basePrice };
 }
 
 interface AppraisalTypeSelectorProps {
@@ -61,13 +54,8 @@ export function AppraisalTypeSelector({ value, onChange, itemCount = 1 }: Apprai
         Select Appraisal Type
       </h3>
       <div className="mb-4 p-3 bg-blue-50 border border-blue-100 rounded-lg text-sm text-gray-700">
-        All appraisal types are <span className="font-medium">{formatCurrency(5900 / 100)}</span> per item
+        Special offer: All appraisal types are <span className="font-medium">{formatCurrency(4720 / 100)}</span> per item (20% off)
       </div>
-      {itemCount >= BULK_DISCOUNT_THRESHOLD && (
-        <div className="mb-4 p-3 bg-green-50 border border-green-100 rounded-lg text-sm text-green-700">
-          20% bulk discount applied for 3 or more items!
-        </div>
-      )}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {appraisalTypes.map((type) => {
           const Icon = type.icon;
@@ -101,14 +89,9 @@ export function AppraisalTypeSelector({ value, onChange, itemCount = 1 }: Apprai
                     {type.title}
                   </h4>
                   <div className="flex items-center gap-2">
-                    {hasDiscount && (
-                      <span className="text-sm line-through text-gray-400">
-                        {formatCurrency(type.basePrice / 100)}/item
-                      </span>
-                    )}
                     <span className={cn(
                       "text-sm",
-                      hasDiscount ? "text-green-600 font-medium" : "text-gray-600"
+                      "text-green-600 font-medium"
                     )}>
                       {formatCurrency(price / 100)}/item
                     </span>

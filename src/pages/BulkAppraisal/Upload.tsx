@@ -19,7 +19,6 @@ export default function BulkUploadPage() {
   const [email, setEmail] = useState('');
   const [emailSaved, setEmailSaved] = useState(false);
   const [appraisalType, setAppraisalType] = useState<AppraisalType>('regular');
-  const [useTestPayment, setUseTestPayment] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
   const {
@@ -99,12 +98,11 @@ export default function BulkUploadPage() {
       const paymentLinks = {
         regular: 'https://buy.stripe.com/9AQaIKd925jC6Ag6pQ',
         insurance: 'https://buy.stripe.com/7sI2ce2uo13m4s87tW',
-        tax: 'https://buy.stripe.com/6oE2cefha3bu1fW15z',
-        test: 'https://buy.stripe.com/cN2aIK8SMaDW4s87u1'
+        tax: 'https://buy.stripe.com/6oE2cefha3bu1fW15z'
       };
 
       // Remove the bulk_ prefix since it's already added by the backend
-      const paymentLink = `${useTestPayment ? paymentLinks.test : paymentLinks[appraisalType]}?prefilled_promo_code=FRIENDS20&client_reference_id=${sessionId}`;
+      const paymentLink = `${paymentLinks[appraisalType]}?prefilled_promo_code=FRIENDS20&client_reference_id=${sessionId}`;
       window.location.href = paymentLink;
     } catch (err) {
       setError('Upload failed. Please try again.');
@@ -191,19 +189,6 @@ export default function BulkUploadPage() {
 
           <div className="space-y-6">
             <PaymentNotice />
-            {/* Test Payment Option */}
-            <div className="flex items-center gap-2 p-4 bg-yellow-50 border border-yellow-100 rounded-lg">
-              <input
-                type="checkbox"
-                id="useTestPayment"
-                checked={useTestPayment}
-                onChange={(e) => setUseTestPayment(e.target.checked)}
-                className="h-4 w-4 text-blue-600 rounded border-gray-300"
-              />
-              <label htmlFor="useTestPayment" className="text-sm font-medium text-yellow-800">
-                Use test payment link
-              </label>
-            </div>
             <ActionButtons
               onCancel={() => navigate('/bulk-appraisal')}
               onSubmit={handleSubmit}
