@@ -26,6 +26,7 @@ import Report from './pages/Report';
 import Terms from './pages/Terms';
 import ServiceSelection from './pages/ServiceSelection';
 import SubmissionSuccess from './pages/SubmissionSuccess';
+import Appraisers from './pages/Appraisers';
 
 // Loading component
 const PageLoader = () => (
@@ -110,6 +111,11 @@ export default function App() {
                 <Route path="/terms" element={
                   <Suspense fallback={<PageLoader />}>
                     <Terms />
+                  </Suspense>
+                } />
+                <Route path="/appraisers" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Appraisers />
                   </Suspense>
                 } />
                 <Route path="/submission-success" element={
