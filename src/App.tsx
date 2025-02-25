@@ -28,6 +28,11 @@ import ServiceSelection from './pages/ServiceSelection';
 import SubmissionSuccess from './pages/SubmissionSuccess';
 import Appraisers from './pages/Appraisers';
 
+// TODO: Import appraiser related components
+// import AppraiserProfile from './pages/appraisers/AppraiserProfile';
+// import LocationPage from './pages/appraisers/LocationPage';
+// import SpecialtyPage from './pages/appraisers/SpecialtyPage';
+
 // Loading component
 const PageLoader = () => (
   <div className="min-h-screen bg-white flex items-center justify-center">
@@ -153,6 +158,22 @@ export default function App() {
                     <BulkReview />
                   </Suspense>
                 } />
+                {/* Appraiser Directory Routes - Uncomment when components are created */}
+                {/* <Route path="/location/:citySlug" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <LocationPage />
+                  </Suspense>
+                } />
+                <Route path="/appraiser/:appraiserSlug" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <AppraiserProfile />
+                  </Suspense>
+                } />
+                <Route path="/specialty/:specialtySlug" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <SpecialtyPage />
+                  </Suspense>
+                } /> */}
               </Routes>
             </main>
             <Footer />
