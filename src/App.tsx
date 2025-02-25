@@ -28,10 +28,10 @@ import ServiceSelection from './pages/ServiceSelection';
 import SubmissionSuccess from './pages/SubmissionSuccess';
 import Appraisers from './pages/Appraisers';
 
-// TODO: Import appraiser related components
-// import AppraiserProfile from './pages/appraisers/AppraiserProfile';
-// import LocationPage from './pages/appraisers/LocationPage';
-// import SpecialtyPage from './pages/appraisers/SpecialtyPage';
+// Import appraiser pages
+import AppraiserDirectory from './pages/appraisers/src/components/AppraisersDirectory';
+import AppraiserPage from './pages/appraisers/src/pages/AppraiserPage';
+import LocationPage from './pages/appraisers/src/pages/LocationPage';
 
 // Loading component
 const PageLoader = () => (
@@ -118,11 +118,36 @@ export default function App() {
                     <Terms />
                   </Suspense>
                 } />
+                
+                {/* Appraiser Directory Routes */}
                 <Route path="/appraisers" element={
                   <Suspense fallback={<PageLoader />}>
-                    <Appraisers />
+                    <AppraiserDirectory />
                   </Suspense>
                 } />
+                <Route path="/appraisers/location/:citySlug" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <LocationPage />
+                  </Suspense>
+                } />
+                <Route path="/appraisers/appraiser/:appraiserId" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <AppraiserPage />
+                  </Suspense>
+                } />
+                
+                {/* Direct URL routes for SEO */}
+                <Route path="/location/:citySlug" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <LocationPage />
+                  </Suspense>
+                } />
+                <Route path="/appraiser/:appraiserId" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <AppraiserPage />
+                  </Suspense>
+                } />
+                
                 <Route path="/submission-success" element={
                   <Suspense fallback={<PageLoader />}>
                     <SubmissionSuccess />
@@ -158,22 +183,6 @@ export default function App() {
                     <BulkReview />
                   </Suspense>
                 } />
-                {/* Appraiser Directory Routes - Uncomment when components are created */}
-                {/* <Route path="/location/:citySlug" element={
-                  <Suspense fallback={<PageLoader />}>
-                    <LocationPage />
-                  </Suspense>
-                } />
-                <Route path="/appraiser/:appraiserSlug" element={
-                  <Suspense fallback={<PageLoader />}>
-                    <AppraiserProfile />
-                  </Suspense>
-                } />
-                <Route path="/specialty/:specialtySlug" element={
-                  <Suspense fallback={<PageLoader />}>
-                    <SpecialtyPage />
-                  </Suspense>
-                } /> */}
               </Routes>
             </main>
             <Footer />
