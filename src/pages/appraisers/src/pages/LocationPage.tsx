@@ -15,6 +15,23 @@ export type Appraiser = {
   specialties: string[];
 };
 
+export type LocationData = {
+  city?: string;
+  state?: string;
+  appraisers: Appraiser[];
+  seo?: {
+    title?: string;
+    description?: string;
+    keywords?: string[];
+    schema?: {
+      areaServed?: {
+        name?: string;
+      };
+      [key: string]: any;
+    };
+  };
+};
+
 export function LocationPage() {
   const { citySlug } = useParams<{ citySlug: string }>();
   console.log('LocationPage - citySlug:', citySlug);
@@ -56,22 +73,25 @@ export function LocationPage() {
     );
   }
 
+  // Treat locationData as LocationData type to satisfy TypeScript
+  const safeLocationData = locationData as unknown as LocationData;
+
   return (
     <>
       <SEO
-        title={locationData.seo?.title || `Art Appraisers in ${cityName} | Expert Art Valuation Services`}
-        description={locationData.seo?.description || `Find certified art appraisers in ${cityName}. Get expert art valuations, authentication services, and professional advice for your art collection.`}
+        title={safeLocationData?.seo?.title || `Art Appraisers in ${cityName} | Expert Art Valuation Services`}
+        description={safeLocationData?.seo?.description || `Find certified art appraisers in ${cityName}. Get expert art valuations, authentication services, and professional advice for your art collection.`}
         keywords={[
-          ...(locationData.seo?.keywords || []),
-          `art appraisers ${cityName.toLowerCase()}`,
-          `art valuation ${cityName.toLowerCase()}`,
-          `art authentication ${locationData.state?.toLowerCase() || 'usa'}`,
-          `fine art appraisal ${cityName.toLowerCase()}`
+          ...(safeLocationData?.seo?.keywords || []),
+          `art appraisers ${cityName?.toLowerCase() || ''}`,
+          `art valuation ${cityName?.toLowerCase() || ''}`,
+          `art authentication ${safeLocationData?.state?.toLowerCase() || 'usa'}`,
+          `fine art appraisal ${cityName?.toLowerCase() || ''}`
         ]}
         schema={[
-          locationData.seo?.schema || {},
+          safeLocationData?.seo?.schema || {},
           generateBreadcrumbSchema(),
-          generateLocationSchema(locationData)
+          generateLocationSchema(safeLocationData)
         ]}
         canonicalUrl={`https://appraisily.com/location/${citySlug}`}
       />
@@ -91,15 +111,15 @@ export function LocationPage() {
 
         <main className="container mx-auto px-6 py-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {locationData.appraisers.map((appraiser, index) => (
-                <a key={`appraiser-${appraiser.id || appraiser.name}-${index}`} href={`/appraiser/${appraiser.id}`}>
+              {safeLocationData.appraisers.map((appraiser, index) => (
+                <a key={`appraiser-${appraiser?.id || appraiser?.name || index}`} href={`/appraiser/${appraiser?.id || ''}`}>
                   <div className="rounded-lg border bg-white text-foreground shadow-sm group overflow-hidden hover:shadow-lg transition-all duration-300">
                     <div className="relative">
                       <div style={{ position: 'relative', width: '100%', paddingBottom: '75%' }}>
                         <div style={{ position: 'absolute', inset: 0 }}>
                           <img
-                            src={appraiser.image}
-                            alt={appraiser.name}
+                            src={appraiser?.image || 'https://placehold.it/300x200?text=No+Image'}
+                            alt={appraiser?.name || 'Appraiser'}
                             className="object-cover w-full h-full"
                           />
                         </div>
@@ -107,23 +127,23 @@ export function LocationPage() {
                       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
                         <div className="flex items-center gap-1">
                           <Star className="h-4 w-4 text-yellow-400" />
-                          <span className="text-white font-semibold">{appraiser.rating}/5</span>
-                          <span className="text-white/80 text-sm">({appraiser.reviewCount} reviews)</span>
+                          <span className="text-white font-semibold">{appraiser?.rating || 0}/5</span>
+                          <span className="text-white/80 text-sm">({appraiser?.reviewCount || 0} reviews)</span>
                         </div>
                       </div>
                     </div>
                     <div className="p-4">
                       <h2 className="font-bold text-xl mb-2 group-hover:text-primary transition-colors">
-                        {appraiser.name}
+                        {appraiser?.name}
                       </h2>
                       <div className="flex items-center gap-2 text-muted-foreground mb-2">
                         <MapPin className="h-4 w-4 flex-shrink-0" />
-                        <span className="text-sm truncate">{appraiser.address}</span>
+                        <span className="text-sm truncate">{appraiser?.address}</span>
                       </div>
                       <div className="flex flex-wrap gap-2 mt-3">
-                        {Array.isArray(appraiser.specialties) && appraiser.specialties.map((specialty, index) => (
+                        {Array.isArray(appraiser?.specialties) && appraiser?.specialties.map((specialty, index) => (
                           <span
-                            key={`${appraiser.id || appraiser.name}-${specialty}-${index}`}
+                            key={`${appraiser?.id || appraiser?.name}-${specialty}-${index}`}
                             className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary"
                           >
                             {specialty}

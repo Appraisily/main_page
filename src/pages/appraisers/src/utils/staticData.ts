@@ -46,7 +46,47 @@ import stLouisData from '../data/locations/st-louis.json';
 import washingtonData from '../data/locations/washington.json';
 import citiesData from '../data/cities.json';
 
-export const locations = [
+// Define a type for the location data to handle all the optional properties
+type LocationData = {
+  city?: string;
+  state?: string;
+  appraisers: Array<{
+    id?: string;
+    name: string;
+    specialties: string[];
+    image?: string;
+    rating?: number;
+    reviewCount?: number;
+    address?: string;
+    phone?: string;
+    email?: string;
+    website?: string;
+    about?: string;
+    businessHours?: { day: string; hours: string }[];
+    services?: { name: string; description: string }[];
+    reviews?: { name: string; rating: number; date: string; comment: string }[];
+    city?: string;
+    state?: string;
+    services_offered?: string | string[];
+    certifications?: string[];
+    years_in_business?: string;
+    notes?: string;
+    pricing?: string;
+  }>;
+  seo?: {
+    title?: string;
+    description?: string;
+    keywords?: string[];
+    schema?: {
+      areaServed?: {
+        name?: string;
+      };
+      [key: string]: any;
+    };
+  };
+};
+
+export const locations: LocationData[] = [
   chicagoData, chicagoCopyData, newYorkData, phoenixData, aspenData, atlantaData, austinData,
   bostonData, buffaloData, charlestonData, charlotteData, cincinnatiData, 
   clevelandData, columbusData, dallasData, denverData, fortWorthData, hartfordData, 
@@ -57,37 +97,37 @@ export const locations = [
 ];
 export const cities = citiesData.cities;
 
-export function getLocation(citySlug: string) {
+export function getLocation(citySlug: string): LocationData | null {
   const normalizedSlug = citySlug.toLowerCase().replace(/\s+/g, '-');
   console.log('getLocation - normalizedSlug:', normalizedSlug);
-  console.log('getLocation - available locations:', locations.map(l => l.city || l.seo?.schema?.areaServed?.name || l.appraisers?.[0]?.city));
+  console.log('getLocation - available locations:', locations.map(l => l?.city || l?.seo?.schema?.areaServed?.name || l?.appraisers?.[0]?.city));
 
   // First try to find location by seo.schema.areaServed.name
   const locationBySeo = locations.find(location => 
-    location.seo?.schema?.areaServed?.name?.toLowerCase().replace(/\s+/g, '-') === normalizedSlug
+    location?.seo?.schema?.areaServed?.name?.toLowerCase().replace(/\s+/g, '-') === normalizedSlug
   );
   console.log('getLocation - locationBySeo:', locationBySeo?.city || locationBySeo?.seo?.schema?.areaServed?.name);
   if (locationBySeo) return locationBySeo;
 
   // Then try by city property
   const locationByCity = locations.find(location => 
-    location.city?.toLowerCase().replace(/\s+/g, '-') === normalizedSlug
+    location?.city?.toLowerCase().replace(/\s+/g, '-') === normalizedSlug
   );
   console.log('getLocation - locationByCity:', locationByCity?.city);
   if (locationByCity) return locationByCity;
 
   // Finally try by first appraiser's city
   const locationByAppraiser = locations.find(location => 
-    location.appraisers?.[0]?.city?.toLowerCase().replace(/\s+/g, '-') === normalizedSlug
+    location?.appraisers?.[0]?.city?.toLowerCase().replace(/\s+/g, '-') === normalizedSlug
   );
   console.log('getLocation - locationByAppraiser:', locationByAppraiser?.appraisers?.[0]?.city);
 
-  return locationBySeo || locationByCity || locationByAppraiser;
+  return locationBySeo || locationByCity || locationByAppraiser || null;
 }
 
 export function getAppraiser(appraiserId: string) {
   for (const location of locations) {
-    const appraiser = location.appraisers.find(a => a.id === appraiserId);
+    const appraiser = location.appraisers.find(a => a?.id === appraiserId);
     if (appraiser) {
       return appraiser;
     }
