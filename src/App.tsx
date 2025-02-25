@@ -29,9 +29,9 @@ import SubmissionSuccess from './pages/SubmissionSuccess';
 import Appraisers from './pages/Appraisers';
 
 // Import appraiser pages
-import AppraiserDirectory from './pages/appraisers/src/components/AppraisersDirectory';
-import AppraiserPage from './pages/appraisers/src/pages/AppraiserPage';
-import LocationPage from './pages/appraisers/src/pages/LocationPage';
+import { AppraisersDirectory } from './pages/appraisers/src/components/AppraisersDirectory';
+import { AppraiserPage } from './pages/appraisers/src/pages/AppraiserPage';
+import { LocationPage } from './pages/appraisers/src/pages/LocationPage';
 
 // Loading component
 const PageLoader = () => (
@@ -122,7 +122,7 @@ export default function App() {
                 {/* Appraiser Directory Routes */}
                 <Route path="/appraisers" element={
                   <Suspense fallback={<PageLoader />}>
-                    <AppraiserDirectory />
+                    <AppraisersDirectory />
                   </Suspense>
                 } />
                 <Route path="/appraisers/location/:citySlug" element={

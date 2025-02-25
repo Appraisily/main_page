@@ -1,7 +1,11 @@
 // This file serves as a data adapter between the appraiser app and the main app
 // It reexports and/or transforms data from the original appraiser repo
 
-import { getLocations, getAppraisersByLocation, getAppraiserById } from '../../../pages/appraisers/api';
+import { 
+  fetchAllCities as getLocations, 
+  fetchAppraisersByCity as getAppraisersByLocation, 
+  fetchAppraiserBySlug as getAppraiserById 
+} from '../../../pages/appraisers/api';
 import type { Appraiser, Location } from '../../../pages/appraisers/types';
 
 // Re-export types and data functions

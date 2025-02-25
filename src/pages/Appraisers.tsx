@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import AppraiserDirectory from './appraisers/src/components/AppraisersDirectory';
+import { AppraisersDirectory } from './appraisers/src/components/AppraisersDirectory';
 
 // This component serves as an adapter between the imported AppraisersDirectory 
 // component and our main application
@@ -16,7 +16,7 @@ const Appraisers = () => {
       </Helmet>
 
       {/* Render the imported AppraiserDirectory component */}
-      <AppraiserDirectory />
+      <AppraisersDirectory />
     </>
   );
 };
