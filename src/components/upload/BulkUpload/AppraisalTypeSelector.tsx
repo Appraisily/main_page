@@ -37,8 +37,12 @@ const appraisalTypes: AppraisalOption[] = [
   }
 ];
 
-function calculatePrice(basePrice: number): { price: number } {
-  return { price: basePrice };
+function calculatePrice(basePrice: number, itemCount: number = 1): { price: number; hasDiscount: boolean } {
+  // Apply any volume discounts or other pricing logic here
+  return { 
+    price: basePrice,
+    hasDiscount: false // Set to true when applying discounts
+  };
 }
 
 interface AppraisalTypeSelectorProps {

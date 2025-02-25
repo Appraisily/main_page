@@ -46,7 +46,18 @@ import stLouisData from '../data/locations/st-louis.json';
 import washingtonData from '../data/locations/washington.json';
 import citiesData from '../data/cities.json';
 
-// Define a type for the location data to handle all the optional properties
+// Define a more flexible type for the review data that can handle different formats
+type ReviewData = {
+  id?: string;
+  name?: string;
+  author?: string;
+  rating: number;
+  date: string;
+  comment?: string;
+  content?: string;
+};
+
+// Define a type for the location data to handle all the optional properties and variations
 type LocationData = {
   city?: string;
   state?: string;
@@ -64,14 +75,19 @@ type LocationData = {
     about?: string;
     businessHours?: { day: string; hours: string }[];
     services?: { name: string; description: string }[];
-    reviews?: { name: string; rating: number; date: string; comment: string }[];
+    reviews?: ReviewData[];
     city?: string;
     state?: string;
     services_offered?: string | string[];
-    certifications?: string[];
-    years_in_business?: string;
+    certifications?: string | string[];
+    years_in_business?: string | number;
     notes?: string;
-    pricing?: string;
+    pricing?: string | string[];
+    seo?: {
+      schema?: any;
+      [key: string]: any;
+    };
+    [key: string]: any; // Allow any other properties
   }>;
   seo?: {
     title?: string;
@@ -84,9 +100,11 @@ type LocationData = {
       [key: string]: any;
     };
   };
+  [key: string]: any; // Allow any other properties at the root level
 };
 
-export const locations: LocationData[] = [
+// Type assertion to handle different data formats
+export const locations = [
   chicagoData, chicagoCopyData, newYorkData, phoenixData, aspenData, atlantaData, austinData,
   bostonData, buffaloData, charlestonData, charlotteData, cincinnatiData, 
   clevelandData, columbusData, dallasData, denverData, fortWorthData, hartfordData, 
@@ -94,7 +112,8 @@ export const locations: LocationData[] = [
   losAngelesData, miamiData, minneapolisData, nashvilleData, newOrleansData,
   palmBeachData, philadelphiaData, pittsburghData, portlandData, providenceData, 
   raleighData, richmondData, sacramentoData, saltLakeCityData, sanAntonioData, sanDiegoData, sanFranciscoData, sanJoseData, santaFeData, savannahData, seattleData, stLouisData, washingtonData
-];
+] as LocationData[];
+
 export const cities = citiesData.cities;
 
 export function getLocation(citySlug: string): LocationData | null {
