@@ -10,7 +10,13 @@
     "netlify:build": "turbo run build --filter=@repo/main... --filter=@repo/appraisers...",
     "build:main": "turbo run build --filter=@repo/main...",
     "build:appraisers": "turbo run build --filter=@repo/appraisers...",
-    "postbuild": "mkdir -p apps/main/dist/directory && cp -r apps/appraisers/dist/* apps/main/dist/directory/"
+    "postbuild": "node scripts/postbuild.js",
+    "dev:main": "node scripts/dev-main.js",
+    "dev:appraisers": "node scripts/dev-appraisers.js",
+    "preview:main": "node scripts/preview.js main",
+    "preview:appraisers": "node scripts/preview.js appraisers",
+    "clean:deps": "node scripts/clean-deps.js",
+    "clean:deps:cache": "node scripts/clean-deps.js --cache"
   },
   "devDependencies": {
     "prettier": "^3.0.0",
