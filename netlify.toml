@@ -1,0 +1,78 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  site_id = "a74570dc-3d68-4ed5-8e6f-50e83a967712"
+  prod_branch = "main"
+
+[build.environment]
+  NODE_VERSION = "20"
+  SECRETS_SCAN_OMIT_PATHS = "dist/assets/*"
+  SECRETS_SCAN_ENABLED = "false"
+
+[[edge_functions]]
+  path = "/*"
+  function = "proxy"
+
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = true
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true
+
+# Handle client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Updated Security Headers with more permissive CSP
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = """
+      default-src 'self' https: data: blob:;
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://*.tawk.to https://embed.tawk.to https://cdn.jsdelivr.net https://unpkg.com https://*.appraisily.com https://www.googleadservices.com https://www.google-analytics.com https://googleads.g.doubleclick.net https://*.netlify.app;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.tawk.to https://*.appraisily.com https://*.netlify.app;
+      img-src 'self' data: https: blob:;
+      font-src 'self' data: https://fonts.gstatic.com https://*.tawk.to;
+      connect-src 'self' https: wss://*.tawk.to wss://*.us-central1.run.app https://www.google-analytics.com https://stats.g.doubleclick.net;
+      frame-src 'self' https://*.tawk.to https://www.youtube.com https://www.googletagmanager.com https://*.appraisily.com;
+      worker-src 'self' blob:;
+      child-src blob:;
+      media-src 'self' https:;
+      object-src 'none';
+      base-uri 'self';
+      form-action 'self';
+      upgrade-insecure-requests;
+    """
+
+# Cache static assets
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

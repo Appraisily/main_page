@@ -1,84 +1,163 @@
-# Turborepo starter
+<!-- omit in toc -->
+# Appraisily - Professional Art & Antique Appraisals
 
-This Turborepo starter is maintained by the Turborepo core team.
+Professional art and antique appraisal platform built with React, TypeScript, and Tailwind CSS.
 
-## Using this example
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Component Guidelines](#component-guidelines)
+- [API Documentation](#api-documentation)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
 
-Run the following command:
+## Overview
 
-```sh
-npx create-turbo@latest
+Appraisily provides professional art and antique appraisal services, combining expert knowledge with AI-powered analysis tools. The platform offers both free instant AI analysis and comprehensive professional appraisals.
+
+## Features
+
+- Free AI-powered artwork analysis
+- Professional appraisal services
+- Secure image upload and processing
+- Detailed market analysis
+- Expert valuations within 48 hours
+- Insurance and tax appraisal options
+
+## Getting Started
+
+1. Clone the repository
+```bash
+git clone https://github.com/your-username/appraisily.git
 ```
 
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+2. Install dependencies
+```bash
+npm install
 ```
 
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
+3. Start the development server
+```bash
+npm run dev
 ```
 
-### Remote Caching
+## Component Guidelines
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+### Using shadcn/ui Components
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+This project uses [shadcn/ui](https://ui.shadcn.com/) for consistent, accessible UI components. Follow these steps when adding new components:
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
+1. Initialize shadcn/ui (only needed once):
+```bash
+npx shadcn-ui@latest init
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
+2. Add components as needed:
+```bash
+npx shadcn-ui@latest add [component-name]
 ```
 
-## Useful Links
+Example:
+```bash
+npx shadcn-ui@latest add button
+npx shadcn-ui@latest add dialog
+```
 
-Learn more about the power of Turborepo:
+3. Import and use components:
+```tsx
+import { Button } from "@/components/ui/button"
+```
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+### Component Best Practices
+
+- Keep components small and focused
+- Use TypeScript interfaces for props
+- Follow shadcn/ui styling conventions
+- Maintain consistent naming conventions
+- Implement proper accessibility features
+
+## API Documentation
+
+### Upload Temporary Image
+
+Endpoint for temporarily storing uploaded images and creating an analysis session.
+
+**Endpoint:** `POST /upload-temp`
+
+**Purpose:**
+- Temporarily stores uploaded images
+- Creates a session for tracking the analysis
+- Returns a temporary URL without performing image analysis
+
+**Request Format:**
+```javascript
+// FormData
+const formData = new FormData();
+formData.append('image', imageFile); // imageFile is your image blob/file
+```
+
+**Headers:**
+```json
+{
+  "Content-Type": "multipart/form-data"
+}
+```
+
+**Response:**
+```typescript
+{
+  success: boolean,      // true/false
+  message: string,       // Status message
+  tempUrl: string,       // URL to access the uploaded image
+  sessionId: string      // Unique session identifier
+}
+```
+
+**Example Usage:**
+```javascript
+// Using fetch
+const response = await fetch('https://appraisals-web-services-backend-856401495068.us-central1.run.app/upload-temp', {
+  method: 'POST',
+  body: formData
+});
+
+// Using axios
+const response = await axios.post('https://appraisals-web-services-backend-856401495068.us-central1.run.app/upload-temp', formData, {
+  headers: { 'Content-Type': 'multipart/form-data' }
+});
+```
+
+**Limitations:**
+- Max file size: 5MB
+- Supported formats: JPEG, PNG, WebP
+- Temporary URLs expire after 1 hour
+
+## Tech Stack
+
+- React 18
+- TypeScript
+- Vite
+- Tailwind CSS
+- shadcn/ui
+- Lucide Icons
+- React Router
+- React Hook Form
+- Radix UI Components
+- ImageKit.io for image optimization
+
+## Project Structure
+
+```
+src/
+├── components/        # Reusable UI components
+├── hooks/            # Custom React hooks
+├── lib/             # Utility functions and constants
+├── pages/           # Page components
+├── screener/        # AI analysis module
+└── landing/         # Landing page module
+```
+
+## License
+
+Copyright © 2024 Appraisily. All rights reserved.
