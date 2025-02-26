@@ -1,26 +1,39 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 export default function NotFound() {
   return (
-    <div className="min-h-[70vh] flex items-center justify-center bg-gray-50 px-4 py-12">
-      <div className="max-w-md w-full space-y-8 text-center">
-        <div>
-          <h1 className="text-9xl font-extrabold text-gray-900">404</h1>
-          <h2 className="mt-6 text-3xl font-bold text-gray-900">Page Not Found</h2>
-          <p className="mt-2 text-sm text-gray-600">
-            We couldn't find the page you're looking for.
-          </p>
-        </div>
-        <div className="mt-5">
-          <Link
+    <>
+      <SEO 
+        title="Page Not Found | Appraisers Directory"
+        description="The page you are looking for doesn't exist. Navigate back to our appraiser directory to find qualified art and antique appraisers."
+      />
+      
+      <div className="container mx-auto px-4 py-24 text-center">
+        <h1 className="text-5xl font-bold mb-6">404</h1>
+        <h2 className="text-2xl font-semibold mb-4">Page Not Found</h2>
+        
+        <p className="text-lg mb-8">
+          The page you're looking for doesn't exist or has been moved.
+        </p>
+        
+        <div className="flex justify-center space-x-4">
+          <Link 
             to="/"
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+            className="bg-gray-900 text-white px-5 py-2 rounded-md hover:bg-gray-800"
           >
-            Go back home
+            Return Home
+          </Link>
+          
+          <Link 
+            to="/appraisers"
+            className="border border-gray-900 text-gray-900 px-5 py-2 rounded-md hover:bg-gray-100"
+          >
+            Browse Appraisers
           </Link>
         </div>
       </div>
-    </div>
+    </>
   );
 } 

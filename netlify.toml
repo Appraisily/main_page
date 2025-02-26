@@ -6,7 +6,7 @@
 
 [build.environment]
   NODE_VERSION = "20"
-  SECRETS_SCAN_OMIT_PATHS = "apps/main/dist/assets/*"
+  SECRETS_SCAN_OMIT_PATHS = "apps/main/dist/assets/*,apps/appraisers/dist/assets/*"
   SECRETS_SCAN_ENABLED = "false"
 
 [[edge_functions]]
@@ -30,7 +30,13 @@
 [build.processing.images]
   compress = true
 
-# Handle client-side routing
+# Serve appraisers app from the /directory path
+[[redirects]]
+  from = "/directory/*"
+  to = "/directory/index.html"
+  status = 200
+
+# Handle client-side routing for main app
 [[redirects]]
   from = "/*"
   to = "/index.html"
@@ -40,7 +46,7 @@
 [[headers]]
   for = "/*"
   [headers.values]
-    X-Frame-Options = "DENY"
+    X-Frame-Options = "SAMEORIGIN"
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"

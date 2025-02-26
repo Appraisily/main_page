@@ -1,88 +1,85 @@
 import React from 'react';
+import SEO from '../components/SEO';
 
 export default function Contact() {
   return (
-    <div className="container mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold mb-6">Contact Us</h1>
-      <p className="text-lg mb-8">
-        Have questions about our appraiser directory? We're here to help.
-      </p>
+    <>
+      <SEO 
+        title="Contact Us | Appraisers Directory"
+        description="Get in touch with our support team for questions about our appraisers directory or to inquire about listing your appraisal services."
+      />
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <h2 className="text-2xl font-semibold mb-4">Get in Touch</h2>
-          <form className="space-y-4">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
-              <input
-                type="text"
-                id="name"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                placeholder="Your name"
-              />
-            </div>
+      <div className="container mx-auto px-4 py-12">
+        <h1 className="text-3xl font-bold mb-8">Contact Us</h1>
+        
+        <div className="grid md:grid-cols-2 gap-12">
+          <div>
+            <p className="mb-4">
+              Have questions about our directory? Looking to list your appraisal services? 
+              We're here to help! Please fill out the form and we'll get back to you as soon as possible.
+            </p>
             
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-              <input
-                type="email"
-                id="email"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                placeholder="your.email@example.com"
-              />
+            <div className="mt-8">
+              <h2 className="text-xl font-semibold mb-4">Contact Information</h2>
+              <p className="mb-2"><strong>Email:</strong> support@appraiserdirectory.com</p>
+              <p className="mb-2"><strong>Phone:</strong> (555) 123-4567</p>
+              <p className="mb-2"><strong>Hours:</strong> Monday-Friday, 9am-5pm EST</p>
             </div>
-            
-            <div>
-              <label htmlFor="subject" className="block text-sm font-medium text-gray-700">Subject</label>
-              <input
-                type="text"
-                id="subject"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                placeholder="Subject of your message"
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message</label>
-              <textarea
-                id="message"
-                rows={4}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-500 focus:ring-gray-500"
-                placeholder="Your message"
-              />
-            </div>
-            
-            <div>
+          </div>
+          
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-xl font-semibold mb-4">Send Us a Message</h2>
+            <form>
+              <div className="mb-4">
+                <label htmlFor="name" className="block text-sm font-medium mb-1">Your Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  placeholder="John Doe"
+                />
+              </div>
+              
+              <div className="mb-4">
+                <label htmlFor="email" className="block text-sm font-medium mb-1">Email Address</label>
+                <input
+                  type="email"
+                  id="email"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  placeholder="john@example.com"
+                />
+              </div>
+              
+              <div className="mb-4">
+                <label htmlFor="subject" className="block text-sm font-medium mb-1">Subject</label>
+                <input
+                  type="text"
+                  id="subject"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  placeholder="Question about the directory"
+                />
+              </div>
+              
+              <div className="mb-4">
+                <label htmlFor="message" className="block text-sm font-medium mb-1">Message</label>
+                <textarea
+                  id="message"
+                  rows={4}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  placeholder="Your message here..."
+                ></textarea>
+              </div>
+              
               <button
                 type="submit"
-                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                className="bg-gray-900 text-white px-4 py-2 rounded-md hover:bg-gray-800"
               >
                 Send Message
               </button>
-            </div>
-          </form>
-        </div>
-        
-        <div>
-          <h2 className="text-2xl font-semibold mb-4">Contact Information</h2>
-          <div className="bg-white shadow overflow-hidden sm:rounded-lg">
-            <dl>
-              <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 bg-gray-50">
-                <dt className="text-sm font-medium text-gray-500">Email</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">info@appraisers-directory.com</dd>
-              </div>
-              <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-500">Phone</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">(555) 123-4567</dd>
-              </div>
-              <div className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 bg-gray-50">
-                <dt className="text-sm font-medium text-gray-500">Hours</dt>
-                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">Monday - Friday: 9am - 5pm EST</dd>
-              </div>
-            </dl>
+            </form>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 } 

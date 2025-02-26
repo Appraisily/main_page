@@ -147,6 +147,17 @@ export default function App() {
                     <BulkReview />
                   </Suspense>
                 } />
+                
+                {/* Directory route - redirects to appraisers app */}
+                <Route path="/directory/*" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <iframe 
+                      src="/directory/" 
+                      title="Appraisers Directory"
+                      className="w-full h-screen border-none"
+                    />
+                  </Suspense>
+                } />
               </Routes>
             </main>
             <Footer />

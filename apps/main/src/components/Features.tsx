@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, Camera, FileCheck, Shield, Clock, Globe, TrendingUp, DollarSign } from 'lucide-react';
+import { Users, Camera, FileCheck, Shield, Clock, Globe, TrendingUp, DollarSign, Search } from 'lucide-react';
 
 export default function Features() {
   const features = [
@@ -32,6 +32,16 @@ export default function Features() {
       icon: Users,
       title: 'Attract More Buyers',
       description: "Professional reports validate your items' authenticity and value to collectors."
+    },
+    {
+      icon: Search,
+      title: 'Appraisers Directory',
+      description: 'Access our comprehensive directory of verified art and antique appraisers.',
+      action: {
+        text: 'Browse Directory',
+        url: '/directory',
+        external: true
+      }
     }
   ];
 
@@ -60,6 +70,16 @@ export default function Features() {
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900">{feature.title}</h3>
                 <p className="mt-2 text-gray-600">{feature.description}</p>
+                {feature.action && (
+                  <a 
+                    href={feature.action.url} 
+                    className="mt-4 text-sm font-semibold text-blue-600 hover:text-blue-500"
+                    target={feature.action.external ? "_blank" : undefined}
+                    rel={feature.action.external ? "noopener noreferrer" : undefined}
+                  >
+                    {feature.action.text} <span aria-hidden="true">→</span>
+                  </a>
+                )}
               </div>
             );
           })}
