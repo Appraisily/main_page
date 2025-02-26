@@ -1,163 +1,88 @@
-<!-- omit in toc -->
-# Appraisily - Professional Art & Antique Appraisals
+# Appraisily Monorepo
 
-Professional art and antique appraisal platform built with React, TypeScript, and Tailwind CSS.
+This repository is organized as a Turborepo monorepo for the Appraisily platform, enabling efficient code sharing between applications.
 
-## Table of Contents
-- [Overview](#overview)
-- [Features](#features)
-- [Getting Started](#getting-started)
-- [Component Guidelines](#component-guidelines)
-- [API Documentation](#api-documentation)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
+## What's inside?
 
-## Overview
+This Turborepo includes the following:
 
-Appraisily provides professional art and antique appraisal services, combining expert knowledge with AI-powered analysis tools. The platform offers both free instant AI analysis and comprehensive professional appraisals.
+### Apps
 
-## Features
+- `main`: The main [Vite](https://vitejs.dev/) React application deployed to Netlify
 
-- Free AI-powered artwork analysis
-- Professional appraisal services
-- Secure image upload and processing
-- Detailed market analysis
-- Expert valuations within 48 hours
-- Insurance and tax appraisal options
+### Packages
 
-## Getting Started
+- `ui`: A shared React component library with UI components
+- `utils`: Shared JavaScript/TypeScript utilities
+- `tailwind-config`: Shared Tailwind CSS configuration
+- `eslint-config`: Shared ESLint configurations
+- `tsconfig`: Shared TypeScript configurations
 
-1. Clone the repository
+## Development
+
+### Installation
+
 ```bash
-git clone https://github.com/your-username/appraisily.git
-```
-
-2. Install dependencies
-```bash
+# Install dependencies
 npm install
 ```
 
-3. Start the development server
+### Running the Development Server
+
 ```bash
+# Run the main application in development mode
 npm run dev
+
+# Run specific applications or packages
+npm run dev --filter=@repo/main
 ```
 
-## Component Guidelines
+### Building for Production
 
-### Using shadcn/ui Components
-
-This project uses [shadcn/ui](https://ui.shadcn.com/) for consistent, accessible UI components. Follow these steps when adding new components:
-
-1. Initialize shadcn/ui (only needed once):
 ```bash
-npx shadcn-ui@latest init
+# Build all applications and packages
+npm run build
+
+# Build specific applications
+npm run build --filter=@repo/main
 ```
 
-2. Add components as needed:
-```bash
-npx shadcn-ui@latest add [component-name]
-```
+## Adding a New Application
 
-Example:
-```bash
-npx shadcn-ui@latest add button
-npx shadcn-ui@latest add dialog
-```
-
-3. Import and use components:
-```tsx
-import { Button } from "@/components/ui/button"
-```
-
-### Component Best Practices
-
-- Keep components small and focused
-- Use TypeScript interfaces for props
-- Follow shadcn/ui styling conventions
-- Maintain consistent naming conventions
-- Implement proper accessibility features
-
-## API Documentation
-
-### Upload Temporary Image
-
-Endpoint for temporarily storing uploaded images and creating an analysis session.
-
-**Endpoint:** `POST /upload-temp`
-
-**Purpose:**
-- Temporarily stores uploaded images
-- Creates a session for tracking the analysis
-- Returns a temporary URL without performing image analysis
-
-**Request Format:**
-```javascript
-// FormData
-const formData = new FormData();
-formData.append('image', imageFile); // imageFile is your image blob/file
-```
-
-**Headers:**
+1. Create a new directory in `apps/` (e.g., `apps/blog`)
+2. Set up the application with dependencies on shared packages:
 ```json
 {
-  "Content-Type": "multipart/form-data"
+  "name": "@repo/blog",
+  "dependencies": {
+    "@repo/ui": "*",
+    "@repo/utils": "*"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/tailwind-config": "*",
+    "@repo/tsconfig": "*"
+  }
 }
 ```
 
-**Response:**
-```typescript
-{
-  success: boolean,      // true/false
-  message: string,       // Status message
-  tempUrl: string,       // URL to access the uploaded image
-  sessionId: string      // Unique session identifier
-}
-```
+## Deploying to Netlify
 
-**Example Usage:**
-```javascript
-// Using fetch
-const response = await fetch('https://appraisals-web-services-backend-856401495068.us-central1.run.app/upload-temp', {
-  method: 'POST',
-  body: formData
-});
+This monorepo is set up for deployment to Netlify. The `netlify.toml` file has been configured to:
 
-// Using axios
-const response = await axios.post('https://appraisals-web-services-backend-856401495068.us-central1.run.app/upload-temp', formData, {
-  headers: { 'Content-Type': 'multipart/form-data' }
-});
-```
+1. Use `npm run netlify:build` as the build command
+2. Publish the `apps/main/dist` directory
+3. Set appropriate environment variables and configurations
 
-**Limitations:**
-- Max file size: 5MB
-- Supported formats: JPEG, PNG, WebP
-- Temporary URLs expire after 1 hour
+## Useful Turborepo Commands
 
-## Tech Stack
+- `npm run build` - Build all applications and packages
+- `npm run dev` - Develop all applications and packages
+- `npm run lint` - Lint all applications and packages
+- `npm run clean` - Clean all applications and packages
 
-- React 18
-- TypeScript
-- Vite
-- Tailwind CSS
-- shadcn/ui
-- Lucide Icons
-- React Router
-- React Hook Form
-- Radix UI Components
-- ImageKit.io for image optimization
+## Documentation
 
-## Project Structure
-
-```
-src/
-├── components/        # Reusable UI components
-├── hooks/            # Custom React hooks
-├── lib/             # Utility functions and constants
-├── pages/           # Page components
-├── screener/        # AI analysis module
-└── landing/         # Landing page module
-```
-
-## License
-
-Copyright © 2024 Appraisily. All rights reserved.
+- [Turborepo](https://turbo.build/repo/docs)
+- [Vite](https://vitejs.dev/)
+- [Netlify](https://docs.netlify.com/)
