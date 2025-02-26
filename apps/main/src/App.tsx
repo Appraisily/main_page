@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
-import { TooltipProvider } from './components/ui/tooltip';
+import { TooltipProvider } from '@/components/ui/tooltip';
 import { useGoogleTagManager } from './hooks/useGoogleTagManager';
 import ScrollRestoration from './components/ScrollRestoration';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -13,6 +13,19 @@ import SEO from './components/SEO';
 import Landing from './pages/Landing';
 import About from './pages/About';
 import Team from './pages/Team';
+import Success from './pages/Success';
+import Services from './pages/Services';
+import Expertise from './pages/Expertise';
+import Dashboard from './pages/Dashboard';
+import BulkAppraisal from './pages/BulkAppraisal';
+import BulkUpload from './pages/BulkAppraisal/Upload';
+import BulkReview from './pages/BulkAppraisal/Review';
+import SessionRestore from './pages/BulkAppraisal/SessionRestore';
+import HowItWorks from './pages/HowItWorks';
+import Report from './pages/Report';
+import Terms from './pages/Terms';
+import ServiceSelection from './pages/ServiceSelection';
+import SubmissionSuccess from './pages/SubmissionSuccess';
 
 // Loading component
 const PageLoader = () => (
@@ -59,6 +72,11 @@ export default function App() {
             <main>
               <Routes>
                 <Route path="/" element={<Landing />} />
+               <Route path="/success-payment" element={
+                 <Suspense fallback={<PageLoader />}>
+                   <Success />
+                 </Suspense>
+               } />
                 <Route path="/about" element={
                   <Suspense fallback={<PageLoader />}>
                     <About />
@@ -69,7 +87,66 @@ export default function App() {
                     <Team />
                   </Suspense>
                 } />
-                {/* Other routes will be added as pages are implemented */}
+                <Route path="/services" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Services />
+                  </Suspense>
+                } />
+                <Route path="/expertise" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Expertise />
+                  </Suspense>
+                } />
+                <Route path="/how-it-works" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <HowItWorks />
+                  </Suspense>
+                } />
+                <Route path="/report/:sessionId" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Report />
+                  </Suspense>
+                } />
+                <Route path="/terms" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Terms />
+                  </Suspense>
+                } />
+                <Route path="/submission-success" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <SubmissionSuccess />
+                  </Suspense>
+                } />
+                <Route path="/dashboard" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Dashboard />
+                  </Suspense>
+                } />
+                <Route path="/start" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <ServiceSelection />
+                  </Suspense>
+                } />
+                <Route path="/bulk-appraisal" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <BulkAppraisal />
+                  </Suspense>
+                } />
+                <Route path="/bulk-appraisal/:sessionId" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <SessionRestore />
+                  </Suspense>
+                } />
+                <Route path="/bulk-appraisal/upload" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <BulkUpload />
+                  </Suspense>
+                } />
+                <Route path="/bulk-appraisal/review" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <BulkReview />
+                  </Suspense>
+                } />
               </Routes>
             </main>
             <Footer />
@@ -78,4 +155,4 @@ export default function App() {
       </HelmetProvider>
     </ErrorBoundary>
   );
-} 
+}

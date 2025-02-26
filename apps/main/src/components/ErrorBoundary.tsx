@@ -1,7 +1,8 @@
-import { Component, ErrorInfo, ReactNode } from 'react';
+import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { RefreshCw } from 'lucide-react';
 
 interface Props {
-  children?: ReactNode;
+  children: ReactNode;
 }
 
 interface State {
@@ -15,24 +16,30 @@ export default class ErrorBoundary extends Component<Props, State> {
   };
 
   public static getDerivedStateFromError(error: Error): State {
-    // Update state so the next render will show the fallback UI.
     return { hasError: true, error };
   }
 
-  public componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('Uncaught error:', error, errorInfo);
   }
 
-  public render(): ReactNode {
+  public render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Something went wrong</h1>
-            <p className="text-gray-600 mb-6">We've encountered an error. Please try refreshing the page.</p>
+        <div className="min-h-screen bg-white flex items-center justify-center p-4">
+          <div className="max-w-md w-full text-center">
+            <div className="mb-6 flex justify-center">
+              <RefreshCw className="h-12 w-12 text-gray-400" />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">
+              Something went wrong
+            </h1>
+            <p className="text-gray-600 mb-6">
+              We're sorry, but something went wrong. Please try refreshing the page.
+            </p>
             <button
               onClick={() => window.location.reload()}
-              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors"
             >
               Refresh Page
             </button>

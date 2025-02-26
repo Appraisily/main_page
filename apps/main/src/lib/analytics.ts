@@ -11,41 +11,32 @@ export async function hashEmail(email: string): Promise<string> {
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-/**
- * Initialize analytics tracking
- */
-export function initializeAnalytics(): void {
-  // Initialize dataLayer if it doesn't exist
-  window.dataLayer = window.dataLayer || [];
-}
+// Lazy load Google Analytics
+export const initializeAnalytics = () => {
+  const loadGoogleAnalytics = () => {
+    const script = document.createElement('script');
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${import.meta.env.VITE_GA_ID}`;
+    script.async = true;
+    document.head.appendChild(script);
 
-/**
- * Track a page view
- */
-export function trackPageView(path: string): void {
-  if (!window.dataLayer) {
-    window.dataLayer = [];
-  }
-  
-  window.dataLayer.push({
-    event: 'page_view',
-    page_path: path
-  });
-}
+    script.onload = () => {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(...args: unknown[]) {
+        window.dataLayer.push(args);
+      }
+      gtag('js', new Date());
+      gtag('config', import.meta.env.VITE_GA_ID, {
+        send_page_view: false
+      });
+    };
+  };
 
-/**
- * Track a custom event
- */
-export function trackEvent(
-  eventName: string,
-  eventParams: Record<string, any> = {}
-): void {
-  if (!window.dataLayer) {
-    window.dataLayer = [];
+  // Load analytics after initial paint
+  if (document.readyState === 'complete') {
+    setTimeout(loadGoogleAnalytics, 2000);
+  } else {
+    window.addEventListener('load', () => {
+      setTimeout(loadGoogleAnalytics, 2000);
+    });
   }
-  
-  window.dataLayer.push({
-    event: eventName,
-    ...eventParams
-  });
-}
+};

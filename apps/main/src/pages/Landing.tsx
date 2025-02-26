@@ -1,80 +1,68 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import Hero from '../components/Hero';
+import Features from '../components/Features';
+import Services from '../components/Services';
+import Process from '../components/Process';
+import Team from '../components/Team';
+import Expertise from '../components/Expertise';
+import HowItWorks from '../components/HowItWorks';
+import Testimonials from '../components/Testimonials';
+import Contact from '../components/Contact';
+import ProcessSteps from '../components/ProcessSteps';
+import SuccessStories from '../components/SuccessStories';
+import RecentAppraisals from '../components/RecentAppraisals';
+import MarketAnalysis from '../components/MarketAnalysis';
+import { Link, useNavigate } from 'react-router-dom';
+import { Package } from 'lucide-react';
 
 export default function Landing() {
+  const isDev = import.meta.env.DEV;
+  const navigate = useNavigate();
+
   return (
-    <div className="bg-white">
-      {/* Hero Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              Professional Art & Antique Appraisals
-            </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-              Get accurate valuations from certified experts for insurance, tax, or selling purposes.
-            </p>
-            <div className="flex justify-center gap-4">
-              <Link 
-                to="/about"
-                className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
-              >
-                Learn More
-              </Link>
-              <Link
-                to="/team"
-                className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors"
-              >
-                Meet Our Experts
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-16 bg-gray-50 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <h2 className="text-3xl font-bold text-center mb-12">Why Choose Us</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-semibold mb-3">Expert Appraisers</h3>
-              <p className="text-gray-600">
-                Our team consists of certified professionals with years of experience in the art and antiques market.
-              </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-semibold mb-3">Fast Turnaround</h3>
-              <p className="text-gray-600">
-                Receive your professional appraisal report within 48 hours of submission.
-              </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h3 className="text-xl font-semibold mb-3">Competitive Pricing</h3>
-              <p className="text-gray-600">
-                Affordable pricing with no hidden fees. Bulk discounts available for multiple items.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to get started?</h2>
-          <p className="text-xl text-gray-600 mb-8">
-            Start your appraisal process today and get accurate valuations from our expert team.
-          </p>
-          <Link
-            to="/about"
-            className="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+    <div className="min-h-screen bg-white">
+      {/* Debug Link - Only visible in development */}
+      {isDev && (
+        <div className="fixed bottom-4 left-4 z-50">
+          <button
+            onClick={() => navigate('/bulk-appraisal/upload')}
+            className="bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-gray-800 text-sm flex items-center gap-2 mb-2"
           >
-            Start Now <ArrowRight className="ml-2 h-4 w-4" />
+            <Package className="h-4 w-4" />
+            Debug: Upload Items
+          </button>
+          <Link
+            to="/success-payment?session_id=cs_live_a1pi2YjX8Nr6lH53ACyeqX6bIx6REfRLBGrJ1ThzXj6C6UEJytdKOyiMxf"
+            className="bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-gray-800 text-sm"
+          >
+            Debug: Success Payment
+          </Link>
+          {' '}
+         <Link
+           to="/success-payment?session_id=cs_live_b1lDTlUrm70sYbfdDJGgvkh6hPjdJXdEi9w0FBgS2F33pw63KCXs4IV6vO"
+           className="bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-gray-800 text-sm block mb-2"
+         >
+           Debug: Bulk Success
+         </Link>
+          <Link
+            to="/dashboard?email=jimhackley54@yahoo.com"
+            className="bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-gray-800 text-sm"
+          >
+            Debug: Dashboard
           </Link>
         </div>
-      </section>
+      )}
+      <Hero />
+      <Features />
+      <Services />
+      <Process />
+      <Team />
+      <ProcessSteps />
+      <MarketAnalysis />
+      <RecentAppraisals />
+      <SuccessStories />
+      <Testimonials />
+      <Contact />
     </div>
   );
 }

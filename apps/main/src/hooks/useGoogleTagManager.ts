@@ -1,30 +1,27 @@
 import { useEffect } from 'react';
 
-/**
- * Initialize Google Tag Manager with given ID
- */
-export function useGoogleTagManager(id: string): void {
+export const useGoogleTagManager = (gtmId: string) => {
   useEffect(() => {
-    // Initialize dataLayer if it doesn't exist
-    window.dataLayer = window.dataLayer || [];
-    
-    // Define gtag function safely
-    function gtag(...args: any[]) {
-      if (window.dataLayer) {
-        window.dataLayer.push(args);
-      }
+    function initGTM() {
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function() {
+        window.dataLayer.push(arguments);
+      };
+      window.gtag('js', new Date());
+      window.gtag('config', gtmId);
     }
-    
-    // Expose gtag globally
-    window.gtag = gtag;
-    
-    // Only load script once
-    if (!document.getElementById('gtm-script')) {
+
+    // Check if GTM is already loaded
+    if (!window.gtag) {
       const script = document.createElement('script');
-      script.id = 'gtm-script';
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${gtmId}`;
       script.async = true;
-      script.src = `https://www.googletagmanager.com/gtm.js?id=${id}`;
+      script.onload = initGTM;
       document.head.appendChild(script);
     }
-  }, [id]);
-}
+
+    return () => {
+      // Cleanup if needed
+    };
+  }, [gtmId]);
+};
