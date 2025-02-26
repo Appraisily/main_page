@@ -7,6 +7,7 @@ import viteCompression from 'vite-plugin-compression';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 
 export default defineConfig(({ mode }) => ({
+  base: '/directory/',
   plugins: [
     react(),
     ViteImageOptimizer({

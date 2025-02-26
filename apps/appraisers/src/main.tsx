@@ -13,7 +13,7 @@ const root = createRoot(rootElement);
 // Render app
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/directory">
       <App />
     </BrowserRouter>
   </React.StrictMode>
