@@ -1,12 +1,12 @@
 [build]
-  command = "npm run netlify:build"
-  publish = "apps/main/dist"
+  command = "npm run build"
+  publish = "dist"
   site_id = "a74570dc-3d68-4ed5-8e6f-50e83a967712"
   prod_branch = "main"
 
 [build.environment]
   NODE_VERSION = "20"
-  SECRETS_SCAN_OMIT_PATHS = "apps/main/dist/assets/*,apps/appraisers/dist/assets/*"
+  SECRETS_SCAN_OMIT_PATHS = "dist/assets/*"
   SECRETS_SCAN_ENABLED = "false"
 
 [[edge_functions]]
@@ -30,13 +30,7 @@
 [build.processing.images]
   compress = true
 
-# Serve appraisers app from the /directory path
-[[redirects]]
-  from = "/directory/*"
-  to = "/directory/index.html"
-  status = 200
-
-# Handle client-side routing for main app
+# Handle client-side routing
 [[redirects]]
   from = "/*"
   to = "/index.html"
@@ -46,7 +40,7 @@
 [[headers]]
   for = "/*"
   [headers.values]
-    X-Frame-Options = "SAMEORIGIN"
+    X-Frame-Options = "DENY"
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"

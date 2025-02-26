@@ -1,124 +1,163 @@
-# Appraisily Monorepo
+<!-- omit in toc -->
+# Appraisily - Professional Art & Antique Appraisals
 
-This repository is organized as a Turborepo monorepo for the Appraisily platform, enabling efficient code sharing between applications.
+Professional art and antique appraisal platform built with React, TypeScript, and Tailwind CSS.
 
-## What's inside?
+## Table of Contents
+- [Overview](#overview)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Component Guidelines](#component-guidelines)
+- [API Documentation](#api-documentation)
+- [Tech Stack](#tech-stack)
+- [Project Structure](#project-structure)
 
-This Turborepo includes the following:
+## Overview
 
-### Apps
+Appraisily provides professional art and antique appraisal services, combining expert knowledge with AI-powered analysis tools. The platform offers both free instant AI analysis and comprehensive professional appraisals.
 
-- `main`: The main [Vite](https://vitejs.dev/) React application deployed to Netlify
-- `appraisers`: A directory app for finding qualified art and antique appraisers
+## Features
 
-### Packages
+- Free AI-powered artwork analysis
+- Professional appraisal services
+- Secure image upload and processing
+- Detailed market analysis
+- Expert valuations within 48 hours
+- Insurance and tax appraisal options
 
-- `ui`: A shared React component library with UI components
-- `utils`: Shared JavaScript/TypeScript utilities
-- `tailwind-config`: Shared Tailwind CSS configuration
-- `eslint-config`: Shared ESLint configurations
-- `tsconfig`: Shared TypeScript configurations
-
-## Development
-
-### Prerequisites
-
-- Node.js 20.x or higher
-- npm 9.x or higher
-
-### Getting Started
+## Getting Started
 
 1. Clone the repository
-2. Install dependencies: `npm install`
-3. Start the development server:
-   - For all apps: `npm run dev`
-   - For main app only: `npm run dev:main` or `npm run dev -- --filter=@repo/main`
-   - For appraisers app only: `npm run dev:appraisers` or `npm run dev -- --filter=@repo/appraisers`
-
-### Building
-
-- Build all apps: `npm run build`
-- Build main app: `npm run build:main`
-- Build appraisers app: `npm run build:appraisers`
-
-### Preview Production Build
-
-To preview the production build locally before deployment:
-
-- Preview main app: `npm run preview:main`
-- Preview appraisers app: `npm run preview:appraisers`
-
-These commands will start a local server to serve the production build of each app, allowing you to test the optimized build before deployment.
-
-## Apps Structure
-
-### Main App
-
-The main application serves as the primary site for Appraisily's appraisal services.
-
-- **URL**: `/`
-- **Features**:
-  - Art and antique appraisal services
-  - Professional valuation reports
-  - Expert appraiser team profiles
-  - Service information and pricing
-
-### Appraisers Directory
-
-A directory application to help users find qualified art and antique appraisers.
-
-- **URL**: `/directory/`
-- **Features**:
-  - Browse appraisers by specialty and location
-  - View appraiser profiles and qualifications
-  - Contact information for listed appraisers
-  - Information about the verification process
-
-## Deployment
-
-The project is deployed to Netlify with the following configuration:
-
-- Main app is served at the root domain
-- Appraisers directory is served at the `/directory` path
-- Build command uses Turborepo to build both apps efficiently
-- Post-build script copies the appraisers app build to the appropriate directory
-
-## PowerShell Notes
-
-When working with PowerShell, note that the `&&` operator for command chaining isn't supported. Instead, use semicolons or separate commands. This repository includes PowerShell-friendly scripts:
-
-```powershell
-# Instead of: cd .. && cd .. && npm run dev
-cd ..; cd ..; npm run dev
+```bash
+git clone https://github.com/your-username/appraisily.git
 ```
 
-### PowerShell-Friendly Scripts
+2. Install dependencies
+```bash
+npm install
+```
 
-This repository includes several cross-platform scripts that work on Windows PowerShell, Mac, and Linux:
+3. Start the development server
+```bash
+npm run dev
+```
 
-- **Running Development Servers**:
-  - `npm run dev:main` - Run the main app in development mode
-  - `npm run dev:appraisers` - Run the appraisers app in development mode
+## Component Guidelines
 
-- **Building Apps**:
-  - `npm run build:main` - Build only the main app
-  - `npm run build:appraisers` - Build only the appraisers app
+### Using shadcn/ui Components
 
-- **Post-Build Processing**:
-  - The `postbuild` script is implemented as a Node.js script for cross-platform compatibility
+This project uses [shadcn/ui](https://ui.shadcn.com/) for consistent, accessible UI components. Follow these steps when adding new components:
 
-- **Preview Production Builds**:
-  - `npm run preview:main` - Preview the built main app
-  - `npm run preview:appraisers` - Preview the built appraisers app
+1. Initialize shadcn/ui (only needed once):
+```bash
+npx shadcn-ui@latest init
+```
 
-These scripts are available in the root `package.json` and handle directory navigation and command execution properly regardless of operating system.
+2. Add components as needed:
+```bash
+npx shadcn-ui@latest add [component-name]
+```
 
-## Documentation
+Example:
+```bash
+npx shadcn-ui@latest add button
+npx shadcn-ui@latest add dialog
+```
 
-- [Turborepo](https://turbo.build/repo/docs)
-- [Vite](https://vitejs.dev/)
-- [Netlify](https://docs.netlify.com/)
+3. Import and use components:
+```tsx
+import { Button } from "@/components/ui/button"
+```
+
+### Component Best Practices
+
+- Keep components small and focused
+- Use TypeScript interfaces for props
+- Follow shadcn/ui styling conventions
+- Maintain consistent naming conventions
+- Implement proper accessibility features
+
+## API Documentation
+
+### Upload Temporary Image
+
+Endpoint for temporarily storing uploaded images and creating an analysis session.
+
+**Endpoint:** `POST /upload-temp`
+
+**Purpose:**
+- Temporarily stores uploaded images
+- Creates a session for tracking the analysis
+- Returns a temporary URL without performing image analysis
+
+**Request Format:**
+```javascript
+// FormData
+const formData = new FormData();
+formData.append('image', imageFile); // imageFile is your image blob/file
+```
+
+**Headers:**
+```json
+{
+  "Content-Type": "multipart/form-data"
+}
+```
+
+**Response:**
+```typescript
+{
+  success: boolean,      // true/false
+  message: string,       // Status message
+  tempUrl: string,       // URL to access the uploaded image
+  sessionId: string      // Unique session identifier
+}
+```
+
+**Example Usage:**
+```javascript
+// Using fetch
+const response = await fetch('https://appraisals-web-services-backend-856401495068.us-central1.run.app/upload-temp', {
+  method: 'POST',
+  body: formData
+});
+
+// Using axios
+const response = await axios.post('https://appraisals-web-services-backend-856401495068.us-central1.run.app/upload-temp', formData, {
+  headers: { 'Content-Type': 'multipart/form-data' }
+});
+```
+
+**Limitations:**
+- Max file size: 5MB
+- Supported formats: JPEG, PNG, WebP
+- Temporary URLs expire after 1 hour
+
+## Tech Stack
+
+- React 18
+- TypeScript
+- Vite
+- Tailwind CSS
+- shadcn/ui
+- Lucide Icons
+- React Router
+- React Hook Form
+- Radix UI Components
+- ImageKit.io for image optimization
+
+## Project Structure
+
+```
+src/
+├── components/        # Reusable UI components
+├── hooks/            # Custom React hooks
+├── lib/             # Utility functions and constants
+├── pages/           # Page components
+├── screener/        # AI analysis module
+└── landing/         # Landing page module
+```
 
 ## License
 
-This project is licensed under the MIT License.
+Copyright © 2024 Appraisily. All rights reserved.
