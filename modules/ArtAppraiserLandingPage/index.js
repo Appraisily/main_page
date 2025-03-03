@@ -1,1 +1,0 @@
-export { default as ArtAppraiserLandingPage } from './src/ArtAppraiserLandingPage'; 
