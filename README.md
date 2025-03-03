@@ -161,3 +161,9 @@ src/
 ## License
 
 Copyright © 2024 Appraisily. All rights reserved.
+
+# Appraisily.com Monorepo
+
+This repository contains multiple applications and modules that make up the Appraisily.com platform.
+
+## Project Structure
