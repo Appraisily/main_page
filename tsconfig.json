@@ -17,7 +17,8 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./*"],
+      "@/modules/*": ["../../modules/*"]
     },
     "allowJs": true,
     "forceConsistentCasingInFileNames": true,
