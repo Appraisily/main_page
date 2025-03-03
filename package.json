@@ -52,7 +52,6 @@
     "vite": "^5.1.4",
     "vite-plugin-compression": "^0.5.1",
     "vite-plugin-image-optimizer": "^1.1.7"
-<<<<<<< HEAD
   },
   "workspaces": [
     "apps/*",
@@ -60,7 +59,3 @@
     "modules/*"
   ]
 }
-=======
-  }
-}
->>>>>>> 53163f04c997a5292e199419ddd7d1773c6e0b4e
