@@ -34,10 +34,15 @@ export default function Navbar() {
 
   return (
     <nav className={cn(
-      "fixed w-full z-50 transition-all duration-200",
-      isScrolled ? "bg-white shadow-md" : "bg-white/80 backdrop-blur-md"
+      "fixed w-full z-50 transition-all duration-300",
+      isScrolled 
+        ? "md:bg-white md:shadow-md bg-white/70 backdrop-blur-md shadow-sm" 
+        : "bg-white/80 backdrop-blur-md"
     )}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className={cn(
+        "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
+        isScrolled ? "md:mt-0 mt-1" : ""
+      )}>
         <div className="flex justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
@@ -122,7 +127,10 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden" id="mobile-menu">
-          <div className="px-2 pt-2 pb-3 space-y-1 bg-white shadow-lg">
+          <div className={cn(
+            "px-2 pt-2 pb-3 space-y-1 bg-white shadow-lg",
+            isScrolled ? "mx-2 rounded-xl shadow-md" : ""
+          )}>
             {navItems.map((item) => (
               item.external ? (
                 <a
