@@ -61,7 +61,7 @@ export default function Footer() {
               variant="default"
               className="bg-gray-900 hover:bg-gray-800"
             >
-              <a href="https://services.appraisily.com">
+              <a href="https://appraisily.com/start">
                 Start Appraisal <ArrowRight className="ml-2 h-4 w-4" />
               </a>
             </Button>

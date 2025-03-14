@@ -11,6 +11,7 @@ Professional art and antique appraisal platform built with React, TypeScript, an
 - [API Documentation](#api-documentation)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
+- [Sitemap Generation](#sitemap-generation)
 
 ## Overview
 
@@ -157,6 +158,26 @@ src/
 ├── screener/        # AI analysis module
 └── landing/         # Landing page module
 ```
+
+## Sitemap Generation
+
+This project includes an automated sitemap generator that creates a `sitemap.xml` file during the build process.
+
+### How it works:
+- The sitemap is generated automatically when running `npm run build`
+- It extracts routes from the `App.tsx` file using regex
+- Static routes are included in the sitemap, while dynamic routes (with parameters) are excluded
+- The sitemap is saved to `public/sitemap.xml`
+
+### Manual Generation:
+You can manually generate the sitemap by running:
+```bash
+npm run generate-sitemap
+```
+
+### Configuration:
+- The base URL is set to `https://appraisily.com` by default
+- To change the base URL, modify the `generate-sitemap` script in `package.json`
 
 ## License
 
