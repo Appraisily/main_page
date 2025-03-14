@@ -19,6 +19,10 @@ export default function Terms() {
         return response.text();
       })
       .then(data => {
+        // Make sure we have the complete data
+        if (data && !data.includes('7. Performance of Services') && data.includes('16. Appraisal Services')) {
+          console.warn('Terms of Service content appears to be incomplete, sections may be missing');
+        }
         setTermsContent(data);
         setIsLoading(false);
       })
@@ -53,13 +57,13 @@ export default function Terms() {
         title="Terms of Service | Appraisily"
         description="Read about Appraisily's Terms of Service for art and antique appraisal services."
       />
-      <div className="max-w-4xl mx-auto px-6 py-24">
-        <div className="flex items-center gap-3 mb-8">
+      <div className="max-w-4xl mx-auto px-6 py-16">
+        <div className="flex items-center gap-3 mb-6">
           <Shield className="h-8 w-8 text-blue-600" />
           <h1 className="text-3xl font-bold text-gray-900">Terms of Service</h1>
         </div>
 
-        <p className="text-sm text-gray-500 mb-8">
+        <p className="text-sm text-gray-500 mb-6">
           Last updated: {new Date('2025-03-15').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
         </p>
 
@@ -68,11 +72,11 @@ export default function Terms() {
             <div className="animate-pulse">Loading Terms of Service...</div>
           </div>
         ) : termsContent ? (
-          <div className="prose prose-lg max-w-none prose-headings:font-semibold prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-li:text-gray-700 prose-strong:text-gray-900 prose-hr:my-8">
+          <div className="prose prose-sm md:prose-base max-w-none prose-headings:font-semibold prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline prose-li:text-gray-700 prose-strong:text-gray-900 prose-hr:my-6 prose-p:my-2 prose-headings:mt-6 prose-headings:mb-3">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{termsContent}</ReactMarkdown>
           </div>
         ) : (
-          <div className="prose prose-lg max-w-none">
+          <div className="prose prose-sm md:prose-base max-w-none">
             <h2>1. Introduction</h2>
             <p>1.1 This document (together with any documents referred to in it) outlines the terms and conditions ("Conditions") upon which we will supply services ("Services") to you. Please read these Conditions carefully before ordering any Services. You may print a copy for future reference.</p>
             <p>1.2 By ordering any of the Services, you agree to be legally bound by these Conditions. If you do not accept these terms and conditions, you will not be able to proceed with your transaction.</p>
@@ -105,6 +109,37 @@ export default function Terms() {
             <p>6.4 If you believe there is an error in the Confirmation Notice or wish to make changes, please contact us promptly to discuss.</p>
             <p>6.5 We may make changes to these Conditions due to changes in relevant laws, payment methods, or VAT rates. We will notify you in writing of any significant changes, and you may cancel the Contract if the changes are significantly to your disadvantage.</p>
 
+            <h2>7. Performance of Services</h2>
+            <p>7.1 Upon formation of the Contract, we will assign a qualified appraiser to perform the evaluation of your item based on the information and photographs you provided.</p>
+            <p>7.2 We aim to complete and deliver appraisal reports within 48 hours (2 business days) from the time we receive all necessary information and materials from you, unless a different turnaround time is specified.</p>
+            <p>7.3 If we anticipate a significant delay in delivering your appraisal, we will notify you as soon as possible with a revised estimated delivery time.</p>
+
+            <h2>8. Service Issues and Customer Rights</h2>
+            <p>8.1 If you experience any problem with our Services or believe there is an error in your appraisal report, you should contact us as soon as possible with details of the issue.</p>
+            <p>8.2 Our primary obligation is to correct any mistakes and re-perform the relevant parts of the Service at no additional cost to you.</p>
+
+            <h2>9. Contract Cancellation and Refunds</h2>
+            <p>9.1 If you wish to cancel your order for Services, you may do so by notifying us in writing as soon as possible.</p>
+            <p>9.2 Once we have fully performed the Services and delivered your appraisal report, you are not entitled to cancel the Contract for a refund simply because you changed your mind.</p>
+
+            <h2>10. Complaints and Dispute Resolution</h2>
+            <p>10.1 Your satisfaction is important to us. If you have any complaints or concerns regarding our Services, we encourage you to contact our customer support.</p>
+
+            <h2>11. Liability and Indemnification</h2>
+            <p>11.1 To the fullest extent permitted by law, Appraisily will not be liable for any indirect, incidental, special, consequential, or punitive losses or damages arising out of or relating to the Services.</p>
+
+            <h2>12. Termination of Services</h2>
+            <p>12.1 We may terminate or suspend your access to the Services with immediate effect if you materially breach these Terms.</p>
+
+            <h2>13. Force Majeure (Events Beyond Our Control)</h2>
+            <p>13.1 We will not be liable for any failure or delay in performance due to events outside our reasonable control.</p>
+
+            <h2>14. Use of Personal Data and Privacy Policy</h2>
+            <p>14.1 Our Privacy Policy provides detailed information on what data we collect, how we use and protect it, and your rights regarding your personal data.</p>
+
+            <h2>15. Third-Party Rights</h2>
+            <p>15.1 This Contract is between you and Appraisily. Except as expressly provided, no person who is not a party to this Contract shall have any right to enforce any term.</p>
+
             <h2>16. Valuations</h2>
             <h3>16.1 Valuation Services</h3>
             <p>16.1.1 Under the Agreement, we provide a valuation service regarding the photograph of an object submitted by you. This service consists of giving an electronic estimate of the value of the object (high and low estimate) which, in our opinion, could be achieved if the object were to be sold on the open market at an international auction with a reputable auctioneer.</p>
@@ -126,7 +161,7 @@ export default function Terms() {
           </div>
         )}
 
-        <div className="mt-12 pt-8 border-t border-gray-200">
+        <div className="mt-10 pt-6 border-t border-gray-200">
           <p className="text-sm text-gray-500">
             If you have any questions about these Terms of Service, please <a href="mailto:info@appraisily.com" className="text-blue-600 hover:underline">contact us</a>.
           </p>

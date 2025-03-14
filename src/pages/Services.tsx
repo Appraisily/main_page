@@ -13,31 +13,35 @@ function ServiceSection({
   isReversed 
 }: any) {
   return (
-    <section id={title.toLowerCase().replace(/\s+/g, '-')} className="py-24 scroll-mt-16">
+    <section id={title.toLowerCase().replace(/\s+/g, '-')} className="py-20 md:py-28 scroll-mt-16">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Service Header */}
-        <div className="flex items-center gap-3 mb-12">
-          <Icon className="h-10 w-10 text-blue-600" />
-          <h2 className="text-4xl font-bold text-gray-900">{title}</h2>
+        <div className="flex items-center gap-4 mb-10 md:mb-16">
+          <div className="flex items-center justify-center h-14 w-14 rounded-full bg-blue-100">
+            <Icon className="h-8 w-8 text-blue-600" />
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">{title}</h2>
         </div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 items-start">
           {/* Service Description */}
-          <div className="space-y-8">
+          <div className="space-y-10">
             <div className="prose prose-lg">
               <p className="text-xl text-gray-600 leading-relaxed">{description}</p>
             </div>
             
-            <div className="bg-gray-50 rounded-xl p-8">
+            <div className="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-8 shadow-sm border border-blue-100">
               <h3 className="text-xl font-semibold text-gray-900 mb-6">Key Features</h3>
               <ul className="space-y-4">
                 {features.map((feature: any) => {
                   const FeatureIcon = feature.icon;
                   return (
-                    <li key={feature.text} className="flex items-start gap-3">
-                      <FeatureIcon className="h-5 w-5 text-blue-600 mt-1" />
-                      <span className="text-gray-700">{feature.text}</span>
+                    <li key={feature.text} className="flex items-start gap-4">
+                      <div className="flex-shrink-0 h-8 w-8 rounded-full bg-blue-50 flex items-center justify-center">
+                        <FeatureIcon className="h-4 w-4 text-blue-600" />
+                      </div>
+                      <span className="text-gray-700 pt-1">{feature.text}</span>
                     </li>
                   );
                 })}
@@ -47,12 +51,12 @@ function ServiceSection({
             <div className="flex flex-col sm:flex-row gap-4">
               <a 
                 href="#contact"
-                className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm"
               >
                 Get Started <ArrowRight className="ml-2 h-5 w-5" />
               </a>
               <button 
-                className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                className="inline-flex items-center justify-center px-6 py-3 border border-gray-200 text-base font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50 transition-colors"
               >
                 Learn More
               </button>
@@ -61,7 +65,7 @@ function ServiceSection({
 
           {/* Video Section */}
           <div className="lg:sticky lg:top-24">
-            <div className="aspect-video rounded-xl overflow-hidden shadow-lg">
+            <div className="aspect-video rounded-2xl overflow-hidden shadow-md border border-gray-100 transform transition-transform hover:scale-[1.01]">
               <iframe
                 className="w-full h-full"
                 src={`https://www.youtube.com/embed/${videoId}?rel=0`}
@@ -74,11 +78,16 @@ function ServiceSection({
         </div>
 
         {/* Detailed Information */}
-        <div className="mt-24">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="mt-24 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
             {/* What's Included */}
-            <div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">What's Included</h3>
+            <div className="p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center">
+                  <span className="text-blue-600 font-semibold">1</span>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900">What's Included</h3>
+              </div>
               <ul className="space-y-4">
                 {details.included.map((item: string, index: number) => (
                   <li key={index} className="flex items-start gap-3">
@@ -92,8 +101,13 @@ function ServiceSection({
             </div>
 
             {/* Process */}
-            <div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Our Process</h3>
+            <div className="p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center">
+                  <span className="text-blue-600 font-semibold">2</span>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900">Our Process</h3>
+              </div>
               <div className="space-y-6">
                 {details.process.map((step: string, index: number) => (
                   <div key={index} className="relative pl-8">
@@ -101,23 +115,28 @@ function ServiceSection({
                     {index !== details.process.length - 1 && (
                       <div className="absolute left-2 top-5 bottom-0 w-0.5 bg-blue-200"></div>
                     )}
-                    <h4 className="text-lg font-semibold text-gray-900 mb-2">Step {index + 1}</h4>
-                    <p className="text-gray-700">{step}</p>
+                    <h4 className="text-base font-semibold text-gray-900 mb-2">Step {index + 1}</h4>
+                    <p className="text-gray-700 text-sm">{step}</p>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Benefits */}
-            <div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Why Choose This Service</h3>
+            <div className="p-8">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center">
+                  <span className="text-blue-600 font-semibold">3</span>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900">Why Choose This</h3>
+              </div>
               <ul className="space-y-3">
                 {details.benefits.map((benefit: string, index: number) => (
-                  <li key={index} className="flex items-center gap-3 bg-white p-4 rounded-lg shadow-sm">
+                  <li key={index} className="flex items-center gap-3 bg-blue-50 p-3 rounded-lg">
                     <svg className="h-5 w-5 text-blue-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span className="text-gray-700">{benefit}</span>
+                    <span className="text-gray-700 text-sm">{benefit}</span>
                   </li>
                 ))}
               </ul>
@@ -134,7 +153,7 @@ export default function ServicesPage() {
     <div className="bg-white pt-16">
       <ServiceHero />
       
-      <div className="divide-y divide-gray-200">
+      <div className="space-y-6">
         {services.map((service, index) => (
           <ServiceSection
             key={service.title}
