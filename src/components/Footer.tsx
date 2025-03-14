@@ -9,7 +9,7 @@ const links = {
   quickLinks: [
     { name: 'Services', href: '/services' },
     { name: 'How It Works', href: '/how-it-works' },
-    { name: 'Free AI Art Analysis', href: '/screener' },
+    { name: 'Free AI Art Analysis', href: 'https://screener.appraisily.com/' },
     { name: 'Terms of Service', href: '/terms' }
   ],
   legal: [
@@ -75,15 +75,29 @@ export default function Footer() {
             <ul className="space-y-3">
               {links.quickLinks.map((link) => (
                 <li key={link.name}>
-                  <Link 
-                    to={link.href}
-                    className={cn(
-                      "text-gray-600 hover:text-gray-900 transition-colors",
-                      "text-sm"
-                    )}
-                  >
-                    {link.name}
-                  </Link>
+                  {link.href.startsWith('http') ? (
+                    <a 
+                      href={link.href}
+                      className={cn(
+                        "text-gray-600 hover:text-gray-900 transition-colors",
+                        "text-sm"
+                      )}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {link.name}
+                    </a>
+                  ) : (
+                    <Link 
+                      to={link.href}
+                      className={cn(
+                        "text-gray-600 hover:text-gray-900 transition-colors",
+                        "text-sm"
+                      )}
+                    >
+                      {link.name}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

@@ -28,8 +28,8 @@ function extractRoutesFromAppTsx() {
   }
 }
 
-// Function to generate sitemap XML
-function generateSitemap(baseUrl) {
+// Function to generate sitemap XML for the main site
+function generateMainSitemap(baseUrl) {
   const routes = extractRoutesFromAppTsx();
   
   if (!baseUrl) {
@@ -62,13 +62,67 @@ function generateSitemap(baseUrl) {
   sitemap += `</urlset>`;
   
   // Write to file
-  const outputPath = path.join(__dirname, '../public/sitemap.xml');
+  const outputPath = path.join(__dirname, '../public/sitemap-main.xml');
   fs.writeFileSync(outputPath, sitemap);
   
-  console.log(`Sitemap generated successfully at ${outputPath}`);
+  console.log(`Main sitemap generated successfully at ${outputPath}`);
   console.log(`Total routes: ${routes.length}`);
+  
+  return outputPath;
 }
+
+// Function to generate sitemap index file
+function generateSitemapIndex(baseUrl, subdomains) {
+  if (!baseUrl) {
+    console.error('Base URL is required');
+    process.exit(1);
+  }
+  
+  // Normalize base URL (ensure it doesn't end with a slash)
+  const normalizedBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+  const today = new Date().toISOString().split('T')[0];
+  
+  // XML header
+  let sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+`;
+  
+  // Add main sitemap
+  sitemapIndex += `  <sitemap>
+    <loc>${normalizedBaseUrl}/sitemap-main.xml</loc>
+    <lastmod>${today}</lastmod>
+  </sitemap>
+`;
+  
+  // Add subdomain sitemaps
+  subdomains.forEach(subdomain => {
+    sitemapIndex += `  <sitemap>
+    <loc>https://${subdomain}.${normalizedBaseUrl.replace('https://', '')}/sitemap.xml</loc>
+    <lastmod>${today}</lastmod>
+  </sitemap>
+`;
+  });
+  
+  // Close XML
+  sitemapIndex += `</sitemapindex>`;
+  
+  // Write to file
+  const outputPath = path.join(__dirname, '../public/sitemap.xml');
+  fs.writeFileSync(outputPath, sitemapIndex);
+  
+  console.log(`Sitemap index generated successfully at ${outputPath}`);
+  console.log(`Total sitemaps indexed: ${subdomains.length + 1}`);
+}
+
+// Define subdomains that have sitemaps
+const subdomains = [
+  'screener'
+  // Add more subdomains here as needed
+];
 
 // Get base URL from command line argument
 const baseUrl = process.argv[2];
-generateSitemap(baseUrl); 
+
+// Generate both sitemaps
+generateMainSitemap(baseUrl);
+generateSitemapIndex(baseUrl, subdomains); 
