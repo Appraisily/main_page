@@ -18,10 +18,13 @@ export default function Navbar() {
 
   React.useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
+      // Use requestAnimationFrame for smoother scrolling performance
+      requestAnimationFrame(() => {
+        setIsScrolled(window.scrollY > 0);
+      });
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -35,15 +38,13 @@ export default function Navbar() {
 
   return (
     <nav className={cn(
-      "fixed w-full z-50 transition-all duration-300",
+      "fixed w-full z-50 top-0 left-0 right-0 will-change-transform",
       isScrolled 
-        ? "md:bg-white md:shadow-md bg-white/70 backdrop-blur-md shadow-sm" 
-        : "bg-white/80 backdrop-blur-md"
+        ? "bg-white/90 backdrop-blur-md shadow-sm md:shadow-md" 
+        : "bg-white/80 backdrop-blur-md",
+      "transition-[background,shadow] duration-300"
     )}>
-      <div className={cn(
-        "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
-        isScrolled ? "md:mt-0 mt-1" : ""
-      )}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
@@ -129,8 +130,8 @@ export default function Navbar() {
       {isOpen && (
         <div className="md:hidden" id="mobile-menu">
           <div className={cn(
-            "px-2 pt-2 pb-3 space-y-1 bg-white shadow-lg",
-            isScrolled ? "mx-2 rounded-xl shadow-md" : ""
+            "px-2 pt-2 pb-3 space-y-1 bg-white shadow-lg mx-2 rounded-xl",
+            isScrolled ? "shadow-md" : ""
           )}>
             {navItems.map((item) => (
               item.external ? (

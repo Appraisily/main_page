@@ -58,33 +58,22 @@ export default function Hero() {
   };
 
   return (
-    <div className="relative isolate min-h-[calc(100vh-4rem)] pt-24">
-      {/* Abstract Background Elements */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
+    <section className="relative overflow-hidden will-change-transform">
+      {/* Background Elements */}
+      <div className="absolute inset-0 -z-10 will-change-transform">
         {/* Base gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-white" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white to-gray-50" />
         
-        {/* Abstract Shapes */}
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] opacity-[0.07]">
-          <div className="absolute inset-0 bg-blue-600 rounded-full transform translate-x-1/3 -translate-y-1/4" />
-        </div>
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] opacity-[0.05]">
-          <div className="absolute inset-0 bg-blue-600 rounded-full transform -translate-x-1/3 translate-y-1/4" />
-        </div>
-        <div className="absolute top-1/2 left-1/2 w-[500px] h-[500px] opacity-[0.07]">
-          <div className="absolute inset-0 bg-blue-400 rounded-full transform -translate-x-1/2 -translate-y-1/2" />
-        </div>
-
-        {/* Subtle Grid Pattern */}
-        <div 
-          className="absolute inset-0 bg-[linear-gradient(to_right,#3b82f608_1px,transparent_1px),linear-gradient(to_bottom,#3b82f608_1px,transparent_1px)] bg-[size:4rem_4rem]"
-          style={{
-            maskImage: 'radial-gradient(circle at center, black 30%, transparent 70%)'
-          }}
-        />
+        {/* Animated gradient blobs */}
+        <div className="absolute -top-48 -left-48 w-96 h-96 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob will-change-transform" />
+        <div className="absolute -bottom-48 left-48 w-96 h-96 bg-cyan-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000 will-change-transform" />
+        <div className="absolute top-48 -right-48 w-96 h-96 bg-purple-100 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000 will-change-transform" />
+        
+        {/* Grid pattern */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#3b82f610_1px,transparent_1px),linear-gradient(to_bottom,#3b82f610_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_at_center,black_25%,transparent_80%)]" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-7xl mx-auto pt-16 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden will-change-transform">
         {/* Trust Indicators */}
         <TrustIndicators className="mb-16" />
 
@@ -99,7 +88,7 @@ export default function Hero() {
           </p>
 
           {/* Upload Section */}
-          <div className="relative max-w-md mx-auto mb-16">
+          <div className="relative max-w-md mx-auto mb-16 px-4 sm:px-0">
             {/* Free Analysis Label */}
             <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
               <span className="inline-block bg-white text-gray-900 px-4 py-1 rounded-full text-sm font-medium shadow-sm border border-gray-200">
@@ -108,7 +97,7 @@ export default function Hero() {
             </div>
 
             {/* Upload Panel */}
-            <div className="relative bg-white rounded-xl shadow-lg border border-gray-200">
+            <div className="relative bg-white rounded-xl shadow-lg border border-gray-200 w-full will-change-transform">
               <div className="p-6">
                 <form
                   onDragEnter={handleDrag}
@@ -201,6 +190,6 @@ export default function Hero() {
         {/* Service Panels */}
         <ServicePanels />
       </div>
-    </div>
+    </section>
   );
 }

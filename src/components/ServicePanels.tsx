@@ -133,7 +133,7 @@ export default function ServicePanels() {
 
       {/* Mobile Layout */}
       <motion.div 
-        className="md:hidden grid grid-cols-2 gap-4"
+        className="md:hidden grid grid-cols-2 gap-4 mx-auto px-2 max-w-[100%] sm:max-w-[520px]"
         variants={container}
         initial="hidden"
         animate="show"
