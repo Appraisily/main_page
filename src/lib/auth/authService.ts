@@ -32,7 +32,7 @@ interface AuthResponse {
 // Handle token refresh
 let refreshPromise: Promise<any> | null = null;
 
-const refreshToken = async (): Promise<string | null> => {
+const refreshTokenInternal = async (): Promise<string | null> => {
   try {
     if (!refreshPromise) {
       refreshPromise = fetch(`${AUTH_API_URL}/refresh-token`, {
@@ -63,7 +63,7 @@ const fetchWithAuth = async (url: string, options: RequestInit = {}): Promise<Re
 
   // If unauthorized and not already trying to refresh token
   if (response.status === 401 && !url.includes('/refresh-token')) {
-    const newToken = await refreshToken();
+    const newToken = await refreshTokenInternal();
     
     if (newToken) {
       // Retry the request with the new token
