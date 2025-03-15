@@ -30,3 +30,4 @@ dist-ssr
 
 # Auth folder
 auth/
+auth-service/
