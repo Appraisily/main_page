@@ -51,16 +51,34 @@ export default function Signup() {
     setIsLoading(true);
     
     try {
+      console.log('🚀 Signup Request:', {
+        email,
+        passwordLength: password.length,
+        apiUrl: import.meta.env.VITE_AUTH_API_URL || 'https://auth-service-856401495068.us-central1.run.app/api/auth'
+      });
+
       const response = await register({ 
         email, 
         password,
         confirmPassword
       });
+
+      console.log('✅ Signup Response:', {
+        success: true,
+        userId: response.user?.id,
+        email: response.user?.email,
+        timestamp: new Date().toISOString()
+      });
+
       loginContext(response.user);
       navigate('/dashboard');
     } catch (err) {
+      console.error('❌ Signup Error:', {
+        error: err instanceof Error ? err.message : 'Unknown error',
+        timestamp: new Date().toISOString(),
+        details: err
+      });
       setError(err instanceof Error ? err.message : 'An error occurred during signup. Please try again.');
-      console.error('Signup error:', err);
     } finally {
       setIsLoading(false);
     }
