@@ -149,6 +149,11 @@ export async function requestPasswordReset(email: string): Promise<{ message: st
 }
 
 export async function getCurrentUser(): Promise<AuthResponse> {
+  console.log('📡 Fetching current user data...', {
+    endpoint: `${AUTH_API_URL}/me`,
+    timestamp: new Date().toISOString()
+  });
+
   const response = await fetch(`${AUTH_API_URL}/me`, {
     credentials: 'include',
   });
@@ -156,17 +161,26 @@ export async function getCurrentUser(): Promise<AuthResponse> {
   const data = await response.json();
 
   if (!response.ok) {
+    console.error('❌ Failed to get current user:', {
+      status: response.status,
+      statusText: response.statusText,
+      data
+    });
     throw new Error(data.message || 'Failed to get current user');
   }
 
+  console.log('✅ Successfully fetched user data');
   return data;
 }
 
 export async function isAuthenticated(): Promise<boolean> {
+  console.log('🔐 Checking authentication status...');
   try {
     await getCurrentUser();
+    console.log('✅ User is authenticated');
     return true;
   } catch (error) {
+    console.log('❌ User is not authenticated:', error);
     return false;
   }
 }

@@ -64,20 +64,36 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     // Check if user is authenticated when the app loads
     const checkAuth = async () => {
+      console.log('🔍 Checking authentication state...', {
+        currentPath: window.location.pathname,
+        timestamp: new Date().toISOString()
+      });
+
       try {
-        const authStatus = await isAuthenticated();
-        setAuthenticated(authStatus);
-        
-        if (authStatus) {
-          const response = await getCurrentUser();
-          setUser(response.user);
-          // Set up token refresh only if authenticated
-          const cleanup = setupTokenRefresh();
-          return () => cleanup();
+        // Only check auth status if we're on a protected route
+        if (window.location.pathname === '/dashboard' || window.location.pathname.startsWith('/protected')) {
+          console.log('🛡️ Protected route detected, verifying authentication...');
+          const authStatus = await isAuthenticated();
+          setAuthenticated(authStatus);
+          
+          if (authStatus) {
+            console.log('✅ User is authenticated, fetching user data...');
+            const response = await getCurrentUser();
+            setUser(response.user);
+            // Set up token refresh only if authenticated
+            const cleanup = setupTokenRefresh();
+            return () => cleanup();
+          } else {
+            console.log('❌ User is not authenticated');
+            setUser(null);
+          }
+        } else {
+          console.log('📍 Public route, skipping auth check');
+          setLoading(false);
         }
       } catch (err) {
+        console.error('🚨 Authentication check failed:', err);
         setError('Authentication check failed');
-        console.error('Auth check error:', err);
       } finally {
         setLoading(false);
       }
