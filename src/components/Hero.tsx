@@ -84,7 +84,7 @@ export default function Hero() {
         />
       </div>
 
-      <div className="relative max-w-7xl mx-auto pt-12 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden will-change-transform">
+      <div className="relative max-w-7xl mx-auto pt-24 sm:pt-28 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden will-change-transform">
         {/* Trust Indicators */}
         <TrustIndicators className="mb-12" />
 
