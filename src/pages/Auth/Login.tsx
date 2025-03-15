@@ -33,7 +33,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center bg-zinc-950 text-zinc-50">
+    <div className="min-h-screen flex flex-col justify-center bg-white text-gray-900">
       <div className="container relative flex pt-20 flex-col items-center justify-center lg:px-0">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
@@ -44,19 +44,19 @@ export default function Login() {
                 className="h-12 w-auto"
               />
             </Link>
-            <h1 className="text-2xl font-semibold tracking-tight">
+            <h1 className="text-2xl font-semibold tracking-tight text-gray-900">
               Welcome back
             </h1>
-            <p className="text-sm text-zinc-400">
+            <p className="text-sm text-gray-500">
               Enter your email to sign in to your account
             </p>
           </div>
 
           {error && (
-            <div className="p-3 rounded-md bg-red-500/15 border border-red-500/30">
+            <div className="p-3 rounded-md bg-red-50 border border-red-200">
               <div className="flex">
                 <AlertCircle className="h-5 w-5 text-red-500" />
-                <p className="ml-2 text-sm text-red-500">{error}</p>
+                <p className="ml-2 text-sm text-red-600">{error}</p>
               </div>
             </div>
           )}
@@ -73,7 +73,7 @@ export default function Login() {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Mail className="h-4 w-4 text-zinc-400" />
+                      <Mail className="h-4 w-4 text-gray-400" />
                     </div>
                     <input
                       id="email"
@@ -82,7 +82,7 @@ export default function Login() {
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="flex h-10 w-full rounded-md border border-zinc-800 bg-zinc-950 px-3 pl-10 py-2 text-sm ring-offset-zinc-950 placeholder:text-zinc-400 focus:ring-2 focus:ring-zinc-800 focus:outline-none"
+                      className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 pl-10 py-2 text-sm ring-offset-white focus:border-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 placeholder:text-gray-500"
                       placeholder="name@example.com"
                     />
                   </div>
@@ -96,7 +96,7 @@ export default function Login() {
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Lock className="h-4 w-4 text-zinc-400" />
+                      <Lock className="h-4 w-4 text-gray-400" />
                     </div>
                     <input
                       id="password"
@@ -105,7 +105,7 @@ export default function Login() {
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="flex h-10 w-full rounded-md border border-zinc-800 bg-zinc-950 px-3 pl-10 pr-10 py-2 text-sm ring-offset-zinc-950 placeholder:text-zinc-400 focus:ring-2 focus:ring-zinc-800 focus:outline-none"
+                      className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 pl-10 pr-10 py-2 text-sm ring-offset-white focus:border-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 placeholder:text-gray-500"
                       placeholder="••••••••"
                     />
                     <button
@@ -114,9 +114,9 @@ export default function Login() {
                       className="absolute inset-y-0 right-0 pr-3 flex items-center"
                     >
                       {showPassword ? (
-                        <EyeOff className="h-4 w-4 text-zinc-400 hover:text-zinc-300" />
+                        <EyeOff className="h-4 w-4 text-gray-400 hover:text-gray-600" />
                       ) : (
-                        <Eye className="h-4 w-4 text-zinc-400 hover:text-zinc-300" />
+                        <Eye className="h-4 w-4 text-gray-400 hover:text-gray-600" />
                       )}
                     </button>
                   </div>
@@ -129,15 +129,15 @@ export default function Login() {
                       type="checkbox"
                       checked={rememberMe}
                       onChange={(e) => setRememberMe(e.target.checked)}
-                      className="h-4 w-4 rounded border-zinc-800 bg-zinc-950 text-zinc-50"
+                      className="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
                     />
-                    <label htmlFor="remember-me" className="text-sm text-zinc-400">
+                    <label htmlFor="remember-me" className="text-sm text-gray-500">
                       Remember me
                     </label>
                   </div>
                   <Link
                     to="/reset-password"
-                    className="text-sm font-medium text-zinc-400 hover:text-zinc-300"
+                    className="text-sm font-medium text-gray-500 hover:text-gray-900"
                   >
                     Forgot password?
                   </Link>
@@ -145,7 +145,7 @@ export default function Login() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 disabled:pointer-events-none disabled:opacity-50 bg-zinc-50 text-zinc-900 hover:bg-zinc-200 h-10 px-4 py-2"
+                  className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 disabled:pointer-events-none disabled:opacity-50 bg-gray-900 text-gray-50 hover:bg-gray-800 h-10 px-4 py-2"
                 >
                   {isLoading ? (
                     <span className="flex items-center space-x-2">
@@ -181,30 +181,30 @@ export default function Login() {
             </form>
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-zinc-800"></div>
+                <div className="w-full border-t border-gray-200"></div>
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-zinc-950 px-2 text-zinc-400">or continue with</span>
+                <span className="bg-white px-2 text-gray-500">or continue with</span>
               </div>
             </div>
             <button
               onClick={handleGoogleLogin}
-              className="inline-flex items-center justify-center space-x-2 rounded-md border border-zinc-800 bg-zinc-950 px-4 py-2 text-sm font-medium transition-colors hover:bg-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-400"
+              className="inline-flex items-center justify-center space-x-2 rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400"
             >
               <svg className="h-5 w-5" viewBox="0 0 24 24">
                 <path
                   d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
-                  fill="#fff"
+                  fill="#757575"
                 />
               </svg>
               <span>Google</span>
             </button>
           </div>
-          <p className="px-8 text-center text-sm text-zinc-400">
+          <p className="px-8 text-center text-sm text-gray-500">
             <span>Don't have an account?</span>{' '}
             <Link
               to="/signup"
-              className="underline underline-offset-4 hover:text-zinc-300"
+              className="underline underline-offset-4 hover:text-gray-900"
             >
               Sign up
             </Link>
