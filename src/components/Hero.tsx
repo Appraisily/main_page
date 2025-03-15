@@ -84,9 +84,9 @@ export default function Hero() {
         />
       </div>
 
-      <div className="relative max-w-7xl mx-auto pt-16 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden will-change-transform">
+      <div className="relative max-w-7xl mx-auto pt-12 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden will-change-transform">
         {/* Trust Indicators */}
-        <TrustIndicators className="mb-16" />
+        <TrustIndicators className="mb-12" />
 
         <div className="text-center mb-12">
           {/* Main Title with gradient */}

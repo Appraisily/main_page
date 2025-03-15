@@ -57,22 +57,22 @@ export default function Navbar() {
       "transition-[background,shadow] duration-300"
     )}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+        <div className="flex justify-between h-14">
           {/* Logo */}
           <div className="flex items-center">
-            <Link to="/" className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-2">
               <img 
                 src="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?updatedAt=1731919266638" 
                 alt="Appraisily Logo" 
-                className="h-8 w-auto"
+                className="h-7 w-auto"
                 loading="eager"
               />
-              <span className="text-xl font-semibold text-gray-900">Appraisily</span>
+              <span className="text-lg font-semibold text-gray-900">Appraisily</span>
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-3">
             <NavigationMenu>
               <NavigationMenuList>
                 {navItems.map((item) => (
@@ -83,7 +83,7 @@ export default function Navbar() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className={cn(
-                          "px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                          "px-2.5 py-1.5 text-sm font-medium rounded-md transition-colors",
                           "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
                         )}
                       >
@@ -93,7 +93,7 @@ export default function Navbar() {
                       <Link
                         to={item.href}
                         className={cn(
-                          "px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                          "px-2.5 py-1.5 text-sm font-medium rounded-md transition-colors",
                           location.pathname === item.href
                             ? "text-blue-600 bg-blue-50"
                             : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
@@ -110,19 +110,19 @@ export default function Navbar() {
             {/* Auth buttons - Desktop */}
             <div className="flex items-center space-x-2">
               {loading ? (
-                <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse"></div>
+                <div className="w-7 h-7 rounded-full bg-gray-200 animate-pulse"></div>
               ) : authenticated ? (
                 <div className="flex items-center space-x-2">
                   <Link
                     to="/profile"
-                    className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
+                    className="inline-flex items-center justify-center px-2.5 py-1.5 text-sm font-medium rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
                   >
                     <User className="h-4 w-4 mr-1" />
                     {user?.firstName || 'Profile'}
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:text-red-600 hover:bg-gray-50 transition-colors"
+                    className="inline-flex items-center justify-center px-2.5 py-1.5 text-sm font-medium rounded-md text-gray-700 hover:text-red-600 hover:bg-gray-50 transition-colors"
                   >
                     <LogOut className="h-4 w-4 mr-1" />
                     Logout
@@ -131,7 +131,7 @@ export default function Navbar() {
               ) : (
                 <Link
                   to="/login"
-                  className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
+                  className="inline-flex items-center justify-center px-2.5 py-1.5 text-sm font-medium rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
                 >
                   <LogIn className="h-4 w-4 mr-1" />
                   Log In
@@ -140,7 +140,7 @@ export default function Navbar() {
               <Link
                 to="/start"
                 id="start-appraisal-nav"
-                className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors gap-1.5 shadow-sm hover:shadow-md"
+                className="inline-flex items-center justify-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors gap-1.5 shadow-sm hover:shadow-md"
               >
                 Start Appraisal <ArrowRight className="h-4 w-4" />
               </Link>
@@ -152,7 +152,7 @@ export default function Navbar() {
             {authenticated ? (
               <Link
                 to="/profile"
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none"
+                className="inline-flex items-center justify-center p-1.5 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none"
               >
                 <User className="h-5 w-5" />
                 <span className="sr-only">Profile</span>
@@ -160,7 +160,7 @@ export default function Navbar() {
             ) : (
               <Link
                 to="/login"
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none"
+                className="inline-flex items-center justify-center p-1.5 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none"
               >
                 <LogIn className="h-5 w-5" />
                 <span className="sr-only">Log In</span>
@@ -169,18 +169,18 @@ export default function Navbar() {
             <Link
               to="/start"
               id="start-appraisal-nav-mobile"
-              className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors shadow-sm"
+              className="inline-flex items-center justify-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors shadow-sm"
             >
               Start
             </Link>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="inline-flex items-center justify-center p-1.5 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
               aria-expanded={isOpen}
               aria-controls="mobile-menu"
             >
               <span className="sr-only">{isOpen ? "Close main menu" : "Open main menu"}</span>
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
