@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Eye, EyeOff, UserPlus, Mail, Lock, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Eye, EyeOff, UserPlus, Mail, Lock, AlertCircle } from 'lucide-react';
 
 export default function Signup() {
   const [email, setEmail] = useState('');
@@ -13,12 +13,7 @@ export default function Signup() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
-  // Password validation tracking
-  const hasMinLength = password.length >= 8;
-  const hasUppercase = /[A-Z]/.test(password);
-  const hasLowercase = /[a-z]/.test(password);
-  const hasNumber = /[0-9]/.test(password);
-  const hasSpecialChar = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password);
+  // Simple password validation - only check if passwords match
   const passwordsMatch = password === confirmPassword;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -183,33 +178,6 @@ export default function Signup() {
                   </button>
                 </div>
               </div>
-              
-              {/* Password strength indicators */}
-              <div className="mt-2 space-y-1">
-                <p className="text-xs text-gray-500">Password requirements:</p>
-                <ul className="text-xs space-y-1 ml-1">
-                  <li className={`flex items-center ${hasMinLength ? 'text-green-600' : 'text-gray-500'}`}>
-                    <CheckCircle2 className={`h-3 w-3 mr-1 ${hasMinLength ? 'text-green-600' : 'text-gray-300'}`} />
-                    At least 8 characters
-                  </li>
-                  <li className={`flex items-center ${hasUppercase ? 'text-green-600' : 'text-gray-500'}`}>
-                    <CheckCircle2 className={`h-3 w-3 mr-1 ${hasUppercase ? 'text-green-600' : 'text-gray-300'}`} />
-                    At least one uppercase letter
-                  </li>
-                  <li className={`flex items-center ${hasLowercase ? 'text-green-600' : 'text-gray-500'}`}>
-                    <CheckCircle2 className={`h-3 w-3 mr-1 ${hasLowercase ? 'text-green-600' : 'text-gray-300'}`} />
-                    At least one lowercase letter
-                  </li>
-                  <li className={`flex items-center ${hasNumber ? 'text-green-600' : 'text-gray-500'}`}>
-                    <CheckCircle2 className={`h-3 w-3 mr-1 ${hasNumber ? 'text-green-600' : 'text-gray-300'}`} />
-                    At least one number
-                  </li>
-                  <li className={`flex items-center ${hasSpecialChar ? 'text-green-600' : 'text-gray-500'}`}>
-                    <CheckCircle2 className={`h-3 w-3 mr-1 ${hasSpecialChar ? 'text-green-600' : 'text-gray-300'}`} />
-                    At least one special character
-                  </li>
-                </ul>
-              </div>
             </div>
 
             <div>
@@ -287,6 +255,7 @@ export default function Signup() {
             <div>
               <button
                 type="submit"
+                disabled={isLoading || !passwordsMatch || !agreeToTerms || !password}
                 disabled={isLoading || !hasMinLength || !hasUppercase || !hasLowercase || !hasNumber || !hasSpecialChar || !passwordsMatch || !agreeToTerms}
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
               >
@@ -337,7 +306,7 @@ export default function Signup() {
             <div className="mt-6">
               <button
                 onClick={handleGoogleSignup}
-                className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"
               >
                 <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
                   <path
