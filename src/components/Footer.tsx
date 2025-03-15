@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Mail, ArrowRight } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Mail, ArrowRight, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
@@ -11,6 +11,11 @@ const links = {
     { name: 'How It Works', href: '/how-it-works' },
     { name: 'Free AI Art Analysis', href: 'https://screener.appraisily.com/' },
     { name: 'Terms of Service', href: '/terms' }
+  ],
+  submodules: [
+    { name: 'Screener', href: 'https://screener.appraisily.com/' },
+    { name: 'Appraiser Service', href: 'https://landing-appraisers.appraisily.com/' },
+    { name: 'Art Appraisers Directory', href: 'https://art-appraiser-directory.appraisily.com/' }
   ],
   legal: [
     { name: 'Privacy Policy', href: '/privacy' },
@@ -41,9 +46,9 @@ export default function Footer() {
       </div>
 
       <div className="relative max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           {/* Company Info */}
-          <div className="col-span-1 md:col-span-2 space-y-6">
+          <div className="col-span-1 md:col-span-4 space-y-6">
             <div className="flex items-center">
               <img 
                 src="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?updatedAt=1731919266638"
@@ -68,7 +73,7 @@ export default function Footer() {
           </div>
           
           {/* Quick Links */}
-          <div className="space-y-4">
+          <div className="col-span-1 md:col-span-2 space-y-4">
             <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
               Quick Links
             </h3>
@@ -103,8 +108,32 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Our Network */}
+          <div className="col-span-1 md:col-span-3 space-y-4">
+            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider flex items-center">
+              <Globe className="h-4 w-4 mr-2 text-blue-600" /> Our Network
+            </h3>
+            <ul className="space-y-3">
+              {links.submodules.map((link) => (
+                <li key={link.name}>
+                  <a 
+                    href={link.href}
+                    className={cn(
+                      "text-gray-600 hover:text-gray-900 transition-colors",
+                      "text-sm"
+                    )}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {/* Contact Info */}
-          <div className="space-y-4">
+          <div className="col-span-1 md:col-span-3 space-y-4">
             <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider">
               Contact Us
             </h3>
