@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { getCurrentUser, isAuthenticated, logout } from './authService';
+import { getCurrentUser, isAuthenticated, logout, refreshToken } from './authService';
 
 interface User {
   id: string;
@@ -41,6 +41,26 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [error, setError] = useState<string | null>(null);
   const [authenticated, setAuthenticated] = useState<boolean>(false);
 
+  // Function to refresh the token periodically
+  const setupTokenRefresh = () => {
+    const refreshInterval = setInterval(async () => {
+      try {
+        if (authenticated) {
+          const response = await refreshToken();
+          if (response.user) {
+            setUser(response.user);
+          }
+        }
+      } catch (err) {
+        console.error('Token refresh failed:', err);
+        // If refresh fails, log out the user
+        await logoutUser();
+      }
+    }, 14 * 60 * 1000); // Refresh every 14 minutes (assuming 15-minute token expiry)
+
+    return () => clearInterval(refreshInterval);
+  };
+
   useEffect(() => {
     // Check if user is authenticated when the app loads
     const checkAuth = async () => {
@@ -51,6 +71,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         if (authStatus) {
           const response = await getCurrentUser();
           setUser(response.user);
+          // Set up token refresh only if authenticated
+          const cleanup = setupTokenRefresh();
+          return () => cleanup();
         }
       } catch (err) {
         setError('Authentication check failed');
@@ -66,6 +89,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const loginUser = (userData: User) => {
     setUser(userData);
     setAuthenticated(true);
+    setupTokenRefresh();
   };
 
   const logoutUser = async () => {

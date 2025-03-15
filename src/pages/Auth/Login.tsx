@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, LogIn, Mail, Lock, AlertCircle } from 'lucide-react';
 import { login } from '@/lib/auth/authService';
+import { useAuth } from '@/lib/auth/AuthContext';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -11,6 +12,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { login: loginContext } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -18,7 +20,8 @@ export default function Login() {
     setIsLoading(true);
     
     try {
-      await login({ email, password, rememberMe });
+      const response = await login({ email, password, rememberMe });
+      loginContext(response.user);
       navigate('/dashboard');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Invalid email or password. Please try again.');
@@ -29,7 +32,7 @@ export default function Login() {
   };
 
   const handleGoogleLogin = () => {
-    console.log('Login with Google');
+    window.location.href = `${import.meta.env.VITE_AUTH_API_URL || 'https://auth-service-856401495068.us-central1.run.app/api/auth'}/google`;
   };
 
   return (
@@ -83,7 +86,7 @@ export default function Login() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 pl-10 py-2 text-sm ring-offset-white focus:border-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 placeholder:text-gray-500"
-                      placeholder="name@example.com"
+                      placeholder="you@example.com"
                     />
                   </div>
                 </div>
@@ -124,20 +127,20 @@ export default function Login() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <input
-                      id="remember-me"
-                      name="remember-me"
+                      id="remember"
+                      name="remember"
                       type="checkbox"
                       checked={rememberMe}
                       onChange={(e) => setRememberMe(e.target.checked)}
                       className="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
                     />
-                    <label htmlFor="remember-me" className="text-sm text-gray-500">
+                    <label htmlFor="remember" className="text-sm text-gray-500">
                       Remember me
                     </label>
                   </div>
                   <Link
                     to="/reset-password"
-                    className="text-sm font-medium text-gray-500 hover:text-gray-900"
+                    className="text-sm text-blue-600 hover:text-blue-500"
                   >
                     Forgot password?
                   </Link>
@@ -149,10 +152,7 @@ export default function Login() {
                 >
                   {isLoading ? (
                     <span className="flex items-center space-x-2">
-                      <svg
-                        className="animate-spin h-4 w-4"
-                        viewBox="0 0 24 24"
-                      >
+                      <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
                         <circle
                           className="opacity-25"
                           cx="12"
@@ -173,7 +173,7 @@ export default function Login() {
                   ) : (
                     <span className="flex items-center space-x-2">
                       <LogIn className="h-4 w-4" />
-                      <span>Sign in</span>
+                      <span>Sign In</span>
                     </span>
                   )}
                 </button>

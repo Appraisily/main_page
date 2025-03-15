@@ -1,4 +1,4 @@
-const AUTH_API_URL = import.meta.env.VITE_AUTH_API_URL || 'http://localhost:8080/api/auth';
+const AUTH_API_URL = import.meta.env.VITE_AUTH_API_URL || 'https://auth-service-856401495068.us-central1.run.app/api/auth';
 
 interface LoginCredentials {
   email: string;
@@ -15,17 +15,15 @@ interface RegisterData {
 }
 
 interface AuthResponse {
+  message: string;
   user: {
     id: string;
     email: string;
     firstName?: string;
     lastName?: string;
     isEmailVerified: boolean;
-    createdAt: string;
-    updatedAt: string;
   };
   token?: string;
-  message: string;
 }
 
 // Create an axios instance or similar for handling API requests with interceptors
@@ -90,15 +88,16 @@ export async function login(credentials: LoginCredentials): Promise<AuthResponse
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(credentials),
-    credentials: 'include', // Include cookies in the request
+    credentials: 'include',
   });
 
+  const data = await response.json();
+
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || 'Login failed');
+    throw new Error(data.message || 'Login failed');
   }
 
-  return response.json();
+  return data;
 }
 
 export async function register(data: RegisterData): Promise<AuthResponse> {
@@ -111,25 +110,25 @@ export async function register(data: RegisterData): Promise<AuthResponse> {
     credentials: 'include',
   });
 
+  const responseData = await response.json();
+
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || 'Registration failed');
+    throw new Error(responseData.message || 'Registration failed');
   }
 
-  return response.json();
+  return responseData;
 }
 
-export async function logout(): Promise<{ message: string }> {
-  const response = await fetchWithAuth(`${AUTH_API_URL}/logout`, {
+export async function logout(): Promise<void> {
+  const response = await fetch(`${AUTH_API_URL}/logout`, {
     method: 'POST',
+    credentials: 'include',
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || 'Logout failed');
+    const data = await response.json();
+    throw new Error(data.message || 'Logout failed');
   }
-
-  return response.json();
 }
 
 export async function requestPasswordReset(email: string): Promise<{ message: string }> {
@@ -150,13 +149,17 @@ export async function requestPasswordReset(email: string): Promise<{ message: st
 }
 
 export async function getCurrentUser(): Promise<AuthResponse> {
-  const response = await fetchWithAuth(`${AUTH_API_URL}/me`);
+  const response = await fetch(`${AUTH_API_URL}/me`, {
+    credentials: 'include',
+  });
+
+  const data = await response.json();
 
   if (!response.ok) {
-    throw new Error('Failed to fetch current user');
+    throw new Error(data.message || 'Failed to get current user');
   }
 
-  return response.json();
+  return data;
 }
 
 export async function isAuthenticated(): Promise<boolean> {
@@ -166,4 +169,19 @@ export async function isAuthenticated(): Promise<boolean> {
   } catch (error) {
     return false;
   }
+}
+
+export async function refreshToken(): Promise<AuthResponse> {
+  const response = await fetch(`${AUTH_API_URL}/refresh-token`, {
+    method: 'POST',
+    credentials: 'include',
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Token refresh failed');
+  }
+
+  return data;
 }

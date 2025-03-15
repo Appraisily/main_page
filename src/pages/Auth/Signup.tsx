@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, UserPlus, Mail, Lock, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { register } from '@/lib/auth/authService';
+import { useAuth } from '@/lib/auth/AuthContext';
 
 export default function Signup() {
   const [email, setEmail] = useState('');
@@ -13,6 +14,7 @@ export default function Signup() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { login: loginContext } = useAuth();
 
   // Password strength validation
   const passwordValidation = {
@@ -39,15 +41,23 @@ export default function Signup() {
       setError('You must agree to the Terms of Service and Privacy Policy.');
       return;
     }
+
+    // Validate password strength
+    const validationFailed = Object.values(passwordValidation).some(valid => !valid);
+    if (validationFailed) {
+      setError('Please ensure your password meets all requirements.');
+      return;
+    }
     
     setIsLoading(true);
     
     try {
-      await register({ 
+      const response = await register({ 
         email, 
-        password, 
+        password,
         confirmPassword
       });
+      loginContext(response.user);
       navigate('/dashboard');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred during signup. Please try again.');
@@ -58,7 +68,7 @@ export default function Signup() {
   };
 
   const handleGoogleSignup = () => {
-    console.log('Signup with Google');
+    window.location.href = `${import.meta.env.VITE_AUTH_API_URL || 'https://auth-service-856401495068.us-central1.run.app/api/auth'}/google`;
   };
 
   return (
