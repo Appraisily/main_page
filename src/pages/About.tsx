@@ -84,7 +84,7 @@ export default function About() {
     {
       icon: Sparkles,
       title: 'Innovation',
-      description: 'By integrating advanced AI tools with our specialists' knowledge, we push the boundaries of traditional appraisal methods to deliver fast and accurate results.'
+      description: "By integrating advanced AI tools with our specialists' knowledge, we push the boundaries of traditional appraisal methods to deliver fast and accurate results."
     },
     {
       icon: Globe,
@@ -187,7 +187,7 @@ export default function About() {
                 About Appraisily
               </h1>
               <p className="text-lg leading-8 text-gray-600 mb-6">
-                Founded in 2003, Appraisily has grown from a single-office startup to a global leader in art and antique appraisal services. Over the past 20+ years, we've helped thousands of collectors, institutions, and enthusiasts discover the true value of their treasures.
+                {"Founded in 2003, Appraisily has grown from a single-office startup to a global leader in art and antique appraisal services. Over the past 20+ years, we've helped thousands of collectors, institutions, and enthusiasts discover the true value of their treasures."}
               </p>
               <div className="mt-8 bg-blue-50 rounded-xl p-8 border border-blue-100">
                 <h2 className="text-2xl font-semibold text-gray-900 mb-4">Our Mission</h2>

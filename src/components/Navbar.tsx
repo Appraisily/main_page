@@ -29,7 +29,8 @@ export default function Navbar() {
     { name: 'About', href: '/about' },
     { name: 'Services', href: '/services' },
     { name: 'Expertise', href: '/expertise' },
-    { name: 'Directory', href: 'https://art-appraiser-directory.appraisily.com/', external: true }
+    { name: 'Directory', href: 'https://art-appraiser-directory.appraisily.com/', external: true },
+    { name: 'Screener', href: 'https://screener.appraisily.com/', external: true }
   ];
 
   return (
