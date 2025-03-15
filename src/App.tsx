@@ -1,4 +1,5 @@
-import React, { Suspense } from 'react';
+import * as React from 'react';
+import { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -27,6 +28,7 @@ import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
 import ServiceSelection from './pages/ServiceSelection';
 import SubmissionSuccess from './pages/SubmissionSuccess';
+import { Login, Signup, ResetPassword } from './pages/Auth';
 
 // Loading component
 const PageLoader = () => (
@@ -75,11 +77,11 @@ export default function App() {
             <main>
               <Routes>
                 <Route path="/" element={<Landing />} />
-               <Route path="/success-payment" element={
-                 <Suspense fallback={<PageLoader />}>
-                   <Success />
-                 </Suspense>
-               } />
+                <Route path="/success-payment" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Success />
+                  </Suspense>
+                } />
                 <Route path="/about" element={
                   <Suspense fallback={<PageLoader />}>
                     <About />
@@ -153,6 +155,22 @@ export default function App() {
                 <Route path="/bulk-appraisal/review" element={
                   <Suspense fallback={<PageLoader />}>
                     <BulkReview />
+                  </Suspense>
+                } />
+                {/* Auth Routes */}
+                <Route path="/login" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Login />
+                  </Suspense>
+                } />
+                <Route path="/signup" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Signup />
+                  </Suspense>
+                } />
+                <Route path="/reset-password" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <ResetPassword />
                   </Suspense>
                 } />
               </Routes>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ArrowRight } from 'lucide-react';
+import { Menu, X, ArrowRight, LogIn, UserPlus } from 'lucide-react';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -95,17 +95,41 @@ export default function Navbar() {
               </NavigationMenuList>
             </NavigationMenu>
 
-            <Link
-              to="/start"
-              id="start-appraisal-nav"
-              className="inline-flex items-center justify-center px-4 py-2 ml-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors gap-1.5 shadow-sm hover:shadow-md"
-            >
-              Start Appraisal <ArrowRight className="h-4 w-4" />
-            </Link>
+            {/* Auth buttons - Desktop */}
+            <div className="flex items-center space-x-2">
+              <Link
+                to="/login"
+                className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
+              >
+                <LogIn className="h-4 w-4 mr-1" />
+                Log In
+              </Link>
+              <Link
+                to="/signup"
+                className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium rounded-md text-blue-600 border border-blue-200 hover:bg-blue-50 transition-colors"
+              >
+                <UserPlus className="h-4 w-4 mr-1" />
+                Sign Up
+              </Link>
+              <Link
+                to="/start"
+                id="start-appraisal-nav"
+                className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors gap-1.5 shadow-sm hover:shadow-md"
+              >
+                Start Appraisal <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-4">
+          <div className="md:hidden flex items-center space-x-2">
+            <Link
+              to="/login"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none"
+            >
+              <LogIn className="h-5 w-5" />
+              <span className="sr-only">Log In</span>
+            </Link>
             <Link
               to="/start"
               id="start-appraisal-nav-mobile"
@@ -159,6 +183,15 @@ export default function Navbar() {
                 </Link>
               )
             ))}
+            
+            {/* Auth buttons - Mobile */}
+            <Link
+              to="/signup"
+              className="flex items-center px-3 py-2 rounded-md text-base font-medium text-blue-600 hover:bg-blue-50 transition-colors"
+            >
+              <UserPlus className="h-5 w-5 mr-2" />
+              Sign Up
+            </Link>
           </div>
         </div>
       )}
