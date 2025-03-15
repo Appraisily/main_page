@@ -1,19 +1,32 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Eye, EyeOff, UserPlus, Mail, Lock, AlertCircle } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Eye, EyeOff, UserPlus, Mail, Lock, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { register } from '@/lib/auth/authService';
 
 export default function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
 
-  // Simple password validation - only check if passwords match
+  // Password strength validation
+  const passwordValidation = {
+    hasMinLength: password.length >= 8,
+    hasUppercase: /[A-Z]/.test(password),
+    hasLowercase: /[a-z]/.test(password),
+    hasNumber: /[0-9]/.test(password),
+    hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+  };
+  
+  // Check if passwords match
   const passwordsMatch = password === confirmPassword;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -33,17 +46,19 @@ export default function Signup() {
     setIsLoading(true);
     
     try {
-      // Here you would implement your registration logic
-      // This is a placeholder for when you implement the backend
-      console.log('Signup with:', { email, password });
+      // Call the register API
+      await register({ 
+        email, 
+        password, 
+        confirmPassword,
+        firstName: firstName || undefined,
+        lastName: lastName || undefined
+      });
       
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Show success message or redirect
+      // Show success message
       setSuccess(true);
     } catch (err) {
-      setError('An error occurred during signup. Please try again.');
+      setError(err instanceof Error ? err.message : 'An error occurred during signup. Please try again.');
       console.error('Signup error:', err);
     } finally {
       setIsLoading(false);
@@ -117,6 +132,43 @@ export default function Signup() {
           )}
           
           <form className="space-y-6" onSubmit={handleSubmit}>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label
+                  htmlFor="firstName"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  First Name
+                </label>
+                <input
+                  id="firstName"
+                  name="firstName"
+                  type="text"
+                  autoComplete="given-name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 border px-3"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="lastName"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Last Name
+                </label>
+                <input
+                  id="lastName"
+                  name="lastName"
+                  type="text"
+                  autoComplete="family-name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 border px-3"
+                />
+              </div>
+            </div>
+
             <div>
               <label
                 htmlFor="email"
@@ -178,6 +230,35 @@ export default function Signup() {
                   </button>
                 </div>
               </div>
+              
+              {/* Password validation indicators */}
+              {password && (
+                <div className="mt-2 space-y-1">
+                  <p className="text-xs">Password must contain:</p>
+                  <div className="grid grid-cols-2 gap-x-2 gap-y-1">
+                    <div className={`text-xs flex items-center ${passwordValidation.hasMinLength ? 'text-green-600' : 'text-gray-500'}`}>
+                      <div className={`h-2 w-2 rounded-full mr-1.5 ${passwordValidation.hasMinLength ? 'bg-green-600' : 'bg-gray-300'}`}></div>
+                      At least 8 characters
+                    </div>
+                    <div className={`text-xs flex items-center ${passwordValidation.hasUppercase ? 'text-green-600' : 'text-gray-500'}`}>
+                      <div className={`h-2 w-2 rounded-full mr-1.5 ${passwordValidation.hasUppercase ? 'bg-green-600' : 'bg-gray-300'}`}></div>
+                      Uppercase letter
+                    </div>
+                    <div className={`text-xs flex items-center ${passwordValidation.hasLowercase ? 'text-green-600' : 'text-gray-500'}`}>
+                      <div className={`h-2 w-2 rounded-full mr-1.5 ${passwordValidation.hasLowercase ? 'bg-green-600' : 'bg-gray-300'}`}></div>
+                      Lowercase letter
+                    </div>
+                    <div className={`text-xs flex items-center ${passwordValidation.hasNumber ? 'text-green-600' : 'text-gray-500'}`}>
+                      <div className={`h-2 w-2 rounded-full mr-1.5 ${passwordValidation.hasNumber ? 'bg-green-600' : 'bg-gray-300'}`}></div>
+                      Number
+                    </div>
+                    <div className={`text-xs flex items-center ${passwordValidation.hasSpecialChar ? 'text-green-600' : 'text-gray-500'}`}>
+                      <div className={`h-2 w-2 rounded-full mr-1.5 ${passwordValidation.hasSpecialChar ? 'bg-green-600' : 'bg-gray-300'}`}></div>
+                      Special character
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div>
@@ -255,8 +336,16 @@ export default function Signup() {
             <div>
               <button
                 type="submit"
-                disabled={isLoading || !passwordsMatch || !agreeToTerms || !password}
-                disabled={isLoading || !hasMinLength || !hasUppercase || !hasLowercase || !hasNumber || !hasSpecialChar || !passwordsMatch || !agreeToTerms}
+                disabled={
+                  isLoading || 
+                  !passwordValidation.hasMinLength || 
+                  !passwordValidation.hasUppercase || 
+                  !passwordValidation.hasLowercase || 
+                  !passwordValidation.hasNumber || 
+                  !passwordValidation.hasSpecialChar || 
+                  !passwordsMatch || 
+                  !agreeToTerms
+                }
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
@@ -335,4 +424,4 @@ export default function Signup() {
       </div>
     </div>
   );
-} 
+}

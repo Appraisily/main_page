@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ArrowRight, LogIn } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, ArrowRight, LogIn, User, LogOut } from 'lucide-react';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -10,11 +10,14 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/lib/auth/AuthContext';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, authenticated, logout, loading } = useAuth();
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +30,15 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
 
   const navItems = [
     { name: 'About', href: '/about' },
@@ -97,13 +109,34 @@ export default function Navbar() {
 
             {/* Auth buttons - Desktop */}
             <div className="flex items-center space-x-2">
-              <Link
-                to="/login"
-                className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
-              >
-                <LogIn className="h-4 w-4 mr-1" />
-                Log In
-              </Link>
+              {loading ? (
+                <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse"></div>
+              ) : authenticated ? (
+                <div className="flex items-center space-x-2">
+                  <Link
+                    to="/profile"
+                    className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
+                  >
+                    <User className="h-4 w-4 mr-1" />
+                    {user?.firstName || 'Profile'}
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:text-red-600 hover:bg-gray-50 transition-colors"
+                  >
+                    <LogOut className="h-4 w-4 mr-1" />
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  to="/login"
+                  className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
+                >
+                  <LogIn className="h-4 w-4 mr-1" />
+                  Log In
+                </Link>
+              )}
               <Link
                 to="/start"
                 id="start-appraisal-nav"
@@ -116,13 +149,23 @@ export default function Navbar() {
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-2">
-            <Link
-              to="/login"
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none"
-            >
-              <LogIn className="h-5 w-5" />
-              <span className="sr-only">Log In</span>
-            </Link>
+            {authenticated ? (
+              <Link
+                to="/profile"
+                className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none"
+              >
+                <User className="h-5 w-5" />
+                <span className="sr-only">Profile</span>
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none"
+              >
+                <LogIn className="h-5 w-5" />
+                <span className="sr-only">Log In</span>
+              </Link>
+            )}
             <Link
               to="/start"
               id="start-appraisal-nav-mobile"
@@ -176,6 +219,44 @@ export default function Navbar() {
                 </Link>
               )
             ))}
+            {/* Mobile auth links */}
+            {authenticated ? (
+              <>
+                <Link
+                  to="/profile"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
+                >
+                  Profile
+                </Link>
+                <Link
+                  to="/dashboard"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
+                >
+                  Dashboard
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-red-600 hover:bg-gray-50 transition-colors"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
+                >
+                  Log In
+                </Link>
+                <Link
+                  to="/signup"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}

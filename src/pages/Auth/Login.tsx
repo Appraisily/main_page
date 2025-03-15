@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, LogIn, Mail, Lock, AlertCircle } from 'lucide-react';
+import { login } from '@/lib/auth/authService';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -9,6 +10,7 @@ export default function Login() {
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,17 +18,13 @@ export default function Login() {
     setIsLoading(true);
     
     try {
-      // Here you would implement your authentication logic
-      // This is a placeholder for when you implement the backend
-      console.log('Login with:', { email, password, rememberMe });
+      // Call the login API
+      await login({ email, password, rememberMe });
       
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Redirect to dashboard or homepage after successful login
-      // window.location.href = '/dashboard';
+      // Redirect to dashboard after successful login
+      navigate('/dashboard');
     } catch (err) {
-      setError('Invalid email or password. Please try again.');
+      setError(err instanceof Error ? err.message : 'Invalid email or password. Please try again.');
       console.error('Login error:', err);
     } finally {
       setIsLoading(false);
@@ -251,4 +249,4 @@ export default function Login() {
       </div>
     </div>
   );
-} 
+}

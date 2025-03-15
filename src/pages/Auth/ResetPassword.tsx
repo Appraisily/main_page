@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, ArrowLeft, CheckCircle2, AlertCircle } from 'lucide-react';
+import { requestPasswordReset } from '@/lib/auth/authService';
 
 export default function ResetPassword() {
   const [email, setEmail] = useState('');
@@ -14,17 +15,13 @@ export default function ResetPassword() {
     setIsLoading(true);
     
     try {
-      // Here you would implement your password reset logic
-      // This is a placeholder for when you implement the backend
-      console.log('Password reset for:', email);
-      
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Call the password reset API
+      await requestPasswordReset(email);
       
       // Show success message
       setSuccess(true);
     } catch (err) {
-      setError('An error occurred. Please try again.');
+      setError(err instanceof Error ? err.message : 'An error occurred. Please try again.');
       console.error('Password reset error:', err);
     } finally {
       setIsLoading(false);
@@ -180,4 +177,4 @@ export default function ResetPassword() {
       </div>
     </div>
   );
-} 
+}
