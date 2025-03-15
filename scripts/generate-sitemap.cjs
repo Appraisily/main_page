@@ -116,7 +116,8 @@ function generateSitemapIndex(baseUrl, subdomains) {
 
 // Define subdomains that have sitemaps
 const subdomains = [
-  'screener'
+  'screener',
+  'landing-appraisers'
   // Add more subdomains here as needed
 ];
 
