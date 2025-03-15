@@ -24,6 +24,7 @@ import SessionRestore from './pages/BulkAppraisal/SessionRestore';
 import HowItWorks from './pages/HowItWorks';
 import Report from './pages/Report';
 import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
 import ServiceSelection from './pages/ServiceSelection';
 import SubmissionSuccess from './pages/SubmissionSuccess';
 
@@ -110,6 +111,11 @@ export default function App() {
                 <Route path="/terms" element={
                   <Suspense fallback={<PageLoader />}>
                     <Terms />
+                  </Suspense>
+                } />
+                <Route path="/privacy" element={
+                  <Suspense fallback={<PageLoader />}>
+                    <Privacy />
                   </Suspense>
                 } />
                 <Route path="/submission-success" element={
