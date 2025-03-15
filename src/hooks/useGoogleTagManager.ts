@@ -2,26 +2,25 @@ import { useEffect } from 'react';
 
 export const useGoogleTagManager = (gtmId: string) => {
   useEffect(() => {
-    function initGTM() {
+    // We don't need to manually implement GTM here as it's already being done
+    // through the Helmet component in App.tsx
+    
+    // This hook is now used for programmatic dataLayer events, not initialization
+    if (typeof window !== 'undefined') {
       window.dataLayer = window.dataLayer || [];
-      window.gtag = function() {
-        window.dataLayer.push(arguments);
-      };
-      window.gtag('js', new Date());
-      window.gtag('config', gtmId);
     }
-
-    // Check if GTM is already loaded
-    if (!window.gtag) {
-      const script = document.createElement('script');
-      script.src = `https://www.googletagmanager.com/gtag/js?id=${gtmId}`;
-      script.async = true;
-      script.onload = initGTM;
-      document.head.appendChild(script);
-    }
-
+    
     return () => {
-      // Cleanup if needed
+      // No cleanup needed
     };
   }, [gtmId]);
+  
+  // Helper function to push events to dataLayer
+  const pushEvent = (event: any) => {
+    if (typeof window !== 'undefined' && window.dataLayer) {
+      window.dataLayer.push(event);
+    }
+  };
+  
+  return { pushEvent };
 };

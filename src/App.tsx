@@ -37,12 +37,13 @@ const PageLoader = () => (
 
 export default function App() {
   const GTM_ID = 'GTM-PSLHDGM'; // Replace with your GTM ID
-  useGoogleTagManager(GTM_ID);
+  const { pushEvent } = useGoogleTagManager(GTM_ID);
 
   return (
     <ErrorBoundary>
       <HelmetProvider>
         <Helmet>
+          {/* Google Tag Manager */}
           <script>
             {`
               (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -54,6 +55,7 @@ export default function App() {
           </script>
         </Helmet>
         <Helmet>
+          {/* Google Tag Manager (noscript) */}
           <noscript>
             {`
               <iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}"
