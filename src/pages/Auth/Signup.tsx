@@ -18,11 +18,7 @@ export default function Signup() {
 
   // Password strength validation
   const passwordValidation = {
-    hasMinLength: password.length >= 8,
-    hasUppercase: /[A-Z]/.test(password),
-    hasLowercase: /[a-z]/.test(password),
-    hasNumber: /[0-9]/.test(password),
-    hasSpecialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+    hasMinLength: password.length >= 6
   };
   
   // Check if passwords match
@@ -181,19 +177,7 @@ export default function Signup() {
                   <div className="grid gap-2 text-xs">
                     <div className="flex items-center gap-2">
                       <CheckCircle2 className={`h-3 w-3 ${passwordValidation.hasMinLength ? 'text-green-500' : 'text-gray-300'}`} />
-                      <span className="text-gray-500">At least 8 characters</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className={`h-3 w-3 ${passwordValidation.hasUppercase && passwordValidation.hasLowercase ? 'text-green-500' : 'text-gray-300'}`} />
-                      <span className="text-gray-500">Upper & lowercase letters</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className={`h-3 w-3 ${passwordValidation.hasNumber ? 'text-green-500' : 'text-gray-300'}`} />
-                      <span className="text-gray-500">At least 1 number</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className={`h-3 w-3 ${passwordValidation.hasSpecialChar ? 'text-green-500' : 'text-gray-300'}`} />
-                      <span className="text-gray-500">At least 1 special character</span>
+                      <span className="text-gray-500">At least 6 characters</span>
                     </div>
                   </div>
                 </div>
