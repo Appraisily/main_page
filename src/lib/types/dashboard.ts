@@ -5,8 +5,10 @@ export interface AppraisalPost {
     rendered: string;
   };
   status: string;
+  link: string;
   acf: {
     main: string;
+    main_url?: string;
     signature_artwork?: string;
     back_artwork?: string;
     customer_email: string;
