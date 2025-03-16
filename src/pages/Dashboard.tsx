@@ -26,21 +26,42 @@ export default function Dashboard() {
     const loadAppraisals = async () => {
       // Skip loading if no authenticated user
       if (!user?.email) {
+        console.log('[Dashboard] No user email available, skipping load');
         return;
       }
 
       // Prevent duplicate loads
-      if (loadingRef.current) return;
+      if (loadingRef.current) {
+        console.log('[Dashboard] Load already in progress, skipping');
+        return;
+      }
       loadingRef.current = true;
+
+      console.log('[Dashboard] Loading appraisals for:', {
+        email: user.email,
+        filters
+      });
 
       try {
         setLoading(true);
         const data = await fetchAppraisals(user.email, filters);
+        console.log('[Dashboard] Appraisals loaded:', {
+          count: data.length,
+          firstAppraisal: data[0] ? {
+            id: data[0].id,
+            title: data[0].title,
+            imageFields: {
+              main: data[0].acf.main,
+              main_url: data[0].acf.main_url
+            },
+            link: data[0].link
+          } : null
+        });
         setAppraisals(data);
         setError(null);
       } catch (err) {
         setError('Failed to load appraisals');
-        console.error('Error loading appraisals:', err);
+        console.error('[Dashboard] Error loading appraisals:', err);
       } finally {
         setLoading(false);
         loadingRef.current = false;
