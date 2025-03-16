@@ -32,7 +32,7 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
       {/* Image Preview */}
       <div className="relative h-48 overflow-hidden rounded-t-lg">
         <img
-          src={appraisal.acf.main_url || appraisal.acf.main}
+          src={appraisal.acf.main_url || appraisal.acf.main || '/placeholder-image.jpg'}
           alt={truncatedTitle}
           className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
@@ -46,6 +46,8 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
             // If main_url fails, try main as fallback
             if (e.currentTarget.src === appraisal.acf.main_url) {
               e.currentTarget.src = appraisal.acf.main;
+            } else if (e.currentTarget.src === appraisal.acf.main) {
+              e.currentTarget.src = '/placeholder-image.jpg';
             }
           }}
         />
