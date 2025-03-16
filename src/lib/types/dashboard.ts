@@ -6,6 +6,15 @@ export interface AppraisalPost {
   };
   status: string;
   link: string;
+  main_image_url?: string;
+  yoast_head_json?: {
+    og_image?: Array<{
+      url: string;
+      width: number;
+      height: number;
+      type: string;
+    }>;
+  };
   acf: {
     main: string;
     main_url?: string;
@@ -14,6 +23,11 @@ export interface AppraisalPost {
     customer_email: string;
     value?: string;
     description?: string;
+    condition?: string;
+    age_text?: string;
+    style?: string;
+    conclusion1?: string;
+    conclusion2?: string;
   };
 }
 

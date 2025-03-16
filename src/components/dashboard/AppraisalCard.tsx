@@ -1,6 +1,6 @@
 import React from 'react';
 import { format } from 'date-fns';
-import { DollarSign, Clock, ExternalLink } from 'lucide-react';
+import { DollarSign, Clock, ExternalLink, Info } from 'lucide-react';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { AppraisalPost } from '@/lib/types/dashboard';
@@ -11,44 +11,31 @@ interface AppraisalCardProps {
 }
 
 export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
-  console.log('[Appraisal Card] Rendering appraisal:', {
-    id: appraisal.id,
-    title: appraisal.title.rendered,
-    imageData: {
-      main: appraisal.acf.main,
-      main_url: appraisal.acf.main_url,
-      signature: appraisal.acf.signature_artwork,
-    },
-    link: appraisal.link,
-    value: appraisal.acf.value,
-    date: appraisal.date
-  });
+  // Get the best available image URL
+  const imageUrl = appraisal.main_image_url || 
+                  appraisal.yoast_head_json?.og_image?.[0]?.url ||
+                  appraisal.acf.main_url ||
+                  appraisal.acf.main ||
+                  '/placeholder-image.jpg';
 
   const title = decodeHtmlEntities(appraisal.title.rendered);
   const truncatedTitle = truncateWords(title, 10);
 
   return (
-    <Card className="group">
+    <Card className="group hover:shadow-lg transition-shadow duration-300">
       {/* Image Preview */}
       <div className="relative h-48 overflow-hidden rounded-t-lg">
         <img
-          src={appraisal.acf.main_url || appraisal.acf.main || '/placeholder-image.jpg'}
+          src={imageUrl}
           alt={truncatedTitle}
           className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
           onError={(e) => {
             console.error('[Appraisal Card] Image load error:', {
               id: appraisal.id,
-              src: e.currentTarget.src,
-              mainField: appraisal.acf.main,
-              mainUrlField: appraisal.acf.main_url
+              src: e.currentTarget.src
             });
-            // If main_url fails, try main as fallback
-            if (e.currentTarget.src === appraisal.acf.main_url) {
-              e.currentTarget.src = appraisal.acf.main;
-            } else if (e.currentTarget.src === appraisal.acf.main) {
-              e.currentTarget.src = '/placeholder-image.jpg';
-            }
+            e.currentTarget.src = '/placeholder-image.jpg';
           }}
         />
       </div>
@@ -59,7 +46,7 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
             {format(new Date(appraisal.date), 'MMM d, yyyy')}
           </span>
         </div>
-        <h3 className="font-semibold tracking-tight">
+        <h3 className="font-semibold tracking-tight line-clamp-2">
           {truncatedTitle}
         </h3>
       </CardHeader>
@@ -67,7 +54,7 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
       <CardContent className="space-y-3">
         {appraisal.acf.value && (
           <div className="flex items-center text-muted-foreground">
-            <DollarSign className="h-4 w-4 mr-2" />
+            <DollarSign className="h-4 w-4 mr-2 text-primary" />
             <span>Estimated Value: ${appraisal.acf.value}</span>
           </div>
         )}
@@ -76,9 +63,26 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
           <Clock className="h-4 w-4 mr-2" />
           <span>{format(new Date(appraisal.date), 'MMMM d, yyyy')}</span>
         </div>
+
+        {(appraisal.acf.condition || appraisal.acf.age_text || appraisal.acf.style) && (
+          <div className="flex items-start text-muted-foreground">
+            <Info className="h-4 w-4 mr-2 mt-1 flex-shrink-0" />
+            <div className="text-sm space-y-1">
+              {appraisal.acf.condition && (
+                <p>Condition: {appraisal.acf.condition}</p>
+              )}
+              {appraisal.acf.age_text && (
+                <p>Age: {appraisal.acf.age_text}</p>
+              )}
+              {appraisal.acf.style && (
+                <p>Style: {appraisal.acf.style}</p>
+              )}
+            </div>
+          </div>
+        )}
       </CardContent>
 
-      <CardFooter>
+      <CardFooter className="gap-2">
         <Button variant="outline" className="w-full" asChild>
           <a 
             href={appraisal.link} 

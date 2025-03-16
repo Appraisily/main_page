@@ -18,7 +18,7 @@ export const fetchAppraisals = async (email: string, filters?: DashboardFilters)
     const params = new URLSearchParams({
       'acf_customer_email': email,
       per_page: '100',
-      _fields: 'id,date,title,link,acf.main,acf.main_url,acf.value,acf.customer_email'
+      _fields: 'id,date,title,link,acf,yoast_head_json.og_image,main_image_url'
     });
 
     // Add filters if provided
