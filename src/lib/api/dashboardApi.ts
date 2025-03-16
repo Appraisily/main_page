@@ -31,13 +31,17 @@ export const fetchAppraisals = async (email: string, filters?: DashboardFilters)
     }
 
     const url = `${API_URL}/appraisals?${params.toString()}`;
-    console.log('🔍 Fetching appraisals from:', url);
+    console.log('[Dashboard API] Fetching appraisals:', {
+      url,
+      email,
+      filters
+    });
 
     const response = await fetch(url, requestConfig);
     
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('❌ WordPress API Error:', {
+      console.error('[Dashboard API] Error:', {
         status: response.status,
         statusText: response.statusText,
         error: errorText
@@ -46,10 +50,22 @@ export const fetchAppraisals = async (email: string, filters?: DashboardFilters)
     }
 
     const data = await response.json();
-    console.log('✅ WordPress API Response:', {
-      totalItems: data.length,
-      firstItem: data[0],
-      fields: data[0] ? Object.keys(data[0]) : [],
+    
+    // Log the complete first item for debugging
+    if (data.length > 0) {
+      console.log('[Dashboard API] First appraisal data:', {
+        complete: data[0],
+        id: data[0].id,
+        title: data[0].title,
+        link: data[0].link,
+        acf: data[0].acf,
+        date: data[0].date
+      });
+    }
+
+    console.log('[Dashboard API] Summary:', {
+      totalAppraisals: data.length,
+      availableFields: data[0] ? Object.keys(data[0]) : [],
       acfFields: data[0]?.acf ? Object.keys(data[0].acf) : []
     });
     
@@ -60,7 +76,7 @@ export const fetchAppraisals = async (email: string, filters?: DashboardFilters)
 
     return filteredData;
   } catch (error) {
-    console.error('❌ Fetch Error:', error);
+    console.error('[Dashboard API] Fatal error:', error);
     throw error;
   }
 };

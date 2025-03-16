@@ -11,12 +11,17 @@ interface AppraisalCardProps {
 }
 
 export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
-  console.log('🖼️ Appraisal Card Data:', {
+  console.log('[Appraisal Card] Rendering appraisal:', {
     id: appraisal.id,
-    title: appraisal.title,
-    mainImage: appraisal.acf.main,
+    title: appraisal.title.rendered,
+    imageData: {
+      main: appraisal.acf.main,
+      main_url: appraisal.acf.main_url,
+      signature: appraisal.acf.signature_artwork,
+    },
     link: appraisal.link,
-    acfFields: Object.keys(appraisal.acf)
+    value: appraisal.acf.value,
+    date: appraisal.date
   });
 
   const title = decodeHtmlEntities(appraisal.title.rendered);
@@ -32,10 +37,16 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
           className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
           onError={(e) => {
-            console.error('❌ Image load error:', {
+            console.error('[Appraisal Card] Image load error:', {
+              id: appraisal.id,
               src: e.currentTarget.src,
-              appraisalId: appraisal.id
+              mainField: appraisal.acf.main,
+              mainUrlField: appraisal.acf.main_url
             });
+            // If main_url fails, try main as fallback
+            if (e.currentTarget.src === appraisal.acf.main_url) {
+              e.currentTarget.src = appraisal.acf.main;
+            }
           }}
         />
       </div>
