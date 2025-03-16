@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Eye, EyeOff, LogIn, Mail, Lock, AlertCircle } from 'lucide-react';
 import { login } from '@/lib/auth/authService';
 import { useAuth } from '@/lib/auth/AuthContext';
@@ -12,6 +12,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
   const { login: loginContext } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -22,7 +23,14 @@ export default function Login() {
     try {
       const response = await login({ email, password, rememberMe });
       loginContext(response.user);
-      navigate('/dashboard');
+      
+      // Check if there's a return URL in the location state
+      const returnUrl = location.state?.returnUrl;
+      if (returnUrl) {
+        navigate(returnUrl);
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Invalid email or password. Please try again.');
       console.error('Login error:', err);

@@ -2,6 +2,7 @@ import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { CheckCircle2, ArrowRight, LayoutDashboard, Loader2 } from 'lucide-react';
 import { useStripeSession } from '@/hooks/useStripeSession';
+import { Link } from 'react-router-dom';
 
 export default function SubmissionSuccess() {
   const [searchParams] = useSearchParams();
@@ -41,13 +42,13 @@ export default function SubmissionSuccess() {
                     <span>Loading...</span>
                   </div>
                 ) : session?.customer_details?.email ? (
-                  <a
-                    href={`/dashboard?email=${encodeURIComponent(session.customer_details.email)}`}
+                  <Link
+                    to="/login"
                     className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors mr-4"
                   >
                     <LayoutDashboard className="mr-2 h-5 w-5" />
-                    Go to Dashboard
-                  </a>
+                    View in Dashboard
+                  </Link>
                 ) : error ? (
                   <p className="text-sm text-red-600">
                     Unable to load dashboard link. Please try again later.
