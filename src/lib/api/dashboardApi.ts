@@ -18,7 +18,7 @@ export const fetchAppraisals = async (email: string, filters?: DashboardFilters)
     const params = new URLSearchParams({
       'acf_customer_email': email,
       per_page: '100',
-      _fields: 'id,date,title,status,acf,meta'
+      _fields: 'id,date,title,status,acf,meta,link'
     });
 
     // Add filters if provided
@@ -31,15 +31,27 @@ export const fetchAppraisals = async (email: string, filters?: DashboardFilters)
     }
 
     const url = `${API_URL}/appraisals?${params.toString()}`;
+    console.log('🔍 Fetching appraisals from:', url);
 
     const response = await fetch(url, requestConfig);
     
     if (!response.ok) {
       const errorText = await response.text();
+      console.error('❌ WordPress API Error:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorText
+      });
       throw new Error('Failed to fetch appraisals');
     }
 
     const data = await response.json();
+    console.log('✅ WordPress API Response:', {
+      totalItems: data.length,
+      firstItem: data[0],
+      fields: data[0] ? Object.keys(data[0]) : [],
+      acfFields: data[0]?.acf ? Object.keys(data[0].acf) : []
+    });
     
     // Filter results by customer email in ACF fields
     const filteredData = data.filter(post => 
@@ -48,6 +60,7 @@ export const fetchAppraisals = async (email: string, filters?: DashboardFilters)
 
     return filteredData;
   } catch (error) {
+    console.error('❌ Fetch Error:', error);
     throw error;
   }
 };
