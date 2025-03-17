@@ -40,48 +40,105 @@ export default function Login() {
   };
 
   const handleGoogleLogin = () => {
+    // Clear any previous errors
+    setError('');
+    
+    // Set popup dimensions and position
     const width = 500;
     const height = 600;
     const left = window.screenX + (window.outerWidth - width) / 2;
     const top = window.screenY + (window.outerHeight - height) / 2;
 
-    // Open the popup
+    // Get the auth API URL from environment variables
+    const AUTH_API_URL = import.meta.env.VITE_AUTH_API_URL || 
+      'https://auth-service-856401495068.us-central1.run.app/api/auth';
+    
+    // Open the popup for Google authentication
     const popup = window.open(
-      `${import.meta.env.VITE_AUTH_API_URL || 'https://auth-service-856401495068.us-central1.run.app/api/auth'}/google`,
+      `${AUTH_API_URL}/google`,
       'Google Sign In',
-      `width=${width},height=${height},left=${left},top=${top},popup=1`
+      `width=${width},height=${height},left=${left},top=${top},popup=1,resizable=yes,scrollbars=yes`
     );
 
-    // Listen for messages from the popup
+    // Set a loading state while waiting for auth
+    setIsLoading(true);
+
+    // Create message handler for communication with popup
     const messageHandler = async (event: MessageEvent) => {
+      // Validate the event origin if needed
+      console.log('Received message from popup:', event.data);
+      
+      // Handle successful authentication
       if (event.data?.type === 'AUTH_SUCCESS') {
+        // Clean up the message listener
         window.removeEventListener('message', messageHandler);
         
         try {
           // Get the user data after successful authentication
-          const response = await fetch('/api/auth/me');
+          const response = await fetch(`${AUTH_API_URL}/me`, {
+            credentials: 'include',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            }
+          });
+          
+          if (!response.ok) {
+            throw new Error(`Failed to fetch user data: ${response.status}`);
+          }
+          
           const userData = await response.json();
           
           if (userData.user) {
+            // Update auth context with user data
             loginContext(userData.user);
             
             // Navigate to the return URL or dashboard
             const returnUrl = location.state?.returnUrl;
             navigate(returnUrl || '/dashboard');
+          } else {
+            throw new Error('No user data received');
           }
         } catch (error) {
-          console.error('Error fetching user data:', error);
+          console.error('Error completing Google authentication:', error);
           setError('Failed to complete sign in. Please try again.');
+        } finally {
+          setIsLoading(false);
         }
+      }
+      
+      // Handle authentication errors
+      else if (event.data?.type === 'AUTH_ERROR') {
+        window.removeEventListener('message', messageHandler);
+        console.error('Google authentication error:', event.data.error);
+        setError(event.data.error || 'Google sign in failed. Please try again.');
+        setIsLoading(false);
       }
     };
 
+    // Set up the message listener
     window.addEventListener('message', messageHandler);
 
-    // Check if popup was blocked
+    // Handle case where popup is blocked
     if (!popup) {
       setError('Popup was blocked. Please allow popups for this site.');
+      setIsLoading(false);
+      return;
     }
+    
+    // Set up polling to detect if popup was closed without completing auth
+    const checkPopupClosed = setInterval(() => {
+      if (popup.closed) {
+        clearInterval(checkPopupClosed);
+        window.removeEventListener('message', messageHandler);
+        
+        // Only show error if still in loading state (auth not completed)
+        if (isLoading) {
+          setIsLoading(false);
+          setError('Authentication was canceled. Please try again.');
+        }
+      }
+    }, 1000);
   };
 
   return (
