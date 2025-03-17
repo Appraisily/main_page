@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, ArrowRight, LogIn, User, LogOut } from 'lucide-react';
+import { Menu, X, ArrowRight, LogIn, User, LogOut, LayoutDashboard } from 'lucide-react';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -9,6 +9,12 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/lib/auth/AuthContext';
 
@@ -114,19 +120,29 @@ export default function Navbar() {
               ) : authenticated ? (
                 <div className="flex items-center space-x-2">
                   <Link
-                    to="/profile"
+                    to="/dashboard"
                     className="inline-flex items-center justify-center px-2.5 py-1.5 text-sm font-medium rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
                   >
-                    <User className="h-4 w-4 mr-1" />
-                    {user?.firstName || 'Profile'}
+                    <LayoutDashboard className="h-4 w-4 mr-1" />
+                    Dashboard
                   </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="inline-flex items-center justify-center px-2.5 py-1.5 text-sm font-medium rounded-md text-gray-700 hover:text-red-600 hover:bg-gray-50 transition-colors"
-                  >
-                    <LogOut className="h-4 w-4 mr-1" />
-                    Logout
-                  </button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="inline-flex items-center justify-center px-2.5 py-1.5 text-sm font-medium rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors">
+                      <User className="h-4 w-4 mr-1" />
+                      {user?.firstName || 'Profile'}
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem asChild>
+                        <Link to="/profile" className="w-full">
+                          Profile Settings
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={handleLogout} className="text-red-600">
+                        <LogOut className="h-4 w-4 mr-2" />
+                        Logout
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               ) : (
                 <Link
@@ -150,13 +166,32 @@ export default function Navbar() {
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-2">
             {authenticated ? (
-              <Link
-                to="/profile"
-                className="inline-flex items-center justify-center p-1.5 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none"
-              >
-                <User className="h-5 w-5" />
-                <span className="sr-only">Profile</span>
-              </Link>
+              <>
+                <Link
+                  to="/dashboard"
+                  className="inline-flex items-center justify-center p-1.5 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none"
+                >
+                  <LayoutDashboard className="h-5 w-5" />
+                  <span className="sr-only">Dashboard</span>
+                </Link>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="inline-flex items-center justify-center p-1.5 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none">
+                    <User className="h-5 w-5" />
+                    <span className="sr-only">Profile Menu</span>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem asChild>
+                      <Link to="/profile" className="w-full">
+                        Profile Settings
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleLogout} className="text-red-600">
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </>
             ) : (
               <Link
                 to="/login"
