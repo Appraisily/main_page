@@ -32,6 +32,7 @@ import ServiceSelection from './pages/ServiceSelection';
 import SubmissionSuccess from './pages/SubmissionSuccess';
 import Profile from './pages/Profile';
 import { Login, Signup, ResetPassword } from './pages/Auth';
+import AuthSuccess from './pages/Auth/AuthSuccess';
 
 // Loading component
 const PageLoader = () => (
@@ -188,6 +189,11 @@ export default function App() {
                   <Route path="/reset-password" element={
                     <Suspense fallback={<PageLoader />}>
                       <ResetPassword />
+                    </Suspense>
+                  } />
+                  <Route path="/auth/success" element={
+                    <Suspense fallback={<PageLoader />}>
+                      <AuthSuccess />
                     </Suspense>
                   } />
                 </Routes>

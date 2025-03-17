@@ -40,7 +40,48 @@ export default function Login() {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = `${import.meta.env.VITE_AUTH_API_URL || 'https://auth-service-856401495068.us-central1.run.app/api/auth'}/google`;
+    const width = 500;
+    const height = 600;
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2;
+
+    // Open the popup
+    const popup = window.open(
+      `${import.meta.env.VITE_AUTH_API_URL || 'https://auth-service-856401495068.us-central1.run.app/api/auth'}/google`,
+      'Google Sign In',
+      `width=${width},height=${height},left=${left},top=${top},popup=1`
+    );
+
+    // Listen for messages from the popup
+    const messageHandler = async (event: MessageEvent) => {
+      if (event.data?.type === 'AUTH_SUCCESS') {
+        window.removeEventListener('message', messageHandler);
+        
+        try {
+          // Get the user data after successful authentication
+          const response = await fetch('/api/auth/me');
+          const userData = await response.json();
+          
+          if (userData.user) {
+            loginContext(userData.user);
+            
+            // Navigate to the return URL or dashboard
+            const returnUrl = location.state?.returnUrl;
+            navigate(returnUrl || '/dashboard');
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+          setError('Failed to complete sign in. Please try again.');
+        }
+      }
+    };
+
+    window.addEventListener('message', messageHandler);
+
+    // Check if popup was blocked
+    if (!popup) {
+      setError('Popup was blocked. Please allow popups for this site.');
+    }
   };
 
   return (
