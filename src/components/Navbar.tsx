@@ -51,8 +51,20 @@ export default function Navbar() {
     { name: 'About', href: '/about' },
     { name: 'Services', href: '/services' },
     { name: 'Expertise', href: '/expertise' },
-    { name: 'Directory', href: 'https://art-appraiser-directory.appraisily.com/', external: true },
     { name: 'Screener', href: 'https://screener.appraisily.com/', external: true }
+  ];
+
+  const directoryItems = [
+    { 
+      name: 'Art Appraiser Directory',
+      href: 'http://art-appraiser-directory.appraisily.com/',
+      description: 'Find certified art appraisers in your area'
+    },
+    { 
+      name: 'Antique Appraiser Directory',
+      href: 'http://antique-appraiser-directory.appraisily.com/',
+      description: 'Connect with experienced antique appraisers'
+    }
   ];
 
   return (
@@ -84,7 +96,29 @@ export default function Navbar() {
               <Link to="/about" className="text-gray-600 hover:text-gray-900">About</Link>
               <Link to="/services" className="text-gray-600 hover:text-gray-900">Services</Link>
               <Link to="/expertise" className="text-gray-600 hover:text-gray-900">Expertise</Link>
-              <Link to="/directory" className="text-gray-600 hover:text-gray-900">Directory</Link>
+              <NavigationMenu>
+                <NavigationMenuList>
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="bg-transparent">Directory</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <div className="w-[400px] p-3">
+                        {directoryItems.map((item) => (
+                          <a
+                            key={item.name}
+                            href={item.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block p-3 space-y-1 hover:bg-gray-50 rounded-lg transition-colors"
+                          >
+                            <div className="font-medium text-gray-900">{item.name}</div>
+                            <p className="text-sm text-gray-600">{item.description}</p>
+                          </a>
+                        ))}
+                      </div>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
               <Link to="/screener" className="text-gray-600 hover:text-gray-900">Screener</Link>
             </nav>
 
