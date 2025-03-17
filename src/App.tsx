@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Suspense } from 'react';
+import { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -31,7 +31,10 @@ import Privacy from './pages/Privacy';
 import ServiceSelection from './pages/ServiceSelection';
 import SubmissionSuccess from './pages/SubmissionSuccess';
 import Profile from './pages/Profile';
-import { Login, Signup, ResetPassword, AuthSuccess } from './pages/Auth';
+import { Login, Signup, ResetPassword } from './pages/Auth';
+
+// Lazy load the AuthSuccess component directly
+const AuthSuccess = lazy(() => import('./pages/Auth/AuthSuccess'));
 
 // Loading component
 const PageLoader = () => (
