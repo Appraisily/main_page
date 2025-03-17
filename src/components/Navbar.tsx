@@ -14,6 +14,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/lib/auth/AuthContext';
@@ -78,87 +79,66 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-3">
-            <NavigationMenu>
-              <NavigationMenuList>
-                {navItems.map((item) => (
-                  <NavigationMenuItem key={item.name}>
-                    {item.external ? (
-                      <a
-                        href={item.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={cn(
-                          "px-2.5 py-1.5 text-sm font-medium rounded-md transition-colors",
-                          "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
-                        )}
-                      >
-                        {item.name}
-                      </a>
-                    ) : (
-                      <Link
-                        to={item.href}
-                        className={cn(
-                          "px-2.5 py-1.5 text-sm font-medium rounded-md transition-colors",
-                          location.pathname === item.href
-                            ? "text-blue-600 bg-blue-50"
-                            : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
-                        )}
-                      >
-                        {item.name}
-                      </Link>
-                    )}
-                  </NavigationMenuItem>
-                ))}
-              </NavigationMenuList>
-            </NavigationMenu>
+          <div className="hidden md:flex md:items-center md:justify-between w-full">
+            <nav className="flex items-center space-x-4">
+              <Link to="/" className="text-xl font-semibold text-gray-900">
+                <img src="/logo.svg" alt="Appraisily" className="h-8" />
+              </Link>
+              <Link to="/about" className="text-gray-600 hover:text-gray-900">About</Link>
+              <Link to="/services" className="text-gray-600 hover:text-gray-900">Services</Link>
+              <Link to="/expertise" className="text-gray-600 hover:text-gray-900">Expertise</Link>
+              <Link to="/directory" className="text-gray-600 hover:text-gray-900">Directory</Link>
+              <Link to="/screener" className="text-gray-600 hover:text-gray-900">Screener</Link>
+            </nav>
 
-            {/* Auth buttons - Desktop */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-3">
               {loading ? (
                 <div className="w-7 h-7 rounded-full bg-gray-200 animate-pulse"></div>
               ) : authenticated ? (
-                <div className="flex items-center space-x-2">
+                <>
                   <Link
                     to="/dashboard"
-                    className="inline-flex items-center justify-center px-2.5 py-1.5 text-sm font-medium rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
+                    className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-900 hover:bg-gray-200 transition-colors"
                   >
-                    <LayoutDashboard className="h-4 w-4 mr-1" />
+                    <LayoutDashboard className="h-4 w-4 mr-2" />
                     Dashboard
                   </Link>
                   <DropdownMenu>
-                    <DropdownMenuTrigger className="inline-flex items-center justify-center px-2.5 py-1.5 text-sm font-medium rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors">
-                      <User className="h-4 w-4 mr-1" />
+                    <DropdownMenuTrigger className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-900 hover:bg-gray-200 transition-colors">
+                      <User className="h-4 w-4 mr-2" />
                       {user?.firstName || 'Profile'}
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
+                    <DropdownMenuContent align="end" className="w-48">
                       <DropdownMenuItem asChild>
-                        <Link to="/profile" className="w-full">
+                        <Link to="/profile" className="w-full flex items-center">
+                          <User className="h-4 w-4 mr-2" />
                           Profile Settings
                         </Link>
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={handleLogout} className="text-red-600">
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={handleLogout} className="text-red-600 flex items-center">
                         <LogOut className="h-4 w-4 mr-2" />
                         Logout
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
-                </div>
+                </>
               ) : (
                 <Link
                   to="/login"
-                  className="inline-flex items-center justify-center px-2.5 py-1.5 text-sm font-medium rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
+                  className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-900 hover:bg-gray-200 transition-colors"
                 >
-                  <LogIn className="h-4 w-4 mr-1" />
+                  <LogIn className="h-4 w-4 mr-2" />
                   Log In
                 </Link>
               )}
               <Link
                 to="/start"
                 id="start-appraisal-nav"
-                className="inline-flex items-center justify-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors gap-1.5 shadow-sm hover:shadow-md"
+                className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-gray-900 hover:bg-gray-800 transition-colors shadow-sm hover:shadow-md"
               >
-                Start Appraisal <ArrowRight className="h-4 w-4" />
+                Start Appraisal
+                <ArrowRight className="h-4 w-4 ml-2" />
               </Link>
             </div>
           </div>
@@ -169,23 +149,25 @@ export default function Navbar() {
               <>
                 <Link
                   to="/dashboard"
-                  className="inline-flex items-center justify-center p-1.5 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none"
+                  className="inline-flex items-center justify-center p-2 rounded-lg bg-gray-100 text-gray-900 hover:bg-gray-200 transition-colors"
                 >
                   <LayoutDashboard className="h-5 w-5" />
                   <span className="sr-only">Dashboard</span>
                 </Link>
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="inline-flex items-center justify-center p-1.5 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none">
+                  <DropdownMenuTrigger className="inline-flex items-center justify-center p-2 rounded-lg bg-gray-100 text-gray-900 hover:bg-gray-200 transition-colors">
                     <User className="h-5 w-5" />
                     <span className="sr-only">Profile Menu</span>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
+                  <DropdownMenuContent align="end" className="w-48">
                     <DropdownMenuItem asChild>
-                      <Link to="/profile" className="w-full">
+                      <Link to="/profile" className="w-full flex items-center">
+                        <User className="h-4 w-4 mr-2" />
                         Profile Settings
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={handleLogout} className="text-red-600">
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout} className="text-red-600 flex items-center">
                       <LogOut className="h-4 w-4 mr-2" />
                       Logout
                     </DropdownMenuItem>
@@ -195,7 +177,7 @@ export default function Navbar() {
             ) : (
               <Link
                 to="/login"
-                className="inline-flex items-center justify-center p-1.5 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none"
+                className="inline-flex items-center justify-center p-2 rounded-lg bg-gray-100 text-gray-900 hover:bg-gray-200 transition-colors"
               >
                 <LogIn className="h-5 w-5" />
                 <span className="sr-only">Log In</span>
@@ -204,13 +186,13 @@ export default function Navbar() {
             <Link
               to="/start"
               id="start-appraisal-nav-mobile"
-              className="inline-flex items-center justify-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-gray-900 hover:bg-gray-800 transition-colors shadow-sm"
+              className="inline-flex items-center justify-center px-3 py-2 text-sm font-medium rounded-lg text-white bg-gray-900 hover:bg-gray-800 transition-colors shadow-sm"
             >
               Start
             </Link>
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-1.5 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="inline-flex items-center justify-center p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
               aria-expanded={isOpen}
               aria-controls="mobile-menu"
             >
