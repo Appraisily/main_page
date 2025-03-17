@@ -31,8 +31,7 @@ import Privacy from './pages/Privacy';
 import ServiceSelection from './pages/ServiceSelection';
 import SubmissionSuccess from './pages/SubmissionSuccess';
 import Profile from './pages/Profile';
-import { Login, Signup, ResetPassword } from './pages/Auth';
-import AuthSuccess from './pages/Auth/AuthSuccess';
+import { Login, Signup, ResetPassword, AuthSuccess } from './pages/Auth';
 
 // Loading component
 const PageLoader = () => (
