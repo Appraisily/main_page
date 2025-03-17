@@ -113,7 +113,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background pt-24 pb-12">
-      <div className="container space-y-8">
+      <div className="container">
         {/* Header */}
         <DashboardHeader 
           email={user.email} 
@@ -135,7 +135,7 @@ export default function Dashboard() {
               <p className="text-muted-foreground">No appraisals found.</p>
             </div>
           ) : (
-            <div className="max-w-2xl mx-auto space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
               {appraisals.map((appraisal) => (
                 <AppraisalCard key={appraisal.id} appraisal={appraisal} />
               ))}

@@ -22,13 +22,13 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
   const truncatedTitle = truncateWords(title, 10);
 
   return (
-    <Card className="group hover:shadow-lg transition-shadow duration-300">
+    <Card className="group hover:shadow-lg transition-all duration-300 bg-white border-gray-100">
       {/* Image Preview */}
       <div className="relative h-48 overflow-hidden rounded-t-lg">
         <img
           src={imageUrl}
           alt={truncatedTitle}
-          className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
+          className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-110"
           loading="lazy"
           onError={(e) => {
             console.error('[Appraisal Card] Image load error:', {
@@ -38,57 +38,71 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
             e.currentTarget.src = '/placeholder-image.jpg';
           }}
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
       <CardHeader className="space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-muted-foreground">
+          <span className="text-sm font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
             {format(new Date(appraisal.date), 'MMM d, yyyy')}
           </span>
         </div>
-        <h3 className="font-semibold tracking-tight line-clamp-2">
+        <h3 className="font-semibold tracking-tight text-lg line-clamp-2 group-hover:text-blue-600 transition-colors">
           {truncatedTitle}
         </h3>
       </CardHeader>
 
-      <CardContent className="space-y-3">
+      <CardContent className="space-y-4">
         {appraisal.acf.value && (
-          <div className="flex items-center text-muted-foreground">
-            <DollarSign className="h-4 w-4 mr-2 text-primary" />
-            <span>Estimated Value: ${appraisal.acf.value}</span>
+          <div className="flex items-center text-gray-900 bg-gray-50 p-3 rounded-lg">
+            <DollarSign className="h-5 w-5 mr-2 text-blue-600" />
+            <span className="font-medium">Estimated Value: ${appraisal.acf.value}</span>
           </div>
         )}
         
-        <div className="flex items-center text-muted-foreground">
-          <Clock className="h-4 w-4 mr-2" />
+        <div className="flex items-center text-gray-600">
+          <Clock className="h-4 w-4 mr-2 text-gray-400" />
           <span>{format(new Date(appraisal.date), 'MMMM d, yyyy')}</span>
         </div>
 
         {(appraisal.acf.condition || appraisal.acf.age_text || appraisal.acf.style) && (
-          <div className="flex items-start text-muted-foreground">
-            <Info className="h-4 w-4 mr-2 mt-1 flex-shrink-0" />
-            <div className="text-sm space-y-1">
+          <div className="flex items-start text-gray-600 bg-gray-50 p-3 rounded-lg">
+            <Info className="h-4 w-4 mr-2 mt-1 flex-shrink-0 text-blue-600" />
+            <div className="text-sm space-y-1.5">
               {appraisal.acf.condition && (
-                <p>Condition: {appraisal.acf.condition}</p>
+                <p className="flex items-center">
+                  <span className="font-medium mr-2">Condition:</span>
+                  {appraisal.acf.condition}
+                </p>
               )}
               {appraisal.acf.age_text && (
-                <p>Age: {appraisal.acf.age_text}</p>
+                <p className="flex items-center">
+                  <span className="font-medium mr-2">Age:</span>
+                  {appraisal.acf.age_text}
+                </p>
               )}
               {appraisal.acf.style && (
-                <p>Style: {appraisal.acf.style}</p>
+                <p className="flex items-center">
+                  <span className="font-medium mr-2">Style:</span>
+                  {appraisal.acf.style}
+                </p>
               )}
             </div>
           </div>
         )}
       </CardContent>
 
-      <CardFooter className="gap-2">
-        <Button variant="outline" className="w-full" asChild>
+      <CardFooter>
+        <Button 
+          variant="default" 
+          className="w-full bg-gray-900 hover:bg-gray-800 text-white transition-colors" 
+          asChild
+        >
           <a 
             href={appraisal.link} 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="flex items-center gap-2"
+            className="flex items-center justify-center gap-2"
           >
             View Details
             <ExternalLink className="h-4 w-4" />
