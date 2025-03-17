@@ -20,6 +20,7 @@
 - **UI Components**: Use Radix UI + Tailwind; use `cn()` utility for class merging
 - **Naming**: Descriptive names; boolean variables prefixed with "is"/"has"
 - **File Structure**: Follow established patterns in /components, /hooks, /lib, /pages
-- **Module Imports**: Avoid file extensions in regular imports; include .tsx extensions in React.lazy() imports
-- **Suspense/Lazy**: Use React.Suspense for component loading; wrap lazy-loaded routes with error boundaries
-- **Netlify Deployment**: Ensure build compatibility with Netlify CI environment
+- **Module Imports**: For problematic imports, consider inline components instead of importing from separate files
+- **Suspense/Lazy**: Use React.Suspense for component loading; be cautious with path resolution in dynamic imports
+- **Netlify Deployment**: For build issues, simplify by inlining small components rather than using dynamic imports
+- **Path Resolution**: Local builds may resolve paths differently than Netlify; inline critical components when needed
