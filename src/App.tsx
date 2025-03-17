@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Suspense, lazy } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Suspense, lazy, useEffect, useState } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { useGoogleTagManager } from './hooks/useGoogleTagManager';
@@ -10,6 +10,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SEO from './components/SEO';
 import { AuthProvider } from './lib/auth/AuthContext';
+import { useAuth } from './lib/auth/AuthContext';
 import ProtectedRoute from './lib/auth/ProtectedRoute';
 
 // Import pages
@@ -32,7 +33,134 @@ import ServiceSelection from './pages/ServiceSelection';
 import SubmissionSuccess from './pages/SubmissionSuccess';
 import Profile from './pages/Profile';
 import { Login, Signup, ResetPassword } from './pages/Auth';
-import AuthSuccess from './pages/Auth/AuthSuccess.tsx';
+
+// AuthSuccess component defined directly in App.tsx to avoid import issues
+function AuthSuccess() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  const [error, setError] = useState<string | null>(null);
+  
+  useEffect(() => {
+    // Function to handle the authentication success flow
+    const handleAuthSuccess = async () => {
+      try {
+        // Check if this is opened as a popup window
+        if (window.opener) {
+          console.log('Running in popup mode, will notify parent window');
+          
+          // Get authentication data from URL parameters if available
+          const params = new URLSearchParams(window.location.search);
+          const token = params.get('token');
+          const errorMsg = params.get('error');
+          
+          // Handle error case
+          if (errorMsg) {
+            window.opener.postMessage({ 
+              type: 'AUTH_ERROR', 
+              error: errorMsg 
+            }, '*');
+            window.close();
+            return;
+          }
+          
+          // If we have a token in the URL, we can use it directly
+          if (token) {
+            // You could store the token here if needed
+            console.log('Token received from URL parameters');
+          }
+          
+          // Notify the parent window that authentication was successful
+          window.opener.postMessage({ 
+            type: 'AUTH_SUCCESS'
+          }, '*');
+          
+          // Close the popup window after notifying the parent
+          window.close();
+        } else {
+          // This is not a popup - handle direct navigation to this route
+          console.log('Not in popup mode, fetching user data directly');
+          
+          try {
+            // Use the auth service API URL from environment variables
+            const AUTH_API_URL = import.meta.env.VITE_AUTH_API_URL || 
+              'https://auth-service-856401495068.us-central1.run.app/api/auth';
+            
+            // Fetch the current user data
+            const response = await fetch(`${AUTH_API_URL}/me`, {
+              credentials: 'include',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              }
+            });
+            
+            if (!response.ok) {
+              throw new Error(`Failed to fetch user data: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            if (data.user) {
+              // Login the user using the auth context
+              login(data.user);
+              
+              // Redirect to dashboard after successful login
+              console.log('Login successful, redirecting to dashboard');
+              navigate('/dashboard');
+            } else {
+              throw new Error('No user data received from authentication service');
+            }
+          } catch (fetchError) {
+            console.error('Error fetching user data:', fetchError);
+            setError('Authentication failed. Please try again.');
+            
+            // Redirect to login page after a short delay
+            setTimeout(() => {
+              navigate('/login');
+            }, 3000);
+          }
+        }
+      } catch (err) {
+        console.error('Authentication success handling error:', err);
+        setError('An unexpected error occurred. Please try again.');
+        
+        // Redirect to login page after a short delay
+        setTimeout(() => {
+          navigate('/login');
+        }, 3000);
+      }
+    };
+
+    // Execute the authentication handler
+    handleAuthSuccess();
+  }, [navigate, login]);
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="text-center max-w-md px-4">
+        {error ? (
+          <div className="bg-red-50 p-6 rounded-lg shadow-sm border border-red-100">
+            <div className="animate-pulse rounded-full h-12 w-12 bg-red-100 text-red-500 mx-auto flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </div>
+            <p className="text-red-700 font-medium">{error}</p>
+            <p className="mt-2 text-red-600 text-sm">Redirecting you back to login...</p>
+          </div>
+        ) : (
+          <>
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
+            <p className="mt-4 text-gray-700 font-medium">Completing your sign in...</p>
+            <p className="mt-2 text-gray-500 text-sm">Please wait while we verify your account.</p>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
 
 // Loading component
 const PageLoader = () => (
