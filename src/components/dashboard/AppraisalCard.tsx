@@ -5,6 +5,12 @@ import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button';
 import { AppraisalPost } from '@/lib/types/dashboard';
 import { decodeHtmlEntities, truncateWords } from '@/lib/utils';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface AppraisalCardProps {
   appraisal: AppraisalPost;
@@ -19,7 +25,15 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
                   '/placeholder-image.jpg';
 
   const title = decodeHtmlEntities(appraisal.title.rendered);
-  const truncatedTitle = truncateWords(title, 10);
+  const truncatedTitle = truncateWords(title, 8);
+
+  // Format value with commas
+  const formattedValue = appraisal.acf.value 
+    ? Number(appraisal.acf.value).toLocaleString('en-US', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      })
+    : null;
 
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 bg-white border-gray-100">
@@ -47,45 +61,83 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
             {format(new Date(appraisal.date), 'MMM d, yyyy')}
           </span>
         </div>
-        <h3 className="font-semibold tracking-tight text-lg line-clamp-2 group-hover:text-blue-600 transition-colors">
-          {truncatedTitle}
-        </h3>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <h3 className="font-semibold tracking-tight text-lg line-clamp-2 group-hover:text-blue-600 transition-colors cursor-default">
+                {truncatedTitle}
+              </h3>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="max-w-xs">{title}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </CardHeader>
 
       <CardContent className="space-y-4">
-        {appraisal.acf.value && (
+        {formattedValue && (
           <div className="flex items-center text-gray-900 bg-gray-50 p-3 rounded-lg">
-            <DollarSign className="h-5 w-5 mr-2 text-blue-600" />
-            <span className="font-medium">Estimated Value: ${appraisal.acf.value}</span>
+            <DollarSign className="h-5 w-5 mr-2 text-blue-600 flex-shrink-0" />
+            <span className="font-medium truncate">
+              Estimated Value: ${formattedValue}
+            </span>
           </div>
         )}
         
         <div className="flex items-center text-gray-600">
-          <Clock className="h-4 w-4 mr-2 text-gray-400" />
-          <span>{format(new Date(appraisal.date), 'MMMM d, yyyy')}</span>
+          <Clock className="h-4 w-4 mr-2 text-gray-400 flex-shrink-0" />
+          <span className="truncate">{format(new Date(appraisal.date), 'MMMM d, yyyy')}</span>
         </div>
 
         {(appraisal.acf.condition || appraisal.acf.age_text || appraisal.acf.style) && (
           <div className="flex items-start text-gray-600 bg-gray-50 p-3 rounded-lg">
             <Info className="h-4 w-4 mr-2 mt-1 flex-shrink-0 text-blue-600" />
-            <div className="text-sm space-y-1.5">
+            <div className="text-sm space-y-1.5 min-w-0 flex-1">
               {appraisal.acf.condition && (
-                <p className="flex items-center">
-                  <span className="font-medium mr-2">Condition:</span>
-                  {appraisal.acf.condition}
-                </p>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <p className="flex items-center">
+                        <span className="font-medium mr-2 flex-shrink-0">Condition:</span>
+                        <span className="truncate">{appraisal.acf.condition}</span>
+                      </p>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="max-w-xs">{appraisal.acf.condition}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               )}
               {appraisal.acf.age_text && (
-                <p className="flex items-center">
-                  <span className="font-medium mr-2">Age:</span>
-                  {appraisal.acf.age_text}
-                </p>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <p className="flex items-center">
+                        <span className="font-medium mr-2 flex-shrink-0">Age:</span>
+                        <span className="truncate">{appraisal.acf.age_text}</span>
+                      </p>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="max-w-xs">{appraisal.acf.age_text}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               )}
               {appraisal.acf.style && (
-                <p className="flex items-center">
-                  <span className="font-medium mr-2">Style:</span>
-                  {appraisal.acf.style}
-                </p>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <p className="flex items-center">
+                        <span className="font-medium mr-2 flex-shrink-0">Style:</span>
+                        <span className="truncate">{appraisal.acf.style}</span>
+                      </p>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="max-w-xs">{appraisal.acf.style}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               )}
             </div>
           </div>

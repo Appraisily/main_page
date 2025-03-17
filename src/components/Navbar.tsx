@@ -79,11 +79,8 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex md:items-center md:justify-between w-full">
+          <div className="hidden md:flex md:items-center md:justify-between w-full pl-8">
             <nav className="flex items-center space-x-4">
-              <Link to="/" className="text-xl font-semibold text-gray-900">
-                <img src="/logo.svg" alt="Appraisily" className="h-8" />
-              </Link>
               <Link to="/about" className="text-gray-600 hover:text-gray-900">About</Link>
               <Link to="/services" className="text-gray-600 hover:text-gray-900">Services</Link>
               <Link to="/expertise" className="text-gray-600 hover:text-gray-900">Expertise</Link>
