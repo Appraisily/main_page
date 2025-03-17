@@ -33,8 +33,8 @@ import SubmissionSuccess from './pages/SubmissionSuccess';
 import Profile from './pages/Profile';
 import { Login, Signup, ResetPassword } from './pages/Auth';
 
-// Lazy load the AuthSuccess component directly
-const AuthSuccess = lazy(() => import('./pages/Auth/AuthSuccess'));
+// Lazy load the AuthSuccess component directly with file extension
+const AuthSuccess = lazy(() => import('./pages/Auth/AuthSuccess.tsx'));
 
 // Loading component
 const PageLoader = () => (
