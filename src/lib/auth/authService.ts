@@ -132,7 +132,7 @@ export async function logout(): Promise<void> {
 }
 
 export async function requestPasswordReset(email: string): Promise<{ message: string }> {
-  const response = await fetch(`${AUTH_API_URL}/reset-password`, {
+  const response = await fetch(`${AUTH_API_URL}/request-reset-password`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -143,6 +143,23 @@ export async function requestPasswordReset(email: string): Promise<{ message: st
   if (!response.ok) {
     const errorData = await response.json();
     throw new Error(errorData.message || 'Password reset request failed');
+  }
+
+  return response.json();
+}
+
+export async function completePasswordReset(token: string, password: string, confirmPassword: string): Promise<{ message: string }> {
+  const response = await fetch(`${AUTH_API_URL}/reset-password`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ token, password, confirmPassword }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || 'Password reset failed');
   }
 
   return response.json();
