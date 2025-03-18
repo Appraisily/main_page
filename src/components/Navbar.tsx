@@ -91,13 +91,54 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex md:items-center md:justify-between w-full pl-8">
-            <nav className="flex items-center space-x-4">
-              <Link to="/about" className="text-gray-600 hover:text-gray-900">About</Link>
-              <Link to="/services" className="text-gray-600 hover:text-gray-900">Services</Link>
-              <Link to="/expertise" className="text-gray-600 hover:text-gray-900">Expertise</Link>
+          <div className="hidden md:flex md:items-center md:justify-end w-full pl-8">
+            <div className="flex items-center space-x-4">
               <NavigationMenu>
                 <NavigationMenuList>
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="bg-transparent">About</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <div className="w-[200px] p-2">
+                        <Link to="/about" className="block p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                          <div className="font-medium text-gray-900">About Us</div>
+                          <p className="text-sm text-gray-600">Learn about our mission and values</p>
+                        </Link>
+                        <Link to="/team" className="block p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                          <div className="font-medium text-gray-900">Our Team</div>
+                          <p className="text-sm text-gray-600">Meet our expert appraisers</p>
+                        </Link>
+                      </div>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="bg-transparent">Services</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <div className="w-[250px] p-2">
+                        <Link to="/services" className="block p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                          <div className="font-medium text-gray-900">Our Services</div>
+                          <p className="text-sm text-gray-600">Explore our appraisal services</p>
+                        </Link>
+                        <Link to="/how-it-works" className="block p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                          <div className="font-medium text-gray-900">How It Works</div>
+                          <p className="text-sm text-gray-600">Learn about our appraisal process</p>
+                        </Link>
+                      </div>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="bg-transparent">Expertise</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <div className="w-[250px] p-2">
+                        <Link to="/expertise" className="block p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                          <div className="font-medium text-gray-900">Our Expertise</div>
+                          <p className="text-sm text-gray-600">Areas of specialization</p>
+                        </Link>
+                      </div>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+
                   <NavigationMenuItem>
                     <NavigationMenuTrigger className="bg-transparent">Directory</NavigationMenuTrigger>
                     <NavigationMenuContent>
@@ -117,60 +158,76 @@ export default function Navbar() {
                       </div>
                     </NavigationMenuContent>
                   </NavigationMenuItem>
+
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="bg-transparent">Screener</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <div className="w-[250px] p-2">
+                        <a
+                          href="https://screener.appraisily.com/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block p-2 hover:bg-gray-50 rounded-lg transition-colors"
+                        >
+                          <div className="font-medium text-gray-900">AI Art Analysis</div>
+                          <p className="text-sm text-gray-600">Free instant art evaluation</p>
+                        </a>
+                      </div>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>
-              <Link to="/screener" className="text-gray-600 hover:text-gray-900">Screener</Link>
-            </nav>
 
-            <div className="flex items-center space-x-3">
-              {loading ? (
-                <div className="w-7 h-7 rounded-full bg-gray-200 animate-pulse"></div>
-              ) : authenticated ? (
-                <>
+              <div className="flex items-center space-x-3">
+                {loading ? (
+                  <div className="w-7 h-7 rounded-full bg-gray-200 animate-pulse"></div>
+                ) : authenticated ? (
+                  <>
+                    <Link
+                      to="/dashboard"
+                      className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-900 hover:bg-gray-200 transition-colors"
+                    >
+                      <LayoutDashboard className="h-4 w-4 mr-2" />
+                      Dashboard
+                    </Link>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-900 hover:bg-gray-200 transition-colors">
+                        <User className="h-4 w-4 mr-2" />
+                        {user?.firstName || 'Profile'}
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-48">
+                        <DropdownMenuItem asChild>
+                          <Link to="/profile" className="w-full flex items-center">
+                            <User className="h-4 w-4 mr-2" />
+                            Profile Settings
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={handleLogout} className="text-red-600 flex items-center">
+                          <LogOut className="h-4 w-4 mr-2" />
+                          Logout
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </>
+                ) : (
                   <Link
-                    to="/dashboard"
+                    to="/login"
                     className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-900 hover:bg-gray-200 transition-colors"
                   >
-                    <LayoutDashboard className="h-4 w-4 mr-2" />
-                    Dashboard
+                    <LogIn className="h-4 w-4 mr-2" />
+                    Log In
                   </Link>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-900 hover:bg-gray-200 transition-colors">
-                      <User className="h-4 w-4 mr-2" />
-                      {user?.firstName || 'Profile'}
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-48">
-                      <DropdownMenuItem asChild>
-                        <Link to="/profile" className="w-full flex items-center">
-                          <User className="h-4 w-4 mr-2" />
-                          Profile Settings
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={handleLogout} className="text-red-600 flex items-center">
-                        <LogOut className="h-4 w-4 mr-2" />
-                        Logout
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </>
-              ) : (
+                )}
                 <Link
-                  to="/login"
-                  className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-900 hover:bg-gray-200 transition-colors"
+                  to="/start"
+                  id="start-appraisal-nav"
+                  className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-gray-900 hover:bg-gray-800 transition-colors shadow-sm hover:shadow-md"
                 >
-                  <LogIn className="h-4 w-4 mr-2" />
-                  Log In
+                  Start Appraisal
+                  <ArrowRight className="h-4 w-4 ml-2" />
                 </Link>
-              )}
-              <Link
-                to="/start"
-                id="start-appraisal-nav"
-                className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg text-white bg-gray-900 hover:bg-gray-800 transition-colors shadow-sm hover:shadow-md"
-              >
-                Start Appraisal
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </Link>
+              </div>
             </div>
           </div>
 
