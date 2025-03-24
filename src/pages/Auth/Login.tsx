@@ -76,6 +76,12 @@ export default function Login() {
       console.log('[DEBUG] Message event origin:', event.origin);
       console.log('[DEBUG] Message event data:', event.data);
       
+      // Verify the origin to improve security
+      if (event.origin !== window.location.origin) {
+        console.log('[DEBUG] Ignoring message from different origin:', event.origin);
+        return;
+      }
+      
       // Handle successful authentication
       if (event.data?.type === 'AUTH_SUCCESS') {
         console.log('[DEBUG] AUTH_SUCCESS message received');
