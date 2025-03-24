@@ -33,7 +33,6 @@ import ServiceSelection from './pages/ServiceSelection';
 import SubmissionSuccess from './pages/SubmissionSuccess';
 import Profile from './pages/Profile';
 import { Login, Signup, ResetPassword } from './pages/Auth';
-import AuthSuccess from './pages/Auth/AuthSuccess';
 
 // Loading component
 const PageLoader = () => (
@@ -194,7 +193,13 @@ export default function App() {
                   } />
                   <Route path="/auth/success" element={
                     <Suspense fallback={<PageLoader />}>
-                      <AuthSuccess />
+                      <div className="min-h-screen flex items-center justify-center bg-white">
+                        <div className="text-center max-w-md px-4">
+                          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
+                          <p className="mt-4 text-gray-700 font-medium">Completing your sign in...</p>
+                          <p className="mt-2 text-gray-500 text-sm">Please wait while we verify your account.</p>
+                        </div>
+                      </div>
                     </Suspense>
                   } />
                 </Routes>
