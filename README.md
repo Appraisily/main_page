@@ -1,4 +1,3 @@
-<!-- omit in toc -->
 # Appraisily - Professional Art & Antique Appraisals
 
 Professional art and antique appraisal platform built with React, TypeScript, and Tailwind CSS.
@@ -7,11 +6,13 @@ Professional art and antique appraisal platform built with React, TypeScript, an
 - [Overview](#overview)
 - [Features](#features)
 - [Getting Started](#getting-started)
+- [Development](#development)
 - [Component Guidelines](#component-guidelines)
-- [API Documentation](#api-documentation)
+- [Authentication](#authentication)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
-- [Sitemap Generation](#sitemap-generation)
+- [Deployment](#deployment)
+- [License](#license)
 
 ## Overview
 
@@ -21,8 +22,11 @@ Appraisily provides professional art and antique appraisal services, combining e
 
 - Free AI-powered artwork analysis
 - Professional appraisal services
-- Secure image upload and processing
-- Detailed market analysis
+- Bulk appraisal functionality for multiple items
+- Secure image upload with chunked uploading
+- User authentication and dashboard
+- Protected routes for logged-in users
+- Detailed market analysis and reporting
 - Expert valuations within 48 hours
 - Insurance and tax appraisal options
 
@@ -43,6 +47,36 @@ npm install
 npm run dev
 ```
 
+## Development
+
+### Build Commands
+```bash
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+
+# Generate sitemap
+npm run generate-sitemap
+
+# Type checking
+npx tsc --noEmit
+
+# Lint code
+npx eslint "src/**/*.{ts,tsx}"
+```
+
+### Environment Variables
+Create a `.env` file with the following variables:
+```
+VITE_GOOGLE_TAG_MANAGER_ID=your-gtm-id
+VITE_AUTH_API_URL=your-auth-api-url
+```
+
 ## Component Guidelines
 
 ### Using shadcn/ui Components
@@ -59,12 +93,6 @@ npx shadcn-ui@latest init
 npx shadcn-ui@latest add [component-name]
 ```
 
-Example:
-```bash
-npx shadcn-ui@latest add button
-npx shadcn-ui@latest add dialog
-```
-
 3. Import and use components:
 ```tsx
 import { Button } from "@/components/ui/button"
@@ -72,112 +100,55 @@ import { Button } from "@/components/ui/button"
 
 ### Component Best Practices
 
-- Keep components small and focused
-- Use TypeScript interfaces for props
-- Follow shadcn/ui styling conventions
-- Maintain consistent naming conventions
+- Keep components small and focused on a single responsibility
+- Use TypeScript interfaces for component props
+- Follow shadcn/ui styling conventions with Tailwind CSS
 - Implement proper accessibility features
+- Use React.lazy() for code splitting of larger components
 
-## API Documentation
+## Authentication
 
-### Upload Temporary Image
-
-Endpoint for temporarily storing uploaded images and creating an analysis session.
-
-**Endpoint:** `POST /upload-temp`
-
-**Purpose:**
-- Temporarily stores uploaded images
-- Creates a session for tracking the analysis
-- Returns a temporary URL without performing image analysis
-
-**Request Format:**
-```javascript
-// FormData
-const formData = new FormData();
-formData.append('image', imageFile); // imageFile is your image blob/file
-```
-
-**Headers:**
-```json
-{
-  "Content-Type": "multipart/form-data"
-}
-```
-
-**Response:**
-```typescript
-{
-  success: boolean,      // true/false
-  message: string,       // Status message
-  tempUrl: string,       // URL to access the uploaded image
-  sessionId: string      // Unique session identifier
-}
-```
-
-**Example Usage:**
-```javascript
-// Using fetch
-const response = await fetch('https://appraisals-web-services-backend-856401495068.us-central1.run.app/upload-temp', {
-  method: 'POST',
-  body: formData
-});
-
-// Using axios
-const response = await axios.post('https://appraisals-web-services-backend-856401495068.us-central1.run.app/upload-temp', formData, {
-  headers: { 'Content-Type': 'multipart/form-data' }
-});
-```
-
-**Limitations:**
-- Max file size: 5MB
-- Supported formats: JPEG, PNG, WebP
-- Temporary URLs expire after 1 hour
+The application uses a custom authentication system with:
+- Google authentication integration
+- Protected routes for authenticated users
+- User dashboard and profile management
+- JWT-based session handling
 
 ## Tech Stack
 
 - React 18
 - TypeScript
-- Vite
+- Vite build system
 - Tailwind CSS
-- shadcn/ui
-- Lucide Icons
-- React Router
-- React Hook Form
-- Radix UI Components
-- ImageKit.io for image optimization
+- Radix UI primitives with shadcn/ui
+- React Router v6
+- Supabase for backend functionality
+- Stripe for payment processing
+- Netlify for deployment (with edge functions)
 
 ## Project Structure
 
 ```
 src/
 ├── components/        # Reusable UI components
-├── hooks/            # Custom React hooks
-├── lib/             # Utility functions and constants
-├── pages/           # Page components
-├── screener/        # AI analysis module
-└── landing/         # Landing page module
+├── hooks/             # Custom React hooks
+├── lib/               # Utility functions, API services, and types
+│   ├── api/           # API service functions
+│   ├── auth/          # Authentication utilities
+│   └── types/         # TypeScript type definitions
+├── pages/             # Page components
+├── App.tsx            # Application routes and layout
+└── main.tsx           # Application entry point
 ```
 
-## Sitemap Generation
+## Deployment
 
-This project includes an automated sitemap generator that creates a `sitemap.xml` file during the build process.
-
-### How it works:
-- The sitemap is generated automatically when running `npm run build`
-- It extracts routes from the `App.tsx` file using regex
-- Static routes are included in the sitemap, while dynamic routes (with parameters) are excluded
-- The sitemap is saved to `public/sitemap.xml`
-
-### Manual Generation:
-You can manually generate the sitemap by running:
-```bash
-npm run generate-sitemap
-```
-
-### Configuration:
-- The base URL is set to `https://appraisily.com` by default
-- To change the base URL, modify the `generate-sitemap` script in `package.json`
+The site is deployed on Netlify with the following features:
+- Edge functions for server-side functionality
+- Automatic sitemap generation during build
+- Optimization for images and assets
+- Generated sitemaps for main site and subdomains
+- TypeScript build verification
 
 ## License
 

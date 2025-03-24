@@ -20,7 +20,8 @@
 - **UI Components**: Use Radix UI + Tailwind; use `cn()` utility for class merging
 - **Naming**: Descriptive names; boolean variables prefixed with "is"/"has"
 - **File Structure**: Follow established patterns in /components, /hooks, /lib, /pages
+- **API Calls**: Use typed services in /lib/api; handle loading/error states in custom hooks
+- **State Management**: React Context for global state; local state with useState/useReducer
 - **Module Imports**: Define components directly in parent files when facing persistent import resolution issues
 - **Suspense/Lazy**: Use React.Suspense for component loading; avoid dynamic imports for problematic paths
 - **Netlify Deployment**: For build reliability, define small/critical components directly in their parent components
-- **Path Resolution**: When local builds work but Netlify fails, prefer defining components inline to avoid path issues

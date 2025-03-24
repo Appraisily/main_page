@@ -51,7 +51,7 @@ export default function Login() {
 
     // Get the auth API URL from environment variables
     const AUTH_API_URL = import.meta.env.VITE_AUTH_API_URL || 
-      'https://auth-service-856401495068.us-central1.run.app/api/auth';
+      'https://auth.appraisily.com/api/auth';
     
     // Open the popup for Google authentication
     const popup = window.open(

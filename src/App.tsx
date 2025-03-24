@@ -83,7 +83,7 @@ function AuthSuccess() {
           try {
             // Use the auth service API URL from environment variables
             const AUTH_API_URL = import.meta.env.VITE_AUTH_API_URL || 
-              'https://auth-service-856401495068.us-central1.run.app/api/auth';
+              'https://auth.appraisily.com/api/auth';
             
             // Fetch the current user data
             const response = await fetch(`${AUTH_API_URL}/me`, {
