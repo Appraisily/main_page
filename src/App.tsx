@@ -44,17 +44,24 @@ function AuthSuccess() {
     // Function to handle the authentication success flow
     const handleAuthSuccess = async () => {
       try {
+        console.log('[DEBUG] AuthSuccess component activated');
+        console.log('[DEBUG] URL:', window.location.href);
+        console.log('[DEBUG] Search params:', window.location.search);
+        
         // Check if this is opened as a popup window
         if (window.opener) {
-          console.log('Running in popup mode, will notify parent window');
+          console.log('[DEBUG] Running in popup mode, will notify parent window');
           
           // Get authentication data from URL parameters if available
           const params = new URLSearchParams(window.location.search);
           const token = params.get('token');
           const errorMsg = params.get('error');
           
+          console.log('[DEBUG] URL parameters:', { token: token ? 'present' : 'missing', error: errorMsg });
+          
           // Handle error case
           if (errorMsg) {
+            console.log('[DEBUG] Error detected in URL, sending AUTH_ERROR message');
             window.opener.postMessage({ 
               type: 'AUTH_ERROR', 
               error: errorMsg 
@@ -66,26 +73,31 @@ function AuthSuccess() {
           // If we have a token in the URL, we can use it directly
           if (token) {
             // You could store the token here if needed
-            console.log('Token received from URL parameters');
+            console.log('[DEBUG] Token received from URL parameters');
           }
           
           // Notify the parent window that authentication was successful
+          console.log('[DEBUG] Sending AUTH_SUCCESS message to parent window');
           window.opener.postMessage({ 
             type: 'AUTH_SUCCESS'
           }, '*');
           
           // Close the popup window after notifying the parent
+          console.log('[DEBUG] Closing popup window');
           window.close();
         } else {
           // This is not a popup - handle direct navigation to this route
-          console.log('Not in popup mode, fetching user data directly');
+          console.log('[DEBUG] Not in popup mode, fetching user data directly');
           
           try {
             // Use the auth service API URL from environment variables
             const AUTH_API_URL = import.meta.env.VITE_AUTH_API_URL || 
               'https://auth-service-856401495068.us-central1.run.app/api/auth';
             
+            console.log('[DEBUG] Auth API URL:', AUTH_API_URL);
+            
             // Fetch the current user data
+            console.log('[DEBUG] Fetching user data...');
             const response = await fetch(`${AUTH_API_URL}/me`, {
               credentials: 'include',
               headers: {
@@ -94,37 +106,44 @@ function AuthSuccess() {
               }
             });
             
+            console.log('[DEBUG] Response status:', response.status);
+            console.log('[DEBUG] Response headers:', Object.fromEntries([...response.headers]));
+            
             if (!response.ok) {
               throw new Error(`Failed to fetch user data: ${response.status}`);
             }
             
             const data = await response.json();
+            console.log('[DEBUG] User data:', data);
             
             if (data.user) {
               // Login the user using the auth context
+              console.log('[DEBUG] Logging in user with auth context');
               login(data.user);
               
               // Redirect to dashboard after successful login
-              console.log('Login successful, redirecting to dashboard');
+              console.log('[DEBUG] Login successful, redirecting to dashboard');
               navigate('/dashboard');
             } else {
               throw new Error('No user data received from authentication service');
             }
           } catch (fetchError) {
-            console.error('Error fetching user data:', fetchError);
+            console.error('[DEBUG] Error fetching user data:', fetchError);
             setError('Authentication failed. Please try again.');
             
             // Redirect to login page after a short delay
+            console.log('[DEBUG] Redirecting to login page after 3 seconds');
             setTimeout(() => {
               navigate('/login');
             }, 3000);
           }
         }
       } catch (err) {
-        console.error('Authentication success handling error:', err);
+        console.error('[DEBUG] Authentication success handling error:', err);
         setError('An unexpected error occurred. Please try again.');
         
         // Redirect to login page after a short delay
+        console.log('[DEBUG] Redirecting to login page after 3 seconds');
         setTimeout(() => {
           navigate('/login');
         }, 3000);

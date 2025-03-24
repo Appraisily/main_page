@@ -43,6 +43,8 @@ export default function Login() {
     // Clear any previous errors
     setError('');
     
+    console.log('[DEBUG] Starting Google login flow');
+    
     // Set popup dimensions and position
     const width = 500;
     const height = 600;
@@ -53,9 +55,14 @@ export default function Login() {
     const AUTH_API_URL = import.meta.env.VITE_AUTH_API_URL || 
       'https://auth-service-856401495068.us-central1.run.app/api/auth';
     
+    console.log('[DEBUG] Auth API URL:', AUTH_API_URL);
+    
     // Open the popup for Google authentication
+    const googleAuthUrl = `${AUTH_API_URL}/google`;
+    console.log('[DEBUG] Opening popup with URL:', googleAuthUrl);
+    
     const popup = window.open(
-      `${AUTH_API_URL}/google`,
+      googleAuthUrl,
       'Google Sign In',
       `width=${width},height=${height},left=${left},top=${top},popup=1,resizable=yes,scrollbars=yes`
     );
@@ -65,16 +72,19 @@ export default function Login() {
 
     // Create message handler for communication with popup
     const messageHandler = async (event: MessageEvent) => {
-      // Validate the event origin if needed
-      console.log('Received message from popup:', event.data);
+      console.log('[DEBUG] Message event received:', event);
+      console.log('[DEBUG] Message event origin:', event.origin);
+      console.log('[DEBUG] Message event data:', event.data);
       
       // Handle successful authentication
       if (event.data?.type === 'AUTH_SUCCESS') {
+        console.log('[DEBUG] AUTH_SUCCESS message received');
         // Clean up the message listener
         window.removeEventListener('message', messageHandler);
         
         try {
           // Get the user data after successful authentication
+          console.log('[DEBUG] Fetching user data from:', `${AUTH_API_URL}/me`);
           const response = await fetch(`${AUTH_API_URL}/me`, {
             credentials: 'include',
             headers: {
@@ -83,24 +93,29 @@ export default function Login() {
             }
           });
           
+          console.log('[DEBUG] User data response status:', response.status);
+          
           if (!response.ok) {
             throw new Error(`Failed to fetch user data: ${response.status}`);
           }
           
           const userData = await response.json();
+          console.log('[DEBUG] User data received:', userData);
           
           if (userData.user) {
             // Update auth context with user data
+            console.log('[DEBUG] Updating auth context with user:', userData.user);
             loginContext(userData.user);
             
             // Navigate to the return URL or dashboard
             const returnUrl = location.state?.returnUrl;
+            console.log('[DEBUG] Navigating to:', returnUrl || '/dashboard');
             navigate(returnUrl || '/dashboard');
           } else {
             throw new Error('No user data received');
           }
         } catch (error) {
-          console.error('Error completing Google authentication:', error);
+          console.error('[DEBUG] Error completing Google authentication:', error);
           setError('Failed to complete sign in. Please try again.');
         } finally {
           setIsLoading(false);
@@ -109,6 +124,7 @@ export default function Login() {
       
       // Handle authentication errors
       else if (event.data?.type === 'AUTH_ERROR') {
+        console.log('[DEBUG] AUTH_ERROR message received:', event.data.error);
         window.removeEventListener('message', messageHandler);
         console.error('Google authentication error:', event.data.error);
         setError(event.data.error || 'Google sign in failed. Please try again.');
@@ -117,23 +133,28 @@ export default function Login() {
     };
 
     // Set up the message listener
+    console.log('[DEBUG] Adding message event listener');
     window.addEventListener('message', messageHandler);
 
     // Handle case where popup is blocked
     if (!popup) {
+      console.log('[DEBUG] Popup was blocked');
       setError('Popup was blocked. Please allow popups for this site.');
       setIsLoading(false);
       return;
     }
     
     // Set up polling to detect if popup was closed without completing auth
+    console.log('[DEBUG] Setting up popup close detection');
     const checkPopupClosed = setInterval(() => {
       if (popup.closed) {
+        console.log('[DEBUG] Popup was closed');
         clearInterval(checkPopupClosed);
         window.removeEventListener('message', messageHandler);
         
         // Only show error if still in loading state (auth not completed)
         if (isLoading) {
+          console.log('[DEBUG] Authentication was cancelled');
           setIsLoading(false);
           setError('Authentication was canceled. Please try again.');
         }

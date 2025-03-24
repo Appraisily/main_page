@@ -29,6 +29,32 @@ interface AuthResponse {
 // Create an axios instance or similar for handling API requests with interceptors
 // This is a simplified version using fetch
 
+// Check auth service connectivity
+(async function checkAuthService() {
+  try {
+    console.log('[DEBUG] Testing auth service connectivity');
+    const response = await fetch(`${AUTH_API_URL}/ping`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+    
+    console.log('[DEBUG] Auth service connectivity test:', {
+      status: response.status,
+      statusText: response.statusText,
+      headers: Object.fromEntries([...response.headers]),
+      ok: response.ok
+    });
+    
+    const text = await response.text();
+    console.log('[DEBUG] Auth service response:', text);
+  } catch (error) {
+    console.error('[DEBUG] Auth service connectivity test failed:', error);
+  }
+})();
+
 // Handle token refresh
 let refreshPromise: Promise<any> | null = null;
 
@@ -166,53 +192,82 @@ export async function completePasswordReset(token: string, password: string, con
 }
 
 export async function getCurrentUser(): Promise<AuthResponse> {
-  console.log('📡 Fetching current user data...', {
+  console.log('[DEBUG] 📡 Fetching current user data...', {
     endpoint: `${AUTH_API_URL}/me`,
     timestamp: new Date().toISOString()
   });
 
-  const response = await fetch(`${AUTH_API_URL}/me`, {
-    credentials: 'include',
-  });
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    console.error('❌ Failed to get current user:', {
-      status: response.status,
-      statusText: response.statusText,
-      data
+  console.log('[DEBUG] Document cookies:', document.cookie ? 'Cookies present' : 'No cookies');
+  
+  try {
+    const response = await fetch(`${AUTH_API_URL}/me`, {
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
     });
-    throw new Error(data.message || 'Failed to get current user');
-  }
 
-  console.log('✅ Successfully fetched user data');
-  return data;
+    console.log('[DEBUG] /me response status:', response.status);
+    console.log('[DEBUG] /me response headers:', Object.fromEntries([...response.headers]));
+    
+    const data = await response.json();
+    console.log('[DEBUG] /me response data:', data);
+
+    if (!response.ok) {
+      console.error('[DEBUG] ❌ Failed to get current user:', {
+        status: response.status,
+        statusText: response.statusText,
+        data
+      });
+      throw new Error(data.message || 'Failed to get current user');
+    }
+
+    console.log('[DEBUG] ✅ Successfully fetched user data:', data.user);
+    return data;
+  } catch (error) {
+    console.error('[DEBUG] Error in getCurrentUser:', error);
+    throw error;
+  }
 }
 
 export async function isAuthenticated(): Promise<boolean> {
-  console.log('🔐 Checking authentication status...');
+  console.log('[DEBUG] 🔐 Checking authentication status...');
   try {
     await getCurrentUser();
-    console.log('✅ User is authenticated');
+    console.log('[DEBUG] ✅ User is authenticated');
     return true;
   } catch (error) {
-    console.log('❌ User is not authenticated:', error);
+    console.log('[DEBUG] ❌ User is not authenticated:', error);
     return false;
   }
 }
 
 export async function refreshToken(): Promise<AuthResponse> {
-  const response = await fetch(`${AUTH_API_URL}/refresh-token`, {
-    method: 'POST',
-    credentials: 'include',
-  });
+  console.log('[DEBUG] Attempting to refresh token');
+  try {
+    const response = await fetch(`${AUTH_API_URL}/refresh-token`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
 
-  const data = await response.json();
+    console.log('[DEBUG] Refresh token response status:', response.status);
+    console.log('[DEBUG] Response headers:', Object.fromEntries([...response.headers]));
+    
+    const data = await response.json();
+    console.log('[DEBUG] Refresh token response data:', data);
 
-  if (!response.ok) {
-    throw new Error(data.message || 'Token refresh failed');
+    if (!response.ok) {
+      throw new Error(data.message || 'Token refresh failed');
+    }
+
+    return data;
+  } catch (error) {
+    console.error('[DEBUG] Error refreshing token:', error);
+    throw error;
   }
-
-  return data;
 }
