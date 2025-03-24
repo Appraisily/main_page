@@ -1,4 +1,4 @@
-const AUTH_API_URL = import.meta.env.VITE_AUTH_API_URL || 'https://auth.appraisily.com/api/auth';
+const AUTH_API_URL = import.meta.env.VITE_AUTH_API_URL || 'https://auth-service-856401495068.us-central1.run.app/api/auth';
 
 interface LoginCredentials {
   email: string;
