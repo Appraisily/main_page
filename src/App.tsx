@@ -32,7 +32,36 @@ import Privacy from './pages/Privacy';
 import ServiceSelection from './pages/ServiceSelection';
 import SubmissionSuccess from './pages/SubmissionSuccess';
 import Profile from './pages/Profile';
-import { Login, Signup, ResetPassword, AuthSuccess } from './pages/Auth';
+import { Login, Signup, ResetPassword } from './pages/Auth';
+
+// Define AuthSuccess component inline to fix build issues
+const AuthSuccess = () => {
+  useEffect(() => {
+    console.log('[DEBUG] Auth success component mounted');
+    
+    try {
+      if (window.opener) {
+        console.log('[DEBUG] Found opener window, sending AUTH_SUCCESS message');
+        window.opener.postMessage({ type: 'AUTH_SUCCESS' }, window.location.origin);
+        setTimeout(() => window.close(), 1000);
+      } else {
+        console.log('[DEBUG] No opener window found, likely direct navigation');
+      }
+    } catch (err) {
+      console.error('[DEBUG] Error in auth success handler:', err);
+    }
+  }, []);
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="text-center max-w-md px-4">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
+        <p className="mt-4 text-gray-700 font-medium">Completing your sign in...</p>
+        <p className="mt-2 text-gray-500 text-sm">Please wait while we verify your account.</p>
+      </div>
+    </div>
+  );
+};
 
 // Loading component
 const PageLoader = () => (
