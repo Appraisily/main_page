@@ -16,4 +16,8 @@
     <loc>https://antique-appraiser-directory.appraisily.com/sitemap.xml</loc>
     <lastmod>2024-11-12</lastmod>
   </sitemap>
-</sitemapindex> 
+  <sitemap>
+    <loc>https://articles.appraisily.com/sitemap.xml</loc>
+    <lastmod>2024-11-12</lastmod>
+  </sitemap>
+</sitemapindex>

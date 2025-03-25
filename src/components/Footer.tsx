@@ -16,7 +16,8 @@ const links = {
     { name: 'Screener', href: 'https://screener.appraisily.com/' },
     { name: 'Appraiser Service', href: 'https://landing-appraisers.appraisily.com/' },
     { name: 'Art Appraisers Directory', href: 'https://art-appraiser-directory.appraisily.com/' },
-    { name: 'Antique Appraisers Directory', href: 'https://antique-appraiser-directory.appraisily.com/' }
+    { name: 'Antique Appraisers Directory', href: 'https://antique-appraiser-directory.appraisily.com/' },
+    { name: 'Articles', href: 'https://articles.appraisily.com/' }
   ],
   legal: [
     { name: 'Privacy Policy', href: '/privacy' },
