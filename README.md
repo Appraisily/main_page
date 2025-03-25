@@ -114,6 +114,15 @@ The application uses a custom authentication system with:
 - User dashboard and profile management
 - JWT-based session handling
 
+### Important Note on Auth Directory
+
+The `src/pages/Auth` directory is intentionally excluded from git tracking as it belongs to a separate repository. This structure allows the authentication system to be maintained independently while being integrated into this main application.
+
+- Do not attempt to add Auth files to git
+- When developing locally, ensure the Auth files are properly copied to this location
+- The build process expects these files to exist even though they're not tracked in git
+- For deployment, the CI/CD pipeline handles the Auth component integration
+
 ## Tech Stack
 
 - React 18
@@ -149,6 +158,21 @@ The site is deployed on Netlify with the following features:
 - Optimization for images and assets
 - Generated sitemaps for main site and subdomains
 - TypeScript build verification
+
+### Subdomains and Sitemaps
+
+The application integrates with several subdomains that are managed in the footer and sitemap:
+- Main site: appraisily.com
+- Screener: screener.appraisily.com  
+- Appraiser Service: landing-appraisers.appraisily.com
+- Art Appraisers Directory: art-appraiser-directory.appraisily.com
+- Antique Appraisers Directory: antique-appraiser-directory.appraisily.com
+- Articles: articles.appraisily.com
+
+When adding new subdomains:
+1. Update the network links in the Footer component
+2. Add the subdomain to the sitemap generation script in `scripts/generate-sitemap.cjs`
+3. Update the sitemap-index.xml file to include the new subdomain's sitemap
 
 ## License
 
