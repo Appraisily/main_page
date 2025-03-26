@@ -17,6 +17,7 @@ import ProtectedRoute from './lib/auth/ProtectedRoute';
 import Landing from './pages/Landing';
 import About from './pages/About';
 import Team from './pages/Team';
+import QualifiedAppraisals from './pages/QualifiedAppraisals';
 import Success from './pages/Success';
 import Services from './pages/Services';
 import Expertise from './pages/Expertise';
@@ -124,6 +125,11 @@ export default function App() {
                   <Route path="/team" element={
                     <Suspense fallback={<PageLoader />}>
                       <Team />
+                    </Suspense>
+                  } />
+                  <Route path="/qualified-appraisals" element={
+                    <Suspense fallback={<PageLoader />}>
+                      <QualifiedAppraisals />
                     </Suspense>
                   } />
                   <Route path="/services" element={

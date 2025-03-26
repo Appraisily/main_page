@@ -179,75 +179,116 @@ export default function About() {
       />
       
       {/* Hero Section */}
-      <section className="relative py-24 bg-white">
+      <section className="relative py-24 bg-gradient-to-b from-white to-blue-50">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl mb-6">
-                About Appraisily
-              </h1>
-              <p className="text-lg leading-8 text-gray-600 mb-6">
-                {"Founded in 2003, Appraisily has grown from a single-office startup to a global leader in art and antique appraisal services. Over the past 20+ years, we've helped thousands of collectors, institutions, and enthusiasts discover the true value of their treasures."}
-              </p>
-              <div className="mt-8 bg-blue-50 rounded-xl p-8 border border-blue-100">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Our Mission</h2>
-                <p className="text-gray-700">
-                  We strive to make professional art and antique appraisals accessible to everyone, blending traditional expertise with cutting-edge technology. By merging centuries-old connoisseurship with modern AI algorithms, we deliver accurate, reliable, and transparent valuations for a wide range of objects—from rare paintings and collectibles to furniture and fine jewelry.
-                </p>
-              </div>
-            </div>
-            <div className="relative rounded-2xl overflow-hidden shadow-xl">
+          <div className="text-center mb-12">
+            <h1 className="text-5xl font-bold tracking-tight text-gray-900 mb-6">
+              About <span className="text-blue-600">Appraisily</span>
+            </h1>
+            <p className="text-xl leading-8 text-gray-600 max-w-3xl mx-auto">
+              {"Founded in 2003, Appraisily has grown from a single-office startup to a global leader in art and antique appraisal services."}
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mt-12">
+            <div className="relative rounded-2xl overflow-hidden shadow-xl transform transition-all hover:scale-[1.02] duration-300">
               <img
-                src={IMAGES.gallery.gallery1}
-                alt="Expert appraiser examining an antique"
+                src={IMAGES.gallery.appraiser}
+                alt="Expert appraiser examining an antique in a gallery"
                 className="w-full h-[500px] object-cover"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                <div className="p-8">
+                  <span className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium">20+ Years of Excellence</span>
+                  <h3 className="text-white text-2xl font-bold mt-3">Expert Appraisers at Work</h3>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <p className="text-lg leading-8 text-gray-600 mb-6">
+                {"Over the past 20+ years, we've helped thousands of collectors, institutions, and enthusiasts discover the true value of their treasures through our blend of traditional expertise and cutting-edge technology."}
+              </p>
+              <div className="bg-white rounded-xl p-8 border border-blue-100 shadow-lg">
+                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Our Mission</h2>
+                <p className="text-gray-700">
+                  We strive to make professional art and antique appraisals accessible to everyone. By merging centuries-old connoisseurship with modern AI algorithms, we deliver accurate, reliable, and transparent valuations for a wide range of objects—from rare paintings and collectibles to furniture and fine jewelry.
+                </p>
+              </div>
             </div>
           </div>
 
           <div className="mt-20 grid grid-cols-2 gap-8 sm:grid-cols-4">
             {stats.map((stat) => (
-              <div key={stat.label} className="bg-gray-50 p-6 rounded-lg">
-                <div className="text-3xl font-bold text-blue-600">{stat.value}</div>
-                <div className="mt-2 text-sm text-gray-600">{stat.label}</div>
+              <div key={stat.label} className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 transform transition-all hover:shadow-md hover:-translate-y-1 duration-300">
+                <div className="text-4xl font-bold text-blue-600">{stat.value}</div>
+                <div className="mt-2 text-sm font-medium text-gray-600">{stat.label}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Services Section */}
+      {/* Services Timeline Section */}
       <section className="py-24 bg-blue-50">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900">What We Offer</h2>
-            <p className="mt-4 text-lg text-gray-600">Comprehensive services for all your appraisal needs</p>
+            <p className="mt-4 text-lg text-gray-600">Our comprehensive appraisal journey</p>
           </div>
           
-          <div className="space-y-12">
-            {services.map((service, index) => {
-              const IconComponent = service.icon;
-              return (
-                <div key={service.title} className="bg-white rounded-xl shadow-sm overflow-hidden">
-                  <div className="p-8">
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="flex items-center justify-center h-12 w-12 rounded-full bg-blue-100">
-                        <IconComponent className="h-6 w-6 text-blue-600" />
-                      </div>
-                      <h3 className="text-2xl font-semibold text-gray-900">{index + 1}. {service.title}</h3>
+          <div className="relative">
+            {/* Timeline line */}
+            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-blue-200 hidden md:block"></div>
+            
+            <div className="space-y-24">
+              {services.map((service, index) => {
+                const IconComponent = service.icon;
+                const isEven = index % 2 === 0;
+                
+                return (
+                  <div key={service.title} className="relative">
+                    {/* Timeline dot */}
+                    <div className="absolute left-1/2 transform -translate-x-1/2 -top-4 w-8 h-8 rounded-full bg-blue-600 border-4 border-white flex items-center justify-center z-10 hidden md:flex">
+                      <span className="text-white font-bold">{index + 1}</span>
                     </div>
-                    <ul className="space-y-3">
-                      {service.features.map((feature, i) => (
-                        <li key={i} className="flex items-start gap-3">
-                          <CheckCircle2 className="h-5 w-5 text-blue-600 mt-1 flex-shrink-0" />
-                          <span className="text-gray-700">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    
+                    <div className={`md:flex items-center ${isEven ? 'flex-row' : 'flex-row-reverse'}`}>
+                      {/* Image side */}
+                      <div className={`md:w-5/12 mb-8 md:mb-0 ${isEven ? 'md:pr-12' : 'md:pl-12'}`}>
+                        <div className="bg-white p-4 rounded-xl shadow-lg overflow-hidden">
+                          <img 
+                            src={index === 0 ? IMAGES.gallery.appraiser : (index === 2 ? IMAGES.gallery.laboratory : `https://images.unsplash.com/photo-${1550000000000 + index * 10000000}?auto=format&fit=crop&q=80&w=800&h=600`)} 
+                            alt={service.title}
+                            className="w-full h-64 object-cover rounded-lg"
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* Content side */}
+                      <div className="md:w-7/12">
+                        <div className={`bg-white rounded-xl shadow-lg p-8 ${isEven ? 'md:ml-12' : 'md:mr-12'}`}>
+                          <div className="flex items-center gap-4 mb-6">
+                            <div className="flex items-center justify-center h-12 w-12 rounded-full bg-blue-100">
+                              <IconComponent className="h-6 w-6 text-blue-600" />
+                            </div>
+                            <h3 className="text-2xl font-semibold text-gray-900">{service.title}</h3>
+                          </div>
+                          <ul className="space-y-3">
+                            {service.features.map((feature, i) => (
+                              <li key={i} className="flex items-start gap-3">
+                                <CheckCircle2 className="h-5 w-5 text-blue-600 mt-1 flex-shrink-0" />
+                                <span className="text-gray-700">{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
@@ -275,83 +316,123 @@ export default function About() {
       </section>
 
       {/* Journey Timeline */}
-      <section className="py-24 bg-gray-50">
+      <section className="py-24 bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center text-gray-900 sm:text-4xl mb-8">
-            Our Journey
+            Our <span className="text-blue-600">Journey</span>
           </h2>
           <p className="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-16">
             From our humble beginnings to becoming a global leader in art and antique appraisals
           </p>
           
-          <div className="relative">
-            <div className="flex justify-between mb-8">
-              {milestones.map((milestone) => (
-                <button
-                  key={milestone.year}
-                  onClick={() => setActiveYear(milestone.year)}
-                  className={`relative px-4 py-2 rounded-full transition-all duration-300 ${
-                    activeYear === milestone.year
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-white text-gray-600 hover:bg-blue-50'
-                  }`}
-                >
-                  {milestone.year}
-                </button>
-              ))}
-            </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+            <div className="order-2 lg:order-1">
+              <div className="relative z-10">
+                <div className="flex justify-between mb-12 bg-white rounded-xl shadow-md p-4">
+                  {milestones.map((milestone) => (
+                    <button
+                      key={milestone.year}
+                      onClick={() => setActiveYear(milestone.year)}
+                      className={`relative px-5 py-3 rounded-lg transition-all duration-300 ${
+                        activeYear === milestone.year
+                          ? 'bg-blue-600 text-white shadow-md'
+                          : 'bg-gray-50 text-gray-600 hover:bg-blue-50'
+                      }`}
+                    >
+                      {milestone.year}
+                    </button>
+                  ))}
+                </div>
 
-            {activeMilestone && (
-              <div className="bg-white rounded-2xl overflow-hidden shadow-lg transition-all duration-500">
-                <div className="grid grid-cols-1 lg:grid-cols-2">
-                  <div className="relative h-64 lg:h-auto">
-                    <img
-                      src={activeMilestone.image}
-                      alt={activeMilestone.title}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="p-8">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                      {activeMilestone.title}
-                    </h3>
-                    <p className="text-gray-600 mb-6">
-                      {activeMilestone.description}
-                    </p>
-                    <div className="flex items-center">
-                      <History className="h-5 w-5 text-blue-600 mr-2" />
-                      <span className="text-sm text-blue-600">
-                        {activeMilestone.achievement}
-                      </span>
+                {activeMilestone && (
+                  <div className="bg-white rounded-2xl overflow-hidden shadow-xl transition-all duration-500 border border-gray-100">
+                    <div className="p-8">
+                      <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                        {activeMilestone.title}
+                      </h3>
+                      <p className="text-gray-600 mb-6">
+                        {activeMilestone.description}
+                      </p>
+                      <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                        <div className="flex items-center">
+                          <History className="h-6 w-6 text-blue-600 mr-3" />
+                          <span className="text-md font-medium text-blue-800">
+                            {activeMilestone.achievement}
+                          </span>
+                        </div>
+                      </div>
                     </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            <div className="relative order-1 lg:order-2">
+              <div className="relative rounded-2xl overflow-hidden shadow-xl h-[450px]">
+                <img
+                  src={activeYear === '2023' ? IMAGES.gallery.laboratory : activeMilestone?.image}
+                  alt={activeMilestone?.title || "Timeline Image"}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
+                  <div className="p-8">
+                    <span className="bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-medium">
+                      {activeYear}
+                    </span>
+                    <h3 className="text-white text-2xl font-bold mt-3">
+                      {activeMilestone?.title}
+                    </h3>
                   </div>
                 </div>
               </div>
-            )}
+              
+              {/* Timeline decorative elements */}
+              <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-blue-100 rounded-full opacity-70 z-0"></div>
+              <div className="absolute -top-4 -right-4 w-32 h-32 bg-blue-200 rounded-full opacity-50 z-0"></div>
+            </div>
+          </div>
+          
+          {/* Timeline icons - small screens only */}
+          <div className="flex justify-around md:hidden mb-8 mt-12">
+            {milestones.map((milestone, index) => (
+              <div 
+                key={`mobile-${milestone.year}`} 
+                className={`flex flex-col items-center ${activeYear === milestone.year ? 'opacity-100' : 'opacity-50'}`}
+                onClick={() => setActiveYear(milestone.year)}
+              >
+                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${activeYear === milestone.year ? 'bg-blue-600' : 'bg-gray-200'}`}>
+                  <span className="text-white font-medium">{milestone.year.substring(2)}</span>
+                </div>
+                <div className="h-1 w-full bg-gray-200 my-2"></div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Why Choose Section */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900">Why Choose Appraisily</h2>
-            <p className="mt-4 text-lg text-gray-600">What sets us apart from other appraisal services</p>
+            <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">Why Choose <span className="text-blue-600">Appraisily</span></h2>
+            <p className="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">What sets us apart from other appraisal services</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {reasons.map((reason) => {
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            {reasons.map((reason, index) => {
               const IconComponent = reason.icon;
               return (
-                <div key={reason.title} className="bg-blue-50 p-8 rounded-xl border border-blue-100">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className="flex items-center justify-center h-12 w-12 rounded-full bg-white border border-blue-200">
-                      <IconComponent className="h-6 w-6 text-blue-600" />
+                <div 
+                  key={reason.title} 
+                  className="bg-white p-8 rounded-xl shadow-lg border border-gray-100 transform transition-all hover:shadow-xl hover:-translate-y-1 duration-300"
+                >
+                  <div className="flex items-center gap-5 mb-5">
+                    <div className="flex items-center justify-center h-14 w-14 rounded-xl bg-blue-100">
+                      <IconComponent className="h-7 w-7 text-blue-600" />
                     </div>
                     <h3 className="text-xl font-semibold text-gray-900">{reason.title}</h3>
                   </div>
-                  <p className="text-gray-700">{reason.description}</p>
+                  <p className="text-gray-700 pl-[4.75rem]">{reason.description}</p>
                 </div>
               );
             })}
@@ -360,22 +441,27 @@ export default function About() {
       </section>
 
       {/* Contact CTA */}
-      <section className="py-16 bg-blue-600">
-        <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+      <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-700 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute -right-20 -top-20 w-64 h-64 rounded-full bg-white"></div>
+          <div className="absolute -left-20 -bottom-20 w-80 h-80 rounded-full bg-white"></div>
+        </div>
+        
+        <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center relative z-10">
           <h2 className="text-3xl font-bold text-white mb-6">Ready to discover the true value of your piece?</h2>
-          <p className="text-blue-100 mb-8 text-lg">
+          <p className="text-blue-100 mb-8 text-lg max-w-3xl mx-auto">
             Join the thousands of collectors, museums, and enthusiasts worldwide who trust Appraisily for accurate, transparent, and professional art and antique appraisals.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-5 justify-center">
             <a 
               href="mailto:info@appraisily.com" 
-              className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-blue-700 bg-white hover:bg-blue-50 shadow-sm"
+              className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-medium rounded-full text-blue-700 bg-white hover:bg-blue-50 shadow-lg transform transition-transform hover:-translate-y-1"
             >
               Email Us
             </a>
             <a 
               href="/start" 
-              className="inline-flex items-center justify-center px-6 py-3 border border-white text-base font-medium rounded-full text-white hover:bg-blue-700 shadow-sm"
+              className="inline-flex items-center justify-center px-8 py-4 border border-white text-base font-medium rounded-full text-white hover:bg-blue-800 shadow-lg transform transition-transform hover:-translate-y-1"
             >
               Start An Appraisal
             </a>

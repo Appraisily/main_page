@@ -49,6 +49,7 @@ export default function Navbar() {
 
   const navItems = [
     { name: 'About', href: '/about' },
+    { name: 'Qualified Appraisals', href: '/qualified-appraisals' },
     { name: 'Services', href: '/services' },
     { name: 'Expertise', href: '/expertise' },
     { name: 'Screener', href: 'https://screener.appraisily.com/', external: true }
@@ -98,7 +99,7 @@ export default function Navbar() {
                   <NavigationMenuItem>
                     <NavigationMenuTrigger className="bg-transparent">About</NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <div className="w-[200px] p-2">
+                      <div className="w-[280px] p-2">
                         <Link to="/about" className="block p-2 hover:bg-gray-50 rounded-lg transition-colors">
                           <div className="font-medium text-gray-900">About Us</div>
                           <p className="text-sm text-gray-600">Learn about our mission and values</p>
@@ -106,6 +107,10 @@ export default function Navbar() {
                         <Link to="/team" className="block p-2 hover:bg-gray-50 rounded-lg transition-colors">
                           <div className="font-medium text-gray-900">Our Team</div>
                           <p className="text-sm text-gray-600">Meet our expert appraisers</p>
+                        </Link>
+                        <Link to="/qualified-appraisals" className="block p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                          <div className="font-medium text-gray-900">Qualified Appraisals</div>
+                          <p className="text-sm text-gray-600">Why professional appraisals matter</p>
                         </Link>
                       </div>
                     </NavigationMenuContent>
@@ -140,9 +145,18 @@ export default function Navbar() {
                   </NavigationMenuItem>
 
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger className="bg-transparent">Directory</NavigationMenuTrigger>
+                    <NavigationMenuTrigger className="bg-transparent">Knowledge</NavigationMenuTrigger>
                     <NavigationMenuContent>
                       <div className="w-[400px] p-3">
+                        <a
+                          href="https://articles.appraisily.com/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block p-3 space-y-1 hover:bg-gray-50 rounded-lg transition-colors"
+                        >
+                          <div className="font-medium text-gray-900">Articles</div>
+                          <p className="text-sm text-gray-600">Educational articles and market insights</p>
+                        </a>
                         {directoryItems.map((item) => (
                           <a
                             key={item.name}
@@ -160,20 +174,14 @@ export default function Navbar() {
                   </NavigationMenuItem>
 
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger className="bg-transparent">Screener</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <div className="w-[250px] p-2">
-                        <a
-                          href="https://screener.appraisily.com/"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block p-2 hover:bg-gray-50 rounded-lg transition-colors"
-                        >
-                          <div className="font-medium text-gray-900">AI Art Analysis</div>
-                          <p className="text-sm text-gray-600">Free instant art evaluation</p>
-                        </a>
-                      </div>
-                    </NavigationMenuContent>
+                    <a
+                      href="https://screener.appraisily.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 h-10 py-2 px-4 hover:bg-slate-100 hover:text-slate-900"
+                    >
+                      Screener
+                    </a>
                   </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>

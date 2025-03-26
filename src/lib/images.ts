@@ -11,7 +11,9 @@ export const IMAGES = {
     gallery3: 'https://ik.imagekit.io/appraisily/WebPage/gallery3.jpg?updatedAt=1731365708040',
     gallery4: 'https://ik.imagekit.io/appraisily/WebPage/gallery4.jpg?updatedAt=1731365708501',
     gallery5: 'https://ik.imagekit.io/appraisily/WebPage/gallery5.jpg?updatedAt=1731365708114',
-    gallery6: 'https://ik.imagekit.io/appraisily/WebPage/gallery5.jpg?updatedAt=1731365708114'
+    gallery6: 'https://ik.imagekit.io/appraisily/WebPage/gallery5.jpg?updatedAt=1731365708114',
+    appraiser: 'https://ik.imagekit.io/appraisily/WebPage/escene_appraiser.png?updatedAt=1741034482307',
+    laboratory: 'https://ik.imagekit.io/appraisily/WebPage/lab_photo.png?updatedAt=1741034482319'
   },
   categories: {
     fineArt: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&q=80&w=800&h=600',
