@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import { Camera, FileCheck, Scale, Shield, Search, DollarSign, History, FileText, Landmark, Receipt, FileSpreadsheet, Award, X, Play } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogClose } from '@/components/ui/dialog';
 
 interface VideoModalProps {
   isOpen: boolean;
@@ -9,43 +14,23 @@ interface VideoModalProps {
 }
 
 function VideoModal({ isOpen, onClose, videoId, title }: VideoModalProps) {
-  if (!isOpen) return null;
-
   return (
-    <div 
-      className="fixed inset-0 z-50 overflow-y-auto bg-black/75 backdrop-blur-sm"
-      aria-labelledby="modal-title"
-      role="dialog"
-      aria-modal="true"
-      onClick={onClose}
-    >
-      <div className="flex min-h-screen items-center justify-center p-4">
-        <div 
-          className="relative w-full max-w-4xl rounded-lg bg-black shadow-xl"
-          onClick={e => e.stopPropagation()}
-        >
-          <div className="absolute -right-4 -top-4 z-10">
-            <button
-              type="button"
-              className="rounded-full bg-white p-2 text-gray-900 shadow-md hover:bg-gray-100 transition-colors"
-              onClick={onClose}
-            >
-              <X className="h-6 w-6" />
-            </button>
-          </div>
-
-          <div className="aspect-video rounded-lg overflow-hidden">
-            <iframe
-              className="w-full h-full"
-              src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
-              title={title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
+    <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
+      <DialogContent className="sm:max-w-4xl bg-black border-none p-0">
+        <DialogClose className="absolute right-4 top-4 z-10 rounded-full bg-white p-2 text-gray-900 shadow-md hover:bg-gray-100 transition-colors">
+          <X className="h-6 w-6" />
+        </DialogClose>
+        <div className="aspect-video rounded-lg overflow-hidden">
+          <iframe
+            className="w-full h-full"
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
+            title={title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -111,48 +96,118 @@ export default function Services() {
     }
   ];
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { 
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 10
+      }
+    }
+  };
+
   return (
-    <div className="bg-white py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+    <div className="bg-gradient-to-b from-gray-50 to-white py-24 sm:py-32 relative">
+      {/* Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-10 -right-10 w-[600px] h-[600px] opacity-[0.03]">
+          <div className="absolute inset-0 bg-blue-600 rounded-full transform scale-100" />
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-4xl px-6 lg:px-8 relative z-10">
+        <motion.div 
+          className="text-center"
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <Badge variant="outline" className="px-4 py-1.5 text-sm border-blue-200 bg-blue-50 text-blue-700 mb-6">
+            Professional Services
+          </Badge>
+          <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 mb-6">
             Choose Your Appraisal Service
           </h2>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-16">
             Select the service that best suits your needs. Each appraisal is conducted by certified experts using advanced analysis tools.
           </p>
-        </div>
+        </motion.div>
         
-        <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-          {services.map((service) => (
-            <div key={service.title} className="flex flex-col border border-gray-200 rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all duration-200">
-              <div className="mb-6">
-                <service.icon className="h-8 w-8 text-[#007bff]" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900">{service.title}</h3>
-              <p className="mt-4 text-gray-600 flex-grow">{service.description}</p>
-              <ul className="mt-6 space-y-3">
-                {service.features.map((feature) => (
-                  <li key={feature.text} className="flex items-start gap-2">
-                    <feature.icon className="h-5 w-5 text-[#007bff] mt-1" />
-                    <span className="text-gray-700">{feature.text}</span>
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={() => setVideoModal({
-                  isOpen: true,
-                  videoId: service.action.videoId,
-                  title: service.action.title
-                })}
-                className="mt-8 rounded-md bg-[#007bff] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#0056b3] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#007bff] flex items-center justify-center gap-2"
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          {services.map((service) => {
+            const IconComponent = service.icon;
+            return (
+              <motion.div 
+                key={service.title} 
+                variants={cardVariants}
+                whileHover={{ 
+                  y: -8,
+                  transition: { duration: 0.2 }
+                }}
               >
-                <Play className="h-4 w-4" />
-                Watch Service Overview
-              </button>
-            </div>
-          ))}
-        </div>
+                <Card className="shadow-lg border-t-4 border-t-blue-500 h-full overflow-hidden">
+                  <CardHeader className="pb-4">
+                    <div className="mb-4 w-14 h-14 rounded-lg bg-blue-50 flex items-center justify-center">
+                      <IconComponent className="h-8 w-8 text-blue-600" />
+                    </div>
+                    <CardTitle className="text-2xl">{service.title}</CardTitle>
+                    <CardDescription className="text-base">{service.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="pb-4">
+                    <ul className="space-y-3">
+                      {service.features.map((feature) => {
+                        const FeatureIcon = feature.icon;
+                        return (
+                          <li key={feature.text} className="flex items-center gap-3">
+                            <div className="flex-shrink-0 rounded-full bg-blue-50 p-1.5">
+                              <FeatureIcon className="h-4 w-4 text-blue-600" />
+                            </div>
+                            <span className="text-gray-700">{feature.text}</span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </CardContent>
+                  <CardFooter>
+                    <Button 
+                      className="w-full gap-2 shadow-md"
+                      onClick={() => setVideoModal({
+                        isOpen: true,
+                        videoId: service.action.videoId,
+                        title: service.action.title
+                      })}
+                    >
+                      <Play className="h-4 w-4" />
+                      Watch Service Overview
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </motion.div>
+            );
+          })}
+        </motion.div>
       </div>
 
       <VideoModal

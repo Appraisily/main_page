@@ -1,5 +1,7 @@
 import React from 'react';
-import { Upload, Search, TrendingUp, FileText } from 'lucide-react';
+import { Upload, Search, TrendingUp, FileText, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Badge } from '@/components/ui/badge';
 
 export default function Process() {
   const steps = [
@@ -29,43 +31,117 @@ export default function Process() {
     }
   ];
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { 
+        staggerChildren: 0.2,
+        delayChildren: 0.3,
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { 
+      opacity: 1, 
+      x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 10
+      }
+    }
+  };
+
   return (
-    <section className="bg-gray-50 py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+    <section className="bg-gradient-to-b from-white to-gray-50 py-24 sm:py-32 relative overflow-hidden">
+      {/* Subtle grid background */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#3b82f605_1px,transparent_1px),linear-gradient(to_bottom,#3b82f605_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+      
+      {/* Large decorative circle in background */}
+      <div className="absolute left-0 bottom-0 w-[600px] h-[600px] opacity-[0.03] -translate-x-1/2 translate-y-1/4">
+        <div className="absolute inset-0 bg-blue-600 rounded-full" />
+      </div>
+
+      <div className="mx-auto max-w-4xl px-6 lg:px-8 relative z-10">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <Badge variant="outline" className="px-4 py-1.5 text-sm border-blue-200 bg-blue-50 text-blue-700 mb-6">
+            How It Works
+          </Badge>
+          <h2 className="text-4xl sm:text-5xl font-bold tracking-tight text-gray-900 mb-6">
             Our Appraisal Process
           </h2>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Simple, efficient, and professional valuation in four easy steps
           </p>
-        </div>
+        </motion.div>
 
-        <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:max-w-none">
-          <div className="grid grid-cols-1 gap-y-16 lg:grid-cols-4 lg:gap-x-8">
+        <motion.div 
+          className="relative"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          {/* Connecting line between steps */}
+          <div className="absolute top-12 left-12 w-[calc(100%-96px)] h-0.5 bg-gradient-to-r from-blue-100 via-blue-300 to-blue-100 hidden lg:block" />
+          
+          <div className="grid grid-cols-1 gap-y-16 lg:grid-cols-4 lg:gap-x-6">
             {steps.map((step, index) => {
               const IconComponent = step.icon;
+              const isLast = index === steps.length - 1;
+              
               return (
-                <div key={step.title} className="relative pl-16">
-                  <div className="absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-600">
-                    <IconComponent className="h-6 w-6 text-white" />
-                  </div>
-                  <div className="relative">
-                    <div className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-sm font-semibold text-blue-600 ring-1 ring-inset ring-blue-500/10">
-                      Step {index + 1} • {step.timing}
+                <motion.div 
+                  key={step.title} 
+                  className="relative"
+                  variants={itemVariants}
+                >
+                  <div className="flex flex-col items-center text-center">
+                    {/* Icon with number badge */}
+                    <div className="relative mb-6">
+                      <div className="flex h-24 w-24 items-center justify-center rounded-full bg-blue-50 border-2 border-blue-100 shadow-md relative z-10">
+                        <IconComponent className="h-10 w-10 text-blue-600" />
+                      </div>
+                      <div className="absolute -top-2 -right-2 h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-md">
+                        {index + 1}
+                      </div>
                     </div>
-                    <h3 className="mt-4 text-lg font-semibold text-gray-900">
+                    
+                    {/* Arrow between steps (except last) */}
+                    {!isLast && (
+                      <div className="absolute top-12 -right-3 transform rotate-0 lg:block hidden">
+                        <ArrowRight className="h-6 w-6 text-blue-300" />
+                      </div>
+                    )}
+                    
+                    {/* Step timing badge */}
+                    <Badge className="bg-blue-50 hover:bg-blue-50 text-blue-700 border-blue-200 mb-4">
+                      {step.timing}
+                    </Badge>
+                    
+                    {/* Step title and description */}
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">
                       {step.title}
                     </h3>
-                    <p className="mt-2 text-base text-gray-600">
+                    <p className="text-muted-foreground">
                       {step.description}
                     </p>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

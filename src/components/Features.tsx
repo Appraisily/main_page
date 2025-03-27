@@ -1,5 +1,7 @@
 import React from 'react';
 import { Users, Camera, FileCheck, Shield, Clock, Globe, TrendingUp, DollarSign } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { motion } from 'framer-motion';
 
 export default function Features() {
   const features = [
@@ -35,35 +37,83 @@ export default function Features() {
     }
   ];
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { 
+        staggerChildren: 0.1,
+        delayChildren: 0.3
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 10
+      }
+    }
+  };
+
   return (
-    <div className="bg-gray-50 py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+    <div className="bg-gradient-to-b from-white to-gray-50 py-24 sm:py-32 relative overflow-hidden">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#3b82f608_1px,transparent_1px),linear-gradient(to_bottom,#3b82f608_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+      
+      <div className="mx-auto max-w-4xl px-6 lg:px-8 relative">
+        <motion.div 
+          className="mx-auto max-w-2xl text-center mb-20"
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <span className="inline-block px-4 py-1 rounded-full bg-blue-50 text-blue-700 text-sm font-medium mb-6">
+            Our Advantages
+          </span>
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl mb-6">
             Why Choose Our Appraisals?
           </h2>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
+          <p className="text-lg text-muted-foreground max-w-xl mx-auto">
             With our specialized knowledge and modern technology, we provide accurate and reliable art and antique appraisals.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 sm:mt-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 xl:grid-cols-3">
+        <motion.div 
+          className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
           {features.map((feature) => {
             const IconComponent = feature.icon;
             return (
-              <div 
-                key={feature.title} 
-                className="flex flex-col items-start bg-white rounded-xl p-8 shadow-sm hover:shadow-md transition-shadow duration-300"
+              <motion.div 
+                key={feature.title}
+                variants={itemVariants}
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
               >
-                <div className="rounded-lg bg-blue-50 p-3 mb-4">
-                  <IconComponent className="h-6 w-6 text-blue-600" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900">{feature.title}</h3>
-                <p className="mt-2 text-gray-600">{feature.description}</p>
-              </div>
+                <Card className="h-full border-none shadow-md hover:shadow-xl transition-all duration-300">
+                  <CardContent className="p-8 flex flex-col h-full">
+                    <div className="rounded-lg bg-blue-50 p-3 mb-6 w-16 h-16 flex items-center justify-center">
+                      <IconComponent className="h-8 w-8 text-blue-600" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
+                    <p className="text-muted-foreground flex-grow">{feature.description}</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
