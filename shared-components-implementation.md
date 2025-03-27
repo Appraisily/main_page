@@ -45,6 +45,106 @@ appraisily-shared-components/
 └── README.md             # Documentation
 ```
 
+## Development and Export Process for Main Repo
+
+When developing and exporting Header and Footer components from the main repository:
+
+### 1. Local Development in Main Repo
+
+```bash
+# Navigate to the main repository
+cd /mnt/c/Users/Andres/Documents/Github/main_page
+
+# Navigate to the shared components directory
+cd appraisily-shared-components
+
+# Install dependencies (if needed)
+npm install
+
+# Start development mode (watches for changes and rebuilds)
+npm run dev
+```
+
+This will start Rollup in watch mode, which will automatically rebuild the package when changes are detected in the source files.
+
+### 2. Making Changes to Components
+
+When modifying the Header or Footer:
+
+1. Edit the component source files in `appraisily-shared-components/src/components/`
+2. The development server will automatically rebuild the package
+3. Use the local version in the main application for testing
+
+### 3. Testing in the Main Repository
+
+You can test changes directly within the main repository by:
+
+```bash
+# In one terminal, keep the shared components in watch mode
+cd appraisily-shared-components
+npm run dev
+
+# In another terminal, run the main application
+cd ..
+npm run dev
+```
+
+### 4. Building for Production
+
+When your changes are ready for production:
+
+```bash
+# Navigate to the shared components directory
+cd appraisily-shared-components
+
+# Build the package for production
+npm run build
+```
+
+This will:
+- Compile TypeScript to JavaScript
+- Bundle components using Rollup
+- Extract and process CSS
+- Generate type definitions
+- Create both ESM and CommonJS versions
+
+### 5. Publishing Process
+
+To make the components available to other repositories:
+
+```bash
+# Update the version in package.json following semantic versioning
+# - PATCH (1.0.x): Bug fixes
+# - MINOR (1.x.0): New features (backward compatible)
+# - MAJOR (x.0.0): Breaking changes
+
+# Build the package
+npm run build
+
+# Publish to GitHub Packages
+npm publish
+```
+
+### 6. Workspaces Integration
+
+The main repository uses npm workspaces for better integration:
+
+```json
+// package.json in the main repository
+{
+  "name": "appraisily-website",
+  "workspaces": [
+    "appraisily-shared-components"
+  ],
+  // other configuration...
+}
+```
+
+This allows for:
+- Single `npm install` command to install dependencies for both projects
+- Simplified development workflow
+- Local testing of the shared components package
+
 ## Key Features
 
 ### 1. Configurable Components
@@ -224,27 +324,77 @@ You can customize the components for your specific subdomain:
 />
 ```
 
-## Updating the Package
+## Making Updates to Shared Components
 
-When making changes to the shared components:
+### 1. Development Workflow
 
-1. Make the changes in the appraisily-shared-components directory
-2. Update the version in package.json following semantic versioning:
-   - PATCH (1.0.x): Bug fixes and minor changes
-   - MINOR (1.x.0): New features in a backward compatible manner
-   - MAJOR (x.0.0): Breaking changes
-3. Build the package: `npm run build`
-4. Publish to GitHub Packages: `npm publish`
-5. Update dependencies in each subdomain project: `npm update @appraisily/shared-components`
+When updating the Header or Footer components:
 
-## Best Practices
+```bash
+# Start the development server for shared components
+cd appraisily-shared-components
+npm run dev
 
-1. **Keep components generic**: Components should work across all subdomains
-2. **Allow customization via props**: Don't hardcode values that might need to change
-3. **Document API changes**: When adding or changing props, update documentation
-4. **Test across subdomains**: Verify changes work in all environments
-5. **Use semantic versioning**: Follow versioning rules to prevent unexpected breaks
-6. **Consider backward compatibility**: Avoid breaking changes when possible
+# In a separate terminal, run the main application
+cd ..
+npm run dev
+```
+
+### 2. Component Modification Process
+
+1. **Identify what needs to change**: Is it styling, functionality, or structure?
+
+2. **Make changes to the source files**:
+   - Header component: `appraisily-shared-components/src/components/Header/index.tsx`
+   - Footer component: `appraisily-shared-components/src/components/Footer/index.tsx`
+   - Shared styles: `appraisily-shared-components/src/components/Header/styles.css` or `/Footer/styles.css`
+
+3. **Test changes in the main application**:
+   - Check mobile and desktop layouts
+   - Verify all interactive elements
+   - Test with different props configurations
+
+4. **Document any API changes**:
+   - If you've added or modified props, update documentation
+   - Write clear commit messages explaining the changes
+
+### 3. Publishing Updates
+
+When your changes are ready for all subdomains:
+
+```bash
+# Update the version number in package.json
+# Following semantic versioning:
+# - PATCH (1.0.x): Bug fixes and minor changes
+# - MINOR (1.x.0): New features (backward compatible)
+# - MAJOR (x.0.0): Breaking changes
+
+# Build the package for production
+npm run build
+
+# Publish to GitHub Packages
+npm publish
+```
+
+### 4. Testing with Local Projects
+
+To test with other local projects before publishing:
+
+```bash
+# In the shared-components directory
+npm link
+
+# In the target project directory
+npm link @appraisily/shared-components
+```
+
+After testing, unlink and restore the published version:
+
+```bash
+# In the target project
+npm unlink @appraisily/shared-components
+npm install
+```
 
 ## Troubleshooting Common Issues
 
