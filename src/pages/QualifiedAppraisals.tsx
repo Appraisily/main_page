@@ -10,7 +10,6 @@ import {
   AlertTriangle,
   ShieldCheck,
   BadgeDollarSign,
-  BriefcaseBusiness,
   BookOpen
 } from 'lucide-react';
 import { IMAGES } from '../lib/images';
@@ -39,7 +38,7 @@ export default function QualifiedAppraisals() {
       description: "Insurance companies often require qualified appraisals for high-value items. Without proper documentation, your precious assets may be underinsured or claims may be disputed."
     },
     {
-      icon: BriefcaseBusiness,
+      icon: Briefcase,
       title: "Estate Planning",
       description: "Proper estate planning requires accurate asset valuation. Qualified appraisals help prevent family disputes and ensure equitable distribution of assets according to your wishes."
     },
