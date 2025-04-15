@@ -1,50 +1,54 @@
 User-agent: *
-Disallow: /wp-content/uploads/wpforms/
+# Allow all crawler access
+Allow: /
 
-# Allow all other paths
-Disallow:
+# Only restrict access to specific sensitive paths
+Disallow: /wp-admin/
+Disallow: /login
+Disallow: /signup
+Disallow: /reset-password
+Disallow: /auth/
+Disallow: /bulk-appraisal/upload
+Disallow: /bulk-appraisal/review
 
 # Sitemaps
 Sitemap: https://appraisily.com/sitemap.xml
 
-# Crawl-delay
-Crawl-delay: 10
+# Set a reasonable crawl rate (seconds between requests)
+Crawl-delay: 5
 
-# Additional rules for specific bots
+# OpenAI and other AI bot restrictions
 User-agent: GPTBot
-Disallow: /private/
-Disallow: /admin/
-Disallow: /wp-admin/
-
 User-agent: ChatGPT-User
+User-agent: Google-Extended
+User-agent: anthropic-ai
+User-agent: Anthropic-AI
+User-agent: CCBot
+User-agent: Claude-Web
 Disallow: /private/
 Disallow: /admin/
 Disallow: /wp-admin/
+Disallow: /auth/
+Disallow: /bulk-appraisal/
 
-# Block common bad bots
-User-agent: MJ12bot
-Disallow: /
-
-User-agent: AhrefsBot
-Disallow: /
-
-User-agent: SemrushBot
-Disallow: /
-
-# Allow Google bots
+# Search engine specific settings
+# Google bots - fast crawl rate
 User-agent: Googlebot
-Allow: /
-
 User-agent: Googlebot-Image
-Allow: /
-
 User-agent: Googlebot-Mobile
-Allow: /
+User-agent: Googlebot-News
+User-agent: Googlebot-Video
+Crawl-delay: 1
 
-# Allow Bing bots
+# Bing bots
 User-agent: Bingbot
-Allow: /
+User-agent: MSNBot
+Crawl-delay: 2
 
-# Allow DuckDuckGo bot
+# DuckDuckGo bot
 User-agent: DuckDuckBot
 Allow: /
+
+# Yahoo bot
+User-agent: Slurp
+Crawl-delay: 2

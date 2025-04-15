@@ -103,10 +103,6 @@ export default function App() {
         <AuthProvider>
           <TooltipProvider>
             <div className="min-h-screen bg-white">
-              <SEO 
-                title="Appraisily | Professional Art & Antique Appraisals"
-                description="Leading online art and antique appraisal firm with certified experts. Professional valuations for collectors, institutions, and private clients worldwide."
-              />
               <ScrollRestoration />
               <Navbar />
               <main>

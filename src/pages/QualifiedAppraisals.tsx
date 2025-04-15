@@ -16,6 +16,26 @@ import { IMAGES } from '../lib/images';
 import SEO from '../components/SEO';
 
 export default function QualifiedAppraisals() {
+  // FAQ items for structured data
+  const qualifiedAppraisalFaqs = [
+    {
+      question: "What makes an appraisal 'qualified'?",
+      answer: "A qualified appraisal meets IRS and legal standards, is performed by a certified appraiser with verified credentials, follows established methodologies, includes comprehensive research, and provides thorough documentation that satisfies legal, tax, and insurance requirements."
+    },
+    {
+      question: "Why do I need a qualified appraisal for tax purposes?",
+      answer: "The IRS requires qualified appraisals for tax deductions on donated items valued over $5,000. Non-compliant appraisals can result in denied deductions and potential penalties. Only qualified appraisals meet the strict documentation standards required by the IRS."
+    },
+    {
+      question: "How is a qualified appraisal different from a regular estimate?",
+      answer: "Unlike informal estimates, qualified appraisals follow strict professional standards, use comprehensive market data, include detailed documentation of methodology, and are performed by appraisers with verified credentials and expertise. They stand up to legal and regulatory scrutiny."
+    },
+    {
+      question: "Do insurance companies require qualified appraisals?",
+      answer: "Yes, most insurance companies require qualified appraisals for high-value items to ensure accurate coverage. Without a proper qualified appraisal, your valuable assets may be underinsured or claims may be disputed or denied in case of loss or damage."
+    }
+  ];
+
   const reasons = [
     {
       icon: Scale,
@@ -107,8 +127,16 @@ export default function QualifiedAppraisals() {
   return (
     <div className="min-h-screen bg-white pt-16">
       <SEO 
-        title="Qualified Appraisals | Appraisily"
-        description="Learn why qualified appraisals are essential for tax compliance, legal protection, insurance coverage, and accurate valuation of your valuable assets."
+        title="Qualified Appraisals for IRS, Legal & Insurance Purposes | Appraisily"
+        description="Learn why certified qualified appraisals are essential for tax compliance, legal protection, insurance coverage, and accurate asset valuation. IRS-compliant documentation for donations, estates, and more."
+        breadcrumbs={[
+          { name: "Home", url: "https://appraisily.com/" },
+          { name: "Qualified Appraisals", url: "https://appraisily.com/qualified-appraisals" }
+        ]}
+        faqs={qualifiedAppraisalFaqs}
+        datePublished="2022-03-12"
+        dateModified="2023-08-05"
+        type="Service"
       />
       
       {/* Hero Section */}

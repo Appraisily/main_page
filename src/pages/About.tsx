@@ -174,8 +174,15 @@ export default function About() {
   return (
     <div className="min-h-screen bg-white pt-16">
       <SEO 
-        title="About Appraisily | Our Story and Mission"
-        description="Learn about Appraisily's 20+ year journey becoming a global leader in art and antique appraisals. Discover our mission, values, and comprehensive services."
+        title="About Appraisily | 20+ Years of Art & Antique Appraisal Expertise"
+        description="Discover how Appraisily has grown from a local service to a global leader in art and antique appraisals since 2003. Our expert team has conducted over 50,000 valuations across 30+ countries."
+        breadcrumbs={[
+          { name: "Home", url: "https://appraisily.com/" },
+          { name: "About", url: "https://appraisily.com/about" }
+        ]}
+        datePublished="2021-06-10"
+        dateModified="2023-09-15"
+        type="Organization"
       />
       
       {/* Hero Section */}

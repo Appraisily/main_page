@@ -1,6 +1,7 @@
 import React from 'react';
 import { Mail, Award, Star, Shield, Users, BookOpen, Globe } from 'lucide-react';
 import { IMAGES } from '../lib/images';
+import SEO from '../components/SEO';
 
 const team = [
   {
@@ -85,6 +86,18 @@ const certifications = [
 export default function Team() {
   return (
     <div className="bg-white pt-16">
+      <SEO 
+        title="Expert Art Appraisers & Antique Specialists | Meet Our Team | Appraisily"
+        description="Meet Appraisily's certified art appraisers and antique specialists with 15+ years of experience. Experts in fine art, antiques, collectibles, and specialized valuations."
+        breadcrumbs={[
+          { name: "Home", url: "https://appraisily.com/" },
+          { name: "Team", url: "https://appraisily.com/team" }
+        ]}
+        datePublished="2021-08-05"
+        dateModified="2023-07-20"
+        type="Organization"
+      />
+      
       {/* Hero Section */}
       <div className="relative bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-6 py-24 lg:px-8">

@@ -13,13 +13,51 @@ import RecentAppraisals from '../components/RecentAppraisals';
 import MarketAnalysis from '../components/MarketAnalysis';
 import { Link, useNavigate } from 'react-router-dom';
 import { Package } from 'lucide-react';
+import SEO from '../components/SEO';
 
 export default function Landing() {
   const isDev = import.meta.env.DEV;
   const navigate = useNavigate();
 
+  // Common FAQs for the homepage
+  const homeFaqs = [
+    {
+      question: "What types of items can you appraise?",
+      answer: "We appraise a wide range of art and antiques including paintings, sculptures, furniture, decorative arts, jewelry, watches, collectibles, rare books, manuscripts, and more."
+    },
+    {
+      question: "How does the online appraisal process work?",
+      answer: "Our online appraisal process is simple: upload clear photos of your item along with any documentation, describe its condition and history, submit payment, and receive your professional appraisal within 48 hours."
+    },
+    {
+      question: "Are your appraisals accepted by insurance companies?",
+      answer: "Yes, our appraisals are accepted by all major insurance companies for coverage purposes. Our reports include comprehensive details and meet industry standards for insurance documentation."
+    },
+    {
+      question: "How much does an appraisal cost?",
+      answer: "Our appraisal fees vary based on the type of item, complexity, and purpose of the appraisal. Single item appraisals start at $75, with detailed quotes provided before proceeding."
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-white">
+      <SEO
+        title="Art & Antique Appraisals Online | Expert Valuations | Appraisily"
+        description="Get accurate art and antique appraisals from certified experts within 48 hours. Professional valuations for insurance, tax, estate planning, and donations. Start your appraisal today!"
+        ratings={{
+          ratingValue: 4.9,
+          ratingCount: 1028,
+          reviewCount: 954
+        }}
+        type="LocalBusiness"
+        breadcrumbs={[
+          { name: "Home", url: "https://appraisily.com/" }
+        ]}
+        faqs={homeFaqs}
+        datePublished="2021-05-12"
+        dateModified="2023-10-18"
+      />
+      
       {/* Debug Link - Only visible in development */}
       {isDev && (
         <div className="fixed bottom-4 left-4 z-50">

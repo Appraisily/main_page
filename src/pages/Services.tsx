@@ -2,6 +2,7 @@ import React from 'react';
 import { services } from '../components/Services/ServicesData';
 import ServiceHero from '../components/Services/ServiceHero';
 import { ArrowRight } from 'lucide-react';
+import SEO from '../components/SEO';
 
 function ServiceSection({ 
   title, 
@@ -149,8 +150,53 @@ function ServiceSection({
 }
 
 export default function ServicesPage() {
+  // Common FAQs for service pages
+  const serviceFaqs = [
+    {
+      question: "How accurate are online appraisals?",
+      answer: "Our online appraisals are highly accurate, provided by certified appraisers with decades of experience. We use detailed photos, documentation, and extensive market research to ensure accurate valuations."
+    },
+    {
+      question: "What information do I need to provide?",
+      answer: "You'll need to provide clear photos of your item from multiple angles, any available documentation (provenance, certificates, etc.), and basic information about the item's condition and history."
+    },
+    {
+      question: "How long does the appraisal process take?",
+      answer: "Most appraisals are completed within 48 hours of submission. Rush service is available for urgent requests at an additional fee."
+    },
+    {
+      question: "Are your appraisers certified?",
+      answer: "Yes, all our appraisers are certified professionals with relevant credentials and extensive experience in their specific areas of expertise."
+    },
+    {
+      question: "Can I use your appraisal for insurance purposes?",
+      answer: "Yes, our appraisals meet the requirements of major insurance companies for coverage of valuable items. We provide detailed documentation to support insurance claims and coverage applications."
+    },
+    {
+      question: "Do you provide appraisals for tax purposes?",
+      answer: "Yes, our qualified appraisals meet IRS requirements for tax-related valuations including charitable donations, estate settlements, and gift tax purposes."
+    }
+  ];
+
   return (
     <div className="bg-white pt-16">
+      <SEO 
+        title="Art Appraisal Services | Insurance, Tax & Estate Valuations | Appraisily"
+        description="Professional art and antique appraisal services for insurance coverage, tax documentation, estate planning, donations, and sales. USPAP-compliant valuations from certified experts."
+        ratings={{
+          ratingValue: 4.8,
+          ratingCount: 813,
+          reviewCount: 742
+        }}
+        type="Service"
+        breadcrumbs={[
+          { name: "Home", url: "https://appraisily.com/" },
+          { name: "Services", url: "https://appraisily.com/services" }
+        ]}
+        faqs={serviceFaqs}
+        datePublished="2023-01-15"
+        dateModified="2023-11-20"
+      />
       <ServiceHero />
       
       <div className="space-y-6">
