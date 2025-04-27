@@ -2,7 +2,7 @@ import { auth } from '../firebase/config';
 import type { AppraisalPost } from '@/lib/types/dashboard';
 import type { DashboardFilters } from '@/lib/types/dashboard';
 
-const WP_API_URL = import.meta.env.VITE_WP_API_URL || 'https://appraisily.com/wp-json';
+const WP_API_URL = import.meta.env.VITE_WP_API_URL || 'https://resources.appraisily.com/wp-json';
 
 export async function fetchAppraisals(
   email: string | null = null,
