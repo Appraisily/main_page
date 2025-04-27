@@ -2,10 +2,9 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Following Up on Your Appraisal Request</title>
+  <title>Follow-up Regarding Your Appraisal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* Common styles for all emails */
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background-color: #f9fafb;
@@ -24,7 +23,6 @@
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
     
-    /* Consistent header */
     .header {
       text-align: center;
       margin-bottom: 32px;
@@ -45,7 +43,6 @@
       color: #1f2937;
     }
     
-    /* Content area */
     .content {
       color: #4b5563;
       font-size: 16px;
@@ -60,7 +57,6 @@
       text-align: center;
     }
     
-    /* Consistent button styling */
     .button-container {
       text-align: center;
       margin: 32px 0;
@@ -77,44 +73,20 @@
       margin: 12px 0;
       text-align: center;
       transition: all 0.2s ease;
-    }
-    
-    .button-primary {
       background-color: #007bff !important;
       color: #ffffff !important;
       border: none;
     }
     
-    .button-secondary {
-      background-color: #ffffff;
-      color: #6c757d !important;
-      border: 2px solid #e5e7eb;
+    .personal-signature {
+      margin-top: 32px;
+      font-style: italic;
     }
     
-    /* Optional components */
-    .note {
-      background-color: #fff8dc;
-      border-left: 4px solid #ffd700;
-      padding: 16px;
-      margin: 24px 0;
-      border-radius: 0 8px 8px 0;
-      font-size: 14px;
-    }
-    
-    .highlight-box {
-      margin: 32px 0;
-      padding: 24px;
-      background-color: #f8fafc;
-      border-radius: 12px;
-      border: 1px solid #e5e7eb;
-    }
-    
-    /* Footer components */
     .signature {
       margin: 32px 0;
       padding-top: 24px;
       border-top: 1px solid #e5e7eb;
-      text-align: center;
     }
     
     .footer {
@@ -132,7 +104,6 @@
       font-weight: 500;
     }
     
-    /* Consistent responsive design */
     @media only screen and (max-width: 600px) {
       body {
         padding: 16px;
@@ -160,7 +131,6 @@
 </head>
 <body>
   <div class="container">
-    <!-- Standard header -->
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td align="center" style="padding-bottom: 32px;">
@@ -178,52 +148,47 @@
       </tr>
     </table>
 
-    <h1 class="heading">A Quick Follow-Up on Your Appraisal</h1>
+    <h1 class="heading">Checking In About Your Appraisal</h1>
 
     <div class="content">
-      <p>Hello {{customer_name}},</p>
+      <p>Dear {{customer_name}},</p>
 
-      <p>I hope this email finds you well. I wanted to personally follow up regarding your recent interest in our appraisal services.</p>
+      <p>I wanted to personally follow up regarding the appraisal for your {{item_type}} that was recently submitted to our team. I noticed it's been a few days since we've received your information, and I wanted to check if you had any questions or if there's anything specific you'd like us to pay attention to during the appraisal process.</p>
 
-      <p>At Appraisily, we pride ourselves on providing accurate, professional appraisals for art, antiques, and collectibles. I noticed that you started but haven't completed the appraisal process with us, and I wanted to check if you had any questions or concerns I could help address.</p>
+      <p>Our team of experts is working diligently to provide you with the most accurate and comprehensive appraisal possible. We understand how important this is to you, and we're committed to delivering exceptional service.</p>
 
-      <div class="highlight-box">
-        <p><strong>Why choose Appraisily?</strong></p>
-        <ul>
-          <li>Professional appraisers with expertise across various art forms and collectibles</li>
-          <li>Detailed reports suitable for insurance, estate planning, or selling</li>
-          <li>Quick turnaround times</li>
-          <li>Personalized service tailored to your specific needs</li>
-        </ul>
-      </div>
+      <p>If you have any additional information, photos, or documentation related to your {{item_type}} that you haven't submitted yet, please feel free to send them over. The more details we have, the more precise our appraisal will be.</p>
 
-      <p>If you're still interested in getting your item(s) appraised, you can easily resume the process by clicking the button below:</p>
+      <p>You can simply reply to this email, or if you prefer, you can upload additional materials here:</p>
 
       <div class="button-container">
         <!--[if mso]>
-        <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{resume_link}}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" stroke="f" fillcolor="#007bff">
+        <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{upload_link}}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" stroke="f" fillcolor="#007bff">
           <w:anchorlock/>
           <center style="color:#ffffff;font-family:sans-serif;font-size:16px;font-weight:bold;">
-            Resume My Appraisal
+            Upload Additional Materials
           </center>
         </v:roundrect>
         <![endif]-->
-        <a href="{{resume_link}}" class="button button-primary">
-          Resume My Appraisal
+        <a href="{{upload_link}}" class="button">
+          Upload Additional Materials
         </a>
       </div>
 
-      <p>Alternatively, feel free to reply directly to this email if you have any questions. I'm here to help make this process as smooth as possible for you.</p>
+      <p>We expect to have your full appraisal completed by {{expected_completion_date}}. If you have any concerns or need to discuss anything before then, please don't hesitate to reach out.</p>
 
-      <div class="signature">
-        <p>Best regards,<br>Andres Garcia<br>Customer Success Manager<br>Appraisily</p>
+      <div class="personal-signature">
+        <p>Warm regards,</p>
+        <p>Andres<br>
+        Appraisal Specialist<br>
+        Appraisily</p>
       </div>
     </div>
 
     <div class="footer">
       <p>Visit our website at <a href="https://www.appraisily.com">www.appraisily.com</a></p>
       <p>&copy; {{current_year}} Appraisily. All rights reserved.</p>
-      <p>If you no longer wish to receive these emails, you can <a href="{{unsubscribe_link}}">unsubscribe here</a>.</p>
+      <p>If you have any questions, our support team is here to help 24/7.</p>
     </div>
   </div>
 </body>

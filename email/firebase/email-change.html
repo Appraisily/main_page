@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Bulk Appraisal Payment Confirmation</title>
+  <title>Confirm Your Email Change</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -57,55 +57,6 @@
       text-align: center;
     }
     
-    .session-id {
-      background-color: #f9fafb;
-      border-radius: 8px;
-      padding: 16px;
-      margin: 24px 0;
-      text-align: center;
-    }
-    
-    .session-id strong {
-      color: #1f2937;
-      font-family: monospace;
-      font-size: 18px;
-      letter-spacing: 1px;
-    }
-    
-    .summary-box {
-      background-color: #f9fafb;
-      border-radius: 8px;
-      padding: 20px;
-      margin: 24px 0;
-    }
-    
-    .summary-box h3 {
-      margin-top: 0;
-      color: #1f2937;
-      font-size: 18px;
-    }
-    
-    .summary-item {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-    
-    .summary-item:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
-    
-    .summary-total {
-      font-weight: bold;
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 2px solid #e5e7eb;
-    }
-    
     .button-container {
       text-align: center;
       margin: 32px 0;
@@ -127,9 +78,9 @@
       border: none;
     }
     
-    .note {
-      background-color: #fff8dc;
-      border-left: 4px solid #ffd700;
+    .alert {
+      background-color: #fef2f2;
+      border-left: 4px solid #ef4444;
       padding: 16px;
       margin: 24px 0;
       border-radius: 0 8px 8px 0;
@@ -202,56 +153,24 @@
       </tr>
     </table>
 
-    <h1 class="heading">Bulk Appraisal Payment Confirmation</h1>
+    <h1 class="heading">Confirm Your Email Change</h1>
 
     <div class="content">
-      <p>Dear {{customer_name}},</p>
+      <p>Hello,</p>
 
-      <p>Thank you for your payment for the bulk appraisal service! We're excited to begin evaluating your collection of items.</p>
-
-      <div class="session-id">
-        Your Session ID: <strong>{{session_id}}</strong>
-      </div>
-
-      <div class="summary-box">
-        <h3>Order Summary</h3>
-        <div class="summary-item">
-          <span>Bulk Appraisal ({{item_count}} items)</span>
-          <span>${{subtotal}}</span>
-        </div>
-        <div class="summary-item">
-          <span>Bulk Discount</span>
-          <span>-${{discount}}</span>
-        </div>
-        <div class="summary-total summary-item">
-          <span>Total</span>
-          <span>${{total}}</span>
-        </div>
-      </div>
-
-      <p>To continue with your bulk appraisal, we need additional details about your items. Please click the button below to provide the necessary information:</p>
+      <p>We received a request to change the email address associated with your Appraisily account. To complete this process and update your email from <strong>{{ email }}</strong> to <strong>{{ new_email }}</strong>, please click the button below:</p>
 
       <div class="button-container">
-        <!--[if mso]>
-        <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{details_link}}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" stroke="f" fillcolor="#007bff">
-          <w:anchorlock/>
-          <center style="color:#ffffff;font-family:sans-serif;font-size:16px;font-weight:bold;">
-            Submit Item Details
-          </center>
-        </v:roundrect>
-        <![endif]-->
-        <a href="{{details_link}}" class="button">
-          Submit Item Details
+        <a href="{{ link }}" class="button">
+          Confirm Email Change
         </a>
       </div>
 
-      <div class="note">
-        <strong>Important:</strong> The more detailed information you provide about each item, the more accurate our appraisal will be. Please include clear photos of each item from multiple angles if possible.
+      <div class="alert">
+        <strong>Security Notice:</strong> If you did not request this change, please contact our support team immediately by replying to this email or by calling our customer service at +1 (800) 555-0123. Someone may be attempting to gain unauthorized access to your account.
       </div>
 
-      <p>Our expert appraisers will evaluate all {{item_count}} items individually, providing you with a comprehensive report that includes detailed valuations, market analysis, and authentication insights for each piece in your collection.</p>
-
-      <p>If you have any questions or need assistance with the form, our team is ready to help. Simply reply to this email or contact our support team.</p>
+      <p>This confirmation link will expire in 1 hour. If you need a new link after that time, you'll need to request the email change again through your account settings.</p>
 
       <div class="signature">
         <p>Thank you for choosing Appraisily!<br>Best regards,<br>The Appraisily Team</p>
@@ -260,8 +179,8 @@
 
     <div class="footer">
       <p>Visit our website at <a href="https://www.appraisily.com">www.appraisily.com</a></p>
-      <p>&copy; {{current_year}} Appraisily. All rights reserved.</p>
-      <p>This email confirms your recent payment for a bulk appraisal service.<br>If you didn't make this purchase, please contact our support team immediately.</p>
+      <p>&copy; 2023 Appraisily. All rights reserved.</p>
+      <p>If you have any questions, our support team is here to help 24/7.</p>
     </div>
   </div>
 </body>
