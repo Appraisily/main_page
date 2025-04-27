@@ -35,4 +35,6 @@ export interface DashboardFilters {
   status?: string;
   sortBy?: 'date' | 'value';
   sortOrder?: 'asc' | 'desc';
+  category?: string;
+  search?: string;
 }

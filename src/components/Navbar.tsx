@@ -201,7 +201,7 @@ export default function Navbar() {
                     <DropdownMenu>
                       <DropdownMenuTrigger className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-900 hover:bg-gray-200 transition-colors">
                         <User className="h-4 w-4 mr-2" />
-                        {user?.firstName || 'Profile'}
+                        {user?.displayName || user?.email?.split('@')[0] || 'Profile'}
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-48">
                         <DropdownMenuItem asChild>
