@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, UserPlus, Mail, Lock, AlertCircle, CheckCircle2 } from 'lucide-react';
-import { register } from '@/lib/auth/authService';
+import { signUpWithEmailPassword, signInWithGoogle } from '@/lib/firebase/firebaseAuth';
 import { useAuth } from '@/lib/auth/AuthContext';
 
 export default function Signup() {
@@ -26,410 +26,291 @@ export default function Signup() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
     
+    // Validate form
     if (!passwordsMatch) {
-      setError('Passwords do not match.');
+      setError("Passwords don't match");
+      return;
+    }
+    
+    if (!passwordValidation.hasMinLength) {
+      setError("Password must be at least 6 characters");
       return;
     }
     
     if (!agreeToTerms) {
-      setError('You must agree to the Terms of Service and Privacy Policy.');
-      return;
-    }
-
-    // Validate minimum password length
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters long.');
+      setError("You must agree to the terms of service");
       return;
     }
     
+    setError('');
     setIsLoading(true);
     
     try {
-      console.log('🚀 Signup Request:', {
-        email,
-        passwordLength: password.length,
-        apiUrl: import.meta.env.VITE_AUTH_API_URL || 'https://auth-service-856401495068.us-central1.run.app/api/auth'
-      });
-
-      const response = await register({ 
-        email, 
-        password,
-        confirmPassword
-      });
-
-      console.log('✅ Signup Response:', {
-        success: true,
-        userId: response.user?.id,
-        email: response.user?.email,
-        timestamp: new Date().toISOString()
-      });
-
-      loginContext(response.user);
-      navigate('/dashboard');
-    } catch (err) {
-      console.error('❌ Signup Error:', {
-        error: err instanceof Error ? err.message : 'Unknown error',
-        timestamp: new Date().toISOString(),
-        details: err
-      });
-      setError(err instanceof Error ? err.message : 'An error occurred during signup. Please try again.');
+      const response = await signUpWithEmailPassword(email, password);
+      
+      if (response.user) {
+        loginContext(response.user);
+        navigate('/dashboard');
+      }
+    } catch (err: any) {
+      console.error('Signup error:', err);
+      
+      // Handle specific Firebase errors
+      if (err.code === 'auth/email-already-in-use') {
+        setError('An account with this email already exists');
+      } else if (err.code === 'auth/invalid-email') {
+        setError('Invalid email address');
+      } else if (err.code === 'auth/weak-password') {
+        setError('Password is too weak');
+      } else {
+        setError(err.message || 'Failed to create account. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleGoogleSignup = () => {
-    // Clear any previous errors
+  const handleGoogleSignup = async () => {
     setError('');
-    
-    console.log('[DEBUG] Starting Google signup flow');
-    
-    // Set popup dimensions and position
-    const width = 500;
-    const height = 600;
-    const left = window.screenX + (window.outerWidth - width) / 2;
-    const top = window.screenY + (window.outerHeight - height) / 2;
-
-    // Get the auth API URL from environment variables
-    const AUTH_API_URL = import.meta.env.VITE_AUTH_API_URL || 
-      'https://auth-service-856401495068.us-central1.run.app/api/auth';
-    
-    console.log('[DEBUG] Auth API URL:', AUTH_API_URL);
-    console.log('[DEBUG] Current domain:', window.location.origin);
-    
-    // Open the popup for Google authentication
-    const googleAuthUrl = `${AUTH_API_URL}/google`;
-    console.log('[DEBUG] Opening popup with URL:', googleAuthUrl);
-    
-    const popup = window.open(
-      googleAuthUrl,
-      'Google Sign In',
-      `width=${width},height=${height},left=${left},top=${top},popup=1,resizable=yes,scrollbars=yes`
-    );
-
-    // Set a loading state while waiting for auth
     setIsLoading(true);
-
-    // Create message handler for communication with popup
-    const messageHandler = async (event: MessageEvent) => {
-      console.log('[DEBUG] Message event received:', event);
-      console.log('[DEBUG] Message event origin:', event.origin);
-      console.log('[DEBUG] Message event data:', event.data);
-      
-      // Verify the origin to improve security
-      if (event.origin !== window.location.origin) {
-        console.log('[DEBUG] Ignoring message from different origin:', event.origin);
-        return;
-      }
-      
-      // Handle successful authentication
-      if (event.data?.type === 'AUTH_SUCCESS') {
-        console.log('[DEBUG] AUTH_SUCCESS message received');
-        // Clean up the message listener
-        window.removeEventListener('message', messageHandler);
-        
-        try {
-          // Get the user data after successful authentication
-          console.log('[DEBUG] Fetching user data from:', `${AUTH_API_URL}/me`);
-          const response = await fetch(`${AUTH_API_URL}/me`, {
-            credentials: 'include',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            }
-          });
-          
-          console.log('[DEBUG] User data response status:', response.status);
-          console.log('[DEBUG] User data response headers:', Object.fromEntries([...response.headers]));
-          
-          if (!response.ok) {
-            throw new Error(`Failed to fetch user data: ${response.status}`);
-          }
-          
-          const userData = await response.json();
-          console.log('[DEBUG] User data received:', userData);
-          
-          if (userData.user) {
-            // Update auth context with user data
-            console.log('[DEBUG] Updating auth context with user:', userData.user);
-            loginContext(userData.user);
-            
-            // Navigate to dashboard
-            console.log('[DEBUG] Navigating to dashboard');
-            navigate('/dashboard');
-          } else {
-            throw new Error('No user data received');
-          }
-        } catch (error) {
-          console.error('[DEBUG] Error completing Google authentication:', error);
-          setError('Failed to complete sign in. Please try again.');
-        } finally {
-          setIsLoading(false);
-        }
-      }
-      
-      // Handle authentication errors
-      else if (event.data?.type === 'AUTH_ERROR') {
-        console.log('[DEBUG] AUTH_ERROR message received:', event.data.error);
-        window.removeEventListener('message', messageHandler);
-        console.error('Google authentication error:', event.data.error);
-        setError(event.data.error || 'Google sign in failed. Please try again.');
-        setIsLoading(false);
-      }
-    };
-
-    // Set up the message listener
-    window.addEventListener('message', messageHandler);
-
-    // Handle case where popup is blocked
-    if (!popup) {
-      setError('Popup was blocked. Please allow popups for this site.');
-      setIsLoading(false);
-      return;
-    }
     
-    // Set up polling to detect if popup was closed without completing auth
-    const checkPopupClosed = setInterval(() => {
-      if (popup.closed) {
-        clearInterval(checkPopupClosed);
-        window.removeEventListener('message', messageHandler);
-        
-        // Only show error if still in loading state (auth not completed)
-        if (isLoading) {
-          setIsLoading(false);
-          setError('Authentication was canceled. Please try again.');
-        }
+    try {
+      const response = await signInWithGoogle();
+      
+      if (response.user) {
+        loginContext(response.user);
+        navigate('/dashboard');
       }
-    }, 1000);
+    } catch (err: any) {
+      console.error('Google signup error:', err);
+      setError(err.message || 'Google sign up failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="min-h-screen flex flex-col justify-center bg-white text-gray-900">
-      <div className="container relative flex pt-20 flex-col items-center justify-center lg:px-0">
-        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-          <div className="flex flex-col space-y-2 text-center">
-            <Link to="/" className="mx-auto">
-              <img
-                src="https://ik.imagekit.io/appraisily/WebPage/logo_new.png?updatedAt=1731919266638"
-                alt="Appraisily"
-                className="h-12 w-auto"
-              />
+      <div className="max-w-md w-full mx-auto px-4 sm:px-6">
+        <div className="text-center">
+          <h1 className="text-3xl font-extrabold">Create an account</h1>
+          <p className="mt-2 text-gray-600">
+            Or{' '}
+            <Link to="/login" className="text-blue-600 hover:text-blue-500">
+              sign in to your existing account
             </Link>
-            <h1 className="text-2xl font-semibold tracking-tight text-gray-900">
-              Create your account
-            </h1>
-            <p className="text-sm text-gray-500">
-              Enter your email to create your account
-            </p>
-          </div>
-
+          </p>
+        </div>
+        
+        <div className="mt-8">
           {error && (
-            <div className="p-3 rounded-md bg-red-50 border border-red-200">
-              <div className="flex">
-                <AlertCircle className="h-5 w-5 text-red-500" />
-                <p className="ml-2 text-sm text-red-600">{error}</p>
-              </div>
+            <div className="mb-4 bg-red-50 p-4 rounded-md flex items-start">
+              <AlertCircle className="h-5 w-5 text-red-500 mt-0.5" />
+              <p className="ml-3 text-sm text-red-800">{error}</p>
             </div>
           )}
-
-          <div className="grid gap-6">
-            <form onSubmit={handleSubmit}>
-              <div className="grid gap-4">
-                <div className="grid gap-2">
-                  <label
-                    htmlFor="email"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Email
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Mail className="h-4 w-4 text-gray-400" />
-                    </div>
-                    <input
-                      id="email"
-                      type="email"
-                      autoComplete="email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 pl-10 py-2 text-sm ring-offset-white focus:border-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 placeholder:text-gray-500"
-                      placeholder="you@example.com"
-                    />
-                  </div>
+          
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email address
+              </label>
+              <div className="mt-1 relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Mail className="h-5 w-5 text-gray-400" />
                 </div>
-
-                <div className="grid gap-2">
-                  <label
-                    htmlFor="password"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Password
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Lock className="h-4 w-4 text-gray-400" />
-                    </div>
-                    <input
-                      id="password"
-                      type={showPassword ? 'text' : 'password'}
-                      autoComplete="new-password"
-                      required
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 pl-10 pr-10 py-2 text-sm ring-offset-white focus:border-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 placeholder:text-gray-500"
-                      placeholder="••••••••"
-                      minLength={6}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                    >
-                      {showPassword ? (
-                        <EyeOff className="h-4 w-4 text-gray-400 hover:text-gray-600" />
-                      ) : (
-                        <Eye className="h-4 w-4 text-gray-400 hover:text-gray-600" />
-                      )}
-                    </button>
-                  </div>
-                  <div className="grid gap-2 text-xs">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className={`h-3 w-3 ${passwordValidation.hasMinLength ? 'text-green-500' : 'text-gray-300'}`} />
-                      <span className="text-gray-500">At least 6 characters</span>
-                    </div>
-                  </div>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  placeholder="you@example.com"
+                />
+              </div>
+            </div>
+            
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <div className="mt-1 relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="h-5 w-5 text-gray-400" />
                 </div>
-
-                <div className="grid gap-2">
-                  <label
-                    htmlFor="confirmPassword"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Confirm Password
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Lock className="h-4 w-4 text-gray-400" />
-                    </div>
-                    <input
-                      id="confirmPassword"
-                      type={showConfirmPassword ? 'text' : 'password'}
-                      autoComplete="new-password"
-                      required
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 pl-10 pr-10 py-2 text-sm ring-offset-white focus:border-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 placeholder:text-gray-500"
-                      placeholder="••••••••"
-                      minLength={6}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                    >
-                      {showConfirmPassword ? (
-                        <EyeOff className="h-4 w-4 text-gray-400 hover:text-gray-600" />
-                      ) : (
-                        <Eye className="h-4 w-4 text-gray-400 hover:text-gray-600" />
-                      )}
-                    </button>
-                  </div>
-                  {confirmPassword && !passwordsMatch && (
-                    <p className="text-xs text-red-500">Passwords do not match</p>
-                  )}
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <input
-                    id="terms"
-                    name="terms"
-                    type="checkbox"
-                    checked={agreeToTerms}
-                    onChange={(e) => setAgreeToTerms(e.target.checked)}
-                    className="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
-                  />
-                  <label htmlFor="terms" className="text-sm text-gray-500">
-                    I agree to the{' '}
-                    <Link to="/terms" className="text-blue-600 hover:text-blue-500">
-                      Terms of Service
-                    </Link>{' '}
-                    and{' '}
-                    <Link to="/privacy" className="text-blue-600 hover:text-blue-500">
-                      Privacy Policy
-                    </Link>
-                  </label>
-                </div>
-
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  autoComplete="new-password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  placeholder="Create a password"
+                />
                 <button
-                  type="submit"
-                  disabled={isLoading || !passwordsMatch || !agreeToTerms}
-                  className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 disabled:pointer-events-none disabled:opacity-50 bg-gray-900 text-gray-50 hover:bg-gray-800 h-10 px-4 py-2"
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  onClick={() => setShowPassword(!showPassword)}
                 >
-                  {isLoading ? (
-                    <span className="flex items-center space-x-2">
-                      <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                          fill="none"
-                        />
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        />
-                      </svg>
-                      <span>Creating account...</span>
-                    </span>
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5 text-gray-400" />
                   ) : (
-                    <span className="flex items-center space-x-2">
-                      <UserPlus className="h-4 w-4" />
-                      <span>Create Account</span>
-                    </span>
+                    <Eye className="h-5 w-5 text-gray-400" />
                   )}
                 </button>
               </div>
-            </form>
-
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-200"></div>
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-gray-500">or continue with</span>
+              <div className="mt-1">
+                <div className="flex items-center mt-1">
+                  {passwordValidation.hasMinLength ? (
+                    <CheckCircle2 className="h-4 w-4 text-green-500" />
+                  ) : (
+                    <div className="h-4 w-4 rounded-full border border-gray-300" />
+                  )}
+                  <span className="ml-2 text-xs text-gray-500">At least 6 characters</span>
+                </div>
               </div>
             </div>
-
-            <button
-              onClick={handleGoogleSignup}
-              className="inline-flex items-center justify-center space-x-2 rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400"
-            >
-              <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-                <path d="M17.64 9.205c0-.639-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z" fill="#4285F4"/>
-                <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18Z" fill="#34A853"/>
-                <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332Z" fill="#FBBC05"/>
-                <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58Z" fill="#EA4335"/>
-              </svg>
-              <span className="text-gray-600">Continue with Google</span>
-            </button>
+            
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                Confirm password
+              </label>
+              <div className="mt-1 relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  autoComplete="new-password"
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  placeholder="Confirm your password"
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="h-5 w-5 text-gray-400" />
+                  ) : (
+                    <Eye className="h-5 w-5 text-gray-400" />
+                  )}
+                </button>
+              </div>
+              <div className="mt-1">
+                <div className="flex items-center mt-1">
+                  {confirmPassword && (passwordsMatch ? (
+                    <CheckCircle2 className="h-4 w-4 text-green-500" />
+                  ) : (
+                    <AlertCircle className="h-4 w-4 text-red-500" />
+                  ))}
+                  {confirmPassword && (
+                    <span className={`ml-2 text-xs ${passwordsMatch ? 'text-green-500' : 'text-red-500'}`}>
+                      {passwordsMatch ? 'Passwords match' : 'Passwords do not match'}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex items-center">
+              <input
+                id="terms"
+                name="terms"
+                type="checkbox"
+                required
+                checked={agreeToTerms}
+                onChange={(e) => setAgreeToTerms(e.target.checked)}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
+                I agree to the{' '}
+                <Link to="/terms" className="text-blue-600 hover:text-blue-500">
+                  Terms of Service
+                </Link>{' '}
+                and{' '}
+                <Link to="/privacy" className="text-blue-600 hover:text-blue-500">
+                  Privacy Policy
+                </Link>
+              </label>
+            </div>
+            
+            <div>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-75 disabled:cursor-not-allowed"
+              >
+                {isLoading ? (
+                  <div className="flex items-center">
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Creating account...
+                  </div>
+                ) : (
+                  <div className="flex items-center">
+                    <UserPlus className="h-5 w-5 mr-2" />
+                    Create account
+                  </div>
+                )}
+              </button>
+            </div>
+          </form>
+          
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-gray-500">Or continue with</span>
+              </div>
+            </div>
+            
+            <div className="mt-6">
+              <button
+                type="button"
+                onClick={handleGoogleSignup}
+                disabled={isLoading}
+                className="w-full flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-75 disabled:cursor-not-allowed"
+              >
+                {isLoading ? (
+                  <div className="flex items-center">
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Processing...
+                  </div>
+                ) : (
+                  <>
+                    <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24">
+                      <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
+                        <path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z"/>
+                        <path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z"/>
+                        <path fill="#FBBC05" d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z"/>
+                        <path fill="#EA4335" d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z"/>
+                      </g>
+                    </svg>
+                    Sign up with Google
+                  </>
+                )}
+              </button>
+            </div>
           </div>
-
-          <p className="px-8 text-center text-sm text-gray-500">
-            <span>Already have an account?</span>{' '}
-            <Link
-              to="/login"
-              className="underline underline-offset-4 hover:text-gray-900"
-            >
-              Sign in
-            </Link>
-          </p>
         </div>
       </div>
     </div>

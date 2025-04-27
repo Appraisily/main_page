@@ -1,82 +1,46 @@
-import { AppraisalPost, DashboardFilters } from '../types/dashboard';
+import { auth } from '../firebase/config';
+import type { AppraisalPost } from '@/lib/types/dashboard';
+import type { DashboardFilters } from '@/lib/types/dashboard';
 
-const API_URL = 'https://resources.appraisily.com/wp-json/wp/v2';
+const WP_API_URL = import.meta.env.VITE_WP_API_URL || 'https://appraisily.com/wp-json';
 
-export const fetchAppraisals = async (email: string, filters?: DashboardFilters): Promise<AppraisalPost[]> => {
-  // Guard clause - return empty array if no email
-  if (!email) return [];
+export async function fetchAppraisals(
+  email: string | null = null,
+  filters: DashboardFilters
+): Promise<AppraisalPost[]> {
+  // Use Firebase auth user email if no email provided
+  if (!email) {
+    const user = auth.currentUser;
+    if (!user || !user.email) {
+      throw new Error('No authenticated user found');
+    }
+    email = user.email;
+  }
+
+  console.log(`[Dashboard API] Fetching appraisals for ${email}`);
+
+  // Build query parameters
+  const queryParams = new URLSearchParams({
+    user_email: email,
+    status: filters.status,
+    ...(filters.sortBy && { sort_by: filters.sortBy }),
+    ...(filters.sortOrder && { sort_order: filters.sortOrder }),
+    ...(filters.category && { category: filters.category }),
+    ...(filters.search && { search: filters.search }),
+  });
 
   try {
-    const requestConfig = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    };
-
-    // Build query parameters
-    const params = new URLSearchParams({
-      'acf_customer_email': email,
-      per_page: '100',
-      _fields: 'id,date,title,link,acf,yoast_head_json.og_image,main_image_url'
-    });
-
-    // Add filters if provided
-    if (filters?.status) {
-      params.append('post_status', filters.status);
-    }
-    if (filters?.sortBy) {
-      params.append('orderby', filters.sortBy);
-      params.append('order', filters.sortOrder || 'desc');
-    }
-
-    const url = `${API_URL}/appraisals?${params.toString()}`;
-    console.log('[Dashboard API] Fetching appraisals:', {
-      url,
-      email,
-      filters
-    });
-
-    const response = await fetch(url, requestConfig);
+    const response = await fetch(`${WP_API_URL}/appraisily/v1/appraisals?${queryParams.toString()}`);
     
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('[Dashboard API] Error:', {
-        status: response.status,
-        statusText: response.statusText,
-        error: errorText
-      });
-      throw new Error('Failed to fetch appraisals');
+      const errorData = await response.json();
+      throw new Error(errorData.message || `API error (${response.status}): Failed to fetch appraisals`);
     }
-
+    
     const data = await response.json();
-    
-    // Log the complete first item for debugging
-    if (data.length > 0) {
-      console.log('[Dashboard API] First appraisal data:', {
-        complete: data[0],
-        id: data[0].id,
-        title: data[0].title,
-        link: data[0].link,
-        acf: data[0].acf,
-        date: data[0].date
-      });
-    }
-
-    console.log('[Dashboard API] Summary:', {
-      totalAppraisals: data.length,
-      availableFields: data[0] ? Object.keys(data[0]) : [],
-      acfFields: data[0]?.acf ? Object.keys(data[0].acf) : []
-    });
-    
-    // Filter results by customer email in ACF fields
-    const filteredData = data.filter(post => 
-      post.acf?.customer_email === email
-    );
-
-    return filteredData;
+    return data;
   } catch (error) {
-    console.error('[Dashboard API] Fatal error:', error);
+    console.error('[Dashboard API] Error fetching appraisals:', error);
     throw error;
   }
-};
+}

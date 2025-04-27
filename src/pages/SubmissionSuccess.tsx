@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { CheckCircle2, ArrowRight, LayoutDashboard, Loader2 } from 'lucide-react';
 import { useStripeSession } from '@/hooks/useStripeSession';
@@ -8,6 +8,10 @@ export default function SubmissionSuccess() {
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get('session_id') || '';
   const { session, loading, error } = useStripeSession(sessionId);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-12">

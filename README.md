@@ -177,3 +177,51 @@ When adding new subdomains:
 ## License
 
 Copyright © 2024 Appraisily. All rights reserved.
+
+## Firebase Authentication Setup
+
+This website uses Firebase Authentication for user management. To set up Firebase Authentication:
+
+1. Install the Firebase dependency:
+   ```bash
+   npm install firebase
+   ```
+
+2. Create a `.env` file in the root directory with your Firebase configuration:
+   ```
+   VITE_FIREBASE_API_KEY=AIzaSyA0raiTWLhzvG-qnKaKwCEMQjs6-a3Pf6Y
+   VITE_FIREBASE_AUTH_DOMAIN=appraisily.firebaseapp.com
+   VITE_FIREBASE_PROJECT_ID=appraisily
+   VITE_FIREBASE_STORAGE_BUCKET=appraisily.firebasestorage.app
+   VITE_FIREBASE_MESSAGING_SENDER_ID=768257804794
+   VITE_FIREBASE_APP_ID=1:768257804794:web:de9bbc399bd812048bbc43
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## Authentication Features
+
+- **Email/Password Login**: Standard email and password authentication
+- **Google Login**: Social login with Google
+- **Automatic Account Creation**: Creates accounts after successful payments
+- **Dashboard Integration**: View appraisals associated with your account
+
+## File Structure
+
+The authentication system consists of the following files:
+
+- `src/lib/firebase/config.ts` - Firebase configuration
+- `src/lib/firebase/firebaseAuth.ts` - Firebase authentication service
+- `src/lib/auth/AuthContext.tsx` - Authentication context provider
+- `src/lib/auth/ProtectedRoute.tsx` - Route protection component
+- `src/pages/Auth/Login.tsx` - Login page
+- `src/pages/Auth/Signup.tsx` - Signup page
+- `src/lib/stripe/handlePaymentSuccess.ts` - Automatic account creation after payment
+- `src/pages/Success.tsx` - Payment success page with account creation
+
+## API Integration
+
+The authentication system works with the WordPress REST API to fetch appraisals by user email. The integration is handled by `src/lib/api/dashboardApi.ts`.
