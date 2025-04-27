@@ -1,1 +1,272 @@
- 
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Suspicious Activity Alert</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #f9fafb;
+      color: #1f2937;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    
+    .logo {
+      width: 40px;
+      height: 40px;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+    
+    .company-name {
+      display: inline-block;
+      vertical-align: middle;
+      font-size: 24px;
+      font-weight: bold;
+      color: #1f2937;
+    }
+    
+    .content {
+      color: #4b5563;
+      font-size: 16px;
+      padding: 0 8px;
+    }
+    
+    .heading {
+      font-size: 24px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    
+    .button-container {
+      text-align: center;
+      margin: 32px 0;
+    }
+    
+    .button {
+      display: inline-block;
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 500;
+      width: 100%;
+      max-width: 300px;
+      margin: 12px 0;
+      text-align: center;
+      transition: all 0.2s ease;
+      background-color: #007bff !important;
+      color: #ffffff !important;
+      border: none;
+    }
+    
+    .alert-box {
+      background-color: #fef2f2;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 24px 0;
+      border: 1px solid #fee2e2;
+    }
+    
+    .alert-icon {
+      display: block;
+      text-align: center;
+      font-size: 32px;
+      color: #ef4444;
+      margin-bottom: 12px;
+    }
+    
+    .details-container {
+      background-color: #f9fafb;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 24px 0;
+      border: 1px solid #e5e7eb;
+    }
+    
+    .details-row {
+      display: flex;
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .details-row:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .details-label {
+      flex: 0 0 40%;
+      font-weight: 500;
+      color: #4b5563;
+    }
+    
+    .details-value {
+      flex: 0 0 60%;
+      color: #1f2937;
+    }
+    
+    .signature {
+      margin: 32px 0;
+      padding-top: 24px;
+      border-top: 1px solid #e5e7eb;
+      text-align: center;
+    }
+    
+    .footer {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid #e5e7eb;
+      font-size: 14px;
+      color: #4b5563;
+      text-align: center;
+    }
+    
+    .footer a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    @media only screen and (max-width: 600px) {
+      body {
+        padding: 16px;
+      }
+      
+      .container {
+        padding: 24px;
+      }
+      
+      .button {
+        padding: 12px 20px;
+        font-size: 16px;
+      }
+      
+      .logo {
+        width: 35px;
+        height: 35px;
+      }
+      
+      .company-name {
+        font-size: 20px;
+      }
+      
+      .details-row {
+        flex-direction: column;
+      }
+      
+      .details-label, .details-value {
+        flex: 0 0 100%;
+      }
+      
+      .details-label {
+        margin-bottom: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td align="center" style="padding-bottom: 32px;">
+          <table border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td>
+                <img src="http://cdn.mcauto-images-production.sendgrid.net/304ac75ef1d5c007/8aeb2689-2b5b-402d-a6f3-6521621e123a/300x300.png" alt="Appraisily Logo" class="logo" width="40" height="40" style="vertical-align: middle;">
+              </td>
+              <td style="padding-left: 10px;">
+                <span class="company-name" style="vertical-align: middle;">Appraisily</span>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <h1 class="heading">Suspicious Login Activity Detected</h1>
+
+    <div class="content">
+      <div class="alert-box">
+        <div class="alert-icon">⚠️</div>
+        <p style="text-align: center; font-weight: 600; color: #b91c1c; margin-bottom: 12px;">We detected a login to your account from an unrecognized device</p>
+        <p style="text-align: center; margin-bottom: 0;">If this wasn't you, your account may be at risk.</p>
+      </div>
+
+      <p>Hello,</p>
+
+      <p>We recently detected a login to your Appraisily account from a device or location that we don't recognize. We take your account security very seriously, so we wanted to alert you immediately.</p>
+
+      <div class="details-container">
+        <div class="details-row">
+          <div class="details-label">Date & Time:</div>
+          <div class="details-value">{{ login_time }}</div>
+        </div>
+        <div class="details-row">
+          <div class="details-label">Location:</div>
+          <div class="details-value">{{ login_location }}</div>
+        </div>
+        <div class="details-row">
+          <div class="details-label">Device:</div>
+          <div class="details-value">{{ login_device }}</div>
+        </div>
+        <div class="details-row">
+          <div class="details-label">Browser:</div>
+          <div class="details-value">{{ login_browser }}</div>
+        </div>
+        <div class="details-row">
+          <div class="details-label">IP Address:</div>
+          <div class="details-value">{{ login_ip }}</div>
+        </div>
+      </div>
+
+      <p><strong>Was this you?</strong></p>
+      <p>If this was you, you can ignore this message. Your account is safe.</p>
+      <p>If you don't recognize this activity, we recommend that you:</p>
+      <ol>
+        <li>Change your password immediately</li>
+        <li>Review your account for any suspicious changes</li>
+        <li>Enable two-factor authentication if you haven't already</li>
+      </ol>
+
+      <div class="button-container">
+        <a href="https://www.appraisily.com/account/security" class="button">
+          Secure Your Account
+        </a>
+      </div>
+
+      <p>Security is our top priority. If you need any assistance securing your account, please contact our support team right away.</p>
+
+      <div class="signature">
+        <p>Thank you for your attention to this matter.<br>Best regards,<br>The Appraisily Security Team</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Visit our website at <a href="https://www.appraisily.com">www.appraisily.com</a></p>
+      <p>&copy; 2023 Appraisily. All rights reserved.</p>
+      <p>If you have any questions, our support team is here to help 24/7.</p>
+    </div>
+  </div>
+</body>
+</html> 
