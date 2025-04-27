@@ -2,9 +2,10 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Complete Your Appraisal Details</title>
+  <title>Your Free Art Analysis Report</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    /* Common styles for all emails */
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background-color: #f9fafb;
@@ -23,15 +24,10 @@
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     }
     
+    /* Consistent header */
     .header {
       text-align: center;
       margin-bottom: 32px;
-      font-size: 0;
-    }
-    
-    .header-content {
-      display: inline-block;
-      text-align: center;
     }
     
     .logo {
@@ -49,31 +45,22 @@
       color: #1f2937;
     }
     
+    /* Content area */
     .content {
       color: #4b5563;
       font-size: 16px;
       padding: 0 8px;
     }
     
-    .content p {
+    .heading {
+      font-size: 24px;
+      font-weight: 600;
+      color: #1f2937;
       margin-bottom: 24px;
-    }
-    
-    .session-id {
-      background-color: #f9fafb;
-      border-radius: 8px;
-      padding: 16px;
-      margin: 24px 0;
       text-align: center;
     }
     
-    .session-id strong {
-      color: #1f2937;
-      font-family: monospace;
-      font-size: 18px;
-      letter-spacing: 1px;
-    }
-    
+    /* Consistent button styling */
     .button-container {
       text-align: center;
       margin: 32px 0;
@@ -81,16 +68,30 @@
     
     .button {
       display: inline-block;
-      background-color: #007bff !important;
-      color: #ffffff !important;
-      padding: 16px 32px;
+      padding: 12px 24px;
       text-decoration: none;
       border-radius: 8px;
       font-weight: 500;
-      box-shadow: 0 2px 4px rgba(0, 123, 255, 0.1);
-      mso-hide: all;
+      width: 100%;
+      max-width: 300px;
+      margin: 12px 0;
+      text-align: center;
+      transition: all 0.2s ease;
     }
     
+    .button-primary {
+      background-color: #007bff !important;
+      color: #ffffff !important;
+      border: none;
+    }
+    
+    .button-secondary {
+      background-color: #ffffff;
+      color: #6c757d !important;
+      border: 2px solid #e5e7eb;
+    }
+    
+    /* Optional components */
     .note {
       background-color: #fff8dc;
       border-left: 4px solid #ffd700;
@@ -100,10 +101,20 @@
       font-size: 14px;
     }
     
+    .report-container {
+      margin: 32px 0;
+      padding: 24px;
+      background-color: #f8fafc;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+    }
+    
+    /* Footer components */
     .signature {
       margin: 32px 0;
       padding-top: 24px;
       border-top: 1px solid #e5e7eb;
+      text-align: center;
     }
     
     .footer {
@@ -115,6 +126,13 @@
       text-align: center;
     }
     
+    .footer a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    /* Consistent responsive design */
     @media only screen and (max-width: 600px) {
       body {
         padding: 16px;
@@ -125,8 +143,8 @@
       }
       
       .button {
-        display: block;
-        padding: 16px 24px;
+        padding: 12px 20px;
+        font-size: 16px;
       }
       
       .logo {
@@ -142,6 +160,7 @@
 </head>
 <body>
   <div class="container">
+    <!-- Standard header -->
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
         <td align="center" style="padding-bottom: 32px;">
@@ -159,46 +178,47 @@
       </tr>
     </table>
 
+    <h1 class="heading">Your Free Analysis Report</h1>
+
     <div class="content">
-      <p>Hi {{customer_name}},</p>
+      <p>Thank you for using Appraisily! Here's your free art analysis report:</p>
 
-      <p>Thank you for completing your payment! We're excited to begin the appraisal process for your art pieces and antiques.</p>
-
-      <div class="session-id">
-        Your Session ID: <strong>{{session_id}}</strong>
+      <div class="report-container">
+        {{{free_report}}}
       </div>
 
-      <p>To proceed with your appraisal, we need some additional details about your items. Please click the button below to provide the necessary information:</p>
+      <p>Want a more detailed analysis? Our professional appraisal service provides:</p>
+      <ul>
+        <li>Comprehensive item evaluation</li>
+        <li>Detailed market value assessment</li>
+        <li>Authentication insights</li>
+        <li>Historical context and provenance</li>
+      </ul>
 
       <div class="button-container">
         <!--[if mso]>
-        <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://www.appraisily.com/success-payment/?session_id={{session_id}}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" stroke="f" fillcolor="#007bff">
+        <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://www.appraisily.com/professional-appraisal" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" stroke="f" fillcolor="#007bff">
           <w:anchorlock/>
           <center style="color:#ffffff;font-family:sans-serif;font-size:16px;font-weight:bold;">
-            Submit Appraisal Details
+            Get Professional Appraisal
           </center>
         </v:roundrect>
         <![endif]-->
-        <a href="https://www.appraisily.com/success-payment/?session_id={{session_id}}" class="button" style="background-color: #007bff !important; color: #ffffff !important;">
-          Submit Appraisal Details
+        <a href="https://www.appraisily.com/professional-appraisal" class="button button-primary">
+          Get Professional Appraisal
         </a>
       </div>
 
-      <div class="note">
-        <strong>Note:</strong> If you can't submit the details right now, don't worry! You can always use the link provided in our previous email to complete this step later.
-      </div>
-
-      <p>Our team is ready to assist you throughout this process. If you have any questions or need help, simply reply to this email.</p>
-
       <div class="signature">
-        <p>Best regards,<br>The Appraisily Team</p>
+        <p>Thank you for choosing Appraisily!<br>Best regards,<br>The Appraisily Team</p>
       </div>
     </div>
 
     <div class="footer">
+      <p>Visit our website at <a href="https://www.appraisily.com">www.appraisily.com</a></p>
       <p>&copy; {{current_year}} Appraisily. All rights reserved.</p>
-      <p>This email was sent because you recently made a payment for an appraisal service.<br>If you didn't request this, please contact our support team.</p>
+      <p>If you have any questions, our support team is here to help 24/7.</p>
     </div>
   </div>
 </body>
-</html>
+</html> 

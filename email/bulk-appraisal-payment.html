@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Bulk Appraisal Payment Confirmation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Common styles for all emails */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #f9fafb;
+      color: #1f2937;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      padding: 32px;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    /* Consistent header */
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    
+    .logo {
+      width: 40px;
+      height: 40px;
+      vertical-align: middle;
+      margin-right: 10px;
+    }
+    
+    .company-name {
+      display: inline-block;
+      vertical-align: middle;
+      font-size: 24px;
+      font-weight: bold;
+      color: #1f2937;
+    }
+    
+    /* Content area */
+    .content {
+      color: #4b5563;
+      font-size: 16px;
+      padding: 0 8px;
+    }
+    
+    .heading {
+      font-size: 24px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    
+    /* Consistent button styling */
+    .button-container {
+      text-align: center;
+      margin: 32px 0;
+    }
+    
+    .button {
+      display: inline-block;
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 500;
+      width: 100%;
+      max-width: 300px;
+      margin: 12px 0;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+    
+    .button-primary {
+      background-color: #007bff !important;
+      color: #ffffff !important;
+      border: none;
+    }
+    
+    .button-secondary {
+      background-color: #ffffff;
+      color: #6c757d !important;
+      border: 2px solid #e5e7eb;
+    }
+    
+    /* Optional components */
+    .note {
+      background-color: #fff8dc;
+      border-left: 4px solid #ffd700;
+      padding: 16px;
+      margin: 24px 0;
+      border-radius: 0 8px 8px 0;
+      font-size: 14px;
+    }
+    
+    .receipt-container {
+      margin: 32px 0;
+      padding: 24px;
+      background-color: #f8fafc;
+      border-radius: 12px;
+      border: 1px solid #e5e7eb;
+    }
+    
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+    
+    .table th,
+    .table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .table th {
+      font-weight: 600;
+      color: #1f2937;
+      background-color: #f9fafb;
+    }
+    
+    .table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .total-row td {
+      font-weight: 600;
+      color: #1f2937;
+    }
+    
+    .session-id {
+      background-color: #f9fafb;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 24px 0;
+      text-align: center;
+    }
+    
+    .session-id strong {
+      color: #1f2937;
+      font-family: monospace;
+      font-size: 18px;
+      letter-spacing: 1px;
+    }
+    
+    /* Footer components */
+    .signature {
+      margin: 32px 0;
+      padding-top: 24px;
+      border-top: 1px solid #e5e7eb;
+      text-align: center;
+    }
+    
+    .footer {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid #e5e7eb;
+      font-size: 14px;
+      color: #4b5563;
+      text-align: center;
+    }
+    
+    .footer a {
+      color: #007bff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    /* Consistent responsive design */
+    @media only screen and (max-width: 600px) {
+      body {
+        padding: 16px;
+      }
+      
+      .container {
+        padding: 24px;
+      }
+      
+      .button {
+        padding: 12px 20px;
+        font-size: 16px;
+      }
+      
+      .logo {
+        width: 35px;
+        height: 35px;
+      }
+      
+      .company-name {
+        font-size: 20px;
+      }
+      
+      .table th,
+      .table td {
+        padding: 8px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Standard header -->
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td align="center" style="padding-bottom: 32px;">
+          <table border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td>
+                <img src="http://cdn.mcauto-images-production.sendgrid.net/304ac75ef1d5c007/8aeb2689-2b5b-402d-a6f3-6521621e123a/300x300.png" alt="Appraisily Logo" class="logo" width="40" height="40" style="vertical-align: middle;">
+              </td>
+              <td style="padding-left: 10px;">
+                <span class="company-name" style="vertical-align: middle;">Appraisily</span>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <h1 class="heading">Bulk Appraisal Payment Confirmation</h1>
+
+    <div class="content">
+      <p>Dear {{customer_name}},</p>
+
+      <p>Thank you for your payment for the bulk appraisal service. We're excited to begin evaluating your collection of items!</p>
+
+      <div class="session-id">
+        Your Bulk Appraisal ID: <strong>{{session_id}}</strong>
+      </div>
+
+      <div class="receipt-container">
+        <h3 style="margin-top: 0;">Payment Receipt</h3>
+        <p><strong>Date:</strong> {{payment_date}}</p>
+        <p><strong>Transaction ID:</strong> {{transaction_id}}</p>
+        
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Bulk Appraisal Service</td>
+              <td>{{item_count}} items</td>
+              <td>${{price_per_item}} per item</td>
+              <td>${{subtotal}}</td>
+            </tr>
+            <tr>
+              <td colspan="3">Bulk Discount ({{discount_percentage}}%)</td>
+              <td>-${{discount_amount}}</td>
+            </tr>
+            <tr class="total-row">
+              <td colspan="3"><strong>Total</strong></td>
+              <td><strong>${{total_amount}}</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>To complete your bulk appraisal, we need you to provide details and photos for each item. Please click the button below to continue:</p>
+
+      <div class="button-container">
+        <!--[if mso]>
+        <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://www.appraisily.com/bulk-details/?session_id={{session_id}}" style="height:50px;v-text-anchor:middle;width:200px;" arcsize="10%" stroke="f" fillcolor="#007bff">
+          <w:anchorlock/>
+          <center style="color:#ffffff;font-family:sans-serif;font-size:16px;font-weight:bold;">
+            Submit Item Details
+          </center>
+        </v:roundrect>
+        <![endif]-->
+        <a href="https://www.appraisily.com/bulk-details/?session_id={{session_id}}" class="button button-primary">
+          Submit Item Details
+        </a>
+      </div>
+
+      <div class="note">
+        <strong>Note:</strong> Our expert appraisers will begin working on your items as soon as you submit all the required information. The more detailed information you provide, the more accurate your appraisals will be.
+      </div>
+
+      <p>If you have any questions about your bulk appraisal, please don't hesitate to contact us by replying to this email.</p>
+
+      <div class="signature">
+        <p>Thank you for choosing Appraisily!<br>Best regards,<br>The Appraisily Team</p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>Visit our website at <a href="https://www.appraisily.com">www.appraisily.com</a></p>
+      <p>&copy; {{current_year}} Appraisily. All rights reserved.</p>
+      <p>This email serves as your official receipt. Please keep it for your records.</p>
+    </div>
+  </div>
+</body>
+</html> 
