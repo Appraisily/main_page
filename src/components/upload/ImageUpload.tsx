@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Upload, Image as ImageIcon, Info, X } from 'lucide-react';
+import { Upload, Image as ImageIcon, Info, X, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   Tooltip,
@@ -110,14 +110,15 @@ export default function ImageUpload({
           <DialogTrigger asChild>
             <button
               type="button"
-              className="text-sm text-primary hover:text-primary/90 flex items-center gap-1.5 transition-colors font-medium"
+              className="flex items-center px-2 py-1.5 text-sm text-primary hover:text-primary/90 font-medium gap-1.5 transition-colors"
+              aria-label="See example image"
             >
-              <Info className="h-4 w-4" />
-              See example
+              <HelpCircle className="h-5 w-5" />
+              <span>Example</span>
             </button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-md p-0">
-            <DialogHeader className="p-6">
+          <DialogContent className="sm:max-w-md p-0 w-[90vw] mx-auto">
+            <DialogHeader className="p-4">
               <DialogTitle>Example Image</DialogTitle>
               {exampleTooltip && (
                 <DialogDescription>
@@ -143,10 +144,10 @@ export default function ImageUpload({
         <TooltipTrigger asChild>
           <button
             type="button"
-            className="text-sm text-primary hover:text-primary/90 flex items-center gap-1.5 transition-colors font-medium"
+            className="flex items-center px-2 py-1 text-sm text-primary hover:text-primary/90 font-medium gap-1.5 transition-colors"
           >
-            <Info className="h-4 w-4" />
-            See example
+            <HelpCircle className="h-5 w-5" />
+            <span>Example</span>
           </button>
         </TooltipTrigger>
         <TooltipContent side="top" align="end" className="w-[300px] p-0 bg-white text-gray-900 shadow-lg">
@@ -167,8 +168,14 @@ export default function ImageUpload({
   };
 
   return (
-    <Card className="p-6 border shadow-sm">
-      <div className="flex justify-between items-center mb-4">
+    <Card className={cn(
+      "border shadow-sm overflow-hidden",
+      isMobile ? "p-4 mb-6" : "p-6 mb-4"
+    )}>
+      <div className={cn(
+        "flex justify-between items-center",
+        isMobile ? "mb-3 flex-col items-start gap-2" : "mb-3 flex-row items-center"
+      )}>
         <label htmlFor={id} className="block text-base font-semibold text-gray-900">
           {label} {required && <span className="text-red-500">*</span>}
         </label>
@@ -177,14 +184,19 @@ export default function ImageUpload({
 
       <div
         className={cn(
-          "relative border-2 border-dashed rounded-lg transition-all duration-200",
-          isDragging ? "border-primary bg-primary/5" : "border-muted hover:border-primary",
-          preview ? "bg-gray-50" : "bg-background"
+          "relative border-2 border-dashed rounded-lg transition-all duration-200 cursor-pointer",
+          isDragging 
+            ? "border-primary bg-primary/5" 
+            : preview 
+              ? "border-gray-200 bg-gray-50" 
+              : "border-blue-300 bg-blue-50/30 hover:bg-blue-50/50 hover:border-blue-400",
+          isMobile ? "min-h-[180px]" : ""
         )}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
         onDragOver={handleDrag}
         onDrop={handleDrop}
+        onClick={() => !preview && inputRef.current?.click()}
       >
         <input
           ref={inputRef}
@@ -204,7 +216,8 @@ export default function ImageUpload({
             />
             <button
               type="button"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 if (preview) {
                   URL.revokeObjectURL(preview);
                 }
@@ -214,35 +227,46 @@ export default function ImageUpload({
                   inputRef.current.value = '';
                 }
               }}
-              className="absolute top-2 right-2 p-2 bg-white rounded-full shadow-sm hover:bg-gray-100 transition-colors border border-red-100 hover:bg-red-50 hover:border-red-200"
+              className="absolute top-2 right-2 p-3 bg-white rounded-full shadow-sm hover:bg-gray-100 transition-colors border border-red-100 hover:bg-red-50 hover:border-red-200"
               aria-label="Remove image"
               title="Remove image"
             >
-              <X className="h-4 w-4 text-red-500" />
+              <X className="h-5 w-5 text-red-500" />
             </button>
           </div>
         ) : (
-          <label
-            htmlFor={id}
-            className="flex flex-col items-center justify-center p-8 cursor-pointer"
+          <div
+            className={cn(
+              "flex flex-col items-center justify-center cursor-pointer",
+              isMobile ? "p-6" : "p-8"
+            )}
           >
-            <div className="p-3 rounded-full bg-blue-50 mb-4">
-              <ImageIcon className="h-8 w-8 text-blue-600" />
+            <div className="rounded-full bg-blue-100 p-4 flex items-center justify-center mb-4">
+              <ImageIcon className={cn(
+                "text-blue-600",
+                isMobile ? "h-6 w-6" : "h-7 w-7"
+              )} />
             </div>
-            <span className="text-sm font-medium text-center">
+            <p className="text-sm font-medium text-center text-gray-900">
               Drop your image here or click to upload
-            </span>
-            <span className="text-sm text-muted-foreground mt-1 mb-4 text-center">
+            </p>
+            <p className="text-sm text-gray-500 mt-1 mb-6 text-center max-w-xs">
               {description}
-            </span>
+            </p>
             <button 
               type="button" 
-              onClick={() => inputRef.current?.click()}
-              className="upload-image-button px-6 py-2 bg-gray-900 text-white rounded-md text-sm font-medium hover:bg-black transition-colors shadow-sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                inputRef.current?.click();
+              }}
+              className={cn(
+                "bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm",
+                isMobile ? "px-6 py-3 w-full max-w-[200px]" : "px-5 py-2.5"
+              )}
             >
               Browse Files
             </button>
-          </label>
+          </div>
         )}
       </div>
     </Card>

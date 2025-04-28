@@ -76,8 +76,8 @@ export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormPr
         id="main_item"
         label="Main Item Image"
         description="Clear photo of your item"
-        exampleImage="https://resources.appraisily.com/wp-content/uploads/2024/02/example-rotated.jpeg"
-        exampleTooltip="Take a clear, well-lit photo of the front of your item. Avoid glare and reflections."
+        exampleImage="https://ik.imagekit.io/appraisily/WebPage/main_example.png"
+        exampleTooltip="Take clear, well-lit photos showing the entire item. For artwork, furniture, collectibles, or any other items, capture the front view that best represents the piece. Avoid glare, shadows, and busy backgrounds."
         accept="image/*"
         required
         onChange={(file) => setFiles(prev => ({ ...prev, main: file }))}
@@ -88,8 +88,8 @@ export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormPr
         id="signature_markings"
         label="Signature or Markings"
         description="Clear photo of any signatures, stamps, or marks"
-        exampleImage="https://resources.appraisily.com/wp-content/uploads/2024/02/54E7BACA-3C7C-4E34-9887-681A9A15BD4B-scaled.jpeg"
-        exampleTooltip="Take a close-up photo of any signatures, maker's marks, or identifying features on the item."
+        exampleImage="https://ik.imagekit.io/appraisily/WebPage/mark_example.png"
+        exampleTooltip="Capture clear close-ups of signatures, maker's marks, stamps, hallmarks, labels, or any identifying features on your item. These markings are crucial for authentication and proper valuation."
         accept="image/*"
         onChange={(file) => setFiles(prev => ({ ...prev, signature: file }))}
       />
@@ -99,8 +99,8 @@ export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormPr
         id="age_indicators"
         label="Age & Condition Details"
         description="Photo showing condition and age-related details"
-        exampleImage="https://resources.appraisily.com/wp-content/uploads/2024/02/7F9CF86F-4D62-497A-AA96-77B7BFBDA0A8-387db9fbeaf8374fca133be99981fa50-scaled-1.jpeg"
-        exampleTooltip="Take photos showing the back/underside of the item, any damage, repairs, or details that indicate its age and condition."
+        exampleImage="https://ik.imagekit.io/appraisily/WebPage/age_example.png"
+        exampleTooltip="Take photos showing the back, underside, or interior of the item, along with any details that indicate age, condition, restoration, or damage. For furniture, show joinery details; for artwork, capture the back of canvases or frames; for collectibles, document any patina, crazing, or wear patterns."
         accept="image/*"
         onChange={(file) => setFiles(prev => ({ ...prev, age: file }))}
       />
