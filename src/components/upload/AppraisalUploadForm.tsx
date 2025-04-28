@@ -52,7 +52,13 @@ export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormPr
       });
 
       if (response.success) {
-        navigate(`/submission-success?session_id=${sessionId}`);
+        // Reset scroll position before navigation
+        window.scrollTo(0, 0);
+        
+        // Navigate to success page with the session ID
+        navigate(`/submission-success?session_id=${sessionId}`, { 
+          replace: true // Use replace instead of push to prevent back navigation issues
+        });
       } else {
         throw new Error(response.error || 'Upload failed');
       }

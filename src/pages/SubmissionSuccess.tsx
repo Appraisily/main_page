@@ -10,7 +10,23 @@ export default function SubmissionSuccess() {
   const { session, loading, error } = useStripeSession(sessionId);
 
   useEffect(() => {
+    // Force scroll to top immediately
     window.scrollTo(0, 0);
+    
+    // Add a second scroll with a small delay as a fallback
+    const timer1 = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+
+    // Add a third scroll with a longer delay to catch any late DOM changes
+    const timer2 = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 300);
+    
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
   }, []);
 
   return (
