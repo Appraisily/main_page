@@ -69,8 +69,23 @@ export default function Success() {
     <div className="min-h-screen bg-gray-50 pt-24 pb-12">
       <div className="max-w-3xl mx-auto px-6">
         <div className="space-y-6">
-          {/* Payment Details */}
-          <PaymentDetails sessionId={sessionId} />
+          {/* Enhanced Payment Details with Prominent Success Message */}
+          <div className="bg-white rounded-lg p-8 shadow-sm">
+            <div className="text-center mb-6">
+              <div className="rounded-full bg-green-100 p-4 inline-flex mb-4">
+                <CheckCircle2 className="h-10 w-10 text-green-600" />
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                Payment Processed Successfully
+              </h2>
+              <p className="text-gray-600 max-w-md mx-auto">
+                Thank you for choosing our appraisal service. Your payment has been confirmed.
+              </p>
+            </div>
+            
+            {/* Include payment details below */}
+            <PaymentDetails sessionId={sessionId} />
+          </div>
 
           {loading ? (
             <div className="bg-white rounded-lg p-8">
@@ -80,23 +95,6 @@ export default function Success() {
             </div>
           ) : (
             <>
-              {/* Success Message */}
-              <div className="bg-white rounded-lg p-8">
-                <div className="flex items-center gap-4 mb-8 pb-6 border-b">
-                  <div className="p-3 bg-green-100 rounded-full">
-                    <CheckCircle2 className="h-6 w-6 text-green-600" />
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-semibold text-gray-900">
-                      Payment Successful
-                    </h2>
-                    <p className="text-gray-600 mt-1">
-                      Thank you for choosing our appraisal service
-                    </p>
-                  </div>
-                </div>
-              </div>
-              
               {/* Account Creation Status */}
               {(accountStatus.created || accountStatus.existing) && (
                 <div className="bg-white rounded-lg p-8">
@@ -136,17 +134,17 @@ export default function Success() {
                   </div>
                 </div>
               ) : (
-                <div className="bg-white rounded-lg p-8">
-                  <div className="flex items-center gap-4 mb-8 pb-6 border-b">
-                    <div className="p-3 bg-blue-100 rounded-full">
-                      <Upload className="h-6 w-6 text-blue-600" />
+                <div className="bg-white rounded-lg p-8 shadow-sm">
+                  <div className="flex flex-col text-center items-center mb-8 pb-6 border-b">
+                    <div className="p-3 bg-blue-100 rounded-full mb-4">
+                      <Upload className="h-8 w-8 text-blue-600" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        Upload Your Artwork Images
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">
+                        Upload Your Item Images
                       </h3>
-                      <p className="text-gray-600 mt-1">
-                        Please provide clear photos of your item for appraisal
+                      <p className="text-gray-600 max-w-md mx-auto">
+                        Please provide clear photos of your item to help our experts with your appraisal
                       </p>
                     </div>
                   </div>

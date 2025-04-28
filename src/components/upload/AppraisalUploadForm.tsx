@@ -26,7 +26,7 @@ export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormPr
 
     const mainFile = files.main;
     if (!mainFile) {
-      setError('Please upload at least the main artwork image');
+      setError('Please upload at least the main item image');
       return;
     }
 
@@ -71,36 +71,36 @@ export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormPr
 
   return (
     <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-8">
-      {/* Main Artwork */}
+      {/* Main Item Image */}
       <ImageUpload
-        id="main_artwork"
-        label="Main Artwork"
-        description="Clear photo of your artwork"
+        id="main_item"
+        label="Main Item Image"
+        description="Clear photo of your item"
         exampleImage="https://resources.appraisily.com/wp-content/uploads/2024/02/example-rotated.jpeg"
-        exampleTooltip="Take a clear, well-lit photo of the front of your artwork. Avoid glare and reflections."
+        exampleTooltip="Take a clear, well-lit photo of the front of your item. Avoid glare and reflections."
         accept="image/*"
         required
         onChange={(file) => setFiles(prev => ({ ...prev, main: file }))}
       />
 
-      {/* Signature */}
+      {/* Signature/Markings */}
       <ImageUpload
-        id="signature_artwork"
-        label="Signature or Marks"
-        description="Clear photo of any signatures or marks"
+        id="signature_markings"
+        label="Signature or Markings"
+        description="Clear photo of any signatures, stamps, or marks"
         exampleImage="https://resources.appraisily.com/wp-content/uploads/2024/02/54E7BACA-3C7C-4E34-9887-681A9A15BD4B-scaled.jpeg"
-        exampleTooltip="Take a close-up photo of any signatures, marks, or labels on the artwork."
+        exampleTooltip="Take a close-up photo of any signatures, maker's marks, or identifying features on the item."
         accept="image/*"
         onChange={(file) => setFiles(prev => ({ ...prev, signature: file }))}
       />
 
-      {/* Age Indicators */}
+      {/* Age/Condition Indicators */}
       <ImageUpload
-        id="age_artwork"
-        label="Age Indicators"
-        description="Photo showing age-related details"
+        id="age_indicators"
+        label="Age & Condition Details"
+        description="Photo showing condition and age-related details"
         exampleImage="https://resources.appraisily.com/wp-content/uploads/2024/02/7F9CF86F-4D62-497A-AA96-77B7BFBDA0A8-387db9fbeaf8374fca133be99981fa50-scaled-1.jpeg"
-        exampleTooltip="Take a photo of the back of the artwork showing any labels, stamps, or age-related details."
+        exampleTooltip="Take photos showing the back/underside of the item, any damage, repairs, or details that indicate its age and condition."
         accept="image/*"
         onChange={(file) => setFiles(prev => ({ ...prev, age: file }))}
       />
@@ -109,14 +109,14 @@ export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormPr
       <div className="space-y-2">
         <label 
           htmlFor="description" 
-          className="block text-sm font-medium"
+          className="block text-base font-semibold text-gray-900"
         >
-          Description
+          Item Details
         </label>
         <textarea
           id="description"
-          className="min-h-[100px] w-full rounded-md border border-input bg-background px-4 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-          placeholder="Artist's name (if known), period, provenance, size, media, or any other details that could help with the appraisal."
+          className="min-h-[120px] w-full rounded-md border border-input bg-background px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary shadow-sm"
+          placeholder="Please include any known details such as: creator/maker, period, provenance, size, materials, etc. Any information that could help with the appraisal."
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
@@ -124,7 +124,7 @@ export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormPr
 
       {/* Upload Progress */}
       {error && (
-        <div className="text-sm text-red-600 text-center">
+        <div className="text-sm text-red-600 text-center p-3 bg-red-50 rounded-md">
           {error}
         </div>
       )}
@@ -133,7 +133,7 @@ export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormPr
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full rounded-md bg-primary px-4 py-3 text-primary-foreground font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors"
+        className="w-full rounded-md bg-primary px-4 py-3 text-primary-foreground font-medium hover:bg-primary/90 disabled:opacity-50 transition-colors shadow-sm"
       >
         {isSubmitting ? (
           <div className="flex items-center justify-center gap-2">
@@ -141,7 +141,7 @@ export default function AppraisalUploadForm({ sessionId }: AppraisalUploadFormPr
             <span>Submitting...</span>
           </div>
         ) : (
-          'Submit Appraisal'
+          'Submit Appraisal Request'
         )}
       </button>
 
