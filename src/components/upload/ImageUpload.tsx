@@ -104,66 +104,37 @@ export default function ImageUpload({
   const ExampleImageComponent = () => {
     if (!exampleImage) return null;
 
-    if (isMobile) {
-      return (
-        <Dialog>
-          <DialogTrigger asChild>
-            <button
-              type="button"
-              className="flex items-center px-2 py-1.5 text-sm text-primary hover:text-primary/90 font-medium gap-1.5 transition-colors"
-              aria-label="See example image"
-            >
-              <HelpCircle className="h-5 w-5" />
-              <span>Example</span>
-            </button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-md p-0 w-[90vw] mx-auto">
-            <DialogHeader className="p-4">
-              <DialogTitle>Example Image</DialogTitle>
-              {exampleTooltip && (
-                <DialogDescription>
-                  {exampleTooltip}
-                </DialogDescription>
-              )}
-            </DialogHeader>
-            <div className="relative">
-              <img
-                src={exampleImage}
-                alt="Example"
-                className="w-full"
-                loading="lazy"
-              />
-            </div>
-          </DialogContent>
-        </Dialog>
-      );
-    }
-
     return (
-      <Tooltip>
-        <TooltipTrigger asChild>
+      <Dialog>
+        <DialogTrigger asChild>
           <button
             type="button"
-            className="flex items-center px-2 py-1 text-sm text-primary hover:text-primary/90 font-medium gap-1.5 transition-colors"
+            className="flex items-center px-2 py-1.5 text-sm text-primary hover:text-primary/90 font-medium gap-1.5 transition-colors"
+            aria-label="See example image"
           >
             <HelpCircle className="h-5 w-5" />
             <span>Example</span>
           </button>
-        </TooltipTrigger>
-        <TooltipContent side="top" align="end" className="w-[300px] p-0 bg-white text-gray-900 shadow-lg">
-          <div className="space-y-2">
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-md p-0 w-[90vw] mx-auto">
+          <DialogHeader className="p-4">
+            <DialogTitle>Example Image</DialogTitle>
             {exampleTooltip && (
-              <p className="text-sm p-4 border-b">{exampleTooltip}</p>
+              <DialogDescription>
+                {exampleTooltip}
+              </DialogDescription>
             )}
+          </DialogHeader>
+          <div className="relative">
             <img
               src={exampleImage}
               alt="Example"
-              className="w-full rounded-b-lg"
+              className="w-full"
               loading="lazy"
             />
           </div>
-        </TooltipContent>
-      </Tooltip>
+        </DialogContent>
+      </Dialog>
     );
   };
 
