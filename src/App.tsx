@@ -4,7 +4,6 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { useGoogleTagManager } from './hooks/useGoogleTagManager';
-import ScrollRestoration from './components/ScrollRestoration';
 import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -103,7 +102,7 @@ export default function App() {
         <AuthProvider>
           <TooltipProvider>
             <div className="min-h-screen bg-white">
-              <ScrollRestoration />
+              {/* <ScrollRestoration /> */}
               <Navbar />
               <main>
                 <Routes>
