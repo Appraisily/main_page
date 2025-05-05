@@ -25,6 +25,7 @@ import { Button } from '@/components/ui/button';
 import ServiceCalendar from './ServiceCalendar';
 import { addDays, format } from 'date-fns';
 import type { LucideIcon } from 'lucide-react';
+import { formatCurrency } from '@/lib/utils/text';
 
 interface ServiceDetailsProps {
   service: {
@@ -32,11 +33,15 @@ interface ServiceDetailsProps {
     description: string;
     features: string[];
     icon: LucideIcon;
+    basePrice?: number;
   };
   type: 'regular' | 'insurance' | 'tax';
   selectedDate: Date | undefined;
   onDateSelect: (date: Date) => void;
   onGetStarted: () => void;
+  price?: number;
+  hasDiscount?: boolean;
+  itemCount?: number;
 }
 
 // Map features to their corresponding icons
@@ -66,13 +71,19 @@ export default function ServiceDetails({
   type,
   selectedDate,
   onDateSelect,
-  onGetStarted
+  onGetStarted,
+  price,
+  hasDiscount,
+  itemCount = 1
 }: ServiceDetailsProps) {
   const today = new Date();
+  const basePrice = service.basePrice || 5900;
+  const currentPrice = price !== undefined ? price : basePrice;
+  
   const dateOptions = [
-    { label: 'Today', date: today, price: 59 },
-    { label: 'Tomorrow', date: addDays(today, 1), price: 59 },
-    { label: format(addDays(today, 2), 'MMM d'), date: addDays(today, 2), price: 59 }
+    { label: 'Today', date: today, price: currentPrice / 100 },
+    { label: 'Tomorrow', date: addDays(today, 1), price: currentPrice / 100 },
+    { label: format(addDays(today, 2), 'MMM d'), date: addDays(today, 2), price: currentPrice / 100 }
   ];
 
   const handleCheckout = () => {
@@ -138,11 +149,16 @@ export default function ServiceDetails({
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm line-through text-gray-400">
-                $119
-              </span>
-              <span className="text-sm font-semibold text-green-600">
-                ${option.price}
+              {hasDiscount && (
+                <span className="text-sm line-through text-gray-400">
+                  {formatCurrency(basePrice / 100)}
+                </span>
+              )}
+              <span className={cn(
+                "text-sm font-semibold",
+                hasDiscount ? "text-emerald-600" : "text-gray-900"
+              )}>
+                {formatCurrency(option.price)}
               </span>
             </div>
           </button>
@@ -184,6 +200,9 @@ export default function ServiceDetails({
                 selectedDate={selectedDate}
                 onSelect={onDateSelect}
                 onCheckout={handleCheckout}
+                price={currentPrice / 100}
+                hasDiscount={hasDiscount}
+                regularPrice={basePrice / 100}
               />
             </div>
           </>

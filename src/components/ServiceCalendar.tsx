@@ -4,11 +4,15 @@ import { cn } from '@/lib/utils';
 import { Calendar } from '@/components/ui/calendar';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, ShieldCheck, AlertCircle } from 'lucide-react';
+import { formatCurrency } from '@/lib/utils/text';
 
 interface ServiceCalendarProps {
   selectedDate: Date | undefined;
   onSelect: (date: Date | undefined) => void;
   onCheckout: () => void;
+  price?: number;
+  hasDiscount?: boolean;
+  regularPrice?: number;
 }
 
 interface DayProps {
@@ -20,7 +24,14 @@ interface DayProps {
   [key: string]: any;
 }
 
-export default function ServiceCalendar({ selectedDate, onSelect, onCheckout }: ServiceCalendarProps) {
+export default function ServiceCalendar({ 
+  selectedDate, 
+  onSelect, 
+  onCheckout,
+  price = 59,
+  hasDiscount = false,
+  regularPrice = 119
+}: ServiceCalendarProps) {
   const today = new Date();
   const nextAvailableDate = addDays(today, 7);
 
@@ -35,7 +46,7 @@ export default function ServiceCalendar({ selectedDate, onSelect, onCheckout }: 
   };
 
   const getPrice = (date: Date) => {
-    return isSameDay(date, today) ? 59 : 119;
+    return isSameDay(date, today) ? price : regularPrice;
   };
 
   return (
@@ -64,7 +75,7 @@ export default function ServiceCalendar({ selectedDate, onSelect, onCheckout }: 
             const isPast = isBefore(date, today) && !isSameDay(date, today);
             const isToday = isSameDay(date, today);
             const isSelectedDay = selectedDate && isSameDay(date, selectedDate);
-            const price = getPrice(date);
+            const currentPrice = getPrice(date);
             
             if (isPast) {
               return (
@@ -104,7 +115,7 @@ export default function ServiceCalendar({ selectedDate, onSelect, onCheckout }: 
                       "text-xs",
                       isSelectedDay ? "text-white" : isToday ? "text-blue-600" : "text-green-600"
                     )}>
-                      ${price}
+                      {formatCurrency(currentPrice)}
                     </span>
                   )}
                 </div>
@@ -143,8 +154,15 @@ export default function ServiceCalendar({ selectedDate, onSelect, onCheckout }: 
             <span className="text-sm font-medium text-red-600">Last spot today!</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="text-sm line-through text-gray-400">$119</span>
-            <span className="text-sm font-semibold text-green-600">$59</span>
+            {hasDiscount && (
+              <span className="text-sm line-through text-gray-400">{formatCurrency(regularPrice)}</span>
+            )}
+            <span className={cn(
+              "text-sm font-semibold",
+              hasDiscount ? "text-emerald-600" : "text-gray-900"
+            )}>
+              {formatCurrency(price)}
+            </span>
           </div>
         </div>
       )}
