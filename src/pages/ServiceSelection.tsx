@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Star, Shield, Clock, CreditCard, Lock, Package, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { Star, Shield, Clock, CreditCard, Lock, Package, ArrowRight, Check, Award, UserCheck } from 'lucide-react';
 import TrustBadges from '@/components/TrustBadges';
 import ServiceCard from '@/components/ServiceCard';
 import ServiceDetails from '@/components/ServiceDetails';
@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { useNavigate } from 'react-router-dom';
 import { formatCurrency } from '@/lib/utils/text';
 import { cn } from '@/lib/utils';
+import { TurnaroundSpeed } from '@/components/TurnaroundSpeedSelector';
 
 type ServiceType = 'regular' | 'insurance' | 'tax';
 
@@ -14,6 +15,13 @@ type ServiceType = 'regular' | 'insurance' | 'tax';
 const BASE_PRICE = 5900; // $59.00
 const BULK_DISCOUNT_THRESHOLD = 3;
 const BULK_DISCOUNT_PERCENTAGE = 0.20; // 20% discount
+
+// Speed prices
+const SPEED_ADDITIONAL_PRICES = {
+  standard: 0,
+  express: 3000, // $30
+  priority: 6000, // $60
+};
 
 function calculatePrice(basePrice: number, itemCount: number): { price: number; hasDiscount: boolean } {
   const hasDiscount = itemCount >= BULK_DISCOUNT_THRESHOLD;
@@ -23,27 +31,46 @@ function calculatePrice(basePrice: number, itemCount: number): { price: number; 
   return { price, hasDiscount };
 }
 
+// Combine Insurance & Tax into "Compliance-Grade Appraisal"
 const services = {
   regular: {
     title: 'Regular Appraisal',
     description: 'Perfect for collectors and sellers',
     icon: Star,
     features: [
-      'Detailed condition report',
-      'Market value assessment',
-      'Digital documentation',
-      'Expert analysis',
-      'PDF report delivery',
-      '48-hour turnaround'
+      {
+        title: 'Detailed condition report',
+        description: 'High-resolution imagery and microscopic inspection notes covering wear, restoration, and overall preservation.'
+      },
+      {
+        title: 'Market value assessment',
+        description: 'Final value derived from our AI-powered comparable-auction engine, proprietary sales database, and real-time marketplace analytics.'
+      },
+      {
+        title: 'Expert identification',
+        description: 'Dual-layer review: Google Vision image recognition pinpoints object type & style, then an accredited specialist verifies maker, era, and authenticity.'
+      },
+      {
+        title: 'Digital documentation',
+        description: 'Tamper-proof PDF plus secure cloud backup for easy sharing with insurers, galleries, or buyers.'
+      },
+      {
+        title: 'PDF report delivery',
+        description: 'Downloadable via your personal dashboard—includes signature page, methodology, and fully illustrated findings.'
+      },
+      {
+        title: '48-hour turnaround',
+        description: 'Need it sooner? Same-day & 24-hour rush options available at checkout.'
+      }
     ],
     basePrice: BASE_PRICE
   },
   insurance: {
-    title: 'Insurance Appraisal',
-    description: 'Insurance-ready documentation',
+    title: 'Compliance-Grade Appraisal',
+    description: 'Insurance, tax & legal documentation',
     icon: Shield,
     features: [
-      'Insurance-grade documentation',
+      'Insurance & IRS compliance',
       'Replacement value',
       'Risk assessment',
       'Digital certification',
@@ -53,16 +80,16 @@ const services = {
     basePrice: BASE_PRICE
   },
   tax: {
-    title: 'Tax Appraisal',
-    description: 'IRS-compliant valuations',
-    icon: Clock,
+    title: 'Bulk / Enterprise',
+    description: 'For dealers, estates & institutions',
+    icon: Package,
     features: [
-      'IRS compliance',
-      'Fair market value',
-      'Detailed documentation',
-      'Expert testimony',
-      'Tax form assistance',
-      'Rush service available'
+      'Volume discounts',
+      'Dedicated account manager',
+      'Custom reporting',
+      'API integration',
+      'Expedited service',
+      'White-labeled delivery'
     ],
     basePrice: BASE_PRICE
   }
@@ -71,11 +98,16 @@ const services = {
 export default function ServiceSelection() {
   const navigate = useNavigate();
   const [selectedService, setSelectedService] = useState<ServiceType>('regular');
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedSpeed, setSelectedSpeed] = useState<TurnaroundSpeed>('standard');
   const [itemCount, setItemCount] = useState<number>(1);
-
+  
   // Calculate the price with potential discount
   const { price, hasDiscount } = calculatePrice(services[selectedService].basePrice, itemCount);
+
+  // Calculate total price with speed option
+  const speedAdditionalPrice = SPEED_ADDITIONAL_PRICES[selectedSpeed];
+  const totalPricePerItem = price + speedAdditionalPrice;
+  const totalPrice = totalPricePerItem * itemCount;
 
   const getCheckoutUrl = (type: ServiceType) => {
     // Base URLs for checkout
@@ -91,21 +123,20 @@ export default function ServiceSelection() {
   };
 
   const handleGetStarted = () => {
-    if (selectedService === 'regular' && !selectedDate) {
-      return;
-    }
     window.location.href = getCheckoutUrl(selectedService);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Sticky Header Bar - This would be handled in the main layout component */}
+        
         {/* Bulk Appraisal CTA - Moved to top for better visibility */}
-        <div className="mb-10 bg-blue-50 rounded-xl p-6 border border-blue-100 shadow-sm">
+        <div className="mb-10 bg-gray-50 rounded-xl p-6 border border-gray-100 shadow-sm">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="p-3 bg-blue-100 rounded-full">
-                <Package className="h-6 w-6 text-blue-600" />
+              <div className="p-3 bg-gray-100 rounded-full">
+                <Package className="h-6 w-6 text-gray-700" />
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-gray-900">Need to appraise multiple items?</h3>
@@ -114,7 +145,7 @@ export default function ServiceSelection() {
             </div>
             <button
               onClick={() => navigate('/bulk-appraisal/upload')}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors w-full sm:w-auto justify-center"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors w-full sm:w-auto justify-center"
             >
               Start Bulk Upload
               <ArrowRight className="h-5 w-5" />
@@ -124,13 +155,13 @@ export default function ServiceSelection() {
 
         {/* Main Content Container */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-          {/* Trust Badges - Group with service selections for better organization */}
-          <div className="border-b border-gray-100">
-            <TrustBadges className="py-2" />
+          {/* Trust Ribbon */}
+          <div className="bg-gray-50 border-b border-gray-100">
+            <TrustBadges />
           </div>
           
           {/* Price Information */}
-          <div className="p-4 bg-gray-50 border-b border-gray-100">
+          <div className="p-4 bg-white border-b border-gray-100">
             <div className="text-sm text-gray-700 mb-2 font-medium text-center">
               All appraisal types are <span className="text-gray-900 font-semibold">{formatCurrency(BASE_PRICE / 100)}</span> per item
             </div>
@@ -165,15 +196,17 @@ export default function ServiceSelection() {
                   className={cn(
                     "relative flex flex-col h-full p-6 text-left rounded-xl border transition-all duration-200",
                     selectedService === type
-                      ? "border-gray-400 bg-gray-50 shadow"
-                      : "border-gray-200 hover:border-gray-300 hover:bg-gray-50 cursor-pointer"
+                      ? "border-gray-400 bg-gray-50 shadow-sm"
+                      : "border-gray-200 hover:border-gray-300 hover:bg-gray-50/50 cursor-pointer"
                   )}
                   onClick={() => setSelectedService(type)}
                 >
                   {/* Selected indicator */}
                   {selectedService === type && (
                     <div className="absolute top-3 right-3">
-                      <div className="w-3 h-3 rounded-full bg-gray-500" />
+                      <div className="w-5 h-5 rounded-full bg-gray-800 flex items-center justify-center">
+                        <Check className="h-3 w-3 text-white" />
+                      </div>
                     </div>
                   )}
                   
@@ -181,17 +214,17 @@ export default function ServiceSelection() {
                   <div className="flex items-center gap-3 mb-4">
                     <div className={cn(
                       "p-3 rounded-lg",
-                      "bg-gray-100"
+                      selectedService === type ? "bg-gray-100" : "bg-gray-50"
                     )}>
                       <service.icon className={cn(
                         "h-5 w-5",
-                        selectedService === type ? "text-gray-700" : "text-gray-500"
+                        selectedService === type ? "text-gray-800" : "text-gray-500"
                       )} />
                     </div>
                     <h4 className={cn(
                       "font-medium text-base",
                       selectedService === type ? "text-gray-900" : "text-gray-700"
-                    )} style={{ fontFamily: 'ui-serif, Georgia, Cambria, serif' }}>
+                    )}>
                       {service.title}
                     </h4>
                   </div>
@@ -228,36 +261,17 @@ export default function ServiceSelection() {
           <ServiceDetails
             service={services[selectedService]}
             type={selectedService}
-            selectedDate={selectedDate}
-            onDateSelect={setSelectedDate}
             onGetStarted={handleGetStarted}
             price={price}
             hasDiscount={hasDiscount}
             itemCount={itemCount}
           />
-          
-          {/* Summary of price with item count */}
-          {itemCount > 1 && (
-            <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
-              <h4 className="text-sm font-medium mb-3 text-gray-800">Pricing Summary</h4>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">{itemCount} items × {formatCurrency(hasDiscount ? price / 100 : BASE_PRICE / 100)}</span>
-                  <span className="font-medium">{formatCurrency((hasDiscount ? price : BASE_PRICE) * itemCount / 100)}</span>
-                </div>
-                {hasDiscount && (
-                  <div className="flex justify-between text-sm text-emerald-700">
-                    <span>Bulk discount (20%)</span>
-                    <span>-{formatCurrency(BASE_PRICE * BULK_DISCOUNT_PERCENTAGE * itemCount / 100)}</span>
-                  </div>
-                )}
-                <div className="pt-2 border-t border-gray-200 flex justify-between font-medium">
-                  <span>Total</span>
-                  <span>{formatCurrency(price * itemCount / 100)}</span>
-                </div>
-              </div>
-            </div>
-          )}
+        </div>
+
+        {/* Guarantee Strip */}
+        <div className="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-100 flex items-center justify-center gap-2">
+          <Lock className="h-4 w-4 text-gray-500" />
+          <span className="text-sm font-medium text-gray-700">100% Money-Back Satisfaction Guarantee</span>
         </div>
 
         {/* Payment Methods */}
