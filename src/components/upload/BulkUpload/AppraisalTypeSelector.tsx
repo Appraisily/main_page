@@ -57,19 +57,19 @@ interface AppraisalTypeSelectorProps {
 export function AppraisalTypeSelector({ value, onChange, itemCount = 1 }: AppraisalTypeSelectorProps) {
   return (
     <div className="mb-12">
-      <h3 className="text-sm font-medium text-gray-900 mb-4">
+      <h3 className="text-sm font-medium text-gray-900 mb-4 tracking-normal" style={{ fontFamily: 'ui-serif, Georgia, Cambria, serif' }}>
         Select Appraisal Type
       </h3>
       
       {/* Price Information */}
-      <div className="mb-4 p-4 bg-blue-50 border border-blue-100 rounded-lg">
+      <div className="mb-4 p-4 bg-gray-50 border border-gray-200 rounded-lg">
         <div className="text-sm text-gray-700 mb-2 font-medium">
-          All appraisal types are <span className="text-blue-700 font-semibold">{formatCurrency(5900 / 100)}</span> per item
+          All appraisal types are <span className="text-gray-900 font-semibold">{formatCurrency(5900 / 100)}</span> per item
         </div>
         
         {itemCount >= BULK_DISCOUNT_THRESHOLD && (
-          <div className="flex items-center gap-2 mt-2 text-sm text-green-700">
-            <span className="flex-shrink-0 w-2 h-2 rounded-full bg-green-500"></span>
+          <div className="flex items-center gap-2 mt-2 text-sm text-emerald-700">
+            <span className="flex-shrink-0 w-2 h-2 rounded-full bg-emerald-500"></span>
             <span className="font-medium">20% bulk discount applied for 3 or more items!</span>
           </div>
         )}
@@ -86,16 +86,16 @@ export function AppraisalTypeSelector({ value, onChange, itemCount = 1 }: Apprai
               key={type.id}
               onClick={() => onChange(type.id)}
               className={cn(
-                "relative flex flex-col h-full p-6 text-left rounded-xl border-2 transition-all duration-200",
+                "relative flex flex-col h-full p-6 text-left rounded-xl border transition-all duration-200",
                 value === type.id
-                  ? "border-blue-600 bg-blue-50 shadow-sm"
-                  : "border-gray-200 hover:border-blue-200 hover:bg-gray-50"
+                  ? "border-gray-400 bg-gray-50 shadow"
+                  : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
               )}
             >
               {/* Selected indicator */}
               {value === type.id && (
                 <div className="absolute top-3 right-3">
-                  <div className="w-3 h-3 rounded-full bg-blue-600" />
+                  <div className="w-3 h-3 rounded-full bg-gray-500" />
                 </div>
               )}
               
@@ -103,18 +103,18 @@ export function AppraisalTypeSelector({ value, onChange, itemCount = 1 }: Apprai
               <div className="flex items-center gap-3 mb-4">
                 <div className={cn(
                   "p-3 rounded-lg",
-                  value === type.id ? "bg-blue-100" : "bg-gray-100"
+                  value === type.id ? "bg-gray-100" : "bg-gray-100"
                 )}>
                   <Icon className={cn(
                     "h-5 w-5",
-                    value === type.id ? "text-blue-600" : "text-gray-600"
+                    value === type.id ? "text-gray-700" : "text-gray-500"
                   )} />
                 </div>
                 <div>
                   <h4 className={cn(
                     "font-medium text-base",
-                    value === type.id ? "text-blue-600" : "text-gray-900"
-                  )}>
+                    value === type.id ? "text-gray-900" : "text-gray-700"
+                  )} style={{ fontFamily: 'ui-serif, Georgia, Cambria, serif' }}>
                     {type.title}
                   </h4>
                 </div>
@@ -135,7 +135,7 @@ export function AppraisalTypeSelector({ value, onChange, itemCount = 1 }: Apprai
                   )}
                   <span className={cn(
                     "text-sm font-medium",
-                    hasDiscount ? "text-green-600" : "text-gray-600"
+                    hasDiscount ? "text-emerald-700" : "text-gray-700"
                   )}>
                     {formatCurrency(price / 100)}/item
                   </span>

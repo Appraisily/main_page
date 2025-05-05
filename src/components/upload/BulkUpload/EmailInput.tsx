@@ -43,10 +43,10 @@ export function EmailInput({ value, onChange, onBlur, showConfirmation }: EmailI
   return (
     <div className="mb-12">
       <div className="flex items-center gap-2 mb-4">
-        <div className="p-1.5 bg-blue-100 rounded-md">
-          <Mail className="h-4 w-4 text-blue-600" />
+        <div className="p-1.5 bg-gray-100 rounded-md">
+          <Mail className="h-4 w-4 text-gray-600" />
         </div>
-        <label htmlFor="email" className="text-base font-medium text-gray-900">
+        <label htmlFor="email" className="text-base font-medium text-gray-900" style={{ fontFamily: 'ui-serif, Georgia, Cambria, serif' }}>
           Email Address
         </label>
       </div>
@@ -68,9 +68,9 @@ export function EmailInput({ value, onChange, onBlur, showConfirmation }: EmailI
           onBlur={handleBlur}
           placeholder="Enter your email address"
           className={cn(
-            "w-full px-4 py-3 pr-10 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors",
-            status === 'error' ? "border-red-300 focus:border-red-500" : "border-gray-300 focus:border-blue-500",
-            status === 'success' && "border-green-300 focus:border-green-500"
+            "w-full px-4 py-3 pr-10 rounded-lg border focus:outline-none focus:ring-2 transition-colors",
+            status === 'error' ? "border-red-300 focus:border-red-500 focus:ring-red-200" : "border-gray-300 focus:border-gray-500 focus:ring-gray-200",
+            status === 'success' && "border-emerald-300 focus:border-emerald-500 focus:ring-emerald-200"
           )}
           required
           spellCheck="false"
@@ -80,10 +80,10 @@ export function EmailInput({ value, onChange, onBlur, showConfirmation }: EmailI
         {/* Status Indicator */}
         <div className="absolute right-3 top-1/2 -translate-y-1/2">
           {status === 'saving' && (
-            <Loader2 className="h-5 w-5 text-blue-600 animate-spin" />
+            <Loader2 className="h-5 w-5 text-gray-600 animate-spin" />
           )}
           {status === 'success' && (
-            <Check className="h-5 w-5 text-green-600" />
+            <Check className="h-5 w-5 text-emerald-600" />
           )}
           {status === 'error' && (
             <AlertCircle className="h-5 w-5 text-red-600" />
@@ -101,10 +101,10 @@ export function EmailInput({ value, onChange, onBlur, showConfirmation }: EmailI
 
       {/* Success Message */}
       {(showConfirmation || showRestoreInfo) && (
-        <div className="mt-3 p-3 bg-green-50 border border-green-100 rounded-lg">
+        <div className="mt-3 p-3 bg-emerald-50 border border-emerald-100 rounded-lg">
           <div className="flex items-center gap-2">
-            <Check className="h-4 w-4 text-green-600 flex-shrink-0" />
-            <p className="text-sm text-green-700">
+            <Check className="h-4 w-4 text-emerald-600 flex-shrink-0" />
+            <p className="text-sm text-emerald-800">
               A confirmation email has been sent with your session details. You can use the session ID to restore your progress later.
             </p>
           </div>
