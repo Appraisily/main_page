@@ -60,32 +60,49 @@ export function AppraisalTypeSelector({ value, onChange, itemCount = 1 }: Apprai
       <h3 className="text-sm font-medium text-gray-900 mb-4">
         Select Appraisal Type
       </h3>
-      <div className="mb-4 p-3 bg-blue-50 border border-blue-100 rounded-lg text-sm text-gray-700">
-        All appraisal types are <span className="font-medium">{formatCurrency(5900 / 100)}</span> per item
-      </div>
-      {itemCount >= BULK_DISCOUNT_THRESHOLD && (
-        <div className="mb-4 p-3 bg-green-50 border border-green-100 rounded-lg text-sm text-green-700">
-          20% bulk discount applied for 3 or more items!
+      
+      {/* Price Information */}
+      <div className="mb-4 p-4 bg-blue-50 border border-blue-100 rounded-lg">
+        <div className="text-sm text-gray-700 mb-2 font-medium">
+          All appraisal types are <span className="text-blue-700 font-semibold">{formatCurrency(5900 / 100)}</span> per item
         </div>
-      )}
+        
+        {itemCount >= BULK_DISCOUNT_THRESHOLD && (
+          <div className="flex items-center gap-2 mt-2 text-sm text-green-700">
+            <span className="flex-shrink-0 w-2 h-2 rounded-full bg-green-500"></span>
+            <span className="font-medium">20% bulk discount applied for 3 or more items!</span>
+          </div>
+        )}
+      </div>
+      
+      {/* Appraisal Type Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {appraisalTypes.map((type) => {
           const Icon = type.icon;
           const { price, hasDiscount } = calculatePrice(type.basePrice, itemCount);
+          
           return (
             <button
               key={type.id}
               onClick={() => onChange(type.id)}
               className={cn(
-                "relative p-6 text-left rounded-xl border-2 transition-all duration-200",
+                "relative flex flex-col h-full p-6 text-left rounded-xl border-2 transition-all duration-200",
                 value === type.id
                   ? "border-blue-600 bg-blue-50 shadow-sm"
                   : "border-gray-200 hover:border-blue-200 hover:bg-gray-50"
               )}
             >
-              <div className="flex items-center gap-3 mb-3">
+              {/* Selected indicator */}
+              {value === type.id && (
+                <div className="absolute top-3 right-3">
+                  <div className="w-3 h-3 rounded-full bg-blue-600" />
+                </div>
+              )}
+              
+              {/* Header with icon and title */}
+              <div className="flex items-center gap-3 mb-4">
                 <div className={cn(
-                  "p-2 rounded-lg",
+                  "p-3 rounded-lg",
                   value === type.id ? "bg-blue-100" : "bg-gray-100"
                 )}>
                   <Icon className={cn(
@@ -93,36 +110,37 @@ export function AppraisalTypeSelector({ value, onChange, itemCount = 1 }: Apprai
                     value === type.id ? "text-blue-600" : "text-gray-600"
                   )} />
                 </div>
-                <div className="flex-grow">
+                <div>
                   <h4 className={cn(
-                    "font-medium",
+                    "font-medium text-base",
                     value === type.id ? "text-blue-600" : "text-gray-900"
                   )}>
                     {type.title}
                   </h4>
-                  <div className="flex items-center gap-2">
-                    {hasDiscount && (
-                      <span className="text-sm line-through text-gray-400">
-                        {formatCurrency(type.basePrice / 100)}/item
-                      </span>
-                    )}
-                    <span className={cn(
-                      "text-sm",
-                      hasDiscount ? "text-green-600 font-medium" : "text-gray-600"
-                    )}>
-                      {formatCurrency(price / 100)}/item
-                    </span>
-                  </div>
                 </div>
               </div>
-              <p className="text-sm text-gray-600 min-h-[40px]">
+              
+              {/* Description */}
+              <p className="text-sm text-gray-600 mb-4 flex-grow">
                 {type.description}
               </p>
-              {value === type.id && (
-                <div className="absolute top-3 right-3">
-                  <div className="w-3 h-3 rounded-full bg-blue-600" />
+              
+              {/* Price display */}
+              <div className="mt-auto pt-2 border-t border-gray-100">
+                <div className="flex items-center gap-2">
+                  {hasDiscount && (
+                    <span className="text-sm line-through text-gray-400">
+                      {formatCurrency(type.basePrice / 100)}/item
+                    </span>
+                  )}
+                  <span className={cn(
+                    "text-sm font-medium",
+                    hasDiscount ? "text-green-600" : "text-gray-600"
+                  )}>
+                    {formatCurrency(price / 100)}/item
+                  </span>
                 </div>
-              )}
+              </div>
             </button>
           );
         })}

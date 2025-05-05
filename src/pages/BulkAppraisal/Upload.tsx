@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, Loader2 } from 'lucide-react';
+import { Upload, Loader2, AlertCircle } from 'lucide-react';
 import { finalizeBulkUpload, updateSessionEmail } from '@/lib/api/bulkUploadApi';
 import { useBulkUpload, type UploadedItem } from '@/hooks/useBulkUpload';
 import { useFileUpload } from '@/hooks/useFileUpload';
@@ -116,100 +116,111 @@ export default function BulkUploadPage() {
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-12">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-xl shadow-sm p-8">
-          <div className="flex items-center gap-4 mb-8 pb-6 border-b">
-            <div className="p-3 bg-blue-100 rounded-full">
-              <Upload className="h-6 w-6 text-blue-600" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-semibold text-gray-900">
-                Bulk Appraisal Request Process
-              </h1>
-              <p className="text-gray-600">
-                Add multiple items for appraisal
-              </p>
+        <div className="bg-white rounded-xl shadow overflow-hidden">
+          {/* Header */}
+          <div className="p-8 border-b border-gray-100">
+            <div className="flex items-center gap-5">
+              <div className="p-3.5 bg-blue-100 rounded-full flex-shrink-0">
+                <Upload className="h-6 w-6 text-blue-600" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-semibold text-gray-900 mb-1">
+                  Bulk Appraisal Request Process
+                </h1>
+                <p className="text-gray-600">
+                  Add multiple items for appraisal
+                </p>
+              </div>
             </div>
           </div>
           
-          <EmailInput
-            value={email}
-            onChange={setEmail}
-            onBlur={handleEmailBlur}
-            showConfirmation={emailSaved}
-          />
+          {/* Main Content */}
+          <div className="p-8">
+            <div className="space-y-12">
+              <EmailInput
+                value={email}
+                onChange={setEmail}
+                onBlur={handleEmailBlur}
+                showConfirmation={emailSaved}
+              />
 
-          <AppraisalTypeSelector
-            value={appraisalType}
-            onChange={setAppraisalType}
-            itemCount={items.length}
-          />
+              <AppraisalTypeSelector
+                value={appraisalType}
+                onChange={setAppraisalType}
+                itemCount={items.length}
+              />
 
-          {!isRestoringSession && (
-            <>
-              {sessionId && <SessionInfo sessionId={sessionId} />}
-              <SessionRestoreForm onRestore={handleSessionRestore} />
-            </>
-          )}
+              {!isRestoringSession && (
+                <>
+                  {sessionId && <SessionInfo sessionId={sessionId} />}
+                  <SessionRestoreForm onRestore={handleSessionRestore} />
+                </>
+              )}
 
-          {isRestoringSession && (
-            <div className="flex items-center justify-center py-12">
-              <div className="flex items-center gap-3 text-gray-600">
-                <Loader2 className="h-5 w-5 animate-spin" />
-                <span>Restoring session...</span>
+              {isRestoringSession && (
+                <div className="flex items-center justify-center py-12">
+                  <div className="flex items-center gap-3 text-gray-600">
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                    <span>Restoring session...</span>
+                  </div>
+                </div>
+              )}
+
+              {!isRestoringSession && (
+                <div className="mb-8">
+                  <PhotoTips />
+                  <UploadArea onFileSelect={handleFileSelect} />
+                </div>
+              )}
+
+              {error && (
+                <div className="p-4 bg-red-50 text-red-600 border border-red-100 rounded-lg flex items-start gap-2">
+                  <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                  <p>{error}</p>
+                </div>
+              )}
+
+              <ItemGrid
+                items={items}
+                sessionId={sessionId}
+                onRemoveItem={(id: string) => handleRemoveItem(id)}
+                onDescriptionChange={(id, description, status) => {
+                  setItems(prev => prev.map(i => 
+                    i.id === id ? { 
+                      ...i, 
+                      description,
+                      descriptionStatus: status
+                    } : i
+                  ));
+                }}
+                onFileSelect={handleFileSelect}
+              />
+
+              <div className="space-y-6 pt-6 border-t border-gray-100">
+                <PaymentNotice />
+                {/* Test Payment Option */}
+                {process.env.NODE_ENV !== 'production' && (
+                  <div className="flex items-center gap-2 p-4 bg-yellow-50 border border-yellow-100 rounded-lg">
+                    <input
+                      type="checkbox"
+                      id="useTestPayment"
+                      checked={useTestPayment}
+                      onChange={(e) => setUseTestPayment(e.target.checked)}
+                      className="h-4 w-4 text-blue-600 rounded border-gray-300"
+                    />
+                    <label htmlFor="useTestPayment" className="text-sm font-medium text-yellow-800">
+                      Use test payment link
+                    </label>
+                  </div>
+                )}
+                <ActionButtons
+                  onCancel={() => navigate('/bulk-appraisal')}
+                  onSubmit={handleSubmit}
+                  isUploading={isUploading}
+                  disabled={items.length === 0}
+                />
               </div>
             </div>
-          )}
-
-          {!isRestoringSession && (
-            <div className="mb-8">
-              <PhotoTips />
-              <UploadArea onFileSelect={handleFileSelect} />
-            </div>
-          )}
-
-          {error && (
-            <div className="mb-8 p-4 bg-red-50 text-red-600 rounded-lg">
-              {error}
-            </div>
-          )}
-
-          <ItemGrid
-            items={items}
-            sessionId={sessionId}
-            onRemoveItem={(id: string) => handleRemoveItem(id)}
-            onDescriptionChange={(id, description, status) => {
-              setItems(prev => prev.map(i => 
-                i.id === id ? { 
-                  ...i, 
-                  description,
-                  descriptionStatus: status
-                } : i
-              ));
-            }}
-            onFileSelect={handleFileSelect}
-          />
-
-          <div className="space-y-6">
-            <PaymentNotice />
-            {/* Test Payment Option */}
-            <div className="flex items-center gap-2 p-4 bg-yellow-50 border border-yellow-100 rounded-lg">
-              <input
-                type="checkbox"
-                id="useTestPayment"
-                checked={useTestPayment}
-                onChange={(e) => setUseTestPayment(e.target.checked)}
-                className="h-4 w-4 text-blue-600 rounded border-gray-300"
-              />
-              <label htmlFor="useTestPayment" className="text-sm font-medium text-yellow-800">
-                Use test payment link
-              </label>
-            </div>
-            <ActionButtons
-              onCancel={() => navigate('/bulk-appraisal')}
-              onSubmit={handleSubmit}
-              isUploading={isUploading}
-              disabled={items.length === 0}
-            />
           </div>
         </div>
       </div>

@@ -74,38 +74,9 @@ export default function ServiceSelection() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Trust Badges */}
-        <TrustBadges className="mb-12" />
-
-        {/* Service Selection */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {(Object.entries(services) as [ServiceType, typeof services.regular][]).map(([type, service]) => (
-            <ServiceCard
-              key={type}
-              type={type}
-              title={service.title}
-              description={service.description}
-              icon={service.icon}
-              isSelected={selectedService === type}
-              onSelect={() => setSelectedService(type)}
-            />
-          ))}
-        </div>
-
-        {/* Service Details */}
-        <div className="mt-8">
-          <ServiceDetails
-            service={services[selectedService]}
-            type={selectedService}
-            selectedDate={selectedDate}
-            onDateSelect={setSelectedDate}
-            onGetStarted={handleGetStarted}
-          />
-        </div>
-
-        {/* Bulk Appraisal CTA */}
-        <div className="mt-12 bg-blue-50 rounded-xl p-8 border border-blue-100">
-          <div className="flex items-center justify-between">
+        {/* Bulk Appraisal CTA - Moved to top for better visibility */}
+        <div className="mb-10 bg-blue-50 rounded-xl p-6 border border-blue-100 shadow-sm">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <div className="p-3 bg-blue-100 rounded-full">
                 <Package className="h-6 w-6 text-blue-600" />
@@ -117,7 +88,7 @@ export default function ServiceSelection() {
             </div>
             <button
               onClick={() => navigate('/bulk-appraisal/upload')}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors w-full sm:w-auto justify-center"
             >
               Start Bulk Upload
               <ArrowRight className="h-5 w-5" />
@@ -125,8 +96,45 @@ export default function ServiceSelection() {
           </div>
         </div>
 
+        {/* Main Content Container */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          {/* Trust Badges - Group with service selections for better organization */}
+          <div className="border-b border-gray-100">
+            <TrustBadges className="py-2" />
+          </div>
+          
+          {/* Service Selection */}
+          <div className="p-6">
+            <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800">Select an Appraisal Service</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {(Object.entries(services) as [ServiceType, typeof services.regular][]).map(([type, service]) => (
+                <ServiceCard
+                  key={type}
+                  type={type}
+                  title={service.title}
+                  description={service.description}
+                  icon={service.icon}
+                  isSelected={selectedService === type}
+                  onSelect={() => setSelectedService(type)}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Service Details */}
+        <div className="mt-8 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+          <ServiceDetails
+            service={services[selectedService]}
+            type={selectedService}
+            selectedDate={selectedDate}
+            onDateSelect={setSelectedDate}
+            onGetStarted={handleGetStarted}
+          />
+        </div>
+
         {/* Payment Methods */}
-        <div className="mt-12">
+        <div className="mt-8">
           <div className="flex flex-col items-center gap-6 p-4 rounded-lg bg-gray-50 border border-gray-100">
             <div className="flex items-center gap-2 text-sm text-gray-500">
               <Lock className="h-4 w-4" />
