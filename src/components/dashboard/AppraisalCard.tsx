@@ -1,6 +1,6 @@
 import React from 'react';
 import { format } from 'date-fns';
-import { DollarSign, Clock, ExternalLink, Info } from 'lucide-react';
+import { DollarSign, Clock, ExternalLink, Info, FileText } from 'lucide-react';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { AppraisalPost } from '@/lib/types/dashboard';
@@ -144,7 +144,7 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
         )}
       </CardContent>
 
-      <CardFooter>
+      <CardFooter className="flex flex-col space-y-2">
         <Button 
           variant="default" 
           className="w-full bg-gray-900 hover:bg-gray-800 text-white transition-colors" 
@@ -160,6 +160,24 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
             <ExternalLink className="h-4 w-4" />
           </a>
         </Button>
+        
+        {appraisal.acf.pdflink && appraisal.acf.pdflink.trim() !== '' && (
+          <Button 
+            variant="outline" 
+            className="w-full border-blue-600 text-blue-600 hover:bg-blue-50 transition-colors" 
+            asChild
+          >
+            <a 
+              href={appraisal.acf.pdflink} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="flex items-center justify-center gap-2"
+            >
+              Download PDF
+              <FileText className="h-4 w-4" />
+            </a>
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

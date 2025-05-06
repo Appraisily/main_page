@@ -28,6 +28,7 @@ export interface AppraisalPost {
     style?: string;
     conclusion1?: string;
     conclusion2?: string;
+    pdflink?: string;
   };
 }
 

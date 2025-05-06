@@ -10,7 +10,6 @@ import { UploadArea } from '@/components/upload/BulkUpload/UploadArea';
 import { ItemGrid } from '@/components/upload/BulkUpload/ItemGrid';
 import { AppraisalTypeSelector, type AppraisalType } from '@/components/upload/BulkUpload/AppraisalTypeSelector';
 import { EmailInput } from '@/components/upload/BulkUpload/EmailInput';
-import { PhotoTips } from '@/components/upload/BulkUpload/PhotoTips';
 import { PaymentNotice } from '@/components/upload/BulkUpload/PaymentNotice';
 import { ActionButtons } from '@/components/upload/BulkUpload/ActionButtons';
 
@@ -168,7 +167,6 @@ export default function BulkUploadPage() {
 
               {!isRestoringSession && (
                 <div className="mb-8">
-                  <PhotoTips />
                   <UploadArea onFileSelect={handleFileSelect} />
                 </div>
               )}
@@ -198,35 +196,6 @@ export default function BulkUploadPage() {
 
               <div className="space-y-6 pt-6 border-t border-gray-100">
                 <PaymentNotice />
-                
-                {/* Payment Methods Section */}
-                <div className="rounded-lg border border-gray-200 overflow-hidden">
-                  <div className="flex items-center justify-center gap-2 bg-stone-50 p-3 border-b border-gray-200">
-                    <Lock className="h-4 w-4 text-gray-500" />
-                    <span className="text-sm text-gray-700">Secure payment processing by Stripe</span>
-                  </div>
-                  <div className="flex items-center justify-center gap-8 p-4">
-                    <div className="flex items-center gap-2">
-                      <CreditCard className="h-5 w-5 text-gray-700" />
-                      <span className="text-sm text-gray-700">Credit Card</span>
-                    </div>
-                    <div className="text-sm text-gray-700">
-                      <img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg" alt="PayPal" height="23" />
-                    </div>
-                    <div className="text-sm text-gray-700 flex items-center gap-1">
-                      <span className="font-medium">G</span>
-                      <span className="text-blue-500">o</span>
-                      <span className="text-red-500">o</span>
-                      <span className="text-yellow-500">g</span>
-                      <span className="text-blue-500">l</span>
-                      <span className="text-green-500">e</span>
-                      <span className="ml-1">Pay</span>
-                    </div>
-                    <div className="text-sm font-medium text-gray-700">
-                      Apple Pay
-                    </div>
-                  </div>
-                </div>
                 
                 {/* Test Payment Option */}
                 {process.env.NODE_ENV !== 'production' && (
