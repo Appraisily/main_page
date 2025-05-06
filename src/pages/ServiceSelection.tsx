@@ -124,7 +124,7 @@ const services = {
       },
       {
         title: 'White-labeled delivery',
-        description: 'Optional customized reports with your organization's branding for client-facing documentation.'
+        description: "Optional customized reports with your organization's branding for client-facing documentation."
       }
     ],
     basePrice: BASE_PRICE

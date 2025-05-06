@@ -21,7 +21,8 @@ import {
   ScrollText,
   ArrowRight,
   Lock,
-  Package
+  Package,
+  Shield
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import TurnaroundSpeedSelector, { TurnaroundSpeed } from './TurnaroundSpeedSelector';
