@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Star, Shield, Clock, CreditCard, Lock, Package, ArrowRight, Check, Award, UserCheck, Sparkles } from 'lucide-react';
+import { Star, Shield, Clock, CreditCard, Lock, Package, ArrowRight } from 'lucide-react';
 import TrustBadges from '@/components/TrustBadges';
 import { Separator } from '@/components/ui/separator';
 import { useNavigate } from 'react-router-dom';
@@ -7,9 +7,7 @@ import { formatCurrency } from '@/lib/utils/text';
 import { cn } from '@/lib/utils';
 import { TurnaroundSpeed } from '@/components/TurnaroundSpeedSelector';
 import ServiceDetails from '@/components/ServiceDetails';
-import { motion } from 'framer-motion';
-
-type ServiceType = 'regular' | 'insurance' | 'tax';
+import AppraisalServiceSelector, { ServiceType } from '@/components/AppraisalServiceSelector';
 
 // Constants for pricing and discounts - matching the ones in AppraisalTypeSelector
 const BASE_PRICE = 5900; // $59.00
@@ -31,7 +29,7 @@ function calculatePrice(basePrice: number, itemCount: number): { price: number; 
   return { price, hasDiscount };
 }
 
-// Combine Insurance & Tax into "Compliance-Grade Appraisal"
+// Service definitions - Keep exactly the same service types and data
 const services = {
   regular: {
     title: 'Regular Appraisal',
@@ -142,6 +140,12 @@ export default function ServiceSelection() {
   const itemCount = 1;
   
   // Calculate the price with potential discount - no discounts apply since itemCount is fixed at 1
+  const servicePrices = {
+    regular: calculatePrice(services.regular.basePrice, itemCount).price,
+    insurance: calculatePrice(services.insurance.basePrice, itemCount).price,
+    tax: calculatePrice(services.tax.basePrice, itemCount).price
+  };
+
   const { price, hasDiscount } = calculatePrice(services[selectedService].basePrice, itemCount);
 
   // Calculate total price with speed option
@@ -166,29 +170,6 @@ export default function ServiceSelection() {
     window.location.href = getCheckoutUrl(selectedService);
   };
 
-  // Animation variants for cards
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100
-      }
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white pt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -200,124 +181,15 @@ export default function ServiceSelection() {
           </div>
           
           {/* Service Selection */}
-          <div className="p-6 md:p-8 pb-10">
+          <div className="p-6 md:p-8">
             <div className="max-w-3xl mx-auto">
-              <h2 className="text-2xl md:text-3xl font-semibold text-center mb-8 text-slate-900">Select an Appraisal Service</h2>
-              
-              <motion.div 
-                className="grid grid-cols-1 gap-6"
-                variants={container}
-                initial="hidden"
-                animate="show"
-              >
-                {(Object.entries(services) as [ServiceType, typeof services.regular][]).map(([type, service]) => {
-                  const Icon = service.icon;
-                  const isSelected = selectedService === type;
-                  
-                  return (
-                    <motion.div
-                      key={type}
-                      variants={item}
-                      className={cn(
-                        "relative overflow-hidden rounded-lg transition-all duration-200",
-                        "cursor-pointer border-2",
-                        isSelected
-                          ? "border-blue-600 ring-2 ring-blue-100"
-                          : "border-slate-200 hover:border-slate-300"
-                      )}
-                      onClick={() => setSelectedService(type)}
-                    >
-                      <div className="p-6 sm:p-8">
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-5">
-                          {/* Service Icon */}
-                          <div className={cn(
-                            "w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0",
-                            isSelected 
-                              ? "bg-blue-100" 
-                              : "bg-slate-100"
-                          )}>
-                            <Icon className={cn(
-                              "h-7 w-7",
-                              isSelected ? "text-blue-600" : "text-slate-600"
-                            )} />
-                          </div>
-                          
-                          {/* Service Info */}
-                          <div className="flex-grow">
-                            <div className="flex flex-wrap items-center gap-2">
-                              <h3 className={cn(
-                                "text-xl font-semibold",
-                                isSelected ? "text-blue-600" : "text-slate-900"
-                              )}>
-                                {service.title}
-                              </h3>
-                              
-                              {service.popular && (
-                                <span className="px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700 flex items-center gap-1">
-                                  <Sparkles className="h-3 w-3" />
-                                  Popular
-                                </span>
-                              )}
-                            </div>
-                            
-                            <p className="text-slate-600 mt-1">
-                              {service.description}
-                            </p>
-                            
-                            {/* Price */}
-                            <div className="mt-3 flex items-center gap-2">
-                              <span className="text-lg font-semibold text-slate-900">
-                                {formatCurrency(price / 100)}
-                              </span>
-                              <span className="text-sm text-slate-500">
-                                per item
-                              </span>
-                            </div>
-                          </div>
-                          
-                          {/* Selection Indicator */}
-                          <div className="flex-shrink-0 hidden sm:block">
-                            <div className={cn(
-                              "w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all",
-                              isSelected 
-                                ? "bg-blue-600 border-blue-600" 
-                                : "border-slate-300"
-                            )}>
-                              {isSelected && <Check className="h-5 w-5 text-white" />}
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* Feature Highlights - mobile optimized to show fewer features */}
-                        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-3">
-                          {service.features.slice(0, 4).map((feature, idx) => (
-                            <div key={idx} className="flex items-start gap-3">
-                              <div className={cn(
-                                "mt-0.5 flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center",
-                                isSelected ? "bg-blue-100" : "bg-slate-100"
-                              )}>
-                                <Check className={cn(
-                                  "h-3 w-3",
-                                  isSelected ? "text-blue-600" : "text-slate-500"
-                                )} />
-                              </div>
-                              <span className="text-sm text-slate-700">{feature.title}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                      
-                      {/* Mobile selection indicator - bottom bar */}
-                      <div className="sm:hidden">
-                        <div className={cn(
-                          "h-2 w-full",
-                          isSelected ? "bg-blue-600" : "bg-transparent"
-                        )} />
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
+              {/* Use the new AppraisalServiceSelector component */}
+              <AppraisalServiceSelector
+                services={services}
+                selectedService={selectedService}
+                onSelectService={setSelectedService}
+                prices={servicePrices}
+              />
             </div>
           </div>
         </div>

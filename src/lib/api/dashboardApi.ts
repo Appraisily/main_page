@@ -30,7 +30,7 @@ export async function fetchAppraisals(
   });
 
   try {
-    const response = await fetch(`${WP_API_URL}/appraisily/v1/appraisals?${queryParams.toString()}`);
+    const response = await fetch(`${WP_API_URL}/wp/v2/appraisals?${queryParams.toString()}`);
     
     if (!response.ok) {
       const errorData = await response.json();
