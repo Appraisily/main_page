@@ -34,11 +34,14 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
         maximumFractionDigits: 0
       })
     : null;
+    
+  // Determine if we should show the mobile tooltip based on screen size
+  const showMobileTooltip = typeof window !== 'undefined' && window.innerWidth < 640;
 
   return (
     <Card className="group hover:shadow-lg transition-all duration-300 bg-white border-gray-100">
       {/* Image Preview */}
-      <div className="relative h-48 overflow-hidden rounded-t-lg">
+      <div className="relative h-36 sm:h-48 overflow-hidden rounded-t-lg">
         <img
           src={imageUrl}
           alt={truncatedTitle}
@@ -55,16 +58,16 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
-      <CardHeader className="space-y-2">
+      <CardHeader className="space-y-2 p-4 sm:p-6">
         <div className="flex items-center justify-between">
-          <span className="text-sm font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
+          <span className="text-xs sm:text-sm font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
             {format(new Date(appraisal.date), 'MMM d, yyyy')}
           </span>
         </div>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <h3 className="font-semibold tracking-tight text-lg line-clamp-2 group-hover:text-blue-600 transition-colors cursor-default">
+              <h3 className="font-semibold tracking-tight text-base sm:text-lg line-clamp-2 group-hover:text-blue-600 transition-colors cursor-default">
                 {truncatedTitle}
               </h3>
             </TooltipTrigger>
@@ -75,25 +78,25 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
         </TooltipProvider>
       </CardHeader>
 
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-3 sm:space-y-4 p-4 sm:p-6 pt-0 sm:pt-0">
         {formattedValue && (
-          <div className="flex items-center text-gray-900 bg-gray-50 p-3 rounded-lg">
-            <DollarSign className="h-5 w-5 mr-2 text-blue-600 flex-shrink-0" />
-            <span className="font-medium truncate">
+          <div className="flex items-center text-gray-900 bg-gray-50 p-2 sm:p-3 rounded-lg">
+            <DollarSign className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-blue-600 flex-shrink-0" />
+            <span className="font-medium truncate text-sm sm:text-base">
               Estimated Value: ${formattedValue}
             </span>
           </div>
         )}
         
         <div className="flex items-center text-gray-600">
-          <Clock className="h-4 w-4 mr-2 text-gray-400 flex-shrink-0" />
-          <span className="truncate">{format(new Date(appraisal.date), 'MMMM d, yyyy')}</span>
+          <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-2 text-gray-400 flex-shrink-0" />
+          <span className="truncate text-xs sm:text-sm">{format(new Date(appraisal.date), 'MMMM d, yyyy')}</span>
         </div>
 
         {(appraisal.acf.condition || appraisal.acf.age_text || appraisal.acf.style) && (
-          <div className="flex items-start text-gray-600 bg-gray-50 p-3 rounded-lg">
-            <Info className="h-4 w-4 mr-2 mt-1 flex-shrink-0 text-blue-600" />
-            <div className="text-sm space-y-1.5 min-w-0 flex-1">
+          <div className="flex items-start text-gray-600 bg-gray-50 p-2 sm:p-3 rounded-lg">
+            <Info className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-2 mt-1 flex-shrink-0 text-blue-600" />
+            <div className="text-xs sm:text-sm space-y-1 sm:space-y-1.5 min-w-0 flex-1">
               {appraisal.acf.condition && (
                 <TooltipProvider>
                   <Tooltip>
@@ -144,10 +147,10 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
         )}
       </CardContent>
 
-      <CardFooter className="flex flex-col space-y-2">
+      <CardFooter className="flex flex-col space-y-2 p-4 sm:p-6 pt-0 sm:pt-0">
         <Button 
           variant="default" 
-          className="w-full bg-gray-900 hover:bg-gray-800 text-white transition-colors" 
+          className="w-full bg-gray-900 hover:bg-gray-800 text-white transition-colors text-xs sm:text-sm h-9 sm:h-10" 
           asChild
         >
           <a 
@@ -157,14 +160,14 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
             className="flex items-center justify-center gap-2"
           >
             View Details
-            <ExternalLink className="h-4 w-4" />
+            <ExternalLink className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           </a>
         </Button>
         
         {appraisal.acf.pdflink && appraisal.acf.pdflink.trim() !== '' && (
           <Button 
             variant="outline" 
-            className="w-full border-blue-600 text-blue-600 hover:bg-blue-50 transition-colors" 
+            className="w-full border-blue-600 text-blue-600 hover:bg-blue-50 transition-colors text-xs sm:text-sm h-9 sm:h-10" 
             asChild
           >
             <a 
@@ -174,7 +177,7 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
               className="flex items-center justify-center gap-2"
             >
               Download PDF
-              <FileText className="h-4 w-4" />
+              <FileText className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </a>
           </Button>
         )}

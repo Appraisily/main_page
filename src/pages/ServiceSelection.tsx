@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Star, Shield, Clock, CreditCard, Lock, Package, ArrowRight } from 'lucide-react';
+import { Star, Shield, Clock, CreditCard, Lock, Package, ArrowRight, FileText } from 'lucide-react';
 import TrustBadges from '@/components/TrustBadges';
 import { Separator } from '@/components/ui/separator';
 import { useNavigate } from 'react-router-dom';
 import { formatCurrency } from '@/lib/utils/text';
 import { cn } from '@/lib/utils';
 import { TurnaroundSpeed } from '@/components/TurnaroundSpeedSelector';
-import ServiceDetails from '@/components/ServiceDetails';
-import AppraisalServiceSelector, { ServiceType } from '@/components/AppraisalServiceSelector';
+import ServiceDetails from '@/components/Start/ServiceDetails';
+import AppraisalServiceSelector, { ServiceType } from '@/components/Start/AppraisalServiceSelector';
 
 // Constants for pricing and discounts - matching the ones in AppraisalTypeSelector
 const BASE_PRICE = 5900; // $59.00
@@ -29,11 +29,11 @@ function calculatePrice(basePrice: number, itemCount: number): { price: number; 
   return { price, hasDiscount };
 }
 
-// Service definitions - Keep exactly the same service types and data
+// Service definitions - Updated to reflect the correct service types
 const services = {
   regular: {
     title: 'Regular Appraisal',
-    description: 'Perfect for collectors and sellers',
+    description: 'Standard valuation for collectors and sellers',
     icon: Star,
     popular: true,
     features: [
@@ -65,8 +65,8 @@ const services = {
     basePrice: BASE_PRICE
   },
   insurance: {
-    title: 'Compliance-Grade Appraisal',
-    description: 'Insurance, tax & legal documentation',
+    title: 'Insurance Appraisal',
+    description: 'Detailed documentation for insurance purposes',
     icon: Shield,
     popular: false,
     features: [
@@ -98,34 +98,34 @@ const services = {
     basePrice: BASE_PRICE
   },
   tax: {
-    title: 'Bulk / Enterprise',
-    description: 'For dealers, estates & institutions',
-    icon: Package,
+    title: 'Tax Appraisal',
+    description: 'IRS-compliant valuations for tax purposes',
+    icon: FileText,
     popular: false,
     features: [
       {
-        title: 'Volume discounts',
-        description: 'Tiered pricing structure with significant savings for large collections and institutional clients.'
+        title: 'IRS compliance',
+        description: 'Documentation that meets IRS guidelines for charitable donations, estates, and gift tax returns.'
       },
       {
-        title: 'Dedicated account manager',
-        description: 'Personal point of contact to coordinate your appraisal needs and timeline requirements.'
+        title: 'Fair market value',
+        description: 'Accurate determination of fair market value as required for tax deduction purposes.'
       },
       {
-        title: 'Custom reporting',
-        description: 'Tailored documentation formats to meet your specific institutional or business requirements.'
+        title: 'Detailed documentation',
+        description: 'Comprehensive reports that include all required details to support your tax filing.'
       },
       {
-        title: 'API integration',
-        description: 'Connect our appraisal services directly to your inventory management system or database.'
+        title: 'Expert testimony',
+        description: 'Access to appraisers who can provide expert testimony if needed for tax audit or dispute.'
       },
       {
-        title: 'Expedited service',
-        description: 'Priority scheduling for time-sensitive projects with flexible turnaround options.'
+        title: 'Tax form assistance',
+        description: 'Guidance on completing the relevant tax forms and filings related to your appraised items.'
       },
       {
-        title: 'White-labeled delivery',
-        description: "Optional customized reports with your organization's branding for client-facing documentation."
+        title: 'Rush service available',
+        description: 'Expedited processing available for time-sensitive tax deadlines.'
       }
     ],
     basePrice: BASE_PRICE

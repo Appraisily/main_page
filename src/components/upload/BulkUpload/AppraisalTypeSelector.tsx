@@ -1,7 +1,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { formatCurrency } from '@/lib/utils/text';
-import AppraisalServiceCard, { type ServiceInfo } from '@/components/AppraisalServiceCard';
+import AppraisalServiceCard, { type ServiceInfo } from '@/components/Start/AppraisalServiceCard';
 import { Scale, Shield, FileCheck, Percent } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -144,9 +144,6 @@ export function AppraisalTypeSelector({ value, onChange, itemCount = 1 }: Apprai
         <h3 className="text-xl font-semibold text-slate-900 mb-2">
           Select Appraisal Type
         </h3>
-        <p className="text-slate-600">
-          Choose the service that best fits your needs for your {itemCount} {itemCount === 1 ? 'item' : 'items'}
-        </p>
       </div>
       
       {/* Discount Badge */}
@@ -165,7 +162,7 @@ export function AppraisalTypeSelector({ value, onChange, itemCount = 1 }: Apprai
       
       {/* Appraisal Type Cards */}
       <motion.div 
-        className="space-y-4"
+        className="grid grid-cols-1 md:grid-cols-3 gap-4"
         variants={container}
         initial="hidden"
         animate="show"
@@ -177,7 +174,6 @@ export function AppraisalTypeSelector({ value, onChange, itemCount = 1 }: Apprai
               isSelected={value === type}
               onSelect={() => onChange(type)}
               price={servicePrices[type]}
-              showFeatures={true}
             />
           </motion.div>
         ))}

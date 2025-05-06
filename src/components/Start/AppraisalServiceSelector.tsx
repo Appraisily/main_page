@@ -44,11 +44,10 @@ export default function AppraisalServiceSelector({
     <div className="py-6">
       <div className="text-center mb-8">
         <h2 className="text-2xl font-semibold text-slate-900 mb-2">Select Your Appraisal Service</h2>
-        <p className="text-slate-600 max-w-2xl mx-auto">Choose the service that best fits your needs. Each service includes expert evaluation by our certified specialists.</p>
       </div>
       
       <motion.div 
-        className="space-y-4"
+        className="grid grid-cols-1 md:grid-cols-3 gap-4"
         variants={container}
         initial="hidden"
         animate="show"
@@ -60,7 +59,6 @@ export default function AppraisalServiceSelector({
               isSelected={selectedService === type}
               onSelect={() => onSelectService(type)}
               price={prices[type]}
-              showFeatures={true}
             />
           </motion.div>
         ))}

@@ -9,18 +9,18 @@ interface DashboardHeaderProps {
 
 export default function DashboardHeader({ email, totalAppraisals }: DashboardHeaderProps) {
   return (
-    <div className="mb-12">
+    <div className="mb-6 sm:mb-12">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 sm:gap-6">
           <div className="space-y-1">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">Your Appraisals</h1>
-            <p className="text-lg text-gray-600">
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900">Your Appraisals</h1>
+            <p className="text-base sm:text-lg text-gray-600">
               Manage and track your art appraisal requests
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
-            <div className="flex items-center gap-3 min-w-[140px]">
+          <div className="flex flex-col gap-3 bg-white p-4 rounded-xl border border-gray-100 shadow-sm w-full md:w-auto mt-4 md:mt-0">
+            <div className="flex items-center gap-3">
               <div className="p-2 bg-blue-50 rounded-lg">
                 <Package2 className="h-5 w-5 text-blue-600" />
               </div>
@@ -32,7 +32,7 @@ export default function DashboardHeader({ email, totalAppraisals }: DashboardHea
               </div>
             </div>
 
-            <Separator orientation="vertical" className="h-10 hidden sm:block" />
+            <Separator className="my-1" />
 
             <div className="flex items-center gap-3">
               <div className="p-2 bg-gray-50 rounded-lg">
@@ -40,7 +40,7 @@ export default function DashboardHeader({ email, totalAppraisals }: DashboardHea
               </div>
               <div className="flex flex-col">
                 <span className="text-sm text-gray-600">Email</span>
-                <span className="font-medium text-gray-900">{email}</span>
+                <span className="font-medium text-gray-900 text-sm sm:text-base truncate max-w-[200px] sm:max-w-none">{email}</span>
               </div>
             </div>
           </div>

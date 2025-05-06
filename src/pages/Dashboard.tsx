@@ -79,9 +79,9 @@ export default function Dashboard() {
   // Show loading state while checking authentication
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-background pt-24 pb-12">
-        <div className="container">
-          <div className="flex items-center justify-center min-h-[400px]">
+      <div className="min-h-screen bg-background pt-16 sm:pt-24 pb-12">
+        <div className="container px-4 sm:px-6">
+          <div className="flex items-center justify-center min-h-[300px] sm:min-h-[400px]">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
         </div>
@@ -92,9 +92,9 @@ export default function Dashboard() {
   // Require authentication for dashboard access
   if (!authenticated || !user) {
     return (
-      <div className="min-h-screen bg-background pt-24 pb-12">
-        <div className="container">
-          <div className="flex flex-col items-center justify-center min-h-[400px] text-center space-y-4">
+      <div className="min-h-screen bg-background pt-16 sm:pt-24 pb-12">
+        <div className="container px-4 sm:px-6">
+          <div className="flex flex-col items-center justify-center min-h-[300px] sm:min-h-[400px] text-center space-y-4">
             <h1 className="text-2xl font-bold">Access Denied</h1>
             <p className="text-muted-foreground">
               Please sign in to view your appraisals.
@@ -112,8 +112,8 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-background pt-24 pb-12">
-      <div className="container">
+    <div className="min-h-screen bg-background pt-16 sm:pt-24 pb-12">
+      <div className="container px-4 sm:px-6">
         {/* Header */}
         <DashboardHeader 
           email={user.email} 
@@ -121,21 +121,22 @@ export default function Dashboard() {
         />
 
         {/* Content */}
-        <div className="space-y-8">
+        <div className="space-y-6 sm:space-y-8">
           {loading ? (
-            <div className="flex items-center justify-center py-12">
+            <div className="flex items-center justify-center py-8 sm:py-12">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : error ? (
-            <div className="flex flex-col items-center justify-center py-12 space-y-4">
+            <div className="flex flex-col items-center justify-center py-8 sm:py-12 space-y-4">
               <p className="text-destructive">{error}</p>
             </div>
           ) : appraisals.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-12 space-y-4">
-              <p className="text-muted-foreground">No appraisals found.</p>
+            <div className="flex flex-col items-center justify-center py-8 sm:py-12 space-y-4 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+              <p className="text-muted-foreground text-center">No appraisals found.</p>
+              <p className="text-sm text-gray-500 text-center">Your completed appraisals will appear here.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-7xl mx-auto">
               {appraisals.map((appraisal) => (
                 <AppraisalCard key={appraisal.id} appraisal={appraisal} />
               ))}
