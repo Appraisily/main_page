@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Star, Shield, Clock, CreditCard, Lock, Package, ArrowRight, Check, Award, UserCheck } from 'lucide-react';
+import { Star, Shield, Clock, CreditCard, Lock, Package, ArrowRight, Check, Award, UserCheck, Sparkles } from 'lucide-react';
 import TrustBadges from '@/components/TrustBadges';
-import ServiceCard from '@/components/ServiceCard';
-import ServiceDetails from '@/components/ServiceDetails';
 import { Separator } from '@/components/ui/separator';
 import { useNavigate } from 'react-router-dom';
 import { formatCurrency } from '@/lib/utils/text';
 import { cn } from '@/lib/utils';
 import { TurnaroundSpeed } from '@/components/TurnaroundSpeedSelector';
+import ServiceDetails from '@/components/ServiceDetails';
+import { motion } from 'framer-motion';
 
 type ServiceType = 'regular' | 'insurance' | 'tax';
 
@@ -37,6 +37,7 @@ const services = {
     title: 'Regular Appraisal',
     description: 'Perfect for collectors and sellers',
     icon: Star,
+    popular: true,
     features: [
       {
         title: 'Detailed condition report',
@@ -69,6 +70,7 @@ const services = {
     title: 'Compliance-Grade Appraisal',
     description: 'Insurance, tax & legal documentation',
     icon: Shield,
+    popular: false,
     features: [
       {
         title: 'Insurance & IRS compliance',
@@ -101,6 +103,7 @@ const services = {
     title: 'Bulk / Enterprise',
     description: 'For dealers, estates & institutions',
     icon: Package,
+    popular: false,
     features: [
       {
         title: 'Volume discounts',
@@ -135,9 +138,10 @@ export default function ServiceSelection() {
   const navigate = useNavigate();
   const [selectedService, setSelectedService] = useState<ServiceType>('regular');
   const [selectedSpeed, setSelectedSpeed] = useState<TurnaroundSpeed>('standard');
-  const [itemCount, setItemCount] = useState<number>(1);
+  // Fixed item count to 1 since this is for single items only
+  const itemCount = 1;
   
-  // Calculate the price with potential discount
+  // Calculate the price with potential discount - no discounts apply since itemCount is fixed at 1
   const { price, hasDiscount } = calculatePrice(services[selectedService].basePrice, itemCount);
 
   // Calculate total price with speed option
@@ -162,138 +166,164 @@ export default function ServiceSelection() {
     window.location.href = getCheckoutUrl(selectedService);
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Sticky Header Bar - This would be handled in the main layout component */}
-        
-        {/* Bulk Appraisal CTA - Moved to top for better visibility */}
-        <div className="mb-10 bg-gray-50 rounded-xl p-6 border border-gray-100 shadow-sm">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-gray-100 rounded-full">
-                <Package className="h-6 w-6 text-gray-700" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900">Need to appraise multiple items?</h3>
-                <p className="text-gray-600">Save up to 20% with our bulk appraisal service</p>
-              </div>
-            </div>
-            <button
-              onClick={() => navigate('/bulk-appraisal/upload')}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors w-full sm:w-auto justify-center"
-            >
-              Start Bulk Upload
-              <ArrowRight className="h-5 w-5" />
-            </button>
-          </div>
-        </div>
+  // Animation variants for cards
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
 
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100
+      }
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white pt-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Main Content Container */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
           {/* Trust Ribbon */}
-          <div className="bg-gray-50 border-b border-gray-100">
+          <div className="bg-slate-50 border-b border-slate-200 py-3">
             <TrustBadges />
           </div>
           
-          {/* Price Information */}
-          <div className="p-4 bg-white border-b border-gray-100">
-            <div className="text-sm text-gray-700 mb-2 font-medium text-center">
-              All appraisal types are <span className="text-gray-900 font-semibold">{formatCurrency(BASE_PRICE / 100)}</span> per item
-            </div>
-            
-            <div className="flex items-center justify-center gap-2 mt-2 text-sm text-emerald-700">
-              <span className="flex-shrink-0 w-2 h-2 rounded-full bg-emerald-500"></span>
-              <span className="font-medium">Get 20% off when you appraise 3 or more items!</span>
-            </div>
-            
-            {/* Item count selector */}
-            <div className="mt-3 flex items-center justify-center gap-3">
-              <span className="text-sm text-gray-700">Items to appraise:</span>
-              <select 
-                value={itemCount}
-                onChange={(e) => setItemCount(parseInt(e.target.value))}
-                className="py-1 px-3 rounded border border-gray-300 text-sm"
-              >
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-                  <option key={num} value={num}>{num}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-          
           {/* Service Selection */}
-          <div className="p-6">
-            <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800">Select an Appraisal Service</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {(Object.entries(services) as [ServiceType, typeof services.regular][]).map(([type, service]) => (
-                <div
-                  key={type}
-                  className={cn(
-                    "relative flex flex-col h-full p-6 text-left rounded-xl border transition-all duration-200",
-                    selectedService === type
-                      ? "border-gray-400 bg-gray-50 shadow-sm"
-                      : "border-gray-200 hover:border-gray-300 hover:bg-gray-50/50 cursor-pointer"
-                  )}
-                  onClick={() => setSelectedService(type)}
-                >
-                  {/* Selected indicator */}
-                  {selectedService === type && (
-                    <div className="absolute top-3 right-3">
-                      <div className="w-5 h-5 rounded-full bg-gray-800 flex items-center justify-center">
-                        <Check className="h-3 w-3 text-white" />
-                      </div>
-                    </div>
-                  )}
+          <div className="p-6 md:p-8 pb-10">
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-2xl md:text-3xl font-semibold text-center mb-8 text-slate-900">Select an Appraisal Service</h2>
+              
+              <motion.div 
+                className="grid grid-cols-1 gap-6"
+                variants={container}
+                initial="hidden"
+                animate="show"
+              >
+                {(Object.entries(services) as [ServiceType, typeof services.regular][]).map(([type, service]) => {
+                  const Icon = service.icon;
+                  const isSelected = selectedService === type;
                   
-                  {/* Header with icon and title */}
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className={cn(
-                      "p-3 rounded-lg",
-                      selectedService === type ? "bg-gray-100" : "bg-gray-50"
-                    )}>
-                      <service.icon className={cn(
-                        "h-5 w-5",
-                        selectedService === type ? "text-gray-800" : "text-gray-500"
-                      )} />
-                    </div>
-                    <h4 className={cn(
-                      "font-medium text-base",
-                      selectedService === type ? "text-gray-900" : "text-gray-700"
-                    )}>
-                      {service.title}
-                    </h4>
-                  </div>
-                  
-                  {/* Description */}
-                  <p className="text-sm text-gray-600 mb-4 flex-grow">
-                    {service.description}
-                  </p>
-                  
-                  {/* Price display */}
-                  <div className="mt-auto pt-2 border-t border-gray-100">
-                    <div className="flex items-center gap-2">
-                      {hasDiscount && (
-                        <span className="text-sm line-through text-gray-400">
-                          {formatCurrency(service.basePrice / 100)}/item
-                        </span>
+                  return (
+                    <motion.div
+                      key={type}
+                      variants={item}
+                      className={cn(
+                        "relative overflow-hidden rounded-lg transition-all duration-200",
+                        "cursor-pointer border-2",
+                        isSelected
+                          ? "border-blue-600 ring-2 ring-blue-100"
+                          : "border-slate-200 hover:border-slate-300"
                       )}
-                      <span className={cn(
-                        "text-sm font-medium",
-                        hasDiscount ? "text-emerald-700" : "text-gray-700"
-                      )}>
-                        {formatCurrency(price / 100)}/item
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+                      onClick={() => setSelectedService(type)}
+                    >
+                      <div className="p-6 sm:p-8">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-5">
+                          {/* Service Icon */}
+                          <div className={cn(
+                            "w-14 h-14 rounded-full flex items-center justify-center flex-shrink-0",
+                            isSelected 
+                              ? "bg-blue-100" 
+                              : "bg-slate-100"
+                          )}>
+                            <Icon className={cn(
+                              "h-7 w-7",
+                              isSelected ? "text-blue-600" : "text-slate-600"
+                            )} />
+                          </div>
+                          
+                          {/* Service Info */}
+                          <div className="flex-grow">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <h3 className={cn(
+                                "text-xl font-semibold",
+                                isSelected ? "text-blue-600" : "text-slate-900"
+                              )}>
+                                {service.title}
+                              </h3>
+                              
+                              {service.popular && (
+                                <span className="px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700 flex items-center gap-1">
+                                  <Sparkles className="h-3 w-3" />
+                                  Popular
+                                </span>
+                              )}
+                            </div>
+                            
+                            <p className="text-slate-600 mt-1">
+                              {service.description}
+                            </p>
+                            
+                            {/* Price */}
+                            <div className="mt-3 flex items-center gap-2">
+                              <span className="text-lg font-semibold text-slate-900">
+                                {formatCurrency(price / 100)}
+                              </span>
+                              <span className="text-sm text-slate-500">
+                                per item
+                              </span>
+                            </div>
+                          </div>
+                          
+                          {/* Selection Indicator */}
+                          <div className="flex-shrink-0 hidden sm:block">
+                            <div className={cn(
+                              "w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all",
+                              isSelected 
+                                ? "bg-blue-600 border-blue-600" 
+                                : "border-slate-300"
+                            )}>
+                              {isSelected && <Check className="h-5 w-5 text-white" />}
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Feature Highlights - mobile optimized to show fewer features */}
+                        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {service.features.slice(0, 4).map((feature, idx) => (
+                            <div key={idx} className="flex items-start gap-3">
+                              <div className={cn(
+                                "mt-0.5 flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center",
+                                isSelected ? "bg-blue-100" : "bg-slate-100"
+                              )}>
+                                <Check className={cn(
+                                  "h-3 w-3",
+                                  isSelected ? "text-blue-600" : "text-slate-500"
+                                )} />
+                              </div>
+                              <span className="text-sm text-slate-700">{feature.title}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      {/* Mobile selection indicator - bottom bar */}
+                      <div className="sm:hidden">
+                        <div className={cn(
+                          "h-2 w-full",
+                          isSelected ? "bg-blue-600" : "bg-transparent"
+                        )} />
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
             </div>
           </div>
         </div>
 
         {/* Service Details */}
-        <div className="mt-8 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="mt-8 bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8">
           <ServiceDetails
             service={services[selectedService]}
             type={selectedService}
@@ -304,41 +334,25 @@ export default function ServiceSelection() {
           />
         </div>
 
-        {/* Guarantee Strip */}
-        <div className="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-100 flex items-center justify-center gap-2">
-          <Lock className="h-4 w-4 text-gray-500" />
-          <span className="text-sm font-medium text-gray-700">100% Money-Back Satisfaction Guarantee</span>
-        </div>
-
-        {/* Payment Methods */}
-        <div className="mt-8">
-          <div className="flex flex-col items-center gap-6 p-4 rounded-lg bg-gray-50 border border-gray-100">
-            <div className="flex items-center gap-2 text-sm text-gray-500">
-              <Lock className="h-4 w-4" />
-              <span>Secure payment processing by Stripe</span>
-            </div>
-            <Separator className="bg-gray-200" />
-            <div className="flex flex-wrap justify-center items-center gap-8">
-              <div className="flex items-center gap-2 text-gray-600">
-                <CreditCard className="h-5 w-5" />
-                <span>Credit Card</span>
+        {/* Bulk Appraisal CTA - Moved to bottom as requested */}
+        <div className="mt-8 bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-slate-100 rounded-full">
+                <Package className="h-6 w-6 text-slate-700" />
               </div>
-              <img 
-                src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" 
-                alt="PayPal" 
-                className="h-5" 
-              />
-              <img 
-                src="https://upload.wikimedia.org/wikipedia/commons/3/39/Google_Pay_%28GPay%29_Logo_%282018-2020%29.svg" 
-                alt="Google Pay" 
-                className="h-5" 
-              />
-              <img 
-                src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" 
-                alt="Apple Pay" 
-                className="h-5" 
-              />
+              <div>
+                <h3 className="text-lg font-semibold text-slate-900">Need to appraise multiple items?</h3>
+                <p className="text-slate-600">Save up to 20% with our bulk appraisal service</p>
+              </div>
             </div>
+            <button
+              onClick={() => navigate('/bulk-appraisal/upload')}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors w-full sm:w-auto justify-center"
+            >
+              Start Bulk Upload
+              <ArrowRight className="h-5 w-5" />
+            </button>
           </div>
         </div>
       </div>

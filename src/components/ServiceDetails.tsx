@@ -22,9 +22,11 @@ import {
   ArrowRight,
   Lock,
   Package,
-  Shield
+  Shield,
+  CreditCard
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import TurnaroundSpeedSelector, { TurnaroundSpeed } from './TurnaroundSpeedSelector';
 import { addDays, format } from 'date-fns';
 import type { LucideIcon } from 'lucide-react';
@@ -114,26 +116,28 @@ export default function ServiceDetails({
   };
 
   const renderFeaturesList = (features: FeatureItem[]) => (
-    <div className="space-y-4">
-      <h3 className="text-sm font-medium text-gray-900">
+    <div className="space-y-3">
+      <h3 className="text-sm font-medium text-slate-900">
         What's included with your appraisal:
       </h3>
-      <div className="grid gap-4">
+      <div className="grid gap-3">
         {features.map((feature) => {
           const Icon = featureIcons[feature.title] || Search;
           return (
             <div
               key={feature.title}
-              className="flex items-start gap-3 p-3 rounded-md bg-gray-50/50 border border-gray-100 hover:bg-gray-50 transition-colors"
+              className="flex items-start gap-3 p-2.5 rounded-md bg-slate-50/50 border border-slate-100 hover:bg-slate-50 transition-colors"
             >
               <div className="flex-shrink-0 mt-0.5">
                 <div className="p-1.5 rounded-md bg-white shadow-sm">
-                  <Icon className="h-4 w-4 text-gray-600" />
+                  <Icon className="h-4 w-4 text-slate-600" />
                 </div>
               </div>
               <div>
-                <h4 className="text-sm font-medium text-gray-900 mb-1">{feature.title}</h4>
-                <p className="text-xs text-gray-600 leading-relaxed">{feature.description}</p>
+                <h4 className="text-sm font-medium text-slate-900">{feature.title}</h4>
+                <p className="text-xs text-slate-600 leading-normal mt-0.5 line-clamp-2 hover:line-clamp-none">
+                  {feature.description}
+                </p>
               </div>
             </div>
           );
@@ -144,192 +148,97 @@ export default function ServiceDetails({
 
   return (
     <div className="rounded-xl">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Regular Service Layout */}
-        {type === 'regular' && (
-          <>
-            <div className="bg-gray-50 rounded-lg p-6">
-              {renderFeaturesList(service.features)}
-            </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
+        {/* Features Column - All service types use the same layout now */}
+        <div className="bg-slate-50 rounded-lg p-5">
+          {renderFeaturesList(service.features)}
+        </div>
 
-            <div className="space-y-6">
-              <TurnaroundSpeedSelector
-                selectedSpeed={selectedSpeed}
-                onSelect={setSelectedSpeed}
-                basePrice={currentPrice / 100}
-              />
-              
-              <div className="mt-6 p-4 bg-white rounded-lg border border-gray-200">
-                <h4 className="text-sm font-medium mb-3 text-gray-800">Pricing Summary</h4>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Base price ({itemCount} {itemCount === 1 ? 'item' : 'items'})</span>
-                    <span className="font-medium">{formatCurrency(currentPrice * itemCount / 100)}</span>
-                  </div>
-                  
-                  {speedAdditionalPrice > 0 && (
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">{selectedSpeed.charAt(0).toUpperCase() + selectedSpeed.slice(1)} delivery</span>
-                      <span className="font-medium">+{formatCurrency(speedAdditionalPrice * itemCount / 100)}</span>
-                    </div>
-                  )}
-                  
-                  {hasDiscount && (
-                    <div className="flex justify-between text-sm text-emerald-700">
-                      <span>Bulk discount (20%)</span>
-                      <span>-{formatCurrency(basePrice * 0.2 * itemCount / 100)}</span>
-                    </div>
-                  )}
-                  
-                  <div className="pt-2 border-t border-gray-200 flex justify-between font-medium">
-                    <span>Total</span>
-                    <span>{formatCurrency(totalPrice / 100)}</span>
-                  </div>
-                </div>
+        {/* Pricing and Checkout Column */}
+        <div className="space-y-5">
+          <TurnaroundSpeedSelector
+            selectedSpeed={selectedSpeed}
+            onSelect={setSelectedSpeed}
+            basePrice={currentPrice / 100}
+          />
+          
+          <div className="p-4 bg-white rounded-lg border border-slate-200">
+            <h4 className="text-sm font-medium mb-3 text-slate-800">Pricing Summary</h4>
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-600">Base price ({itemCount} {itemCount === 1 ? 'item' : 'items'})</span>
+                <span className="font-medium">{formatCurrency(currentPrice * itemCount / 100)}</span>
               </div>
               
-              <div className="space-y-3">
-                <Button 
-                  onClick={handleCheckout}
-                  className="w-full bg-gray-900 hover:bg-gray-800 text-white h-12 text-base"
-                  size="lg"
-                >
-                  Continue → Secure Payment
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                
-                <div className="flex items-center justify-center gap-1.5 py-2 px-4 bg-gray-50 rounded-md border border-gray-100 text-xs text-gray-500">
-                  <Lock className="h-3.5 w-3.5" />
-                  <span>100% Money-Back Satisfaction Guarantee</span>
+              {speedAdditionalPrice > 0 && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-600">{selectedSpeed.charAt(0).toUpperCase() + selectedSpeed.slice(1)} delivery</span>
+                  <span className="font-medium">+{formatCurrency(speedAdditionalPrice * itemCount / 100)}</span>
                 </div>
+              )}
+              
+              {hasDiscount && (
+                <div className="flex justify-between text-sm text-emerald-700">
+                  <span>Bulk discount (20%)</span>
+                  <span>-{formatCurrency(basePrice * 0.2 * itemCount / 100)}</span>
+                </div>
+              )}
+              
+              <div className="pt-2 border-t border-slate-200 flex justify-between text-slate-900 font-medium">
+                <span>Total</span>
+                <span>{formatCurrency(totalPrice / 100)}</span>
               </div>
             </div>
-          </>
-        )}
-
-        {/* Insurance Service Layout */}
-        {type === 'insurance' && (
-          <>
-            <div className="bg-gray-50 rounded-lg p-6">
-              {renderFeaturesList(service.features)}
-            </div>
-
-            <div className="space-y-6">
-              <TurnaroundSpeedSelector
-                selectedSpeed={selectedSpeed}
-                onSelect={setSelectedSpeed}
-                basePrice={currentPrice / 100}
-              />
-              
-              <div className="mt-6 p-4 bg-white rounded-lg border border-gray-200">
-                <h4 className="text-sm font-medium mb-3 text-gray-800">Pricing Summary</h4>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Base price ({itemCount} {itemCount === 1 ? 'item' : 'items'})</span>
-                    <span className="font-medium">{formatCurrency(currentPrice * itemCount / 100)}</span>
-                  </div>
-                  
-                  {speedAdditionalPrice > 0 && (
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">{selectedSpeed.charAt(0).toUpperCase() + selectedSpeed.slice(1)} delivery</span>
-                      <span className="font-medium">+{formatCurrency(speedAdditionalPrice * itemCount / 100)}</span>
-                    </div>
-                  )}
-                  
-                  {hasDiscount && (
-                    <div className="flex justify-between text-sm text-emerald-700">
-                      <span>Bulk discount (20%)</span>
-                      <span>-{formatCurrency(basePrice * 0.2 * itemCount / 100)}</span>
-                    </div>
-                  )}
-                  
-                  <div className="pt-2 border-t border-gray-200 flex justify-between font-medium">
-                    <span>Total</span>
-                    <span>{formatCurrency(totalPrice / 100)}</span>
-                  </div>
-                </div>
+          </div>
+          
+          <div className="space-y-4">
+            <Button 
+              onClick={handleCheckout}
+              className="w-full bg-slate-900 hover:bg-slate-800 text-white h-12 text-base"
+              size="lg"
+            >
+              Continue → Secure Payment
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+            
+            {/* Payment Methods and Guarantee - Combined Section */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500">
+                <Lock className="h-3.5 w-3.5" />
+                <span>Secure payment processing by Stripe</span>
               </div>
               
-              <div className="space-y-3">
-                <Button 
-                  onClick={handleCheckout}
-                  className="w-full bg-gray-900 hover:bg-gray-800 text-white h-12 text-base"
-                  size="lg"
-                >
-                  Continue → Secure Payment
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                
-                <div className="flex items-center justify-center gap-1.5 py-2 px-4 bg-gray-50 rounded-md border border-gray-100 text-xs text-gray-500">
-                  <Lock className="h-3.5 w-3.5" />
-                  <span>100% Money-Back Satisfaction Guarantee</span>
+              <div className="flex flex-wrap justify-center items-center gap-5 pt-2">
+                <div className="flex items-center gap-1.5 text-slate-600">
+                  <CreditCard className="h-4 w-4" />
+                  <span className="text-xs">Credit Card</span>
                 </div>
-              </div>
-            </div>
-          </>
-        )}
-
-        {/* Tax Service Layout */}
-        {type === 'tax' && (
-          <>
-            <div className="bg-gray-50 rounded-lg p-6">
-              {renderFeaturesList(service.features)}
-            </div>
-
-            <div className="space-y-6">
-              <TurnaroundSpeedSelector
-                selectedSpeed={selectedSpeed}
-                onSelect={setSelectedSpeed}
-                basePrice={currentPrice / 100}
-              />
-              
-              <div className="mt-6 p-4 bg-white rounded-lg border border-gray-200">
-                <h4 className="text-sm font-medium mb-3 text-gray-800">Pricing Summary</h4>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Base price ({itemCount} {itemCount === 1 ? 'item' : 'items'})</span>
-                    <span className="font-medium">{formatCurrency(currentPrice * itemCount / 100)}</span>
-                  </div>
-                  
-                  {speedAdditionalPrice > 0 && (
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">{selectedSpeed.charAt(0).toUpperCase() + selectedSpeed.slice(1)} delivery</span>
-                      <span className="font-medium">+{formatCurrency(speedAdditionalPrice * itemCount / 100)}</span>
-                    </div>
-                  )}
-                  
-                  {hasDiscount && (
-                    <div className="flex justify-between text-sm text-emerald-700">
-                      <span>Bulk discount (20%)</span>
-                      <span>-{formatCurrency(basePrice * 0.2 * itemCount / 100)}</span>
-                    </div>
-                  )}
-                  
-                  <div className="pt-2 border-t border-gray-200 flex justify-between font-medium">
-                    <span>Total</span>
-                    <span>{formatCurrency(totalPrice / 100)}</span>
-                  </div>
-                </div>
+                <img 
+                  src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" 
+                  alt="PayPal" 
+                  className="h-4" 
+                />
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/commons/3/39/Google_Pay_%28GPay%29_Logo_%282018-2020%29.svg" 
+                  alt="Google Pay" 
+                  className="h-4" 
+                />
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" 
+                  alt="Apple Pay" 
+                  className="h-4" 
+                />
               </div>
               
-              <div className="space-y-3">
-                <Button 
-                  onClick={handleCheckout}
-                  className="w-full bg-gray-900 hover:bg-gray-800 text-white h-12 text-base"
-                  size="lg"
-                >
-                  Continue → Secure Payment
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                
-                <div className="flex items-center justify-center gap-1.5 py-2 px-4 bg-gray-50 rounded-md border border-gray-100 text-xs text-gray-500">
-                  <Lock className="h-3.5 w-3.5" />
-                  <span>100% Money-Back Satisfaction Guarantee</span>
-                </div>
+              <Separator className="bg-slate-200" />
+              
+              <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                <span>100% Money-Back Satisfaction Guarantee</span>
               </div>
             </div>
-          </>
-        )}
+          </div>
+        </div>
       </div>
     </div>
   );
