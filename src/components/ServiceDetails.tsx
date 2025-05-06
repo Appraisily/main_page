@@ -20,7 +20,8 @@ import {
   Landmark,
   ScrollText,
   ArrowRight,
-  Lock
+  Lock,
+  Package
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import TurnaroundSpeedSelector, { TurnaroundSpeed } from './TurnaroundSpeedSelector';
@@ -28,11 +29,16 @@ import { addDays, format } from 'date-fns';
 import type { LucideIcon } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils/text';
 
+interface FeatureItem {
+  title: string;
+  description: string;
+}
+
 interface ServiceDetailsProps {
   service: {
     title: string;
     description: string;
-    features: string[];
+    features: FeatureItem[];
     icon: LucideIcon;
     basePrice?: number;
   };
@@ -51,9 +57,11 @@ const featureIcons: Record<string, LucideIcon> = {
   'Market value assessment': Scale,
   'Digital documentation': FileDown,
   'Expert analysis': UserCheck,
+  'Expert identification': UserCheck,
   'PDF report delivery': FileDown,
   '48-hour turnaround': Clock,
   'Insurance-grade documentation': Receipt,
+  'Insurance & IRS compliance': Shield,
   'Replacement value': Scale,
   'Risk assessment': AlertTriangle,
   'Digital certification': BadgeCheck,
@@ -65,7 +73,6 @@ const featureIcons: Record<string, LucideIcon> = {
   'Expert testimony': Building2,
   'Tax form assistance': FileSpreadsheet,
   'Rush service available': Clock,
-  'Insurance & IRS compliance': Shield,
   'Volume discounts': Receipt,
   'Dedicated account manager': UserCheck,
   'Custom reporting': FileText,
@@ -105,25 +112,28 @@ export default function ServiceDetails({
     onGetStarted();
   };
 
-  const renderFeaturesList = (features: string[]) => (
+  const renderFeaturesList = (features: FeatureItem[]) => (
     <div className="space-y-4">
       <h3 className="text-sm font-medium text-gray-900">
         What's included with your appraisal:
       </h3>
-      <div className="grid gap-2">
+      <div className="grid gap-4">
         {features.map((feature) => {
-          const Icon = featureIcons[feature] || Search;
+          const Icon = featureIcons[feature.title] || Search;
           return (
             <div
-              key={feature}
-              className="flex items-center gap-3 p-2 rounded-md bg-gray-50/50 border border-gray-100 hover:bg-gray-50 transition-colors"
+              key={feature.title}
+              className="flex items-start gap-3 p-3 rounded-md bg-gray-50/50 border border-gray-100 hover:bg-gray-50 transition-colors"
             >
-              <div className="flex-shrink-0">
+              <div className="flex-shrink-0 mt-0.5">
                 <div className="p-1.5 rounded-md bg-white shadow-sm">
                   <Icon className="h-4 w-4 text-gray-600" />
                 </div>
               </div>
-              <span className="text-sm text-gray-600">{feature}</span>
+              <div>
+                <h4 className="text-sm font-medium text-gray-900 mb-1">{feature.title}</h4>
+                <p className="text-xs text-gray-600 leading-relaxed">{feature.description}</p>
+              </div>
             </div>
           );
         })}

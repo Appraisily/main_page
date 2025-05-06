@@ -70,12 +70,30 @@ const services = {
     description: 'Insurance, tax & legal documentation',
     icon: Shield,
     features: [
-      'Insurance & IRS compliance',
-      'Replacement value',
-      'Risk assessment',
-      'Digital certification',
-      'Priority processing',
-      'Expert consultation'
+      {
+        title: 'Insurance & IRS compliance',
+        description: 'Documentation that meets the requirements of major insurance companies and IRS guidelines for donations and estates.'
+      },
+      {
+        title: 'Replacement value',
+        description: 'Accurate retail replacement value assessment for insurance coverage and financial planning purposes.'
+      },
+      {
+        title: 'Risk assessment',
+        description: 'Detailed analysis of object fragility, environmental sensitivities, and specialized storage recommendations.'
+      },
+      {
+        title: 'Digital certification',
+        description: 'Secure digital certificate with unique identifier and verification system for authenticity.'
+      },
+      {
+        title: 'Priority processing',
+        description: 'Expedited handling by senior appraisers with specialized compliance expertise.'
+      },
+      {
+        title: 'Expert consultation',
+        description: 'Direct access to specialist appraisers for questions about your valuation and documentation.'
+      }
     ],
     basePrice: BASE_PRICE
   },
@@ -84,12 +102,30 @@ const services = {
     description: 'For dealers, estates & institutions',
     icon: Package,
     features: [
-      'Volume discounts',
-      'Dedicated account manager',
-      'Custom reporting',
-      'API integration',
-      'Expedited service',
-      'White-labeled delivery'
+      {
+        title: 'Volume discounts',
+        description: 'Tiered pricing structure with significant savings for large collections and institutional clients.'
+      },
+      {
+        title: 'Dedicated account manager',
+        description: 'Personal point of contact to coordinate your appraisal needs and timeline requirements.'
+      },
+      {
+        title: 'Custom reporting',
+        description: 'Tailored documentation formats to meet your specific institutional or business requirements.'
+      },
+      {
+        title: 'API integration',
+        description: 'Connect our appraisal services directly to your inventory management system or database.'
+      },
+      {
+        title: 'Expedited service',
+        description: 'Priority scheduling for time-sensitive projects with flexible turnaround options.'
+      },
+      {
+        title: 'White-labeled delivery',
+        description: 'Optional customized reports with your organization's branding for client-facing documentation.'
+      }
     ],
     basePrice: BASE_PRICE
   }
