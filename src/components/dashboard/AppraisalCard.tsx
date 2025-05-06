@@ -39,7 +39,7 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
   const showMobileTooltip = typeof window !== 'undefined' && window.innerWidth < 640;
 
   return (
-    <Card className="group hover:shadow-lg transition-all duration-300 bg-white border-gray-100">
+    <Card className="group hover:shadow-lg transition-all duration-300 bg-white border-gray-100 w-full flex flex-col h-full">
       {/* Image Preview */}
       <div className="relative h-36 sm:h-48 overflow-hidden rounded-t-lg">
         <img
@@ -78,7 +78,7 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
         </TooltipProvider>
       </CardHeader>
 
-      <CardContent className="space-y-3 sm:space-y-4 p-4 sm:p-6 pt-0 sm:pt-0">
+      <CardContent className="space-y-3 sm:space-y-4 p-4 sm:p-6 pt-0 sm:pt-0 flex-grow">
         {formattedValue && (
           <div className="flex items-center text-gray-900 bg-gray-50 p-2 sm:p-3 rounded-lg">
             <DollarSign className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-blue-600 flex-shrink-0" />
@@ -147,7 +147,7 @@ export default function AppraisalCard({ appraisal }: AppraisalCardProps) {
         )}
       </CardContent>
 
-      <CardFooter className="flex flex-col space-y-2 p-4 sm:p-6 pt-0 sm:pt-0">
+      <CardFooter className="flex flex-col space-y-2 p-4 sm:p-6 pt-0 sm:pt-0 mt-auto">
         <Button 
           variant="default" 
           className="w-full bg-gray-900 hover:bg-gray-800 text-white transition-colors text-xs sm:text-sm h-9 sm:h-10" 

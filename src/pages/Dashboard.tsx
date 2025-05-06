@@ -113,12 +113,14 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background pt-16 sm:pt-24 pb-12">
-      <div className="container px-4 sm:px-6">
+      <div className="container mx-auto px-4 sm:px-6 max-w-screen-xl">
         {/* Header */}
-        <DashboardHeader 
-          email={user.email} 
-          totalAppraisals={appraisals.length} 
-        />
+        <div className="max-w-screen-lg mx-auto">
+          <DashboardHeader 
+            email={user.email} 
+            totalAppraisals={appraisals.length} 
+          />
+        </div>
 
         {/* Content */}
         <div className="space-y-6 sm:space-y-8">
@@ -131,15 +133,19 @@ export default function Dashboard() {
               <p className="text-destructive">{error}</p>
             </div>
           ) : appraisals.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-8 sm:py-12 space-y-4 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+            <div className="flex flex-col items-center justify-center py-8 sm:py-12 space-y-4 bg-white rounded-xl shadow-sm border border-gray-100 p-6 max-w-screen-lg mx-auto">
               <p className="text-muted-foreground text-center">No appraisals found.</p>
               <p className="text-sm text-gray-500 text-center">Your completed appraisals will appear here.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-7xl mx-auto">
-              {appraisals.map((appraisal) => (
-                <AppraisalCard key={appraisal.id} appraisal={appraisal} />
-              ))}
+            <div className="max-w-screen-lg mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                {appraisals.map((appraisal) => (
+                  <div key={appraisal.id} className="flex h-full">
+                    <AppraisalCard appraisal={appraisal} />
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
