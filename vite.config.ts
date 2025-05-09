@@ -57,6 +57,12 @@ export default defineConfig(({ mode }) => ({
       }
     },
     rollupOptions: {
+      external: [
+        // Exclude platform-specific optional dependencies
+        /@rollup\/rollup-win32-x64-msvc/,
+        /@rollup\/rollup-darwin-x64/,
+        /@rollup\/rollup-linux-x64-gnu/
+      ],
       output: {
         manualChunks: {
           'react-core': ['react', 'react-dom'],
@@ -69,6 +75,7 @@ export default defineConfig(({ mode }) => ({
     }
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', '@radix-ui/react-tooltip', 'lucide-react']
+    include: ['react', 'react-dom', 'react-router-dom', '@radix-ui/react-tooltip', 'lucide-react'],
+    exclude: ['@rollup/rollup-win32-x64-msvc', '@rollup/rollup-darwin-x64', '@rollup/rollup-linux-x64-gnu']
   }
 }));

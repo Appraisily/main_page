@@ -5,7 +5,7 @@
   prod_branch = "main"
 
 [build.environment]
-  NODE_VERSION = "20"
+  NODE_VERSION = "18"
   SECRETS_SCAN_OMIT_PATHS = "dist/assets/*"
   SECRETS_SCAN_ENABLED = "false"
 
