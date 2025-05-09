@@ -1,7 +1,6 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import terser from '@rollup/plugin-terser';
 import { visualizer } from 'rollup-plugin-visualizer';
 import viteCompression from 'vite-plugin-compression';
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
@@ -49,13 +48,7 @@ export default defineConfig(({ mode }) => ({
     assetsDir: 'assets',
     cssCodeSplit: true,
     sourcemap: mode === 'development',
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true
-      }
-    },
+    minify: true,
     rollupOptions: {
       external: [
         // Exclude platform-specific optional dependencies
@@ -71,7 +64,6 @@ export default defineConfig(({ mode }) => ({
           'utils': ['clsx', 'tailwind-merge']
         }
       },
-      plugins: [terser()]
     }
   },
   optimizeDeps: {
