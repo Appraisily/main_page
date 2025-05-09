@@ -1,45 +1,31 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, ArrowRight, LogIn, User, LogOut, LayoutDashboard } from 'lucide-react';
-import './styles.css';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu"
+import { cn } from '@/lib/utils';
+import { useAuth } from '@/lib/auth/AuthContext';
 
-export interface HeaderProps {
-  currentSubdomain: 'main' | 'screener' | 'articles' | 'directory' | string;
-  user?: {
-    firstName?: string;
-    lastName?: string;
-    email?: string;
-    [key: string]: any;
-  } | null;
-  isAuthenticated?: boolean;
-  onLogin?: () => void;
-  onLogout?: () => void;
-  customLinks?: Array<{
-    name: string;
-    href: string;
-    external?: boolean;
-  }>;
-  navigationItems?: {
-    about?: Array<{name: string; href: string; description?: string}>;
-    services?: Array<{name: string; href: string; description?: string}>;
-    expertise?: Array<{name: string; href: string; description?: string}>;
-    knowledge?: Array<{name: string; href: string; description?: string}>;
-  };
-}
-
-export const Header: React.FC<HeaderProps> = ({
-  currentSubdomain = 'main',
-  user = null,
-  isAuthenticated = false,
-  onLogin = () => {},
-  onLogout = () => {},
-  customLinks,
-  navigationItems
-}) => {
+export default function Navbar() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
   const location = useLocation();
-  
+  const navigate = useNavigate();
+  const { user, authenticated, logout, loading } = useAuth();
+
   React.useEffect(() => {
     const handleScroll = () => {
       // Use requestAnimationFrame for smoother scrolling performance
@@ -52,37 +38,16 @@ export const Header: React.FC<HeaderProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Default navigation items
-  const defaultNavItems = {
-    about: [
-      { name: 'About Us', href: '/about', description: 'Learn about our mission and values' },
-      { name: 'Our Team', href: '/team', description: 'Meet our expert appraisers' },
-      { name: 'Qualified Appraisals', href: '/qualified-appraisals', description: 'Why professional appraisals matter' }
-    ],
-    services: [
-      { name: 'Our Services', href: '/services', description: 'Explore our appraisal services' },
-      { name: 'How It Works', href: '/how-it-works', description: 'Learn about our appraisal process' }
-    ],
-    expertise: [
-      { name: 'Our Expertise', href: '/expertise', description: 'Areas of specialization' }
-    ],
-    knowledge: [
-      { name: 'Articles', href: 'https://articles.appraisily.com/', description: 'Educational articles and market insights' },
-      { name: 'Art Appraiser Directory', href: 'https://art-appraiser-directory.appraisily.com/', description: 'Find certified art appraisers in your area' },
-      { name: 'Antique Appraiser Directory', href: 'https://antique-appraiser-directory.appraisily.com/', description: 'Connect with experienced antique appraisers' }
-    ]
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
-  // Merge default navigation items with any custom items provided
-  const mergedNavItems = {
-    about: navigationItems?.about || defaultNavItems.about,
-    services: navigationItems?.services || defaultNavItems.services,
-    expertise: navigationItems?.expertise || defaultNavItems.expertise,
-    knowledge: navigationItems?.knowledge || defaultNavItems.knowledge
-  };
-
-  // Default nav links for mobile view
-  const defaultNavLinks = [
+  const navItems = [
     { name: 'About', href: '/about' },
     { name: 'Qualified Appraisals', href: '/qualified-appraisals' },
     { name: 'Services', href: '/services' },
@@ -90,15 +55,22 @@ export const Header: React.FC<HeaderProps> = ({
     { name: 'Screener', href: 'https://screener.appraisily.com/', external: true }
   ];
 
-  // Use custom links if provided, otherwise use default
-  const navLinks = customLinks || defaultNavLinks;
-
-  // Helper function to conditionally apply classes
-  const cn = (...classes: string[]) => classes.filter(Boolean).join(' ');
+  const directoryItems = [
+    { 
+      name: 'Art Appraiser Directory',
+      href: 'http://art-appraiser-directory.appraisily.com/',
+      description: 'Find certified art appraisers in your area'
+    },
+    { 
+      name: 'Antique Appraiser Directory',
+      href: 'http://antique-appraiser-directory.appraisily.com/',
+      description: 'Connect with experienced antique appraisers'
+    }
+  ];
 
   return (
     <nav className={cn(
-      "header-nav fixed w-full z-50 top-0 left-0 right-0 will-change-transform",
+      "fixed w-full z-50 top-0 left-0 right-0 will-change-transform",
       isScrolled 
         ? "bg-white/90 backdrop-blur-md shadow-sm md:shadow-md" 
         : "bg-white/80 backdrop-blur-md",
@@ -122,73 +94,70 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:items-center md:justify-end w-full pl-8">
             <div className="flex items-center space-x-4">
-              <nav className="header-nav-menu">
-                <ul className="header-nav-list">
-                  <li className="header-nav-item">
-                    <button className="header-nav-trigger">About</button>
-                    <div className="header-nav-content">
+              <NavigationMenu>
+                <NavigationMenuList>
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="bg-transparent">About</NavigationMenuTrigger>
+                    <NavigationMenuContent>
                       <div className="w-[280px] p-2">
-                        {mergedNavItems.about.map((item) => (
-                          <Link 
-                            key={item.name}
-                            to={item.href} 
-                            className="block p-2 hover:bg-gray-50 rounded-lg transition-colors"
-                          >
-                            <div className="font-medium text-gray-900">{item.name}</div>
-                            {item.description && (
-                              <p className="text-sm text-gray-600">{item.description}</p>
-                            )}
-                          </Link>
-                        ))}
+                        <Link to="/about" className="block p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                          <div className="font-medium text-gray-900">About Us</div>
+                          <p className="text-sm text-gray-600">Learn about our mission and values</p>
+                        </Link>
+                        <Link to="/team" className="block p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                          <div className="font-medium text-gray-900">Our Team</div>
+                          <p className="text-sm text-gray-600">Meet our expert appraisers</p>
+                        </Link>
+                        <Link to="/qualified-appraisals" className="block p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                          <div className="font-medium text-gray-900">Qualified Appraisals</div>
+                          <p className="text-sm text-gray-600">Why professional appraisals matter</p>
+                        </Link>
                       </div>
-                    </div>
-                  </li>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
 
-                  <li className="header-nav-item">
-                    <button className="header-nav-trigger">Services</button>
-                    <div className="header-nav-content">
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="bg-transparent">Services</NavigationMenuTrigger>
+                    <NavigationMenuContent>
                       <div className="w-[250px] p-2">
-                        {mergedNavItems.services.map((item) => (
-                          <Link 
-                            key={item.name}
-                            to={item.href} 
-                            className="block p-2 hover:bg-gray-50 rounded-lg transition-colors"
-                          >
-                            <div className="font-medium text-gray-900">{item.name}</div>
-                            {item.description && (
-                              <p className="text-sm text-gray-600">{item.description}</p>
-                            )}
-                          </Link>
-                        ))}
+                        <Link to="/services" className="block p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                          <div className="font-medium text-gray-900">Our Services</div>
+                          <p className="text-sm text-gray-600">Explore our appraisal services</p>
+                        </Link>
+                        <Link to="/how-it-works" className="block p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                          <div className="font-medium text-gray-900">How It Works</div>
+                          <p className="text-sm text-gray-600">Learn about our appraisal process</p>
+                        </Link>
                       </div>
-                    </div>
-                  </li>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
 
-                  <li className="header-nav-item">
-                    <button className="header-nav-trigger">Expertise</button>
-                    <div className="header-nav-content">
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="bg-transparent">Expertise</NavigationMenuTrigger>
+                    <NavigationMenuContent>
                       <div className="w-[250px] p-2">
-                        {mergedNavItems.expertise.map((item) => (
-                          <Link 
-                            key={item.name}
-                            to={item.href} 
-                            className="block p-2 hover:bg-gray-50 rounded-lg transition-colors"
-                          >
-                            <div className="font-medium text-gray-900">{item.name}</div>
-                            {item.description && (
-                              <p className="text-sm text-gray-600">{item.description}</p>
-                            )}
-                          </Link>
-                        ))}
+                        <Link to="/expertise" className="block p-2 hover:bg-gray-50 rounded-lg transition-colors">
+                          <div className="font-medium text-gray-900">Our Expertise</div>
+                          <p className="text-sm text-gray-600">Areas of specialization</p>
+                        </Link>
                       </div>
-                    </div>
-                  </li>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
 
-                  <li className="header-nav-item">
-                    <button className="header-nav-trigger">Knowledge</button>
-                    <div className="header-nav-content">
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="bg-transparent">Knowledge</NavigationMenuTrigger>
+                    <NavigationMenuContent>
                       <div className="w-[400px] p-3">
-                        {mergedNavItems.knowledge.map((item) => (
+                        <a
+                          href="https://articles.appraisily.com/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block p-3 space-y-1 hover:bg-gray-50 rounded-lg transition-colors"
+                        >
+                          <div className="font-medium text-gray-900">Articles</div>
+                          <p className="text-sm text-gray-600">Educational articles and market insights</p>
+                        </a>
+                        {directoryItems.map((item) => (
                           <a
                             key={item.name}
                             href={item.href}
@@ -197,30 +166,30 @@ export const Header: React.FC<HeaderProps> = ({
                             className="block p-3 space-y-1 hover:bg-gray-50 rounded-lg transition-colors"
                           >
                             <div className="font-medium text-gray-900">{item.name}</div>
-                            {item.description && (
-                              <p className="text-sm text-gray-600">{item.description}</p>
-                            )}
+                            <p className="text-sm text-gray-600">{item.description}</p>
                           </a>
                         ))}
                       </div>
-                    </div>
-                  </li>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
 
-                  <li className="header-nav-item">
+                  <NavigationMenuItem>
                     <a
                       href="https://screener.appraisily.com/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="header-nav-link"
+                      className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 h-10 py-2 px-4 hover:bg-slate-100 hover:text-slate-900"
                     >
                       Screener
                     </a>
-                  </li>
-                </ul>
-              </nav>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
 
               <div className="flex items-center space-x-3">
-                {isAuthenticated ? (
+                {loading ? (
+                  <div className="w-7 h-7 rounded-full bg-gray-200 animate-pulse"></div>
+                ) : authenticated ? (
                   <>
                     <Link
                       to="/dashboard"
@@ -229,34 +198,34 @@ export const Header: React.FC<HeaderProps> = ({
                       <LayoutDashboard className="h-4 w-4 mr-2" />
                       Dashboard
                     </Link>
-                    <div className="header-dropdown">
-                      <button className="header-dropdown-trigger">
-                        <User className="h-4 w-4 mr-2 flex-shrink-0" />
-                        <span className="truncate max-w-[150px]">
-                          {user?.firstName || 'Profile'}
-                        </span>
-                      </button>
-                      <div className="header-dropdown-content">
-                        <Link to="/profile" className="header-dropdown-item">
-                          <User className="h-4 w-4 mr-2" />
-                          Profile Settings
-                        </Link>
-                        <div className="header-dropdown-separator"></div>
-                        <button onClick={onLogout} className="header-dropdown-item text-red-600">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-900 hover:bg-gray-200 transition-colors">
+                        <User className="h-4 w-4 mr-2" />
+                        {user?.displayName || user?.email?.split('@')[0] || 'Profile'}
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-48">
+                        <DropdownMenuItem asChild>
+                          <Link to="/profile" className="w-full flex items-center">
+                            <User className="h-4 w-4 mr-2" />
+                            Profile Settings
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={handleLogout} className="text-red-600 flex items-center">
                           <LogOut className="h-4 w-4 mr-2" />
                           Logout
-                        </button>
-                      </div>
-                    </div>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </>
                 ) : (
-                  <button
-                    onClick={onLogin}
+                  <Link
+                    to="/login"
                     className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg bg-gray-100 text-gray-900 hover:bg-gray-200 transition-colors"
                   >
                     <LogIn className="h-4 w-4 mr-2" />
                     Log In
-                  </button>
+                  </Link>
                 )}
                 <Link
                   to="/start"
@@ -272,7 +241,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-2">
-            {isAuthenticated ? (
+            {authenticated ? (
               <>
                 <Link
                   to="/dashboard"
@@ -281,32 +250,34 @@ export const Header: React.FC<HeaderProps> = ({
                   <LayoutDashboard className="h-5 w-5" />
                   <span className="sr-only">Dashboard</span>
                 </Link>
-                <div className="header-dropdown">
-                  <button className="inline-flex items-center justify-center p-2 rounded-lg bg-gray-100 text-gray-900 hover:bg-gray-200 transition-colors">
-                    <User className="h-5 w-5 flex-shrink-0" />
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="inline-flex items-center justify-center p-2 rounded-lg bg-gray-100 text-gray-900 hover:bg-gray-200 transition-colors">
+                    <User className="h-5 w-5" />
                     <span className="sr-only">Profile Menu</span>
-                  </button>
-                  <div className="header-dropdown-content">
-                    <Link to="/profile" className="w-full flex items-center header-dropdown-item">
-                      <User className="h-4 w-4 mr-2" />
-                      Profile Settings
-                    </Link>
-                    <div className="header-dropdown-separator"></div>
-                    <button onClick={onLogout} className="text-red-600 flex items-center header-dropdown-item">
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuItem asChild>
+                      <Link to="/profile" className="w-full flex items-center">
+                        <User className="h-4 w-4 mr-2" />
+                        Profile Settings
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout} className="text-red-600 flex items-center">
                       <LogOut className="h-4 w-4 mr-2" />
                       Logout
-                    </button>
-                  </div>
-                </div>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </>
             ) : (
-              <button
-                onClick={onLogin}
+              <Link
+                to="/login"
                 className="inline-flex items-center justify-center p-2 rounded-lg bg-gray-100 text-gray-900 hover:bg-gray-200 transition-colors"
               >
                 <LogIn className="h-5 w-5" />
                 <span className="sr-only">Log In</span>
-              </button>
+              </Link>
             )}
             <Link
               to="/start"
@@ -335,7 +306,7 @@ export const Header: React.FC<HeaderProps> = ({
             "px-2 pt-2 pb-3 space-y-1 bg-white shadow-lg mx-2 rounded-xl",
             isScrolled ? "shadow-md" : ""
           )}>
-            {navLinks.map((item) => (
+            {navItems.map((item) => (
               item.external ? (
                 <a
                   key={item.name}
@@ -362,7 +333,7 @@ export const Header: React.FC<HeaderProps> = ({
               )
             ))}
             {/* Mobile auth links */}
-            {isAuthenticated ? (
+            {authenticated ? (
               <>
                 <Link
                   to="/profile"
@@ -377,7 +348,7 @@ export const Header: React.FC<HeaderProps> = ({
                   Dashboard
                 </Link>
                 <button
-                  onClick={onLogout}
+                  onClick={handleLogout}
                   className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-red-600 hover:bg-gray-50 transition-colors"
                 >
                   Logout
@@ -385,12 +356,12 @@ export const Header: React.FC<HeaderProps> = ({
               </>
             ) : (
               <>
-                <button
-                  onClick={onLogin}
-                  className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
+                <Link
+                  to="/login"
+                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
                 >
                   Log In
-                </button>
+                </Link>
                 <Link
                   to="/signup"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 transition-colors"
@@ -404,6 +375,4 @@ export const Header: React.FC<HeaderProps> = ({
       )}
     </nav>
   );
-};
-
-export default Header;
+}

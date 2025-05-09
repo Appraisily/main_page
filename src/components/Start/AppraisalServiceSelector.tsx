@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import AppraisalServiceCard, { type ServiceInfo } from './AppraisalServiceCard';
+import '../../styles/components/_service-option-card.scss';
 
 export type ServiceType = 'regular' | 'insurance' | 'tax';
 
@@ -47,7 +48,7 @@ export default function AppraisalServiceSelector({
       </div>
       
       <motion.div 
-        className="grid grid-cols-1 md:grid-cols-3 gap-4"
+        className="service-options"
         variants={container}
         initial="hidden"
         animate="show"

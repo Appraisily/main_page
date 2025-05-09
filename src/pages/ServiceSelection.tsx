@@ -176,7 +176,7 @@ export default function ServiceSelection() {
         {/* Main Content Container */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
           {/* Trust Ribbon */}
-          <div className="bg-slate-50 border-b border-slate-200 py-3">
+          <div className="bg-neutral-50 border-b border-slate-200">
             <TrustBadges />
           </div>
           
