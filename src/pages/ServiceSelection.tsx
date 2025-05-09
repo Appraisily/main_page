@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Star, Shield, Clock, CreditCard, Lock, Package, ArrowRight, FileText } from 'lucide-react';
 import TrustBadges from '@/components/TrustBadges';
 import { Separator } from '@/components/ui/separator';
@@ -138,6 +138,11 @@ export default function ServiceSelection() {
   const [selectedSpeed, setSelectedSpeed] = useState<TurnaroundSpeed>('standard');
   // Fixed item count to 1 since this is for single items only
   const itemCount = 1;
+  
+  // Reset scroll position when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   
   // Calculate the price with potential discount - no discounts apply since itemCount is fixed at 1
   const servicePrices = {

@@ -8,6 +8,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SEO from './components/SEO';
+import ScrollToTop from './components/ScrollToTop';
 import { AuthProvider } from './lib/auth/AuthContext';
 import { useAuth } from './lib/auth/AuthContext';
 import ProtectedRoute from './lib/auth/ProtectedRoute';
@@ -102,7 +103,8 @@ export default function App() {
         <AuthProvider>
           <TooltipProvider>
             <div className="min-h-screen bg-white">
-              {/* <ScrollRestoration /> */}
+              {/* Scroll restoration component */}
+              <ScrollToTop />
               <Navbar />
               <main>
                 <Routes>
