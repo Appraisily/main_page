@@ -6,7 +6,7 @@ export function PhotoTips() {
     <div className="bg-stone-50 border border-stone-200 rounded-lg p-5 mb-6">
       <div className="flex items-center gap-2 mb-4">
         <Lightbulb className="h-5 w-5 text-gray-600" />
-        <h3 className="text-base font-medium text-gray-900" style={{ fontFamily: 'ui-serif, Georgia, Cambria, serif' }}>Tips for Better Appraisals</h3>
+        <h3 className="text-base font-medium text-gray-900">Tips for Better Appraisals</h3>
       </div>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

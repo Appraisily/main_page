@@ -123,7 +123,7 @@ export default function BulkUploadPage() {
                 <Upload className="h-6 w-6 text-gray-600" />
               </div>
               <div>
-                <h1 className="text-2xl font-semibold text-gray-900 mb-1" style={{ fontFamily: 'ui-serif, Georgia, Cambria, serif' }}>
+                <h1 className="text-2xl font-semibold text-gray-900 mb-1">
                   Bulk Appraisal Request Process
                 </h1>
                 <p className="text-gray-600">
@@ -195,11 +195,9 @@ export default function BulkUploadPage() {
               />
 
               <div className="space-y-6 pt-6 border-t border-gray-100">
-                <PaymentNotice />
-                
-                {/* Test Payment Option */}
+                {/* Test Payment Option - Only in development mode */}
                 {process.env.NODE_ENV !== 'production' && (
-                  <div className="flex items-center gap-2 p-4 bg-stone-50 border border-stone-100 rounded-lg">
+                  <div className="flex items-center gap-2 p-4 bg-stone-50 border border-stone-100 rounded-lg mb-4">
                     <input
                       type="checkbox"
                       id="useTestPayment"
@@ -212,12 +210,16 @@ export default function BulkUploadPage() {
                     </label>
                   </div>
                 )}
+                
+                {/* Button first, then payment notice - matching start page layout */}
                 <ActionButtons
                   onCancel={() => navigate('/bulk-appraisal')}
                   onSubmit={handleSubmit}
                   isUploading={isUploading}
                   disabled={items.length === 0}
                 />
+                
+                <PaymentNotice />
               </div>
             </div>
           </div>

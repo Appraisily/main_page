@@ -46,7 +46,7 @@ export function EmailInput({ value, onChange, onBlur, showConfirmation }: EmailI
         <div className="p-1.5 bg-gray-100 rounded-md">
           <Mail className="h-4 w-4 text-gray-600" />
         </div>
-        <label htmlFor="email" className="text-base font-medium text-gray-900" style={{ fontFamily: 'ui-serif, Georgia, Cambria, serif' }}>
+        <label htmlFor="email" className="text-base font-medium text-gray-900">
           Email Address
         </label>
       </div>
