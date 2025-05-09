@@ -1,15 +1,14 @@
 import React from 'react';
-import { Loader2, X, ArrowRight } from 'lucide-react';
+import { Loader2, ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface ActionButtonsProps {
-  onCancel: () => void;
   onSubmit: () => void;
   isUploading: boolean;
   disabled: boolean;
 }
 
-export function ActionButtons({ onCancel, onSubmit, isUploading, disabled }: ActionButtonsProps) {
+export function ActionButtons({ onSubmit, isUploading, disabled }: ActionButtonsProps) {
   return (
     <div className="flex flex-col gap-4">
       {/* Primary action button - styled like start page */}
@@ -35,16 +34,6 @@ export function ActionButtons({ onCancel, onSubmit, isUploading, disabled }: Act
             <ArrowRight className="h-4 w-4 ml-1" />
           </>
         )}
-      </button>
-      
-      {/* Cancel button */}
-      <button
-        type="button"
-        onClick={onCancel}
-        className="w-full flex items-center justify-center gap-2 py-3 text-gray-700 hover:text-gray-900 transition-colors text-sm"
-      >
-        <X className="h-4 w-4" />
-        <span>Cancel</span>
       </button>
     </div>
   );

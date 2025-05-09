@@ -233,7 +233,7 @@ export const Header: React.FC<HeaderProps> = ({
                       <button className="header-dropdown-trigger">
                         <User className="h-4 w-4 mr-2 flex-shrink-0" />
                         <span className="truncate max-w-[150px]">
-                          {user?.firstName || 'Profile'}
+                        {user?.firstName || 'Profile'}
                         </span>
                       </button>
                       <div className="header-dropdown-content">
