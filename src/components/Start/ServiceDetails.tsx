@@ -264,7 +264,7 @@ export default function ServiceDetails({
                   <span className="text-xs">Credit Card</span>
                 </div>
                 <img 
-                  src="/images/payment-methods/paypal.svg" 
+                  src="/images/payment-methods/new-paypal.svg" 
                   alt="PayPal" 
                   className="h-5" 
                 />

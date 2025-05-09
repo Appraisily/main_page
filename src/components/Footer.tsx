@@ -32,25 +32,19 @@ const links = {
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-white">
-      {/* Background Elements */}
+    <footer className="relative overflow-hidden">
+      {/* Very clear background color change */}
       <div className="absolute inset-0">
-        {/* Base gradient - Soft Frosted-Sky */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#f9fbff] via-[#e7efff] to-[#e3ecff]" />
-        
-        {/* Optional subtle noise texture */}
-        <div 
-          className="absolute inset-0 opacity-20 mix-blend-overlay"
-          style={{
-            backgroundImage: `url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAABBtJREFUWEe1l1uoVVUUhj/UJE0xTQQDC4seTFApoYKugpFE0U1C8imE7EHqQSuQHnp46EIRQRdIuklQQQR2wYeMLpJkXioTBMm8lJGVl/KG9ccs1mbtcy5n77PCZvac/xprjP+fa/xjtNBgJE0HDgNdQAcwHrgi/38FXAKOmdkhlza72oQkTQA2AYuAR3NLY4HTwO/AbmCfmV0aSoegASQtBD4AHsltPCLpBjAL+DyEKOe/boCkacDhIi2vAjOBbcByMzsSouJmA0iaA3xdRHIXWGFmO1Nrc8QASRuB9zOP/wRmmNmJ+pKGGCAp2D0H/JI5ujHb97kx2gFSXDpQcDLfzHY1m8Ah8SMGANOAw9lb/mtm9nKshqEGzAIOZc58aWYvxTg/ZADQW+A4+jE7NrXHQwxYC3yULTlgZotCnB9qwKJsn8dGrBuqgigDgFnAwcwTS6qmPmNS6h1kFcwCDmQXzcH8mF8HDEOuCZ0BYDqQ4vX/jcxsW1nkkrQaeLfEvptAZ3LYzL6JNaCKAWAHsDjb553AiLQnqS+WoDUGkLSsVBF/B/qANTPbX+ZQlTQMGQCsAlKK9htR0gyMydLiJ2AFsDPb/HuB2WZ2pTJD6rEMHYQfA6s7gO5sGt4CktZ/AD4F4tE0oEPSATNbEOJgkZZDUKokdXUCY4CvgBnA51nYkfweoA/4GjgIPJLqgJktiXG+ygzcY4CkWcD+7PHd2VdqCpDij95Ul8ws9fSuqhGIiUCVadiQ2WT2gKTV2RP6smMySZL3NKBnNLXjoQY8D+zKJOfMbG4ZgaQJwNfAC5kBu4GXs/CcGeMbqoVhBmBngRNzzaylKktmQBGxr64XmUUaXsUASa8B72QX3TczV+VkRrwBvJ89fy0VvLEGxBpQhhbfAt4skZHjZuaqvNr/SXoWSLuhdUhqzwBJLveqEE/MXNerc8O9dKOlBkiaCKQe4s1MTf4PwHPAceCp7MdTdXkfmGhmP1dZCTFrIKYWlO6B4lJJvpUu5fINfCW7Mw7D9mZ+UVkN02wGmhogaTzwbX7AHDCzNxqLjaQlWYrdEMnxmulnJbUjVKu5BvKSS1KciZdLC5KknsxVPeTIz0c9HU1vWYoaZkB7BJL0BPBT7rgn4bZmZ0QbGu3GQF9IaLbGAEnTspohrzDvAs+Y2W/t1gCSTgJPZyT0eqDFzH5qtwGu49M+0L2nGEiOm9nMdiOQlKri/MZL55yZvRAaB6rMQJr6Ul04aGYLQ52PLoiiDXBNaGZXQx2vYsAnwNJsNQ9k9X7TCijJgCVA2vtF9cEqw+AGjCrEE+lVM3NJWV8DRQLcJXKrNOFIoLgtOIU/DHSb2S9VZ6JWE45mw5HkqX5iXjB9D/wInALqL6f/ANX3xJ9qUYnGAAAAAElFTkSuQmCC")`
-          }}
-        />
-        
-        {/* Glass-blur effect (supported browsers only) */}
-        <div className="absolute inset-0 backdrop-blur-sm backdrop-saturate-[1.8] bg-white/55" />
+        <div className="absolute inset-0 bg-opacity-40 bg-blue-50" />
       </div>
 
       <div className="relative max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        {/* Visual verification indicator */}
+        <div className="w-full flex justify-center mb-4">
+          <div className="h-1 w-24 bg-blue-500 rounded"></div>
+        </div>
+        
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           {/* Company Info */}
           <div className="col-span-1 md:col-span-4 space-y-6">

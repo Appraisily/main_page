@@ -108,7 +108,7 @@ export default function BulkUploadPage() {
       };
 
       // Remove the bulk_ prefix since it's already added by the backend
-      const paymentLink = `${useTestPayment ? paymentLinks.test : paymentLinks[appraisalType]}?prefilled_promo_code=FRIENDS20&client_reference_id=${sessionId}`;
+      const paymentLink = `${useTestPayment ? paymentLinks.test : paymentLinks[appraisalType]}?prefilled_promo_code=BOOK20&client_reference_id=${sessionId}`;
       window.location.href = paymentLink;
     } catch (err) {
       setError('Upload failed. Please try again.');
@@ -129,10 +129,10 @@ export default function BulkUploadPage() {
               </div>
               <div>
                 <h1 className="text-2xl font-semibold text-gray-900 mb-1">
-                  Bulk Appraisal Request Process
+                  Book Appraisal Request Process
                 </h1>
                 <p className="text-gray-600">
-                  Add multiple items for appraisal
+                  Add multiple books for appraisal with exclusive 20% discount
                 </p>
               </div>
             </div>
@@ -152,6 +152,7 @@ export default function BulkUploadPage() {
                 value={appraisalType}
                 onChange={setAppraisalType}
                 itemCount={items.length}
+                isBookAppraisal={true}
               />
 
               {!isRestoringSession && (

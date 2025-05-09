@@ -2,7 +2,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { formatCurrency } from '@/lib/utils/text';
 import AppraisalServiceCard, { type ServiceInfo } from '@/components/Start/AppraisalServiceCard';
-import { Scale, Shield, FileCheck, Percent } from 'lucide-react';
+import { Scale, Shield, FileCheck, Percent, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export type AppraisalType = 'regular' | 'insurance' | 'tax';
@@ -11,6 +11,7 @@ export type AppraisalType = 'regular' | 'insurance' | 'tax';
 const BASE_PRICE = 5900; // $59.00
 const BULK_DISCOUNT_THRESHOLD = 3;
 const BULK_DISCOUNT_PERCENTAGE = 0.20; // 20% discount
+const BOOK_DISCOUNT_PERCENTAGE = 0.20; // 20% discount for books
 
 // Service definitions - matching main page
 const appraisalTypes: Record<AppraisalType, ServiceInfo> = {
@@ -91,18 +92,30 @@ const appraisalTypes: Record<AppraisalType, ServiceInfo> = {
   }
 };
 
-function calculatePrice(basePrice: number, itemCount: number): { price: number; hasDiscount: boolean } {
-  const hasDiscount = itemCount >= BULK_DISCOUNT_THRESHOLD;
-  const price = hasDiscount 
-    ? basePrice * (1 - BULK_DISCOUNT_PERCENTAGE)
-    : basePrice;
-  return { price, hasDiscount };
+function calculatePrice(basePrice: number, itemCount: number, isBookAppraisal: boolean = false): { price: number; originalPrice: number; hasDiscount: boolean } {
+  const hasBulkDiscount = itemCount >= BULK_DISCOUNT_THRESHOLD;
+  const hasBookDiscount = isBookAppraisal;
+  const hasDiscount = hasBulkDiscount || hasBookDiscount;
+  
+  const originalPrice = basePrice;
+  let price = basePrice;
+  
+  if (hasBookDiscount) {
+    price = price * (1 - BOOK_DISCOUNT_PERCENTAGE);
+  }
+  
+  if (hasBulkDiscount) {
+    price = price * (1 - BULK_DISCOUNT_PERCENTAGE);
+  }
+  
+  return { price, originalPrice, hasDiscount };
 }
 
 interface AppraisalTypeSelectorProps {
   value: AppraisalType;
   onChange: (type: AppraisalType) => void;
   itemCount?: number;
+  isBookAppraisal?: boolean;
 }
 
 // Animation variants for cards
@@ -128,14 +141,26 @@ const item = {
   }
 };
 
-export function AppraisalTypeSelector({ value, onChange, itemCount = 1 }: AppraisalTypeSelectorProps) {
+export function AppraisalTypeSelector({ value, onChange, itemCount = 1, isBookAppraisal = true }: AppraisalTypeSelectorProps) {
   const showBulkDiscount = itemCount >= BULK_DISCOUNT_THRESHOLD;
   
   // Calculate prices for each service type
+  const servicePricesInfo = {
+    regular: calculatePrice(appraisalTypes.regular.basePrice, itemCount, isBookAppraisal),
+    insurance: calculatePrice(appraisalTypes.insurance.basePrice, itemCount, isBookAppraisal),
+    tax: calculatePrice(appraisalTypes.tax.basePrice, itemCount, isBookAppraisal)
+  };
+  
   const servicePrices: Record<AppraisalType, number> = {
-    regular: calculatePrice(appraisalTypes.regular.basePrice, itemCount).price,
-    insurance: calculatePrice(appraisalTypes.insurance.basePrice, itemCount).price,
-    tax: calculatePrice(appraisalTypes.tax.basePrice, itemCount).price
+    regular: servicePricesInfo.regular.price,
+    insurance: servicePricesInfo.insurance.price,
+    tax: servicePricesInfo.tax.price
+  };
+  
+  const originalPrices: Record<AppraisalType, number> = {
+    regular: servicePricesInfo.regular.originalPrice,
+    insurance: servicePricesInfo.insurance.originalPrice,
+    tax: servicePricesInfo.tax.originalPrice
   };
   
   return (
@@ -146,14 +171,28 @@ export function AppraisalTypeSelector({ value, onChange, itemCount = 1 }: Apprai
         </h3>
       </div>
       
-      {/* Discount Badge */}
+      {/* Book Appraisal Badge */}
+      {isBookAppraisal && (
+        <div className="mb-6">
+          <div className="bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg p-4 shadow-md">
+            <div className="flex items-center justify-center gap-3 text-white">
+              <BookOpen className="h-5 w-5" />
+              <span className="font-medium">
+                Book Appraisal - 20% discount applied to all items!
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Bulk Discount Badge */}
       {showBulkDiscount && (
         <div className="mb-6">
           <div className="bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg p-4 shadow-md">
             <div className="flex items-center justify-center gap-3 text-white">
               <Percent className="h-5 w-5" />
               <span className="font-medium">
-                20% bulk discount applied to all items!
+                Bulk discount - Additional 20% off for 3+ items!
               </span>
             </div>
           </div>
@@ -174,6 +213,8 @@ export function AppraisalTypeSelector({ value, onChange, itemCount = 1 }: Apprai
               isSelected={value === type}
               onSelect={() => onChange(type)}
               price={servicePrices[type]}
+              originalPrice={originalPrices[type]}
+              hasDiscount={isBookAppraisal || showBulkDiscount}
             />
           </motion.div>
         ))}
