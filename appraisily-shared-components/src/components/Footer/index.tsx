@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Instagram, Mail, ArrowRight, Globe, Link2, Phone } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 import './styles.css';
 
 export interface FooterProps {
@@ -64,56 +67,74 @@ export const Footer: React.FC<FooterProps> = ({
     social: links?.social || defaultLinks.social
   };
 
-  // Helper function to conditionally apply classes
-  const cn = (...classes: string[]) => classes.filter(Boolean).join(' ');
-
   return (
-    <footer className="footer-container">
-      {/* Background Elements */}
-      <div className="footer-background">
-        {/* Base gradient */}
-        <div className="footer-gradient-base" />
+    <footer className="relative overflow-hidden">
+      {/* New improved background */}
+      <div className="absolute inset-0">
+        {/* Base gradient from white */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white via-gray-50 to-gray-100" />
         
-        {/* Grid pattern */}
-        <div className="footer-blob" />
+        {/* Dotted grid pattern */}
+        <div 
+          className="absolute inset-0" 
+          style={{
+            backgroundImage: `radial-gradient(circle, rgba(0,0,0,0.05) 1px, transparent 1px)`,
+            backgroundSize: '30px 30px'
+          }}
+        />
         
-        {/* Grid overlay */}
-        <div className="footer-grid-overlay" />
+        {/* Subtle wave pattern overlay */}
+        <div 
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21.184 20c.357-.13.72-.264.888-.14 1.5 1.1 2.745 10.275 6.09 10.275 1.21 0 2.305-4.5 3.73-7.972.857-2.163 1.98-4.54 2.267-5.97.368-1.846.558-3.764.69-4.23.243-.863 1.187-.865 1.19-.03 0 .833-.087 2.365-.13 3.3a1.32 1.32 0 0 1-2.12.155 18.51 18.51 0 0 1-.537-1.932c-.16-.678-.325-1.37-.368-1.383a.77.77 0 0 0-1.088-.452c-.18.092-.15.28-.34.593-.9 1.5-1.758 3.342-3.152 5.395-1.423 2.095-2.883 3.89-4.5 5.972C20.94 20.933 19.306 20 17.5 20a5.27 5.27 0 0 1-.7-.05A13.62 13.62 0 0 1 16 19.75c-.13.16-.7.2-1.6.1-.932-.11-1.91-.31-2.95-.55a43.73 43.73 0 0 1-.625-.11 10.59 10.59 0 0 0-.585-.07c-.01-.004-.03 0-.012 0a2.19 2.19 0 0 0-.748.28 3.02 3.02 0 0 0-.562.43A3.17 3.17 0 0 0 8.328 20C6.615 20 5.3 18.1 5.3 15.77c0-2.62 1.67-4.83 4.027-4.83 2.205 0 3.673 1.984 3.673c2.617 0 4.33 2.2 4.33 4.83 0 1.165-.47 2.283-1.273 3.13a6.12 6.12 0 0 1-2.146 1.372z' fill='%23000000' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E")`,
+            backgroundSize: '100px 20px'
+          }}
+        />
       </div>
 
-      <div className="footer-content">
-        <div className="footer-grid">
+      <div className="relative max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           {/* Company Info */}
-          <div className="footer-company-info">
-            <div className="footer-logo">
+          <div className="col-span-1 md:col-span-4 space-y-6">
+            <div className="flex items-center">
               <img 
                 src={logoUrl}
                 alt={`${companyName} Logo`}
-                className="footer-logo-image"
+                className="h-8 w-auto mr-3"
                 loading="lazy"
               />
-              <span className="footer-company-name">{companyName}</span>
+              <span className="text-2xl font-bold text-gray-900">{companyName}</span>
             </div>
-            <p className="footer-description">
+            <p className="text-gray-600 max-w-md">
               {description}
             </p>
-            <a href={callToAction.href} className="footer-cta-button">
-              {callToAction.text} <ArrowRight className="footer-cta-icon" />
-            </a>
+            <Button 
+              asChild
+              variant="outline"
+              className="w-full border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white transition-all"
+            >
+              <a href={callToAction.href} className="w-full flex justify-center items-center">
+                {callToAction.text} <ArrowRight className="ml-2 h-4 w-4" />
+              </a>
+            </Button>
           </div>
           
-          {/* Quick Links */}
-          <div className="footer-links-column">
-            <h3 className="footer-column-title">
-              <Link2 className="footer-icon-small" /> Quick Links
+          {/* Quick Links - added Link2 icon */}
+          <div className="col-span-1 md:col-span-2 space-y-4 flex flex-col">
+            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider flex items-center">
+              <Link2 className="h-4 w-4 mr-2 text-gray-900" /> Quick Links
             </h3>
-            <ul className="footer-links-list">
+            <ul className="space-y-3 flex-grow">
               {mergedLinks.quickLinks.map((link) => (
                 <li key={link.name}>
                   {link.href.startsWith('http') ? (
                     <a 
                       href={link.href}
-                      className="footer-link"
+                      className={cn(
+                        "text-gray-600 hover:text-gray-900 transition-colors",
+                        "text-sm"
+                      )}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
@@ -122,7 +143,10 @@ export const Footer: React.FC<FooterProps> = ({
                   ) : (
                     <Link 
                       to={link.href}
-                      className="footer-link"
+                      className={cn(
+                        "text-gray-600 hover:text-gray-900 transition-colors",
+                        "text-sm"
+                      )}
                     >
                       {link.name}
                     </Link>
@@ -132,17 +156,20 @@ export const Footer: React.FC<FooterProps> = ({
             </ul>
           </div>
 
-          {/* Our Network */}
-          <div className="footer-links-column">
-            <h3 className="footer-column-title">
-              <Globe className="footer-icon-small" /> Our Network
+          {/* Our Network - changed icon color to black */}
+          <div className="col-span-1 md:col-span-3 space-y-4 flex flex-col">
+            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider flex items-center">
+              <Globe className="h-4 w-4 mr-2 text-gray-900" /> Our Network
             </h3>
-            <ul className="footer-links-list">
+            <ul className="space-y-3 flex-grow">
               {mergedLinks.submodules.map((link) => (
                 <li key={link.name}>
                   <a 
                     href={link.href}
-                    className="footer-link"
+                    className={cn(
+                      "text-gray-600 hover:text-gray-900 transition-colors",
+                      "text-sm"
+                    )}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -153,32 +180,30 @@ export const Footer: React.FC<FooterProps> = ({
             </ul>
           </div>
 
-          {/* Contact Info */}
-          <div className="footer-links-column">
-            <h3 className="footer-column-title">
-              <Phone className="footer-icon-small" /> Contact Us
+          {/* Contact Info - added Phone icon and fixed alignment */}
+          <div className="col-span-1 md:col-span-3 space-y-4 flex flex-col">
+            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider flex items-center">
+              <Phone className="h-4 w-4 mr-2 text-gray-900" /> Contact Us
             </h3>
-            <div className="footer-contact-info">
+            <div className="space-y-3 flex-grow">
               <a 
                 href={`mailto:${contactEmail}`}
-                className="footer-contact-link"
+                className="flex items-center text-gray-600 hover:text-gray-900 transition-colors text-sm"
               >
-                <Mail className="footer-icon-small" />
+                <Mail className="h-4 w-4 mr-2" />
                 {contactEmail}
               </a>
-              <div className="footer-social">
+              <div className="flex space-x-4">
                 {mergedLinks.social.map((social) => {
                   const Icon = social.icon;
                   return (
                     <a
                       key={social.name}
                       href={social.href}
-                      className="footer-social-link"
+                      className="text-gray-600 hover:text-gray-900 transition-colors"
                       aria-label={`Visit our ${social.name} page`}
-                      target="_blank"
-                      rel="noopener noreferrer"
                     >
-                      <Icon className="footer-social-icon" />
+                      <Icon className="h-5 w-5" />
                     </a>
                   );
                 })}
@@ -188,20 +213,20 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
         
         {/* Bottom Bar */}
-        <div className="footer-bottom-bar">
-          <div className="footer-separator"></div>
-          <div className="footer-bottom-content">
-            <div className="footer-copyright">
-              <span className="footer-copyright-symbol">©</span>
-              <span className="footer-copyright-year">{new Date().getFullYear()} {companyName}.</span>
-              <span className="footer-copyright-text">All rights reserved.</span>
+        <div className="mt-8 pt-8">
+          <Separator className="mb-8" />
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="flex items-center space-x-1 text-sm">
+              <span className="text-gray-600">©</span>
+              <span className="text-gray-900 font-medium">{new Date().getFullYear()} {companyName}.</span>
+              <span className="text-gray-600">All rights reserved.</span>
             </div>
-            <nav className="footer-legal-nav">
+            <nav className="flex items-center gap-6">
               {mergedLinks.legal.map((link) => (
                 <Link
                   key={link.name}
                   to={link.href}
-                  className="footer-legal-link"
+                  className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
                 >
                   {link.name}
                 </Link>
