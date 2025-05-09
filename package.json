@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && npm run generate-sitemap",
+    "build": "node -e \"process.env.NETLIFY ? require('./netlify.js') : require('child_process').execSync('tsc && vite build && npm run generate-sitemap', {stdio: 'inherit'})\"",
     "preview": "vite preview",
     "generate-sitemap": "node scripts/generate-sitemap.cjs https://appraisily.com"
   },
@@ -61,7 +61,7 @@
     "appraisily-shared-components"
   ],
   "optionalDependencies": {
-    "@esbuild/linux-x64": "^0.19.8",
+    "@esbuild/linux-x64": "^0.21.3",
     "@rollup/rollup-linux-x64-gnu": "^4.9.5",
     "@rollup/rollup-win32-x64-msvc": "^4.9.5"
   },
