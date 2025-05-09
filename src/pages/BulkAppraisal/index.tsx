@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, FileCheck, Package, ArrowRight, DollarSign, Sparkles, Percent } from 'lucide-react';
+import { Upload, FileCheck, Package, ArrowRight, DollarSign, Sparkles, Percent, Scale, Shield } from 'lucide-react';
 import TrustBadges from '@/components/TrustBadges';
 
 // Constants to match other components
