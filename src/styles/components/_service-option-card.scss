@@ -2,69 +2,90 @@
   position: relative;
   overflow: hidden;
   border-radius: 0.5rem;
-  transition: box-shadow .2s, transform .2s;
+  transition: all .2s ease;
   cursor: pointer;
   border: 1px solid rgba(226, 232, 240, 1);
-  background: white;
-  flex: 1;
-  padding: 2rem 1.5rem;
+  background: #f8fafc; // Using a lighter background like other panels
+  height: 100%;
+  width: 100%;
+  padding: 1.5rem;
   text-align: center;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: none; // Removing the shadow for subtlety
 
   &__icon {
-    width: 32px;
-    height: 32px;
+    width: 28px; // Slightly smaller icon
+    height: 28px;
     margin: 0 auto 0.75rem;
     color: #64748b;  // neutral-500
   }
 
   &__title {
-    font-size: 1rem;                // 16px
+    font-size: 0.975rem;           // Slightly smaller font
     font-weight: 600;
     margin-bottom: .5rem;
-    color: #0f172a;  // slate-900
+    color: #334155;  // slate-700 - less bold
   }
 
   &__price {
-    font-size: 1.25rem;             // 20px
-    font-weight: 700;
+    font-size: 1.125rem;           // Slightly smaller price
+    font-weight: 600;              // Less bold
     margin-bottom: .25rem;
     color: #0f172a;  // slate-900
   }
 
   &__per {
-    font-size: .75rem;              // 12px
+    font-size: .75rem;             // 12px
     color: #64748b;  // neutral-500
     display: block;
   }
 
   // Selected
   &--selected {
-    border: 2px solid #0f172a;  // primary-500 (slate-900)
-    background: #f8fafc;       // primary-50 (slate-50)
-    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);  // primary-500 with alpha
+    border: 1px solid #334155;  // thinner, less prominent border
+    background: white;         // white background when selected
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.1);  // subtle shadow
 
     .service-option-card__icon {
-      color: #1e293b;  // primary-600 (slate-800)
+      color: #334155;  // slate-700
     }
   }
 
-  // Hover lift
+  // Hover state
   &:hover:not(.service-option-card--selected) {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    border-color: #cbd5e1; // slate-300
+    background: white;
+  }
+  
+  // Mobile adjustments
+  @media (max-width: 640px) {
+    padding: 1rem 0.75rem;
+    
+    &__icon {
+      width: 24px;
+      height: 24px;
+      margin-bottom: 0.5rem;
+    }
+    
+    &__title {
+      font-size: 0.875rem;
+      margin-bottom: 0.25rem;
+    }
+    
+    &__price {
+      font-size: 1rem;
+    }
   }
 }
 
 // Service options container
 .service-options {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
   width: 100%;
-  column-gap: 1.5rem;
-  justify-content: space-between;
   
   @media (max-width: 640px) {
-    flex-direction: column;
-    row-gap: 1rem;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
   }
 } 

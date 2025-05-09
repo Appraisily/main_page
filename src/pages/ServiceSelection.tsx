@@ -171,8 +171,8 @@ export default function ServiceSelection() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white pt-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white pt-20 sm:pt-24">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Main Content Container */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
           {/* Trust Ribbon */}
@@ -181,7 +181,7 @@ export default function ServiceSelection() {
           </div>
           
           {/* Service Selection */}
-          <div className="p-4 md:p-6">
+          <div className="p-3 sm:p-5 md:p-6 bg-white">
             <div className="max-w-5xl mx-auto">
               {/* Use the new AppraisalServiceSelector component */}
               <AppraisalServiceSelector
@@ -195,29 +195,29 @@ export default function ServiceSelection() {
         </div>
 
         {/* Bulk Appraisal CTA - Positioned between service selection and details */}
-        <div className="mt-8 bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-slate-100 rounded-full">
-                <Package className="h-6 w-6 text-slate-700" />
+        <div className="mt-4 sm:mt-8 bg-white rounded-xl p-4 sm:p-6 border border-slate-200 shadow-sm">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="p-2 sm:p-3 bg-slate-100 rounded-full">
+                <Package className="h-5 w-5 sm:h-6 sm:w-6 text-slate-700" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-slate-900">Need to appraise multiple items?</h3>
-                <p className="text-slate-600">Save up to 20% with our bulk appraisal service</p>
+                <h3 className="text-base sm:text-lg font-semibold text-slate-900">Need to appraise multiple items?</h3>
+                <p className="text-sm sm:text-base text-slate-600">Save up to 20% with our bulk appraisal service</p>
               </div>
             </div>
             <button
               onClick={() => navigate('/bulk-appraisal/upload')}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors w-full sm:w-auto justify-center"
+              className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors w-full sm:w-auto justify-center text-sm sm:text-base"
             >
               Start Bulk Upload
-              <ArrowRight className="h-5 w-5" />
+              <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
           </div>
         </div>
 
         {/* Service Details */}
-        <div className="mt-8 bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8">
+        <div className="mt-4 sm:mt-8 bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-6 md:p-8">
           <ServiceDetails
             service={services[selectedService]}
             type={selectedService}

@@ -42,9 +42,9 @@ export default function AppraisalServiceSelector({
   prices
 }: AppraisalServiceSelectorProps) {
   return (
-    <div className="py-4">
-      <div className="text-center mb-6">
-        <h2 className="text-2xl font-semibold text-slate-900 mb-2">Select Your Appraisal Service</h2>
+    <div className="py-2 sm:py-4">
+      <div className="text-center mb-3 sm:mb-5">
+        <h2 className="text-lg sm:text-xl font-semibold text-slate-700 mb-1">Select Your Appraisal Service</h2>
       </div>
       
       <motion.div 
@@ -54,7 +54,7 @@ export default function AppraisalServiceSelector({
         animate="show"
       >
         {(Object.entries(services) as [ServiceType, ServiceInfo][]).map(([type, service]) => (
-          <motion.div key={type} variants={item}>
+          <motion.div key={type} variants={item} className="h-full">
             <AppraisalServiceCard
               service={service}
               isSelected={selectedService === type}

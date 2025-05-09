@@ -33,6 +33,7 @@ import TurnaroundSpeedSelector, { TurnaroundSpeed } from '../TurnaroundSpeedSele
 import { addDays, format } from 'date-fns';
 import type { LucideIcon } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils/text';
+import '../../styles/components/_pricing-summary.scss';
 
 interface FeatureItem {
   title: string;
@@ -198,41 +199,44 @@ export default function ServiceDetails({
             basePrice={currentPrice / 100}
           />
           
-          <div className="p-4 bg-white rounded-lg border border-slate-200">
-            <h4 className="text-sm font-medium mb-3 text-slate-800">Pricing Summary</h4>
+          <div className="pricing-summary p-4 bg-white rounded-lg border border-slate-200">
+            <h4 className="pricing-summary__title text-sm font-medium mb-3 text-slate-800">Pricing Summary</h4>
             <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-slate-600">Base price ({itemCount} {itemCount === 1 ? 'item' : 'items'})</span>
-                <span className="font-medium">{formatCurrency(currentPrice * itemCount / 100)}</span>
+              <div className="pricing-summary__item flex justify-between text-sm">
+                <span className="pricing-summary__item-label text-slate-600">Base price ({itemCount} {itemCount === 1 ? 'item' : 'items'})</span>
+                <span className="pricing-summary__item-value font-medium">{formatCurrency(currentPrice * itemCount / 100)}</span>
               </div>
               
               {selectedSpeed === 'express' && (
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-600">Express delivery</span>
-                  <span className="font-medium">+{formatCurrency(SPEED_ADDITIONAL_PRICES.express * itemCount / 100)}</span>
+                <div className="pricing-summary__item flex justify-between text-sm">
+                  <span className="pricing-summary__item-label text-slate-600">Express delivery</span>
+                  <span className="pricing-summary__item-value font-medium">+{formatCurrency(SPEED_ADDITIONAL_PRICES.express * itemCount / 100)}</span>
                 </div>
               )}
               
               {selectedSpeed === 'priority' && (
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-600">Priority Same-Day delivery</span>
+                <div className="pricing-summary__item pricing-summary__item--promo flex justify-between text-sm">
+                  <span className="pricing-summary__item-label text-slate-600">
+                    Priority Same-Day delivery
+                    <span className="promo-tag hidden sm:inline-block">Limited Time</span>
+                  </span>
                   <div className="text-right">
-                    <span className="text-sm line-through text-slate-400 block">+{formatCurrency(6000 * itemCount / 100)}</span>
-                    <span className="text-sm font-medium text-green-600">FREE</span>
+                    <span className="original-price text-sm line-through text-slate-400 block">+{formatCurrency(6000 * itemCount / 100)}</span>
+                    <span className="free-price text-sm font-medium text-green-600">FREE</span>
                   </div>
                 </div>
               )}
               
               {hasDiscount && (
-                <div className="flex justify-between text-sm text-emerald-700">
-                  <span>Bulk discount (20%)</span>
-                  <span>-{formatCurrency(basePrice * 0.2 * itemCount / 100)}</span>
+                <div className="pricing-summary__item flex justify-between text-sm text-emerald-700">
+                  <span className="pricing-summary__item-label">Bulk discount (20%)</span>
+                  <span className="pricing-summary__item-value">-{formatCurrency(basePrice * 0.2 * itemCount / 100)}</span>
                 </div>
               )}
               
-              <div className="pt-2 border-t border-slate-200 flex justify-between text-slate-900 font-medium">
-                <span>Total</span>
-                <span>{formatCurrency(totalPrice / 100)}</span>
+              <div className="pricing-summary__total pt-2 border-t border-slate-200 flex justify-between text-slate-900 font-medium">
+                <span className="pricing-summary__total-label">Total</span>
+                <span className="pricing-summary__total-value">{formatCurrency(totalPrice / 100)}</span>
               </div>
             </div>
           </div>

@@ -1,0 +1,75 @@
+// Mobile styles for pricing summary section
+@media (max-width: 640px) {
+  .pricing-summary {
+    padding: 0.875rem;
+    
+    &__title {
+      font-size: 0.9375rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    &__item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.875rem;
+      
+      &-label {
+        color: #4b5563;
+        font-weight: 400;
+      }
+      
+      &-value {
+        font-weight: 600;
+      }
+      
+      // Special styles for the promo item
+      &--promo {
+        .promo-tag {
+          margin-left: 0.5rem;
+          font-size: 0.6875rem;
+          padding: 0.125rem 0.375rem;
+          background: linear-gradient(45deg, #f87171, #ef4444);
+          color: white;
+          border-radius: 0.25rem;
+          font-weight: 600;
+          vertical-align: middle;
+          display: inline-block;
+          line-height: 1;
+        }
+        
+        .original-price {
+          text-decoration: line-through;
+          color: #9ca3af;
+          font-size: 0.75rem;
+          display: block;
+          text-align: right;
+        }
+        
+        .free-price {
+          color: #10b981;
+          font-weight: 700;
+          font-size: 0.9375rem;
+        }
+      }
+    }
+    
+    &__total {
+      padding-top: 0.5rem;
+      border-top: 1px solid #e5e7eb;
+      margin-top: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      
+      &-label {
+        font-weight: 600;
+        font-size: 0.9375rem;
+      }
+      
+      &-value {
+        font-weight: 700;
+        font-size: 1.0625rem;
+        color: #111827;
+      }
+    }
+  }
+} 

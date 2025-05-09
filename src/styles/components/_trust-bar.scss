@@ -8,10 +8,25 @@
   font-weight: 500;
   column-gap: 1.25rem;        // 20px
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 0.75rem 0.5rem;    // Add some padding
+  min-height: 36px;           // Ensure minimum height on mobile
 
   svg {
     width: 14px;
     height: 14px;
     color: #0f172a;           // $primary-500, using slate-900 which seems to be the primary color
+  }
+
+  // Mobile adjustments
+  @media (max-width: 640px) {
+    flex-direction: column;
+    height: auto;
+    padding: 0.5rem;
+    row-gap: 0.5rem;
+    
+    div {
+      width: 100%;
+      justify-content: center;
+    }
   }
 } 

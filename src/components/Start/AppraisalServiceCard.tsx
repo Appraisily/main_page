@@ -45,41 +45,44 @@ export default function AppraisalServiceCard({
       {/* Popular tag */}
       {service.popular && (
         <div className="absolute top-0 right-0">
-          <div className="px-3 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-bl-lg flex items-center gap-1 shadow-sm">
+          <div className="px-2 py-0.5 bg-slate-100 text-slate-600 text-xs font-medium rounded-bl-md flex items-center gap-1">
             <Sparkles className="h-3 w-3" />
-            Popular
+            <span className="sm:inline">Popular</span>
           </div>
         </div>
       )}
       
-      <div className="flex flex-col items-center justify-between h-full" style={{ minHeight: '180px' }}>
-        {/* Icon */}
-        <Icon className="service-option-card__icon" />
-        
-        {/* Title */}
-        <h3 className="service-option-card__title">
-          {service.title}
-        </h3>
-        
-        {/* Price */}
-        <div className="text-center">
-          <span className="service-option-card__price">
-            {formatCurrency(price / 100)}
-          </span>
-          <span className="service-option-card__per">
-            per item
-          </span>
+      <div className="flex flex-col items-center h-full">
+        <div className="flex flex-row sm:flex-col sm:space-y-4 items-center sm:justify-center mb-3 sm:mb-4 w-full">
+          {/* Icon and Title side by side on mobile */}
+          <Icon className="service-option-card__icon" />
+          
+          <h3 className="service-option-card__title ml-3 sm:ml-0">
+            {service.title}
+          </h3>
         </div>
         
-        {/* Selection Indicator */}
-        <div className="mt-3">
-          <div className={cn(
-            "w-6 h-6 rounded-full border flex items-center justify-center transition-all",
-            isSelected 
-              ? "bg-slate-900 border-slate-900" 
-              : "border-slate-300"
-          )}>
-            {isSelected && <Check className="h-4 w-4 text-white" />}
+        <div className="flex flex-row justify-between w-full sm:block sm:text-center">
+          {/* Price and selection on opposite sides on mobile */}
+          <div>
+            <span className="service-option-card__price">
+              {formatCurrency(price / 100)}
+            </span>
+            <span className="service-option-card__per">
+              per item
+            </span>
+          </div>
+          
+          {/* Selection Indicator */}
+          <div>
+            <div className={cn(
+              "w-5 h-5 rounded-full border flex items-center justify-center transition-all",
+              isSelected 
+                ? "bg-slate-700 border-slate-700" 
+                : "border-slate-300"
+            )}>
+              {isSelected && <Check className="h-3 w-3 text-white" />}
+            </div>
           </div>
         </div>
       </div>

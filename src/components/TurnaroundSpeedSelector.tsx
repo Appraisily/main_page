@@ -2,6 +2,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { Clock, Zap, CheckCircle2, Timer } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils/text';
+import '../styles/components/_turnaround-speed.scss';
 
 export type TurnaroundSpeed = 'standard' | 'express' | 'priority';
 
@@ -39,7 +40,7 @@ export default function TurnaroundSpeedSelector({
 }: TurnaroundSpeedSelectorProps) {
   return (
     <div className="space-y-3">
-      <h3 className="text-sm font-medium text-gray-900">
+      <h3 className="text-sm sm:text-sm font-medium text-gray-900">
         Turnaround Time
       </h3>
       
@@ -49,7 +50,7 @@ export default function TurnaroundSpeedSelector({
             key={option.id}
             onClick={() => onSelect(option.id as TurnaroundSpeed)}
             className={cn(
-              "flex items-center justify-between p-4 rounded-lg border transition-all cursor-pointer",
+              "turnaround-option relative flex items-center justify-between p-4 rounded-lg border transition-all cursor-pointer",
               selectedSpeed === option.id
                 ? "border-gray-400 bg-gray-50 shadow-sm"
                 : "border-gray-200 hover:border-gray-300 bg-white"
@@ -70,10 +71,10 @@ export default function TurnaroundSpeedSelector({
                 )} />
               </div>
               
-              <div>
+              <div className="turnaround-option__label-container">
                 <div className="flex items-center gap-2">
                   <span className={cn(
-                    "text-sm font-medium",
+                    "option-label text-sm font-medium",
                     selectedSpeed === option.id
                       ? "text-gray-900"
                       : "text-gray-700"
@@ -82,31 +83,31 @@ export default function TurnaroundSpeedSelector({
                   </span>
                   
                   {option.isRecommended && (
-                    <span className="px-1.5 py-0.5 text-xs font-medium bg-red-100 text-red-700 rounded flex items-center gap-1">
-                      <Timer className="h-3 w-3" />
-                      Limited Time
+                    <span className="limited-time-tag px-1.5 py-0.5 text-xs font-medium bg-red-100 text-red-700 rounded flex items-center gap-1">
+                      <Timer className="timer-icon h-3 w-3" />
+                      <span>Limited Time</span>
                     </span>
                   )}
                 </div>
                 
-                <span className="text-xs text-gray-500">
+                <span className="option-description text-xs text-gray-500">
                   {option.description}
                 </span>
               </div>
             </div>
             
-            <div>
+            <div className="turnaround-option__price">
               {option.isPromotion ? (
                 <div className="flex flex-col items-end">
-                  <span className="text-sm line-through text-gray-400">
+                  <span className="original-price text-sm line-through text-gray-400">
                     +{formatCurrency(option.originalPrice / 100)}
                   </span>
-                  <span className="text-sm font-medium text-green-600">
+                  <span className="free-label text-sm font-medium text-green-600">
                     FREE
                   </span>
                 </div>
               ) : (
-                <span className="text-sm font-medium text-gray-700">
+                <span className="included-label text-sm font-medium text-gray-700">
                   Included
                 </span>
               )}

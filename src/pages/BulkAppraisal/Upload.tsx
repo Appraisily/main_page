@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Upload, Loader2, AlertCircle, Lock, CreditCard } from 'lucide-react';
 import { finalizeBulkUpload, updateSessionEmail } from '@/lib/api/bulkUploadApi';
@@ -20,6 +20,11 @@ export default function BulkUploadPage() {
   const [appraisalType, setAppraisalType] = useState<AppraisalType>('regular');
   const [useTestPayment, setUseTestPayment] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+
+  // Reset scroll position when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const {
     sessionId,

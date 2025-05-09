@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Instagram, Mail, ArrowRight, Globe } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Mail, ArrowRight, Globe, Link2, Phone } from 'lucide-react';
 import './styles.css';
 
 export interface FooterProps {
@@ -74,10 +74,8 @@ export const Footer: React.FC<FooterProps> = ({
         {/* Base gradient */}
         <div className="footer-gradient-base" />
         
-        {/* Animated gradient blobs */}
-        <div className="footer-blob footer-blob-1" />
-        <div className="footer-blob footer-blob-2" />
-        <div className="footer-blob footer-blob-3" />
+        {/* Grid pattern */}
+        <div className="footer-blob" />
         
         {/* Grid overlay */}
         <div className="footer-grid-overlay" />
@@ -107,7 +105,7 @@ export const Footer: React.FC<FooterProps> = ({
           {/* Quick Links */}
           <div className="footer-links-column">
             <h3 className="footer-column-title">
-              Quick Links
+              <Link2 className="footer-icon-small" /> Quick Links
             </h3>
             <ul className="footer-links-list">
               {mergedLinks.quickLinks.map((link) => (
@@ -158,7 +156,7 @@ export const Footer: React.FC<FooterProps> = ({
           {/* Contact Info */}
           <div className="footer-links-column">
             <h3 className="footer-column-title">
-              Contact Us
+              <Phone className="footer-icon-small" /> Contact Us
             </h3>
             <div className="footer-contact-info">
               <a 
