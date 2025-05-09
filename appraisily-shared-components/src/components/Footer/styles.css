@@ -15,38 +15,29 @@
 .footer-gradient-base {
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(to bottom, rgba(249, 250, 251, 1), rgba(255, 255, 255, 1));
+  background-image: linear-gradient(to bottom, #f9fbff 0%, #e7efff 60%, #e3ecff 100%);
 }
 
+/* Replace the blob animation with subtle noise texture */
 .footer-blob {
   position: absolute;
-  width: 75%;
-  height: 75%;
-  border-radius: 50%;
-  background-image: linear-gradient(to right, rgba(59, 130, 246, 1), rgba(59, 130, 246, 1));
-  mix-blend-mode: multiply;
-  filter: blur(3rem);
-  opacity: 0.08;
-  animation: blob-animation 7s infinite ease-in-out alternate;
+  inset: 0;
+  opacity: 0.2;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAABBtJREFUWEe1l1uoVVUUhj/UJE0xTQQDC4seTFApoYKugpFE0U1C8imE7EHqQSuQHnp46EIRQRdIuklQQQR2wYeMLpJkXioTBMm8lJGVl/KG9ccs1mbtcy5n77PCZvac/xprjP+fa/xjtNBgJE0HDgNdQAcwHrgi/38FXAKOmdkhlza72oQkTQA2AYuAR3NLY4HTwO/AbmCfmV0aSoegASQtBD4AHsltPCLpBjAL+DyEKOe/boCkacDhIi2vAjOBbcByMzsSouJmA0iaA3xdRHIXWGFmO1Nrc8QASRuB9zOP/wRmmNmJ+pKGGCAp2D0H/JI5ujHb97kx2gFSXDpQcDLfzHY1m8Ah8SMGANOAw9lb/mtm9nKshqEGzAIOZc58aWYvxTg/ZADQW+A4+jE7NrXHQwxYC3yULTlgZotCnB9qwKJsn8dGrBuqgigDgFnAwcwTS6qmPmNS6h1kFcwCDmQXzcH8mF8HDEOuCZ0BYDqQ4vX/jcxsW1nkkrQaeLfEvptAZ3LYzL6JNaCKAWAHsDjb553AiLQnqS+WoDUGkLSsVBF/B/qANTPbX+ZQlTQMGQCsAlKK9htR0gyMydLiJ2AFsDPb/HuB2WZ2pTJD6rEMHYQfA6s7gO5sGt4CktZ/AD4F4tE0oEPSATNbEOJgkZZDUKokdXUCY4CvgBnA51nYkfweoA/4GjgIPJLqgJktiXG+ygzcY4CkWcD+7PHd2VdqCpDij95Ul8ws9fSuqhGIiUCVadiQ2WT2gKTV2RP6smMySZL3NKBnNLXjoQY8D+zKJOfMbG4ZgaQJwNfAC5kBu4GXs/CcGeMbqoVhBmBngRNzzaylKktmQBGxr64XmUUaXsUASa8B72QX3TczV+VkRrwBvJ89fy0VvLEGxBpQhhbfAt4skZHjZuaqvNr/SXoWSLuhdUhqzwBJLveqEE/MXNerc8O9dKOlBkiaCKQe4s1MTf4PwHPAceCp7MdTdXkfmGhmP1dZCTFrIKYWlO6B4lJJvpUu5fINfCW7Mw7D9mZ+UVkN02wGmhogaTzwbX7AHDCzNxqLjaQlWYrdEMnxmulnJbUjVKu5BvKSS1KciZdLC5KknsxVPeTIz0c9HU1vWYoaZkB7BJL0BPBT7rgn4bZmZ0QbGu3GQF9IaLbGAEnTspohrzDvAs+Y2W/t1gCSTgJPZyT0eqDFzH5qtwGu49M+0L2nGEiOm9nMdiOQlKri/MZL55yZvRAaB6rMQJr6Ul04aGYLQ52PLoiiDXBNaGZXQx2vYsAnwNJsNQ9k9X7TCijJgCVA2vtF9cEqw+AGjCrEE+lVM3NJWV8DRQLcJXKrNOFIoLgtOIU/DHSb2S9VZ6JWE45mw5HkqX5iXjB9D/wInALqL6f/ANX3xJ9qUYnGAAAAAElFTkSuQmCC");
 }
 
-.footer-blob-1 {
-  top: 0;
-  left: -1rem;
-  animation-delay: 0ms;
+/* Glass blur effect */
+.footer-grid-overlay {
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(12px) saturate(180%);
+  background-color: rgba(255, 255, 255, 0.55);
 }
 
-.footer-blob-2 {
-  bottom: -2rem;
-  right: 0;
-  animation-delay: 2000ms;
-  background-image: linear-gradient(to left, rgba(59, 130, 246, 1), rgba(59, 130, 246, 1));
-}
-
-.footer-blob-3 {
-  bottom: -2rem;
-  left: -1rem;
-  animation-delay: 4000ms;
+/* Remove the obsolete blob animation classes */
+.footer-blob-1, .footer-blob-2, .footer-blob-3 {
+  display: none;
 }
 
 @keyframes blob-animation {
@@ -56,16 +47,6 @@
   100% {
     transform: translateY(-20px) scale(1.05);
   }
-}
-
-.footer-grid-overlay {
-  position: absolute;
-  inset: 0;
-  background-image: 
-    linear-gradient(to right, rgba(59, 130, 246, 0.13) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(59, 130, 246, 0.13) 1px, transparent 1px);
-  background-size: 4rem 4rem;
-  mask-image: radial-gradient(ellipse at center, black, transparent 75%);
 }
 
 /* Footer Content */

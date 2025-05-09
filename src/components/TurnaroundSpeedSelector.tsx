@@ -1,6 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { Clock, Zap, CheckCircle2 } from 'lucide-react';
+import { Clock, Zap, CheckCircle2, Timer } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils/text';
 
 export type TurnaroundSpeed = 'standard' | 'express' | 'priority';
@@ -21,19 +21,14 @@ const speedOptions = [
     isDefault: true,
   },
   {
-    id: 'express',
-    label: 'Express 24h',
-    description: 'Delivered within 1 business day',
-    icon: Zap,
-    additionalPrice: 3000, // $30.00
-    isRecommended: true,
-  },
-  {
     id: 'priority',
     label: 'Priority Same-Day',
     description: 'Delivered by end of day',
-    icon: CheckCircle2,
-    additionalPrice: 6000, // $60.00
+    icon: Timer,
+    additionalPrice: 0, // Free as a promotion (normally $60)
+    originalPrice: 6000, // Original price ($60.00)
+    isPromotion: true,
+    isRecommended: true,
   },
 ];
 
@@ -87,8 +82,9 @@ export default function TurnaroundSpeedSelector({
                   </span>
                   
                   {option.isRecommended && (
-                    <span className="px-1.5 py-0.5 text-xs font-medium bg-gray-100 text-gray-800 rounded">
-                      Best value
+                    <span className="px-1.5 py-0.5 text-xs font-medium bg-red-100 text-red-700 rounded flex items-center gap-1">
+                      <Timer className="h-3 w-3" />
+                      Limited Time
                     </span>
                   )}
                 </div>
@@ -100,12 +96,16 @@ export default function TurnaroundSpeedSelector({
             </div>
             
             <div>
-              {option.additionalPrice > 0 && (
-                <span className="text-sm font-medium text-gray-700">
-                  +{formatCurrency(option.additionalPrice / 100)}
-                </span>
-              )}
-              {option.additionalPrice === 0 && (
+              {option.isPromotion ? (
+                <div className="flex flex-col items-end">
+                  <span className="text-sm line-through text-gray-400">
+                    +{formatCurrency(option.originalPrice / 100)}
+                  </span>
+                  <span className="text-sm font-medium text-green-600">
+                    FREE
+                  </span>
+                </div>
+              ) : (
                 <span className="text-sm font-medium text-gray-700">
                   Included
                 </span>

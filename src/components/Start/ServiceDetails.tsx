@@ -90,7 +90,7 @@ const featureIcons: Record<string, LucideIcon> = {
 const SPEED_ADDITIONAL_PRICES = {
   standard: 0,
   express: 3000, // $30
-  priority: 6000, // $60
+  priority: 0, // $0 (promotional price, normally $60)
 };
 
 export default function ServiceDetails({
@@ -103,7 +103,7 @@ export default function ServiceDetails({
   hasDiscount,
   itemCount = 1
 }: ServiceDetailsProps) {
-  const [selectedSpeed, setSelectedSpeed] = useState<TurnaroundSpeed>('standard');
+  const [selectedSpeed, setSelectedSpeed] = useState<TurnaroundSpeed>('priority');
   const [expandedFeatures, setExpandedFeatures] = useState<Record<string, boolean>>({});
   
   const basePrice = service.basePrice || 5900;
@@ -206,10 +206,20 @@ export default function ServiceDetails({
                 <span className="font-medium">{formatCurrency(currentPrice * itemCount / 100)}</span>
               </div>
               
-              {speedAdditionalPrice > 0 && (
+              {selectedSpeed === 'express' && (
                 <div className="flex justify-between text-sm">
-                  <span className="text-slate-600">{selectedSpeed.charAt(0).toUpperCase() + selectedSpeed.slice(1)} delivery</span>
-                  <span className="font-medium">+{formatCurrency(speedAdditionalPrice * itemCount / 100)}</span>
+                  <span className="text-slate-600">Express delivery</span>
+                  <span className="font-medium">+{formatCurrency(SPEED_ADDITIONAL_PRICES.express * itemCount / 100)}</span>
+                </div>
+              )}
+              
+              {selectedSpeed === 'priority' && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-600">Priority Same-Day delivery</span>
+                  <div className="text-right">
+                    <span className="text-sm line-through text-slate-400 block">+{formatCurrency(6000 * itemCount / 100)}</span>
+                    <span className="text-sm font-medium text-green-600">FREE</span>
+                  </div>
                 </div>
               )}
               
@@ -250,17 +260,17 @@ export default function ServiceDetails({
                   <span className="text-xs">Credit Card</span>
                 </div>
                 <img 
-                  src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" 
+                  src="/images/payment-methods/paypal.svg" 
                   alt="PayPal" 
-                  className="h-4" 
+                  className="h-5" 
                 />
                 <img 
-                  src="https://upload.wikimedia.org/wikipedia/commons/3/39/Google_Pay_%28GPay%29_Logo_%282018-2020%29.svg" 
+                  src="/images/payment-methods/google-pay.svg" 
                   alt="Google Pay" 
-                  className="h-4" 
+                  className="h-5" 
                 />
                 <img 
-                  src="https://upload.wikimedia.org/wikipedia/commons/b/b0/Apple_Pay_logo.svg" 
+                  src="/images/payment-methods/apple-pay.svg" 
                   alt="Apple Pay" 
                   className="h-4" 
                 />

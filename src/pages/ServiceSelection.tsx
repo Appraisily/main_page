@@ -181,8 +181,8 @@ export default function ServiceSelection() {
           </div>
           
           {/* Service Selection */}
-          <div className="p-6 md:p-8">
-            <div className="max-w-3xl mx-auto">
+          <div className="p-4 md:p-6">
+            <div className="max-w-5xl mx-auto">
               {/* Use the new AppraisalServiceSelector component */}
               <AppraisalServiceSelector
                 services={services}
@@ -194,19 +194,7 @@ export default function ServiceSelection() {
           </div>
         </div>
 
-        {/* Service Details */}
-        <div className="mt-8 bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8">
-          <ServiceDetails
-            service={services[selectedService]}
-            type={selectedService}
-            onGetStarted={handleGetStarted}
-            price={price}
-            hasDiscount={hasDiscount}
-            itemCount={itemCount}
-          />
-        </div>
-
-        {/* Bulk Appraisal CTA - Moved to bottom as requested */}
+        {/* Bulk Appraisal CTA - Positioned between service selection and details */}
         <div className="mt-8 bg-white rounded-xl p-6 border border-slate-200 shadow-sm">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-4">
@@ -226,6 +214,18 @@ export default function ServiceSelection() {
               <ArrowRight className="h-5 w-5" />
             </button>
           </div>
+        </div>
+
+        {/* Service Details */}
+        <div className="mt-8 bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8">
+          <ServiceDetails
+            service={services[selectedService]}
+            type={selectedService}
+            onGetStarted={handleGetStarted}
+            price={price}
+            hasDiscount={hasDiscount}
+            itemCount={itemCount}
+          />
         </div>
       </div>
     </div>

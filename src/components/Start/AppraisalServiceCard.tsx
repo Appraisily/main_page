@@ -52,7 +52,7 @@ export default function AppraisalServiceCard({
         </div>
       )}
       
-      <div className="flex flex-col items-center justify-between h-full">
+      <div className="flex flex-col items-center justify-between h-full" style={{ minHeight: '180px' }}>
         {/* Icon */}
         <Icon className="service-option-card__icon" />
         
