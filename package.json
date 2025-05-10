@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node -e \"process.env.NETLIFY ? require('./netlify.js') : require('child_process').execSync('tsc && vite build && npm run generate-sitemap', {stdio: 'inherit'})\"",
+    "build": "node -e \"process.env.NETLIFY ? require('./netlify.cjs') : require('child_process').execSync('tsc && vite build && npm run generate-sitemap', {stdio: 'inherit'})\"",
     "preview": "vite preview",
     "generate-sitemap": "node scripts/generate-sitemap.cjs https://appraisily.com"
   },

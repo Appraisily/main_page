@@ -1,4 +1,4 @@
-// netlify.js - Install optional dependencies for build
+// netlify.cjs - Install optional dependencies for build
 console.log('Running custom Netlify build script');
 const { execSync } = require('child_process');
 
