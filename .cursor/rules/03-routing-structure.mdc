@@ -1,0 +1,38 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Routing Structure
+
+The application uses React Router v6 for navigation. All routes are defined in [src/App.tsx](mdc:src/App.tsx).
+
+## Main Routes
+- `/` - Landing page
+- `/about` - About page
+- `/team` - Team page
+- `/services` - Services page
+- `/expertise` - Expertise page
+- `/how-it-works` - How it works page
+
+## User Service Routes
+- `/start` - Service selection
+- `/bulk-appraisal` - Bulk appraisal page
+- `/bulk-appraisal/upload` - Bulk upload page
+- `/bulk-appraisal/review` - Bulk review page
+- `/report/:sessionId` - Report page
+- `/submission-success` - Submission success page
+
+## Authentication Routes
+- `/login` - Login page
+- `/signup` - Signup page
+- `/reset-password` - Reset password page
+- `/auth/success` - Auth success page
+
+## Protected Routes
+- `/dashboard` - User dashboard (requires authentication)
+- `/profile` - User profile (requires authentication)
+
+## Legal Routes
+- `/terms` - Terms of service
+- `/privacy` - Privacy policy

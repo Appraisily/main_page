@@ -62,6 +62,12 @@ export function useStripeSession(sessionId: string | null) {
         event: 'purchase_confirmation',
         transaction_id: sessionId
       });
+      
+      // Add this event for GTM conversion tracking
+      window.dataLayer.push({
+        event: 'purchase_data_ready',
+        transaction_id: sessionId
+      });
 
       analyticsTriggered.current = true;
     } catch (error) {
@@ -70,6 +76,12 @@ export function useStripeSession(sessionId: string | null) {
       // Fallback: Push minimal event data
       window.dataLayer?.push({
         event: 'purchase_confirmation',
+        transaction_id: sessionId
+      });
+      
+      // Add fallback conversion event
+      window.dataLayer?.push({
+        event: 'purchase_data_ready',
         transaction_id: sessionId
       });
       

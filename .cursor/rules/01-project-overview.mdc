@@ -1,0 +1,28 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Project Overview: Appraisily
+
+Appraisily is a professional art and antique appraisal platform built with React, TypeScript, and Tailwind CSS.
+
+## Key Technologies
+- React 18
+- TypeScript
+- Vite build system
+- Tailwind CSS
+- Radix UI primitives with shadcn/ui
+- React Router v6
+- Supabase for backend functionality
+- Stripe for payment processing
+- Firebase for authentication
+- Netlify for deployment
+
+## Main Entry Points
+- [src/main.tsx](mdc:src/main.tsx) - Application entry point
+- [src/App.tsx](mdc:src/App.tsx) - Application routes and layout
+- [src/index.css](mdc:src/index.css) - Global styles
+
+## Core Functionality
+The application provides art and antique appraisal services, with both free AI-powered artwork analysis and comprehensive professional appraisals.

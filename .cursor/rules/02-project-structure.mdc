@@ -1,0 +1,29 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Project Structure
+
+The codebase is organized into the following main directories:
+
+## Source Code Structure
+- [src/components/](mdc:src/components/) - Reusable UI components
+- [src/hooks/](mdc:src/hooks/) - Custom React hooks
+- [src/lib/](mdc:src/lib/) - Utility functions, API services, and types
+- [src/pages/](mdc:src/pages/) - Page components
+- [src/styles/](mdc:src/styles/) - Global and component-specific styles
+
+## Key Component Directories
+- [src/components/ui/](mdc:src/components/ui/) - Shadcn/UI components
+- [src/components/upload/](mdc:src/components/upload/) - Image upload related components
+- [src/components/dashboard/](mdc:src/components/dashboard/) - Dashboard related components
+
+## Library Structure
+- [src/lib/api/](mdc:src/lib/api/) - API service functions
+- [src/lib/auth/](mdc:src/lib/auth/) - Authentication utilities
+- [src/lib/firebase/](mdc:src/lib/firebase/) - Firebase configuration and utilities
+- [src/lib/stripe/](mdc:src/lib/stripe/) - Stripe payment utilities
+- [src/lib/types/](mdc:src/lib/types/) - TypeScript type definitions
+- [src/lib/validation/](mdc:src/lib/validation/) - Form validation utilities
+- [src/lib/upload/](mdc:src/lib/upload/) - File upload utilities

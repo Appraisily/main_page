@@ -11,11 +11,6 @@ if (!rootElement) throw new Error('Failed to find the root element');
 
 const root = createRoot(rootElement);
 
-// Initialize analytics after initial render
-import('./lib/analytics').then(({ initializeAnalytics }) => {
-  initializeAnalytics();
-});
-
 // Render app
 root.render(
   <React.StrictMode>

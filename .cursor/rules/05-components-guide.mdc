@@ -1,0 +1,35 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Components Guide
+
+The project uses a mix of custom components and shadcn/ui components for UI elements.
+
+## Core UI Components
+- [src/components/Navbar.tsx](mdc:src/components/Navbar.tsx) - Main navigation bar
+- [src/components/Footer.tsx](mdc:src/components/Footer.tsx) - Site footer
+- [src/components/Hero.tsx](mdc:src/components/Hero.tsx) - Hero section for landing page
+- [src/components/SEO.tsx](mdc:src/components/SEO.tsx) - SEO component for meta tags
+
+## UI Component Library
+The project uses [shadcn/ui](https://ui.shadcn.com/) for consistent, accessible UI components.
+These components are located in [src/components/ui/](mdc:src/components/ui/).
+
+## Service Components
+- [src/components/Services.tsx](mdc:src/components/Services.tsx) - Services overview
+- [src/components/ServiceDetails.tsx](mdc:src/components/ServiceDetails.tsx) - Detailed service info
+- [src/components/ServicePanels.tsx](mdc:src/components/ServicePanels.tsx) - Service selection panels
+- [src/components/ServiceCard.tsx](mdc:src/components/ServiceCard.tsx) - Individual service card
+
+## Upload Components
+- [src/components/upload/](mdc:src/components/upload/) - Image upload related components
+- [src/components/ImageUploader.tsx](mdc:src/components/ImageUploader.tsx) - Main image uploader component
+
+## Best Practices
+- Keep components small and focused on a single responsibility
+- Use TypeScript interfaces for component props
+- Follow shadcn/ui styling conventions with Tailwind CSS
+- Implement proper accessibility features
+- Use React.lazy() for code splitting of larger components
