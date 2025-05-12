@@ -34,7 +34,7 @@ export default function Testimonials() {
             Trusted by Collectors Worldwide
           </h2>
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            See what our clients say about our appraisal services on Trustpilot
+            See what our clients say about our appraisal services on Google reviews
           </p>
         </div>
 
@@ -63,8 +63,8 @@ export default function Testimonials() {
                 <p className="text-sm font-semibold text-gray-900">{review.author}</p>
                 <div className="mt-1 flex items-center gap-x-2">
                   <img
-                    src="https://cdn.trustpilot.net/brand-assets/4.1.0/logo-black.svg"
-                    alt="Trustpilot"
+                    src="https://ik.imagekit.io/appraisily/WebPage/google-reviews-logo.png"
+                    alt="Google reviews"
                     className="h-5"
                     loading="lazy"
                   />
@@ -77,13 +77,13 @@ export default function Testimonials() {
 
         <div className="mt-16 text-center">
           <a
-            href="https://www.trustpilot.com/review/appraisily.com"
+            href="https://www.google.com/maps/place/Appraisily/reviews"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 transition-colors"
-            aria-label="Read all Appraisily reviews on Trustpilot"
+            aria-label="Read all Appraisily reviews on Google reviews"
           >
-            <span className="text-sm font-semibold">View all reviews on Trustpilot</span>
+            <span className="text-sm font-semibold">View all reviews on Google reviews</span>
             <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fillRule="evenodd" d="M5 10a.75.75 0 01.75-.75h6.638L10.23 7.29a.75.75 0 111.04-1.08l3.5 3.25a.75.75 0 010 1.08l-3.5 3.25a.75.75 0 11-1.04-1.08l2.158-1.96H5.75A.75.75 0 015 10z" clipRule="evenodd" />
             </svg>

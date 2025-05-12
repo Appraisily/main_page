@@ -1,0 +1,25 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Authentication System
+
+The application uses Firebase Authentication for user management.
+
+## Authentication Files
+- [src/lib/firebase/config.ts](mdc:src/lib/firebase/config.ts) - Firebase configuration
+- [src/lib/auth/AuthContext.tsx](mdc:src/lib/auth/AuthContext.tsx) - Authentication context provider
+- [src/lib/auth/ProtectedRoute.tsx](mdc:src/lib/auth/ProtectedRoute.tsx) - Route protection component
+- [src/pages/Auth/Login.tsx](mdc:src/pages/Auth/Login.tsx) - Login page
+- [src/pages/Auth/Signup.tsx](mdc:src/pages/Auth/Signup.tsx) - Signup page
+- [src/pages/Auth/ResetPassword.tsx](mdc:src/pages/Auth/ResetPassword.tsx) - Reset password page
+
+## Authentication Features
+- Email/Password Login
+- Google Login
+- Automatic Account Creation after successful payments
+- ProtectedRoute component for securing routes
+
+## Important Note
+The `src/pages/Auth` directory is intentionally excluded from git tracking as it belongs to a separate repository. When developing locally, ensure the Auth files are properly copied to this location.

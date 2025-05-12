@@ -33,17 +33,19 @@ const links = {
 export default function Footer() {
   return (
     <footer className="relative overflow-hidden">
-      {/* Very clear background color change */}
+      {/* Elegant background with dots and wave pattern */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#f9fbff] via-[#e7efff] to-[#e3ecff]" />
-        <div className="absolute inset-0 bg-opacity-40 bg-blue-50" />
+        <div className="absolute inset-0 bg-gray-50" style={{ 
+          backgroundImage: `
+            radial-gradient(circle, #00000008 1px, transparent 1px),
+            url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='wavyPattern' width='200' height='200' patternUnits='userSpaceOnUse'%3E%3Cpath d='M0,100 C40,80 60,120 100,100 C140,80 160,120 200,100 L200,200 L0,200 Z' fill='%23f9f9f9' /%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23wavyPattern)' /%3E%3C/svg%3E")
+          `,
+          backgroundSize: '20px 20px, cover'
+        }} />
       </div>
 
       <div className="relative max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        {/* Visual verification indicator */}
-        <div className="w-full flex justify-center mb-4">
-          <div className="h-1 w-24 bg-blue-500 rounded"></div>
-        </div>
+        {/* Removed blue bar */}
         
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           {/* Company Info */}
@@ -110,7 +112,7 @@ export default function Footer() {
           {/* Our Network */}
           <div className="col-span-1 md:col-span-3 space-y-4">
             <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider flex items-center">
-              <Globe className="h-4 w-4 mr-2 text-blue-600" /> Our Network
+              <Globe className="h-4 w-4 mr-2 text-gray-900" /> Our Network
             </h3>
             <ul className="space-y-3">
               {links.submodules.map((link) => (
@@ -165,7 +167,7 @@ export default function Footer() {
         
         {/* Bottom Bar */}
         <div className="mt-8 pt-8">
-          <Separator className="mb-8" />
+          <Separator className="mb-8 bg-black h-[1px]" />
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center space-x-1 text-sm">
               <span className="text-gray-600">©</span>

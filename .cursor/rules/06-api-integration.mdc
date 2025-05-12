@@ -1,0 +1,30 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# API Integration
+
+The application integrates with several backend services for functionality.
+
+## Firebase Integration
+- [src/lib/firebase/config.ts](mdc:src/lib/firebase/config.ts) - Firebase configuration
+- Used for authentication and database operations
+
+## Supabase Integration
+- [src/lib/supabase.ts](mdc:src/lib/supabase.ts) - Supabase client configuration
+- Used for database and storage operations
+
+## Stripe Integration
+- [src/lib/stripe/](mdc:src/lib/stripe/) - Stripe payment utilities
+- Handles payment processing for appraisal services
+
+## API Service Functions
+- [src/lib/api/](mdc:src/lib/api/) - API service functions
+- Contains functions for interacting with backend services
+- May include WordPress REST API integration for fetching user data
+
+## Upload Utilities
+- [src/lib/uploadImage.ts](mdc:src/lib/uploadImage.ts) - Image upload utility
+- [src/lib/upload/](mdc:src/lib/upload/) - Additional upload utilities
+- Uses tus-js-client for chunked uploading
