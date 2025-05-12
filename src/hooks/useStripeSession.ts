@@ -5,6 +5,9 @@ import type { StripeSessionResponse } from '@/lib/types/stripe';
 const isDev = import.meta.env.DEV;
 const DEV_SHARED_KEY = 'sk_shared_5f9a4b2c8e7d6f3a1b9c4d5e8f7a2b3c4d5e6f7';
 
+// Global Set to track processed session IDs for analytics within the current page lifecycle
+const processedAnalyticsSessions = new Set<string>();
+
 const mockSessionData: Record<string, StripeSessionResponse> = {
   'cs_live_b1lDTlUrm70sYbfdDJGgvkh6hPjdJXdEi9w0FBgS2F33pw63KCXs4IV6vO': {
     customer_details: {
@@ -31,7 +34,7 @@ export function useStripeSession(sessionId: string | null) {
   const analyticsTriggered = useRef<boolean>(false);
 
   const pushAnalyticsEvent = async (data: StripeSessionResponse | null) => {
-    if (analyticsTriggered.current || !sessionId) return;
+    if (analyticsTriggered.current || !sessionId || processedAnalyticsSessions.has(sessionId)) return;
     
     try {
       // Initialize dataLayer
@@ -64,6 +67,8 @@ export function useStripeSession(sessionId: string | null) {
       });
 
       analyticsTriggered.current = true;
+      // Mark this sessionId as processed globally
+      processedAnalyticsSessions.add(sessionId);
     } catch (error) {
       console.error('Failed to push analytics event:', error);
       
@@ -74,6 +79,8 @@ export function useStripeSession(sessionId: string | null) {
       });
       
       analyticsTriggered.current = true;
+      // Also mark as processed globally in case of error fallback path
+      processedAnalyticsSessions.add(sessionId);
     }
   };
 
