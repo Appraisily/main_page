@@ -62,7 +62,7 @@ export function useStripeSession(sessionId: string | null) {
 
       // Trigger purchase event
       window.dataLayer.push({
-        event: 'purchase_confirmation',
+        event: 'purchase_data_ready',
         transaction_id: sessionId
       });
       
@@ -80,7 +80,7 @@ export function useStripeSession(sessionId: string | null) {
       
       // Fallback: Push minimal event data
       window.dataLayer?.push({
-        event: 'purchase_confirmation',
+        event: 'purchase_data_ready',
         transaction_id: sessionId
       });
       
