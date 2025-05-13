@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Mail, ArrowLeft, CheckCircle2, AlertCircle, Lock, Eye, EyeOff } from 'lucide-react';
-import { requestPasswordReset, completePasswordReset } from '@/lib/auth/authService';
+import React, { useState, useEffect } from 'react';import { Link, useNavigate, useLocation } from 'react-router-dom';import { Mail, ArrowLeft, CheckCircle2, AlertCircle, Lock, Eye, EyeOff } from 'lucide-react';import { requestPasswordReset } from '@/lib/firebase/firebaseAuth';
+import { getAuth, confirmPasswordReset, verifyPasswordResetCode } from 'firebase/auth';
 
 function RequestForm({ 
   email, 
@@ -326,8 +324,13 @@ export default function ResetPassword() {
     setIsLoading(true);
     
     try {
-      // Call the password reset API with token and new password
-      await completePasswordReset(token, password, confirmPassword);
+      const auth = getAuth();
+      
+      // Verify the action code first
+      await verifyPasswordResetCode(auth, token);
+      
+      // Complete the password reset
+      await confirmPasswordReset(auth, token, password);
       
       // Show success message
       setResetSuccess(true);

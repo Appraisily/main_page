@@ -71,10 +71,30 @@ npx eslint "src/**/*.{ts,tsx}"
 ```
 
 ### Environment Variables
-Create a `.env` file with the following variables:
+Create a `.env` file with the following variables for local development only:
 ```
+# NOTE: This .env file is only for local development reference.
+# In production, all variables should be set in Netlify's environment settings.
+
+# Firebase Configuration
+VITE_FIREBASE_API_KEY=your-firebase-api-key
+VITE_FIREBASE_APP_ID=your-firebase-app-id
+VITE_FIREBASE_AUTH_DOMAIN=your-firebase-auth-domain
+VITE_FIREBASE_MESSAGING_SENDER_ID=your-firebase-messaging-sender-id
+VITE_FIREBASE_PROJECT_ID=your-firebase-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-firebase-storage-bucket
+
+# Google Tag Manager
 VITE_GOOGLE_TAG_MANAGER_ID=your-gtm-id
-VITE_AUTH_API_URL=your-auth-api-url
+
+# API Security
+VITE_SHARED_SECRET=your-shared-secret
+VITE_STRIPE_SHARED_SECRET=your-stripe-shared-secret
+
+# API Endpoints (optional - these have defaults in the code)
+VITE_PAYMENT_API_URL=your-payment-api-url
+VITE_SITE_URL=your-site-url
+VITE_WP_API_URL=your-wordpress-api-url
 ```
 
 ## Component Guidelines
@@ -225,3 +245,31 @@ The authentication system consists of the following files:
 ## API Integration
 
 The authentication system works with the WordPress REST API to fetch appraisals by user email. The integration is handled by `src/lib/api/dashboardApi.ts`.
+
+## Environment Variables and Deployment
+
+### Netlify Environment Variables
+This project does not use `.env` files for production deployment. Instead, all environment variables are configured directly in Netlify's environment settings. This approach ensures better security as sensitive credentials are never committed to the GitHub repository.
+
+The following runtime variables are configured in Netlify for this project:
+
+- `VITE_FIREBASE_API_KEY`: Firebase API key
+- `VITE_FIREBASE_APP_ID`: Firebase App ID
+- `VITE_FIREBASE_AUTH_DOMAIN`: Firebase auth domain
+- `VITE_FIREBASE_MESSAGING_SENDER_ID`: Firebase messaging sender ID
+- `VITE_FIREBASE_PROJECT_ID`: Firebase project ID
+- `VITE_FIREBASE_STORAGE_BUCKET`: Firebase storage bucket
+- `VITE_SHARED_SECRET`: Shared secret for secure API access
+- `VITE_STRIPE_SHARED_SECRET`: Secret for Stripe integration
+
+All variables have the same value across all deployment contexts and are injected by Netlify at build time.
+
+### Development vs Production
+- **Development**: For local development, create a `.env` file with the appropriate values as described in the "Environment Variables" section above.
+- **Production**: Variables are managed in the Netlify dashboard and automatically injected during the build process.
+
+### Deployment Process
+1. Code is pushed to GitHub
+2. Netlify automatically detects changes and triggers a build
+3. During build, Netlify injects the environment variables from its configuration
+4. No `.env` files are needed or included in the repository

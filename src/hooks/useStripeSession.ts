@@ -60,31 +60,19 @@ export function useStripeSession(sessionId: string | null) {
       // Push ecommerce data
       window.dataLayer.push(analyticsData);
 
-      // Trigger purchase event
+      // Trigger purchase event (only push this once!)
       window.dataLayer.push({
         event: 'purchase_data_ready',
         transaction_id: sessionId
       });
       
-      // Add this event for GTM conversion tracking
-      window.dataLayer.push({
-        event: 'purchase_data_ready',
-        transaction_id: sessionId
-      });
-
       analyticsTriggered.current = true;
-      // Mark this sessionId as processed globally
+      // Also mark as processed globally in case of error fallback path
       processedAnalyticsSessions.add(sessionId);
     } catch (error) {
       console.error('Failed to push analytics event:', error);
       
-      // Fallback: Push minimal event data
-      window.dataLayer?.push({
-        event: 'purchase_data_ready',
-        transaction_id: sessionId
-      });
-      
-      // Add fallback conversion event
+      // Fallback: Push minimal event data (only push this once!)
       window.dataLayer?.push({
         event: 'purchase_data_ready',
         transaction_id: sessionId
