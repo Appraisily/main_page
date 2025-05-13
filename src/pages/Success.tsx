@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import PaymentDetails from '@/components/PaymentDetails';
 import AppraisalUploadForm from '@/components/upload/AppraisalUploadForm';
@@ -10,6 +10,7 @@ export default function Success() {
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get('session_id');
   const { session, loading } = useStripeSession(sessionId || '');
+  const accountCreationAttempted = useRef(false);
   const [accountStatus, setAccountStatus] = useState<{
     created: boolean;
     existing: boolean;
@@ -24,11 +25,23 @@ export default function Success() {
   const isBulkAppraisal = session && session.client_reference_id?.startsWith('bulk_');
 
   useEffect(() => {
-    // Create a user account once we have a valid session ID
-    if (sessionId && !loading && session) {
+    // Create a user account once we have a valid session ID and it hasn't been attempted
+    if (sessionId && !loading && session && !accountCreationAttempted.current) {
+      accountCreationAttempted.current = true;
+
       const createAccount = async () => {
         try {
-          const result = await handleSuccessfulPayment(sessionId);
+          const customerEmail = session.customer_details?.email;
+          if (!customerEmail) {
+            console.error('Customer email not found in Stripe session, cannot create account.', session);
+            setAccountStatus({
+              created: false,
+              existing: false,
+              error: 'Customer email not available for account creation.'
+            });
+            return;
+          }
+          const result = await handleSuccessfulPayment(sessionId, customerEmail);
           setAccountStatus({
             created: !!result.userCreated,
             existing: !!result.userExists,

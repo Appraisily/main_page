@@ -6,9 +6,10 @@ const API_URL = import.meta.env.VITE_PAYMENT_API_URL || 'https://payment-process
 /**
  * Handles successful payment and creates a Firebase user account
  * @param sessionId The Stripe session ID
+ * @param email The customer's email, passed from the calling component
  * @returns Response with success status
  */
-export async function handleSuccessfulPayment(sessionId: string): Promise<{ success: boolean; userCreated?: boolean; userExists?: boolean }> {
+export async function handleSuccessfulPayment(sessionId: string, email: string | undefined): Promise<{ success: boolean; userCreated?: boolean; userExists?: boolean }> {
   try {
     // Only proceed if there's no current user logged in
     if (auth.currentUser) {
@@ -16,26 +17,24 @@ export async function handleSuccessfulPayment(sessionId: string): Promise<{ succ
       return { success: true, userExists: true };
     }
 
-    // Fetch the customer email from the Stripe session
-    const response = await fetch(`${API_URL}/stripe/session/${sessionId}/email`);
-    
-    if (!response.ok) {
-      console.error('Failed to fetch email from session', {
-        status: response.status,
-        statusText: response.statusText
-      });
-      throw new Error('Failed to fetch customer email');
-    }
-    
-    const data = await response.json();
-    const { email } = data;
+    // Email is now passed as a parameter, no need to fetch it here.
+    // const response = await fetch(`${API_URL}/stripe/session/${sessionId}/email`); // REMOVED
+    // if (!response.ok) { // REMOVED
+    //   console.error('Failed to fetch email from session', { // REMOVED
+    //     status: response.status, // REMOVED
+    //     statusText: response.statusText // REMOVED
+    //   }); // REMOVED
+    //   throw new Error('Failed to fetch customer email'); // REMOVED
+    // } // REMOVED
+    // const data = await response.json(); // REMOVED
+    // const { email: fetchedEmail } = data; // REMOVED
     
     if (!email) {
-      console.error('No email found in session data');
-      throw new Error('No email found for session');
+      console.error('No email provided for account creation for session:', sessionId);
+      throw new Error('No email found for session, cannot create account');
     }
     
-    console.log(`Creating account for customer: ${email}`);
+    console.log(`Creating account for customer: ${email} for session: ${sessionId}`);
     
     // Create a Firebase user account with the email
     const result = await createUserAfterPayment(email);
