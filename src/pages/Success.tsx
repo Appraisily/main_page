@@ -5,6 +5,7 @@ import AppraisalUploadForm from '@/components/upload/AppraisalUploadForm';
 import { Upload, Package, CheckCircle2, UserCircle } from 'lucide-react';
 import { useStripeSession } from '@/hooks/useStripeSession';
 import { handleSuccessfulPayment } from '@/lib/stripe/handlePaymentSuccess';
+import { logger } from '@/lib/utils/logger';
 
 export default function Success() {
   const [searchParams] = useSearchParams();
@@ -33,7 +34,7 @@ export default function Success() {
         try {
           const customerEmail = session.customer_details?.email;
           if (!customerEmail) {
-            console.error('Customer email not found in Stripe session, cannot create account.', session);
+            logger.error('Customer email not found in Stripe session, cannot create account.', session);
             setAccountStatus({
               created: false,
               existing: false,
@@ -48,7 +49,7 @@ export default function Success() {
             error: null
           });
         } catch (error) {
-          console.error('Error creating account:', error);
+          logger.error('Error creating account:', error);
           setAccountStatus({
             created: false,
             existing: false,

@@ -87,6 +87,9 @@ VITE_FIREBASE_STORAGE_BUCKET=your-firebase-storage-bucket
 # Google Tag Manager
 VITE_GOOGLE_TAG_MANAGER_ID=your-gtm-id
 
+# Console Debugging
+VITE_CONSOLE_DEBUG_ENABLED=true # Set to "false" in production via Netlify to suppress console messages
+
 # API Security
 VITE_SHARED_SECRET=your-shared-secret
 VITE_STRIPE_SHARED_SECRET=your-stripe-shared-secret
@@ -261,6 +264,9 @@ The following runtime variables are configured in Netlify for this project:
 - `VITE_FIREBASE_STORAGE_BUCKET`: Firebase storage bucket
 - `VITE_SHARED_SECRET`: Shared secret for secure API access
 - `VITE_STRIPE_SHARED_SECRET`: Secret for Stripe integration
+
+# Application Behavior
+- `VITE_CONSOLE_DEBUG_ENABLED`: Controls whether console debug messages are shown. Set to `true` to show, `false` to hide.
 
 All variables have the same value across all deployment contexts and are injected by Netlify at build time.
 

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { hashEmail } from '@/lib/analytics';
 import type { StripeSessionResponse } from '@/lib/types/stripe';
+import { logger } from '@/lib/utils/logger';
 
 const isDev = import.meta.env.DEV;
 const DEV_SHARED_KEY = 'sk_shared_5f9a4b2c8e7d6f3a1b9c4d5e8f7a2b3c4d5e6f7';
@@ -70,7 +71,7 @@ export function useStripeSession(sessionId: string | null) {
       // Also mark as processed globally in case of error fallback path
       processedAnalyticsSessions.add(sessionId);
     } catch (error) {
-      console.error('Failed to push analytics event:', error);
+      logger.error('Failed to push analytics event:', error);
       
       // Fallback: Push minimal event data (only push this once!)
       window.dataLayer?.push({
