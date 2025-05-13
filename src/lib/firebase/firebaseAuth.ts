@@ -6,6 +6,7 @@ import {
   signInWithPopup,
   onAuthStateChanged as _onAuthStateChanged,
   sendPasswordResetEmail,
+  fetchSignInMethodsForEmail,
   User
 } from 'firebase/auth';
 import { auth } from './config';
@@ -56,6 +57,16 @@ export const signUpWithEmailPassword = async (email: string, password: string) =
 // Create a user account after payment
 export const createUserAfterPayment = async (email: string) => {
   try {
+    // First, check if the user already exists to avoid unnecessary 400 errors
+    const existingMethods = await fetchSignInMethodsForEmail(auth, email);
+    if (existingMethods && existingMethods.length > 0) {
+      console.log('User already exists, skipping account creation');
+      return {
+        success: true,
+        userExists: true
+      };
+    }
+
     // Generate a secure random password
     const generatedPassword = [...Array(20)].map(() => Math.random().toString(36)[2]).join('');
     
@@ -67,17 +78,10 @@ export const createUserAfterPayment = async (email: string) => {
     
     return {
       user: userCredential.user,
-      success: true
+      success: true,
+      userCreated: true
     };
   } catch (error: any) {
-    // If user already exists, just return success
-    if (error.code === 'auth/email-already-in-use') {
-      console.log('User already exists, skipping account creation');
-      return { 
-        success: true, 
-        userExists: true 
-      };
-    }
     console.error('Auto account creation error:', error);
     throw error;
   }
