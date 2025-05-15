@@ -60,7 +60,7 @@ export default function AppraisalServiceCard({
       )}
       
       <div className="flex flex-col items-center h-full">
-        <div className="flex flex-row sm:flex-col sm:space-y-4 items-center sm:justify-center mb-3 sm:mb-4 w-full">
+        <div className="flex flex-row sm:flex-col sm:space-y-4 items-center sm:justify-center mb-2 sm:mb-4 w-full">
           {/* Icon and Title side by side on mobile */}
           <Icon className="service-option-card__icon" />
           
@@ -69,9 +69,9 @@ export default function AppraisalServiceCard({
           </h3>
         </div>
         
-        <div className="flex flex-row justify-between w-full sm:block sm:text-center">
+        <div className="flex flex-row justify-between items-center w-full sm:block sm:text-center">
           {/* Price and selection on opposite sides on mobile */}
-          <div>
+          <div className="flex-shrink-0">
             {showDiscount ? (
               <div className="flex flex-col sm:items-center">
                 <div className="flex items-center gap-1">
@@ -103,15 +103,13 @@ export default function AppraisalServiceCard({
           </div>
           
           {/* Selection Indicator */}
-          <div>
-            <div className={cn(
-              "w-5 h-5 rounded-full border flex items-center justify-center transition-all",
-              isSelected 
-                ? "bg-slate-700 border-slate-700" 
-                : "border-slate-300"
-            )}>
-              {isSelected && <Check className="h-3 w-3 text-white" />}
-            </div>
+          <div className={cn(
+            "w-5 h-5 rounded-full border flex items-center justify-center transition-all",
+            isSelected 
+              ? "bg-slate-700 border-slate-700" 
+              : "border-slate-300"
+          )}>
+            {isSelected && <Check className="h-3 w-3 text-white" />}
           </div>
         </div>
       </div>

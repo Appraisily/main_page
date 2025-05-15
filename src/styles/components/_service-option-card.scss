@@ -92,21 +92,31 @@
 
   // Mobile adjustments
   @media (max-width: 640px) {
-    padding: 1.25rem 1rem;
+    padding: 1rem 0.875rem;
+    display: flex;
+    flex-direction: column;
     
     &__icon {
-      width: 28px;
-      height: 28px;
-      margin-bottom: 0.75rem;
+      width: 24px;
+      height: 24px;
+      margin-bottom: 0;
+      margin-right: 0.5rem;
     }
     
     &__title {
-      font-size: 1rem;
-      margin-bottom: 0.5rem;
+      font-size: 0.9375rem;
+      margin-bottom: 0.25rem;
+      text-align: left;
     }
     
     &__price {
       font-size: 1.125rem;
+      text-align: left;
+    }
+    
+    &__per {
+      font-size: 0.6875rem;
+      text-align: left;
     }
   }
 }
@@ -120,6 +130,6 @@
   
   @media (max-width: 640px) {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 0.75rem;
   }
 } 

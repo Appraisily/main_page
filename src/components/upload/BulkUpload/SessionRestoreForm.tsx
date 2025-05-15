@@ -28,7 +28,7 @@ export function SessionRestoreForm({ onRestore }: SessionRestoreFormProps) {
   };
 
   return (
-    <div className="flex-1 bg-white border border-gray-200 rounded-lg p-4 mb-4">
+    <div className="flex-1 bg-white border border-gray-200 rounded-lg p-2 mb-2 sm:p-4 sm:mb-4">
       <div className="flex items-center gap-2 mb-1">
         <KeySquare className="h-4 w-4 text-gray-500" />
         <span className="font-medium text-gray-700 text-sm">Restore Previous Session</span>

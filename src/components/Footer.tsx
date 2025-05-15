@@ -32,7 +32,7 @@ const links = {
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden">
+    <footer className="relative overflow-hidden mt-mobile-footer-spacer">
       {/* Elegant background with dots and wave pattern */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gray-50" style={{ 

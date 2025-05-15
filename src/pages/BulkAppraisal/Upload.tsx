@@ -235,27 +235,6 @@ export default function BulkUploadPage() {
                   </div>
                 )}
                 
-                {/* Item Counter with Discount Information */}
-                <div className="p-4 bg-gray-50 rounded-lg border border-gray-100">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="font-medium text-gray-900">Items: {items.length}</p>
-                      <p className="text-sm text-gray-600">
-                        {items.length < BULK_DISCOUNT_THRESHOLD ? (
-                          `Add ${BULK_DISCOUNT_THRESHOLD - items.length} more to qualify for ${BULK_DISCOUNT_PERCENTAGE}% discount`
-                        ) : (
-                          `${BULK_DISCOUNT_PERCENTAGE}% discount applied to all items`
-                        )}
-                      </p>
-                    </div>
-                    {items.length >= BULK_DISCOUNT_THRESHOLD && (
-                      <div className="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-sm font-medium">
-                        Discount Applied
-                      </div>
-                    )}
-                  </div>
-                </div>
-                
                 {/* Button first, then payment notice - matching start page layout */}
                 <ActionButtons
                   onSubmit={handleSubmit}

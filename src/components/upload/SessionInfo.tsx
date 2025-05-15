@@ -33,7 +33,7 @@ export function SessionInfo({ sessionId }: SessionInfoProps) {
   };
 
   return (
-    <div className="flex-1 bg-white border border-gray-200 rounded-lg p-4 mb-4">
+    <div className="flex-1 bg-white border border-gray-200 rounded-lg p-2 mb-2 sm:p-4 sm:mb-4">
       <div className="flex items-center gap-2 mb-2">
         <KeyRound className="h-4 w-4 text-gray-500" />
         <span className="font-medium text-gray-700 text-sm">Current Session</span>
@@ -62,3 +62,12 @@ export function SessionInfo({ sessionId }: SessionInfoProps) {
     </div>
   );
 }
+
+<style jsx>{`
+  @media (max-width: 640px) {
+    .session-panel-mobile {
+      padding: 0.5rem 0.5rem !important;
+      margin-bottom: 0.5rem !important;
+    }
+  }
+`}</style>

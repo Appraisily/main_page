@@ -130,11 +130,10 @@ const item = {
 
 export function AppraisalTypeSelector({ value, onChange, itemCount = 1 }: AppraisalTypeSelectorProps) {
   // In bulk appraisal context, we always show the discount regardless of item count
-  // This is just for display - the actual discount will still only be applied when meeting the threshold
   const forceBulkDiscountDisplay = true; // Always show discount in bulk appraisal context
-  const actualBulkDiscount = itemCount >= BULK_DISCOUNT_THRESHOLD; // Actual discount application
   
-  // Calculate regular and discounted prices for each service type
+  // For bulk appraisal page, always use discounted prices for display
+  // The actual discount will still only be applied during checkout based on item count
   const servicePrices: Record<AppraisalType, {regular: number, discounted: number}> = {
     regular: {
       regular: appraisalTypes.regular.basePrice,
@@ -169,8 +168,8 @@ export function AppraisalTypeSelector({ value, onChange, itemCount = 1 }: Apprai
               service={service}
               isSelected={value === type}
               onSelect={() => onChange(type)}
-              price={actualBulkDiscount ? servicePrices[type].discounted : servicePrices[type].regular}
-              showDiscount={forceBulkDiscountDisplay} // Always show discount in bulk context
+              price={servicePrices[type].discounted} // Always use discounted price in bulk appraisal context
+              showDiscount={forceBulkDiscountDisplay}
               discountPercentage={BULK_DISCOUNT_PERCENTAGE * 100}
               originalPrice={servicePrices[type].regular}
             />
