@@ -6,9 +6,11 @@ import {
   signInWithPopup,
   onAuthStateChanged as _onAuthStateChanged,
   sendPasswordResetEmail,
+  fetchSignInMethodsForEmail,
   User
 } from 'firebase/auth';
 import { auth } from './config';
+import { logger } from '../utils/logger'; // Import the logger
 
 // Sign in with email and password
 export const signInWithEmailPassword = async (email: string, password: string) => {
@@ -19,7 +21,7 @@ export const signInWithEmailPassword = async (email: string, password: string) =
       success: true
     };
   } catch (error: any) {
-    console.error('Login error:', error);
+    logger.error('Login error:', error); // Use logger
     throw error;
   }
 };
@@ -34,7 +36,7 @@ export const signInWithGoogle = async () => {
       success: true
     };
   } catch (error: any) {
-    console.error('Google login error:', error);
+    logger.error('Google login error:', error); // Use logger
     throw error;
   }
 };
@@ -48,7 +50,7 @@ export const signUpWithEmailPassword = async (email: string, password: string) =
       success: true
     };
   } catch (error: any) {
-    console.error('Signup error:', error);
+    logger.error('Signup error:', error); // Use logger
     throw error;
   }
 };
@@ -56,6 +58,16 @@ export const signUpWithEmailPassword = async (email: string, password: string) =
 // Create a user account after payment
 export const createUserAfterPayment = async (email: string) => {
   try {
+    // First, check if the user already exists to avoid unnecessary 400 errors
+    const existingMethods = await fetchSignInMethodsForEmail(auth, email);
+    if (existingMethods && existingMethods.length > 0) {
+      logger.log('User already exists, skipping account creation'); // Use logger
+      return {
+        success: true,
+        userExists: true
+      };
+    }
+
     // Generate a secure random password
     const generatedPassword = [...Array(20)].map(() => Math.random().toString(36)[2]).join('');
     
@@ -67,18 +79,11 @@ export const createUserAfterPayment = async (email: string) => {
     
     return {
       user: userCredential.user,
-      success: true
+      success: true,
+      userCreated: true
     };
   } catch (error: any) {
-    // If user already exists, just return success
-    if (error.code === 'auth/email-already-in-use') {
-      console.log('User already exists, skipping account creation');
-      return { 
-        success: true, 
-        userExists: true 
-      };
-    }
-    console.error('Auto account creation error:', error);
+    logger.error('Auto account creation error:', error); // Use logger
     throw error;
   }
 };
@@ -89,7 +94,7 @@ export const logoutUser = async () => {
     await signOut(auth);
     return { success: true };
   } catch (error: any) {
-    console.error('Logout error:', error);
+    logger.error('Logout error:', error); // Use logger
     throw error;
   }
 };
@@ -105,7 +110,7 @@ export const requestPasswordReset = async (email: string): Promise<{ success: bo
     await sendPasswordResetEmail(auth, email);
     return { success: true };
   } catch (error: any) {
-    console.error('Password reset request error:', error);
+    logger.error('Password reset request error:', error); // Use logger
     throw error;
   }
 };

@@ -1,9 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { hashEmail } from '@/lib/analytics';
 import type { StripeSessionResponse } from '@/lib/types/stripe';
+import { logger } from '@/lib/utils/logger';
 
 const isDev = import.meta.env.DEV;
 const DEV_SHARED_KEY = 'sk_shared_5f9a4b2c8e7d6f3a1b9c4d5e8f7a2b3c4d5e6f7';
+
+// Global Set to track processed session IDs for analytics within the current page lifecycle
+const processedAnalyticsSessions = new Set<string>();
 
 const mockSessionData: Record<string, StripeSessionResponse> = {
   'cs_live_b1lDTlUrm70sYbfdDJGgvkh6hPjdJXdEi9w0FBgS2F33pw63KCXs4IV6vO': {
@@ -31,7 +35,7 @@ export function useStripeSession(sessionId: string | null) {
   const analyticsTriggered = useRef<boolean>(false);
 
   const pushAnalyticsEvent = async (data: StripeSessionResponse | null) => {
-    if (analyticsTriggered.current || !sessionId) return;
+    if (analyticsTriggered.current || !sessionId || processedAnalyticsSessions.has(sessionId)) return;
     
     try {
       // Initialize dataLayer
@@ -57,35 +61,27 @@ export function useStripeSession(sessionId: string | null) {
       // Push ecommerce data
       window.dataLayer.push(analyticsData);
 
-      // Trigger purchase event
-      window.dataLayer.push({
-        event: 'purchase_confirmation',
-        transaction_id: sessionId
-      });
-      
-      // Add this event for GTM conversion tracking
+      // Trigger purchase event (only push this once!)
       window.dataLayer.push({
         event: 'purchase_data_ready',
         transaction_id: sessionId
       });
-
+      
       analyticsTriggered.current = true;
+      // Also mark as processed globally in case of error fallback path
+      processedAnalyticsSessions.add(sessionId);
     } catch (error) {
-      console.error('Failed to push analytics event:', error);
+      logger.error('Failed to push analytics event:', error);
       
-      // Fallback: Push minimal event data
-      window.dataLayer?.push({
-        event: 'purchase_confirmation',
-        transaction_id: sessionId
-      });
-      
-      // Add fallback conversion event
+      // Fallback: Push minimal event data (only push this once!)
       window.dataLayer?.push({
         event: 'purchase_data_ready',
         transaction_id: sessionId
       });
       
       analyticsTriggered.current = true;
+      // Also mark as processed globally in case of error fallback path
+      processedAnalyticsSessions.add(sessionId);
     }
   };
 
