@@ -124,3 +124,11 @@
     animation: fadeIn 0.3s ease forwards;
   }
 }
+
+/* Mobile specific styles */
+@media (max-width: 640px) {
+  .session-panel-mobile {
+    padding: 0.5rem 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+}

@@ -124,10 +124,10 @@ export default function BulkUploadPage() {
 
   return (
     <div className="min-h-screen bg-stone-50 pt-24 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div className="bg-white rounded-xl shadow overflow-hidden">
           {/* Header */}
-          <div className="p-8 border-b border-gray-100">
+          <div className="p-4 sm:p-8 border-b border-gray-100">
             <div className="flex items-center gap-5">
               <div className="p-3.5 bg-stone-100 rounded-full flex-shrink-0">
                 <Upload className="h-6 w-6 text-gray-600" />
@@ -141,10 +141,10 @@ export default function BulkUploadPage() {
           </div>
           
           {/* Main Content */}
-          <div className="p-8">
-            <div className="space-y-12">
+          <div className="p-3 sm:p-8">
+            <div className="space-y-8 sm:space-y-12">
               {/* 1. Make the service type selector more prominent and first */}
-              <div className="w-full p-4 bg-gradient-to-r from-blue-50 to-emerald-50 border border-emerald-100 rounded-lg">
+              <div className="w-full p-3 sm:p-4 bg-gradient-to-r from-blue-50 to-emerald-50 border border-emerald-100 rounded-lg">
                 <div className="flex items-center gap-3">
                   <div className="bg-emerald-100 p-2 rounded-full">
                     <Percent className="h-5 w-5 text-emerald-600" />
