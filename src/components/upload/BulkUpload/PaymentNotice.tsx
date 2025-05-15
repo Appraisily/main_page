@@ -22,45 +22,13 @@ export function PaymentNotice() {
           </p>
         </div>
       </div>
-      
-      {/* Payment methods section - exact match to start page */}
-      <div className="w-full flex flex-col items-center justify-center">
-        <div className="text-center mb-3">
-          <div className="flex items-center justify-center text-xs text-slate-500">
-            <Lock className="h-3.5 w-3.5 mr-2" />
-            <span>Secure payment processing by Stripe</span>
-          </div>
-        </div>
-        
-        <div className="flex flex-wrap justify-center items-center gap-5 pt-2">
-          <div className="flex items-center gap-1.5 text-slate-600">
-            <CreditCard className="h-4 w-4" />
-            <span className="text-xs">Credit Card</span>
-          </div>
-          <img 
-            src="/images/payment-methods/new-paypal.svg" 
-            alt="PayPal" 
-            className="h-5" 
-          />
-          <img 
-            src="/images/payment-methods/google-pay.svg" 
-            alt="Google Pay" 
-            className="h-5" 
-          />
-          <img 
-            src="/images/payment-methods/apple-pay.svg" 
-            alt="Apple Pay" 
-            className="h-4" 
-          />
-        </div>
-        
-        <Separator className="bg-slate-200 my-4" />
-        
-        <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500">
-          <ShieldCheck className="h-3.5 w-3.5" />
-          <span>100% Money-Back Satisfaction Guarantee</span>
-        </div>
-      </div>
+      <a
+        href="/bulk-appraisal/upload"
+        className="mt-2 inline-flex items-center justify-center px-5 py-2.5 bg-emerald-600 text-white font-semibold rounded-lg shadow hover:bg-emerald-700 transition-colors text-base focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2"
+        style={{ minWidth: 180 }}
+      >
+        Go to Bulk Appraisal
+      </a>
     </div>
   );
 }

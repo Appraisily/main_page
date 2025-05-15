@@ -10,16 +10,18 @@ interface TrustBadgesProps {
 export default function TrustBadges({ className }: TrustBadgesProps) {
   return (
     <div className={cn("trust-bar", className)}>
-      <div className="flex items-center gap-2">
-        <Lock />
+      <div className="trust-bar__item">
+        <Lock className="trust-bar__icon" />
         <span>Secure Checkout</span>
       </div>
-      <div className="flex items-center gap-2">
-        <Shield />
+      <span className="trust-bar__dot" />
+      <div className="trust-bar__item">
+        <Shield className="trust-bar__icon" />
         <span>USPAP-Certified</span>
       </div>
-      <div className="flex items-center gap-2">
-        <Award />
+      <span className="trust-bar__dot" />
+      <div className="trust-bar__item">
+        <Award className="trust-bar__icon" />
         <span>Established 2003</span>
       </div>
     </div>

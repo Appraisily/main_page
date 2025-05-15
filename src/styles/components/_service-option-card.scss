@@ -1,90 +1,119 @@
 .service-option-card {
   position: relative;
   overflow: hidden;
-  border-radius: 1rem;
-  transition: all .2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0.75rem;
+  transition: all .25s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
-  border: 1px solid rgba(226, 232, 240, 1);
-  background: linear-gradient(135deg, #f8fafc 60%, #f1f5f9 100%);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  background: white;
   height: 100%;
   width: 100%;
-  padding: 1.5rem;
+  padding: 1.75rem 1.5rem;
   text-align: center;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
 
   &__icon {
-    width: 28px; // Slightly smaller icon
-    height: 28px;
-    margin: 0 auto 0.75rem;
-    color: #64748b;  // neutral-500
+    width: 32px;
+    height: 32px;
+    margin: 0 auto 1rem;
+    color: #334155;  // slate-700
   }
 
   &__title {
-    font-size: 0.975rem;           // Slightly smaller font
+    font-size: 1.05rem;
     font-weight: 600;
-    margin-bottom: .5rem;
-    color: #334155;  // slate-700 - less bold
+    margin-bottom: .75rem;
+    color: #1e293b;  // slate-800 - richer
+    letter-spacing: -0.01em;
   }
 
   &__price {
-    font-size: 1.125rem;           // Slightly smaller price
-    font-weight: 600;              // Less bold
+    font-size: 1.25rem;
+    font-weight: 700;
     margin-bottom: .25rem;
     color: #0f172a;  // slate-900
   }
 
   &__per {
-    font-size: .75rem;             // 12px
+    font-size: .75rem;
     color: #64748b;  // neutral-500
     display: block;
+    letter-spacing: 0.02em;
   }
 
   // Selected
   &--selected {
-    border: 2px solid #0ea5e9;  // cyan-500
-    background: linear-gradient(135deg, #fff 70%, #e0f2fe 100%);
-    box-shadow: 0 4px 16px rgba(14, 165, 233, 0.10), 0 1.5px 6px rgba(15, 23, 42, 0.08);
+    border: 1px solid #1e40af;  // blue-800 - more elegant
+    background: white;
+    box-shadow: 0 4px 18px rgba(30, 64, 175, 0.08), 0 1px 3px rgba(30, 64, 175, 0.1);
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #1e40af, #3b82f6);
+    }
 
     .service-option-card__icon {
-      color: #0ea5e9;  // cyan-500
+      color: #2563eb;  // blue-600
+    }
+
+    .service-option-card__title {
+      color: #1e40af;  // blue-800
     }
   }
 
   // Hover state
   &:hover:not(.service-option-card--selected) {
-    border-color: #38bdf8; // sky-400
-    background: linear-gradient(135deg, #fff 60%, #e0f2fe 100%);
-    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.10), 0 1.5px 6px rgba(15, 23, 42, 0.06);
+    border-color: #94a3b8; // slate-400
+    background: white;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.05);
+    transform: translateY(-2px);
   }
   
   // Selection indicator
   .w-5.h-5.rounded-full {
-    box-shadow: 0 0 0 2px #e0f2fe;
-    transition: box-shadow 0.2s;
+    width: 22px;
+    height: 22px;
+    box-shadow: 0 0 0 2px rgba(203, 213, 225, 0.4);
+    transition: all 0.2s;
   }
+  
   &--selected .w-5.h-5.rounded-full {
-    box-shadow: 0 0 0 3px #0ea5e9;
-    background: #0ea5e9;
-    border-color: #0ea5e9;
+    box-shadow: 0 0 0 2px #3b82f6;
+    background: #3b82f6;
+    border-color: #3b82f6;
+  }
+
+  // Popular tag
+  .absolute.top-0.right-0 {
+    .px-2.py-0\.5 {
+      background: #eff6ff;  // blue-50
+      color: #2563eb;  // blue-600
+      font-weight: 500;
+    }
   }
 
   // Mobile adjustments
   @media (max-width: 640px) {
-    padding: 1rem 0.75rem;
+    padding: 1.25rem 1rem;
     
     &__icon {
-      width: 24px;
-      height: 24px;
-      margin-bottom: 0.5rem;
+      width: 28px;
+      height: 28px;
+      margin-bottom: 0.75rem;
     }
     
     &__title {
-      font-size: 0.875rem;
-      margin-bottom: 0.25rem;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
     }
     
     &__price {
-      font-size: 1rem;
+      font-size: 1.125rem;
     }
   }
 }
@@ -93,11 +122,11 @@
 .service-options {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+  gap: 1.25rem;
   width: 100%;
   
   @media (max-width: 640px) {
     grid-template-columns: 1fr;
-    gap: 0.75rem;
+    gap: 1rem;
   }
 } 

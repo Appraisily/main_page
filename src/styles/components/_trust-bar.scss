@@ -2,19 +2,37 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 24px;
-  background: #F7F8FB;        // $neutral-50
-  font-size: 0.8125rem;       // 13px
+  height: 40px;
+  background: linear-gradient(90deg, #f0f9ff 60%, #f7fafe 100%); // soft blue gradient
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.06);
+  font-size: 0.9375rem;       // 15px
   font-weight: 500;
-  column-gap: 1.25rem;        // 20px
+  column-gap: 2.25rem;        // 36px
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   padding: 0.75rem 0.5rem;    // Add some padding
   min-height: 36px;           // Ensure minimum height on mobile
 
-  svg {
-    width: 14px;
-    height: 14px;
-    color: #0f172a;           // $primary-500, using slate-900 which seems to be the primary color
+  .trust-bar__item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #0e7490; // cyan-700
+  }
+  .trust-bar__icon {
+    width: 20px;
+    height: 20px;
+    color: #0ea5e9; // cyan-500
+    flex-shrink: 0;
+  }
+  .trust-bar__dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #bae6fd; // sky-200
+    margin: 0 1.25rem;
   }
 
   // Mobile adjustments
@@ -24,9 +42,12 @@
     padding: 0.5rem;
     row-gap: 0.5rem;
     
-    div {
+    .trust-bar__item {
       width: 100%;
       justify-content: center;
+    }
+    .trust-bar__dot {
+      margin: 0.5rem 0;
     }
   }
 } 
