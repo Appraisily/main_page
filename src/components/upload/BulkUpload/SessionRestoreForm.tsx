@@ -28,40 +28,40 @@ export function SessionRestoreForm({ onRestore }: SessionRestoreFormProps) {
   };
 
   return (
-    <div className="flex-1 bg-emerald-50 border border-emerald-200 rounded-lg p-6 shadow-sm mb-6">
-      <div className="flex items-center gap-2 mb-2">
-        <KeySquare className="h-5 w-5 text-emerald-500" />
-        <span className="font-semibold text-emerald-900 text-lg">Restore Previous Session</span>
+    <div className="flex-1 bg-white border border-gray-200 rounded-lg p-4 mb-4">
+      <div className="flex items-center gap-2 mb-1">
+        <KeySquare className="h-4 w-4 text-gray-500" />
+        <span className="font-medium text-gray-700 text-sm">Restore Previous Session</span>
       </div>
-      <p className="text-sm text-emerald-700 mb-2">Have a session ID? Enter it below to restore your progress.</p>
-      <form onSubmit={handleSubmit} className="flex gap-2">
+      <p className="text-xs text-gray-500 mb-2">Have a session ID? Enter it below to restore your progress.</p>
+      <form onSubmit={handleSubmit} className="flex gap-1">
         <input
           type="text"
           value={restoreId}
           onChange={(e) => setRestoreId(e.target.value)}
           placeholder="Enter session ID..."
-          className="input input-bordered flex-1 px-3 py-2 rounded-md border border-emerald-300 text-sm"
+          className="flex-1 px-3 py-1 rounded-md border border-gray-200 text-xs"
         />
         <button
           type="submit"
           disabled={isRestoring || !restoreId.trim()}
-          className="btn btn-emerald inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 disabled:opacity-50"
+          className="inline-flex items-center gap-1 px-3 py-1 bg-gray-100 text-gray-700 border border-gray-200 rounded-md hover:bg-gray-200 disabled:opacity-50 text-xs font-medium"
         >
           {isRestoring ? (
             <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Restoring...
+              <Loader2 className="h-3 w-3 animate-spin" />
+              <span>Restoring...</span>
             </>
           ) : (
             <>
-              <RefreshCw className="h-4 w-4" />
-              Restore
+              <RefreshCw className="h-3 w-3" />
+              <span>Restore</span>
             </>
           )}
         </button>
       </form>
       {error && (
-        <p className="mt-2 text-sm text-red-600">{error}</p>
+        <p className="mt-2 text-xs text-red-600">{error}</p>
       )}
     </div>
   );

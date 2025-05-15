@@ -152,6 +152,13 @@ export default function BulkUploadPage() {
                 showConfirmation={emailSaved}
               />
 
+              {/* Session management section - in a more discrete style */}
+              <div className="flex flex-col md:flex-row gap-4 mb-8">
+                {sessionId && <SessionInfo sessionId={sessionId} />}
+                <SessionRestoreForm onRestore={handleSessionRestore} />
+              </div>
+
+              {/* Make the service type selector more prominent */}
               <div className="w-full p-4 bg-gradient-to-r from-blue-50 to-emerald-50 border border-emerald-100 rounded-lg">
                 <div className="flex items-center gap-3">
                   <div className="bg-emerald-100 p-2 rounded-full">
@@ -166,11 +173,12 @@ export default function BulkUploadPage() {
                 </div>
               </div>
 
-              {/* Session management section: Current Session and Restore Session side by side */}
-              <div className="flex flex-col md:flex-row gap-6 mb-8">
-                {sessionId && <SessionInfo sessionId={sessionId} />}
-                <SessionRestoreForm onRestore={handleSessionRestore} />
-              </div>
+              {/* Prominent service type selector - recycled from start page */}
+              <AppraisalTypeSelector
+                value={appraisalType}
+                onChange={setAppraisalType}
+                itemCount={items.length}
+              />
 
               {isRestoringSession && (
                 <div className="flex items-center justify-center py-12">

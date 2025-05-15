@@ -33,32 +33,32 @@ export function SessionInfo({ sessionId }: SessionInfoProps) {
   };
 
   return (
-    <div className="flex-1 bg-blue-50 border border-blue-200 rounded-lg p-6 shadow-sm mb-6">
+    <div className="flex-1 bg-white border border-gray-200 rounded-lg p-4 mb-4">
       <div className="flex items-center gap-2 mb-2">
-        <KeyRound className="h-5 w-5 text-blue-500" />
-        <span className="font-semibold text-blue-900 text-lg">Current Session</span>
+        <KeyRound className="h-4 w-4 text-gray-500" />
+        <span className="font-medium text-gray-700 text-sm">Current Session</span>
       </div>
-      <div className="flex items-center gap-2 mb-2">
-        <span className="font-mono bg-white border border-blue-100 rounded px-2 py-1 text-blue-800 text-base">{sessionId}</span>
+      <div className="flex items-center gap-2 mb-1">
+        <span className="font-mono bg-gray-50 border border-gray-200 rounded px-2 py-1 text-gray-700 text-xs flex-1 truncate">{sessionId}</span>
         <button
           onClick={handleSave}
-          className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-blue-200 rounded-md hover:bg-blue-50 transition-colors"
-          title="Save session details to clipboard"
+          className="inline-flex items-center gap-1 px-2 py-1 bg-white border border-gray-200 rounded-md hover:bg-gray-50 transition-colors"
+          title="Copy session details to clipboard"
         >
           {copied ? (
             <>
-              <Check className="h-4 w-4 text-green-600" />
-              <span className="text-sm text-green-600">Copied!</span>
+              <Check className="h-3 w-3 text-green-600" />
+              <span className="text-xs text-green-600">Copied!</span>
             </>
           ) : (
             <>
-              <Copy className="h-4 w-4 text-gray-600" />
-              <span className="text-sm">Copy</span>
+              <Copy className="h-3 w-3 text-gray-500" />
+              <span className="text-xs">Copy</span>
             </>
           )}
         </button>
       </div>
-      <p className="text-sm text-blue-700">Save this ID to restore your progress later.</p>
+      <p className="text-xs text-gray-500">Save this ID to restore your progress later.</p>
     </div>
   );
 }
