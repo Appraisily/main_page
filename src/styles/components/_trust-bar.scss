@@ -2,52 +2,82 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 40px;
-  background: linear-gradient(90deg, #f0f9ff 60%, #f7fafe 100%); // soft blue gradient
-  border-top-left-radius: 1rem;
-  border-top-right-radius: 1rem;
-  box-shadow: 0 2px 8px rgba(56, 189, 248, 0.06);
-  font-size: 0.9375rem;       // 15px
+  height: 44px;
+  background: white;
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.03);
+  font-size: 0.875rem;
   font-weight: 500;
-  column-gap: 2.25rem;        // 36px
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  padding: 0.75rem 0.5rem;    // Add some padding
-  min-height: 36px;           // Ensure minimum height on mobile
+  letter-spacing: 0.01em;
+  column-gap: 3rem;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+  padding: 0.75rem 1rem;
+  min-height: 36px;
+  position: relative;
+  
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, #3b82f6, #0ea5e9);
+    opacity: 0.8;
+  }
 
   .trust-bar__item {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: #0e7490; // cyan-700
+    color: #1e293b; // slate-800
+    font-weight: 500;
+    transition: transform 0.2s ease;
+    
+    &:hover {
+      transform: translateY(-1px);
+    }
   }
+  
   .trust-bar__icon {
-    width: 20px;
-    height: 20px;
-    color: #0ea5e9; // cyan-500
+    width: 18px;
+    height: 18px;
+    color: white;
     flex-shrink: 0;
+    padding: 3px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6, #0ea5e9);
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
   }
+  
   .trust-bar__dot {
     display: inline-block;
-    width: 6px;
-    height: 6px;
+    width: 4px;
+    height: 4px;
     border-radius: 50%;
-    background: #bae6fd; // sky-200
-    margin: 0 1.25rem;
+    background: #cbd5e1; // slate-300
+    margin: 0 1.5rem;
   }
 
   // Mobile adjustments
   @media (max-width: 640px) {
     flex-direction: column;
     height: auto;
-    padding: 0.5rem;
-    row-gap: 0.5rem;
+    padding: 0.75rem 0.5rem;
+    row-gap: 0.75rem;
     
     .trust-bar__item {
       width: 100%;
       justify-content: center;
+      
+      &:hover {
+        transform: none;
+      }
     }
+    
     .trust-bar__dot {
-      margin: 0.5rem 0;
+      margin: 0.375rem 0;
     }
   }
 } 

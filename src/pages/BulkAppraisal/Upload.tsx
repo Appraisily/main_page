@@ -145,20 +145,7 @@ export default function BulkUploadPage() {
           {/* Main Content */}
           <div className="p-8">
             <div className="space-y-12">
-              <EmailInput
-                value={email}
-                onChange={setEmail}
-                onBlur={handleEmailBlur}
-                showConfirmation={emailSaved}
-              />
-
-              {/* Session management section - in a more discrete style */}
-              <div className="flex flex-col md:flex-row gap-4 mb-8">
-                {sessionId && <SessionInfo sessionId={sessionId} />}
-                <SessionRestoreForm onRestore={handleSessionRestore} />
-              </div>
-
-              {/* Make the service type selector more prominent */}
+              {/* 1. Make the service type selector more prominent and first */}
               <div className="w-full p-4 bg-gradient-to-r from-blue-50 to-emerald-50 border border-emerald-100 rounded-lg">
                 <div className="flex items-center gap-3">
                   <div className="bg-emerald-100 p-2 rounded-full">
@@ -180,6 +167,20 @@ export default function BulkUploadPage() {
                 itemCount={items.length}
               />
 
+              {/* 2. Email input comes second */}
+              <EmailInput
+                value={email}
+                onChange={setEmail}
+                onBlur={handleEmailBlur}
+                showConfirmation={emailSaved}
+              />
+
+              {/* 3. Session management section - in a more discrete style */}
+              <div className="flex flex-col md:flex-row gap-4 mb-8">
+                {sessionId && <SessionInfo sessionId={sessionId} />}
+                <SessionRestoreForm onRestore={handleSessionRestore} />
+              </div>
+
               {isRestoringSession && (
                 <div className="flex items-center justify-center py-12">
                   <div className="flex items-center gap-3 text-gray-600">
@@ -189,6 +190,7 @@ export default function BulkUploadPage() {
                 </div>
               )}
 
+              {/* 4. Upload area comes fourth */}
               {!isRestoringSession && (
                 <div className="mb-8">
                   <UploadArea onFileSelect={handleFileSelect} />
@@ -255,15 +257,6 @@ export default function BulkUploadPage() {
                     )}
                   </div>
                 </div>
-                
-                {/* Button first, then payment notice - matching start page layout */}
-                <ActionButtons
-                  onSubmit={handleSubmit}
-                  isUploading={isUploading}
-                  disabled={items.length === 0}
-                />
-                
-                <PaymentNotice />
               </div>
             </div>
           </div>
