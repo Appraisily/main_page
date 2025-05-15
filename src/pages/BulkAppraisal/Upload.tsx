@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, Loader2, AlertCircle, Lock, CreditCard, Percent } from 'lucide-react';
+import { Upload, Loader2, AlertCircle, Lock, CreditCard, Percent, ShieldCheck } from 'lucide-react';
 import { finalizeBulkUpload, updateSessionEmail } from '@/lib/api/bulkUploadApi';
 import { useBulkUpload, type UploadedItem } from '@/hooks/useBulkUpload';
 import { useFileUpload } from '@/hooks/useFileUpload';
@@ -12,6 +12,7 @@ import { AppraisalTypeSelector, type AppraisalType } from '@/components/upload/B
 import { EmailInput } from '@/components/upload/BulkUpload/EmailInput';
 import { PaymentNotice } from '@/components/upload/BulkUpload/PaymentNotice';
 import { ActionButtons } from '@/components/upload/BulkUpload/ActionButtons';
+import { Separator } from '@/components/ui/separator';
 
 // Bulk discount constants
 const BULK_DISCOUNT_THRESHOLD = 3;
@@ -123,7 +124,7 @@ export default function BulkUploadPage() {
 
   return (
     <div className="min-h-screen bg-stone-50 pt-24 pb-12">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-xl shadow overflow-hidden">
           {/* Header */}
           <div className="p-8 border-b border-gray-100">
@@ -132,12 +133,9 @@ export default function BulkUploadPage() {
                 <Upload className="h-6 w-6 text-gray-600" />
               </div>
               <div>
-                <h1 className="text-2xl font-semibold text-gray-900 mb-1">
+                <h1 className="text-xl font-semibold text-emerald-900 mb-0" style={{ fontFamily: 'inherit', fontWeight: 600 }}>
                   Bulk Appraisal Request Process
                 </h1>
-                <p className="text-gray-600">
-                  Add {BULK_DISCOUNT_THRESHOLD} or more items to receive a {BULK_DISCOUNT_PERCENTAGE}% discount
-                </p>
               </div>
             </div>
           </div>
@@ -255,6 +253,50 @@ export default function BulkUploadPage() {
                         Discount Applied
                       </div>
                     )}
+                  </div>
+                </div>
+                
+                {/* Button first, then payment notice - matching start page layout */}
+                <ActionButtons
+                  onSubmit={handleSubmit}
+                  isUploading={isUploading}
+                  disabled={items.length === 0}
+                />
+                
+                {/* Payment Methods and Guarantee */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500">
+                    <Lock className="h-3.5 w-3.5" />
+                    <span>Secure payment processing by Stripe</span>
+                  </div>
+                  
+                  <div className="flex flex-wrap justify-center items-center gap-5 pt-2">
+                    <div className="flex items-center gap-1.5 text-slate-600">
+                      <CreditCard className="h-4 w-4" />
+                      <span className="text-xs">Credit Card</span>
+                    </div>
+                    <img 
+                      src="/images/payment-methods/new-paypal.svg" 
+                      alt="PayPal" 
+                      className="h-5" 
+                    />
+                    <img 
+                      src="/images/payment-methods/google-pay.svg" 
+                      alt="Google Pay" 
+                      className="h-5" 
+                    />
+                    <img 
+                      src="/images/payment-methods/apple-pay.svg" 
+                      alt="Apple Pay" 
+                      className="h-4" 
+                    />
+                  </div>
+                  
+                  <Separator className="bg-slate-200 my-3" />
+                  
+                  <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500">
+                    <ShieldCheck className="h-3.5 w-3.5" />
+                    <span>100% Money-Back Satisfaction Guarantee</span>
                   </div>
                 </div>
               </div>

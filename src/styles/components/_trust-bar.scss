@@ -3,15 +3,15 @@
   align-items: center;
   justify-content: center;
   height: 44px;
-  background: white;
+  background: #fff;
   border-top-left-radius: 0.75rem;
   border-top-right-radius: 0.75rem;
-  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.03);
-  font-size: 0.875rem;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  font-size: 0.9375rem;
   font-weight: 500;
   letter-spacing: 0.01em;
-  column-gap: 3rem;
-  border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+  column-gap: 2.5rem;
+  border-bottom: 1px solid #e5e7eb;
   padding: 0.75rem 1rem;
   min-height: 36px;
   position: relative;
@@ -31,24 +31,24 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    color: #1e293b; // slate-800
+    color: #0f172a; // slate-900
     font-weight: 500;
-    transition: transform 0.2s ease;
+    transition: color 0.2s;
     
     &:hover {
-      transform: translateY(-1px);
+      color: #18181b; // neutral-900
     }
   }
   
   .trust-bar__icon {
     width: 18px;
     height: 18px;
-    color: white;
+    color: #18181b; // neutral-900
     flex-shrink: 0;
-    padding: 3px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #3b82f6, #0ea5e9);
-    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
   }
   
   .trust-bar__dot {
@@ -56,8 +56,8 @@
     width: 4px;
     height: 4px;
     border-radius: 50%;
-    background: #cbd5e1; // slate-300
-    margin: 0 1.5rem;
+    background: #d1d5db; // slate-300
+    margin: 0 1.25rem;
   }
 
   // Mobile adjustments
@@ -72,7 +72,7 @@
       justify-content: center;
       
       &:hover {
-        transform: none;
+        color: #18181b;
       }
     }
     

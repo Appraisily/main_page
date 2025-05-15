@@ -26,6 +26,7 @@ interface AppraisalServiceCardProps {
   price: number;
   showDiscount?: boolean;
   discountPercentage?: number;
+  originalPrice?: number;
 }
 
 export default function AppraisalServiceCard({
@@ -34,10 +35,11 @@ export default function AppraisalServiceCard({
   onSelect,
   price,
   showDiscount = false,
-  discountPercentage = 0
+  discountPercentage = 0,
+  originalPrice
 }: AppraisalServiceCardProps) {
   const Icon = service.icon;
-  const originalPrice = service.basePrice;
+  const displayOriginalPrice = originalPrice !== undefined ? originalPrice : service.basePrice;
   
   return (
     <div
@@ -74,7 +76,7 @@ export default function AppraisalServiceCard({
               <div className="flex flex-col sm:items-center">
                 <div className="flex items-center gap-1">
                   <span className="text-sm text-gray-500 line-through">
-                    {formatCurrency(originalPrice / 100)}
+                    {formatCurrency(displayOriginalPrice / 100)}
                   </span>
                   <div className="bg-emerald-100 text-emerald-700 text-xs px-1.5 py-0.5 rounded flex items-center">
                     <Percent className="h-3 w-3 mr-0.5" />

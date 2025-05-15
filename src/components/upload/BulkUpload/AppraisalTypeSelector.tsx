@@ -129,13 +129,25 @@ const item = {
 };
 
 export function AppraisalTypeSelector({ value, onChange, itemCount = 1 }: AppraisalTypeSelectorProps) {
-  const showBulkDiscount = itemCount >= BULK_DISCOUNT_THRESHOLD;
+  // In bulk appraisal context, we always show the discount regardless of item count
+  // This is just for display - the actual discount will still only be applied when meeting the threshold
+  const forceBulkDiscountDisplay = true; // Always show discount in bulk appraisal context
+  const actualBulkDiscount = itemCount >= BULK_DISCOUNT_THRESHOLD; // Actual discount application
   
-  // Calculate prices for each service type
-  const servicePrices: Record<AppraisalType, number> = {
-    regular: calculatePrice(appraisalTypes.regular.basePrice, itemCount).price,
-    insurance: calculatePrice(appraisalTypes.insurance.basePrice, itemCount).price,
-    tax: calculatePrice(appraisalTypes.tax.basePrice, itemCount).price
+  // Calculate regular and discounted prices for each service type
+  const servicePrices: Record<AppraisalType, {regular: number, discounted: number}> = {
+    regular: {
+      regular: appraisalTypes.regular.basePrice,
+      discounted: appraisalTypes.regular.basePrice * (1 - BULK_DISCOUNT_PERCENTAGE)
+    },
+    insurance: {
+      regular: appraisalTypes.insurance.basePrice,
+      discounted: appraisalTypes.insurance.basePrice * (1 - BULK_DISCOUNT_PERCENTAGE)
+    },
+    tax: {
+      regular: appraisalTypes.tax.basePrice,
+      discounted: appraisalTypes.tax.basePrice * (1 - BULK_DISCOUNT_PERCENTAGE)
+    }
   };
   
   return (
@@ -145,7 +157,6 @@ export function AppraisalTypeSelector({ value, onChange, itemCount = 1 }: Apprai
           Select Appraisal Type
         </h3>
       </div>
-      {/* Remove discount banners here */}
       <motion.div 
         className="grid grid-cols-1 md:grid-cols-3 gap-4"
         variants={container}
@@ -158,9 +169,10 @@ export function AppraisalTypeSelector({ value, onChange, itemCount = 1 }: Apprai
               service={service}
               isSelected={value === type}
               onSelect={() => onChange(type)}
-              price={servicePrices[type]}
-              showDiscount={showBulkDiscount}
+              price={actualBulkDiscount ? servicePrices[type].discounted : servicePrices[type].regular}
+              showDiscount={forceBulkDiscountDisplay} // Always show discount in bulk context
               discountPercentage={BULK_DISCOUNT_PERCENTAGE * 100}
+              originalPrice={servicePrices[type].regular}
             />
           </motion.div>
         ))}
