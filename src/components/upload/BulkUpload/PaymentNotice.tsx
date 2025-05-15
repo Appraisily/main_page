@@ -42,6 +42,16 @@ export function PaymentNotice() {
             alt="PayPal" 
             className="h-5" 
           />
+          <img 
+            src="/images/payment-methods/google-pay.svg" 
+            alt="Google Pay" 
+            className="h-5" 
+          />
+          <img 
+            src="/images/payment-methods/apple-pay.svg" 
+            alt="Apple Pay" 
+            className="h-4" 
+          />
         </div>
         
         <Separator className="bg-slate-200 my-4" />

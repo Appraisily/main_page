@@ -140,21 +140,6 @@ export default function BulkUploadPage() {
                 </p>
               </div>
             </div>
-            
-            {/* Discount Badge - Always visible at the top */}
-            <div className="mt-4 bg-gradient-to-r from-blue-50 to-emerald-50 border border-emerald-100 rounded-lg p-3">
-              <div className="flex items-center gap-3">
-                <div className="bg-emerald-100 p-2 rounded-full">
-                  <Percent className="h-5 w-5 text-emerald-600" />
-                </div>
-                <div>
-                  <p className="font-medium text-gray-900">Bulk Discount Available</p>
-                  <p className="text-sm text-gray-700">
-                    Upload at least {BULK_DISCOUNT_THRESHOLD} items to receive a {BULK_DISCOUNT_PERCENTAGE}% discount on all appraisals.
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
           
           {/* Main Content */}
@@ -167,18 +152,25 @@ export default function BulkUploadPage() {
                 showConfirmation={emailSaved}
               />
 
-              <AppraisalTypeSelector
-                value={appraisalType}
-                onChange={setAppraisalType}
-                itemCount={items.length}
-              />
+              <div className="w-full p-4 bg-gradient-to-r from-blue-50 to-emerald-50 border border-emerald-100 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <div className="bg-emerald-100 p-2 rounded-full">
+                    <Percent className="h-5 w-5 text-emerald-600" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">Bulk Discount Available</p>
+                    <p className="text-sm text-gray-700">
+                      Upload at least {BULK_DISCOUNT_THRESHOLD} items to receive a {BULK_DISCOUNT_PERCENTAGE}% discount on all appraisals.
+                    </p>
+                  </div>
+                </div>
+              </div>
 
-              {!isRestoringSession && (
-                <>
-                  {sessionId && <SessionInfo sessionId={sessionId} />}
-                  <SessionRestoreForm onRestore={handleSessionRestore} />
-                </>
-              )}
+              {/* Session management section: Current Session and Restore Session side by side */}
+              <div className="flex flex-col md:flex-row gap-6 mb-8">
+                {sessionId && <SessionInfo sessionId={sessionId} />}
+                <SessionRestoreForm onRestore={handleSessionRestore} />
+              </div>
 
               {isRestoringSession && (
                 <div className="flex items-center justify-center py-12">

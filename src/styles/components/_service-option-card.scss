@@ -1,16 +1,16 @@
 .service-option-card {
   position: relative;
   overflow: hidden;
-  border-radius: 0.5rem;
-  transition: all .2s ease;
+  border-radius: 1rem;
+  transition: all .2s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   border: 1px solid rgba(226, 232, 240, 1);
-  background: #f8fafc; // Using a lighter background like other panels
+  background: linear-gradient(135deg, #f8fafc 60%, #f1f5f9 100%);
   height: 100%;
   width: 100%;
   padding: 1.5rem;
   text-align: center;
-  box-shadow: none; // Removing the shadow for subtlety
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
 
   &__icon {
     width: 28px; // Slightly smaller icon
@@ -41,21 +41,33 @@
 
   // Selected
   &--selected {
-    border: 1px solid #334155;  // thinner, less prominent border
-    background: white;         // white background when selected
-    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.1);  // subtle shadow
+    border: 2px solid #0ea5e9;  // cyan-500
+    background: linear-gradient(135deg, #fff 70%, #e0f2fe 100%);
+    box-shadow: 0 4px 16px rgba(14, 165, 233, 0.10), 0 1.5px 6px rgba(15, 23, 42, 0.08);
 
     .service-option-card__icon {
-      color: #334155;  // slate-700
+      color: #0ea5e9;  // cyan-500
     }
   }
 
   // Hover state
   &:hover:not(.service-option-card--selected) {
-    border-color: #cbd5e1; // slate-300
-    background: white;
+    border-color: #38bdf8; // sky-400
+    background: linear-gradient(135deg, #fff 60%, #e0f2fe 100%);
+    box-shadow: 0 4px 16px rgba(56, 189, 248, 0.10), 0 1.5px 6px rgba(15, 23, 42, 0.06);
   }
   
+  // Selection indicator
+  .w-5.h-5.rounded-full {
+    box-shadow: 0 0 0 2px #e0f2fe;
+    transition: box-shadow 0.2s;
+  }
+  &--selected .w-5.h-5.rounded-full {
+    box-shadow: 0 0 0 3px #0ea5e9;
+    background: #0ea5e9;
+    border-color: #0ea5e9;
+  }
+
   // Mobile adjustments
   @media (max-width: 640px) {
     padding: 1rem 0.75rem;

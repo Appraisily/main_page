@@ -145,37 +145,7 @@ export function AppraisalTypeSelector({ value, onChange, itemCount = 1 }: Apprai
           Select Appraisal Type
         </h3>
       </div>
-      
-      {/* Discount Information */}
-      <div className="mb-6">
-        {showBulkDiscount ? (
-          <div className="bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg p-4 shadow-md">
-            <div className="flex items-center justify-center gap-3 text-white">
-              <Percent className="h-5 w-5" />
-              <span className="font-medium">
-                20% bulk discount applied to all items!
-              </span>
-            </div>
-          </div>
-        ) : (
-          <div className="bg-blue-50 border border-blue-100 rounded-lg p-4">
-            <div className="flex items-start gap-3 text-blue-700">
-              <Info className="h-5 w-5 flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="font-medium">Bulk Appraisal Discount</p>
-                <p className="text-sm text-blue-600 mt-1">
-                  Add {BULK_DISCOUNT_THRESHOLD} or more items to receive a {BULK_DISCOUNT_PERCENTAGE * 100}% discount on each appraisal.
-                  {itemCount > 0 && itemCount < BULK_DISCOUNT_THRESHOLD && (
-                    <span className="font-medium"> You need {BULK_DISCOUNT_THRESHOLD - itemCount} more item{BULK_DISCOUNT_THRESHOLD - itemCount !== 1 ? 's' : ''} to qualify.</span>
-                  )}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-      
-      {/* Appraisal Type Cards */}
+      {/* Remove discount banners here */}
       <motion.div 
         className="grid grid-cols-1 md:grid-cols-3 gap-4"
         variants={container}

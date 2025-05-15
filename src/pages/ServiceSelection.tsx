@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { TurnaroundSpeed } from '@/components/TurnaroundSpeedSelector';
 import ServiceDetails from '@/components/Start/ServiceDetails';
 import AppraisalServiceSelector, { ServiceType } from '@/components/Start/AppraisalServiceSelector';
+import { PaymentNotice } from '@/components/upload/BulkUpload/PaymentNotice';
 
 // Constants for pricing and discounts - matching the ones in AppraisalTypeSelector
 const BASE_PRICE = 5900; // $59.00
@@ -206,24 +207,7 @@ export default function ServiceSelection() {
           {/* Bulk Appraisal CTA - Integrated with service selection panel */}
           <div className="p-4 sm:p-6 bg-white">
             <div className="max-w-5xl mx-auto">
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <div className="p-2 sm:p-3 bg-slate-100 rounded-full">
-                    <Package className="h-5 w-5 sm:h-6 sm:w-6 text-slate-700" />
-                  </div>
-                  <div>
-                    <h3 className="text-base sm:text-lg font-semibold text-slate-900">Need to appraise multiple items?</h3>
-                    <p className="text-sm sm:text-base text-slate-600">Save up to 20% with our bulk appraisal service</p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => navigate('/bulk-appraisal/upload')}
-                  className="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-colors w-full sm:w-auto justify-center text-sm sm:text-base"
-                >
-                  Start Bulk Upload
-                  <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
-                </button>
-              </div>
+              <PaymentNotice />
             </div>
           </div>
         </div>
