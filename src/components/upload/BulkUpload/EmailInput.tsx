@@ -68,8 +68,8 @@ export function EmailInput({ value, onChange, onBlur, showConfirmation }: EmailI
           onBlur={handleBlur}
           placeholder="Enter your email address"
           className={cn(
-            "w-full px-4 py-3 pr-10 rounded-lg border focus:outline-none focus:ring-2 transition-colors",
-            status === 'error' ? "border-red-300 focus:border-red-500 focus:ring-red-200" : "border-gray-300 focus:border-gray-500 focus:ring-gray-200",
+            "w-full px-4 py-3 pr-10 rounded-lg border border-black border-[1px] focus:outline-none focus:ring-2 transition-colors",
+            status === 'error' ? "border-red-300 focus:border-red-500 focus:ring-red-200" : "focus:border-gray-500 focus:ring-gray-200",
             status === 'success' && "border-emerald-300 focus:border-emerald-500 focus:ring-emerald-200"
           )}
           required

@@ -18,6 +18,18 @@ import { Separator } from '@/components/ui/separator';
 const BULK_DISCOUNT_THRESHOLD = 3;
 const BULK_DISCOUNT_PERCENTAGE = 20; // 20% discount
 
+// Add mobile-specific styles for section spacing
+const mobileSectionSpacing = `
+  @media (max-width: 640px) {
+    .bulk-section-group {
+      margin-bottom: 1.5rem !important;
+    }
+    .bulk-section-group:last-child {
+      margin-bottom: 0 !important;
+    }
+  }
+`;
+
 export default function BulkUploadPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -123,159 +135,168 @@ export default function BulkUploadPage() {
   };
 
   return (
-    <div className="min-h-screen bg-stone-50 pt-24 pb-12">
-      <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-xl shadow overflow-hidden">
-          {/* Header */}
-          <div className="p-4 sm:p-8 border-b border-gray-100">
-            <div className="flex items-center gap-5">
-              <div className="p-3.5 bg-stone-100 rounded-full flex-shrink-0">
-                <Upload className="h-6 w-6 text-gray-600" />
-              </div>
-              <div>
-                <h1 className="text-xl font-semibold text-emerald-900 mb-0" style={{ fontFamily: 'inherit', fontWeight: 600 }}>
-                  Bulk Appraisal Request Process
-                </h1>
+    <>
+      <style>{mobileSectionSpacing}</style>
+      <div className="min-h-screen bg-stone-50 pt-24 pb-12">
+        <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-xl shadow overflow-hidden">
+            {/* Header */}
+            <div className="p-4 sm:p-8 border-b border-gray-100">
+              <div className="flex items-center gap-5">
+                <div className="p-3.5 bg-stone-100 rounded-full flex-shrink-0">
+                  <Upload className="h-6 w-6 text-gray-600" />
+                </div>
+                <div>
+                  <h1 className="text-xl font-semibold text-emerald-900 mb-0" style={{ fontFamily: 'inherit', fontWeight: 600 }}>
+                    Bulk Appraisal Request Process
+                  </h1>
+                </div>
               </div>
             </div>
-          </div>
-          
-          {/* Main Content */}
-          <div className="p-3 sm:p-8">
-            <div className="space-y-8 sm:space-y-12">
-              {/* 1. Make the service type selector more prominent and first */}
-              <div className="w-full p-3 sm:p-4 bg-gradient-to-r from-blue-50 to-emerald-50 border border-emerald-100 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <div className="bg-emerald-100 p-2 rounded-full">
-                    <Percent className="h-5 w-5 text-emerald-600" />
-                  </div>
-                  <div>
-                    <p className="font-medium text-gray-900">Bulk Discount Available</p>
-                    <p className="text-sm text-gray-700">
-                      Upload at least {BULK_DISCOUNT_THRESHOLD} items to receive a {BULK_DISCOUNT_PERCENTAGE}% discount on all appraisals.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Prominent service type selector - recycled from start page */}
-              <AppraisalTypeSelector
-                value={appraisalType}
-                onChange={setAppraisalType}
-                itemCount={items.length}
-              />
-
-              {/* 2. Email input comes second */}
-              <EmailInput
-                value={email}
-                onChange={setEmail}
-                onBlur={handleEmailBlur}
-                showConfirmation={emailSaved}
-              />
-
-              {/* 3. Session management section - in a more discrete style */}
-              <div className="flex flex-col md:flex-row gap-4 mb-8">
-                {sessionId && <SessionInfo sessionId={sessionId} />}
-                <SessionRestoreForm onRestore={handleSessionRestore} />
-              </div>
-
-              {isRestoringSession && (
-                <div className="flex items-center justify-center py-12">
-                  <div className="flex items-center gap-3 text-gray-600">
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                    <span>Restoring session...</span>
+            
+            {/* Main Content */}
+            <div className="p-3 sm:p-8">
+              <div className="space-y-8 sm:space-y-12">
+                {/* 1. Make the service type selector more prominent and first */}
+                <div className="w-full p-3 sm:p-4 bg-gradient-to-r from-blue-50 to-emerald-50 border border-emerald-100 rounded-lg bulk-section-group">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-emerald-100 p-2 rounded-full">
+                      <Percent className="h-5 w-5 text-emerald-600" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900">Bulk Discount Available</p>
+                      <p className="text-sm text-gray-700">
+                        Upload at least {BULK_DISCOUNT_THRESHOLD} items to receive a {BULK_DISCOUNT_PERCENTAGE}% discount on all appraisals.
+                      </p>
+                    </div>
                   </div>
                 </div>
-              )}
 
-              {/* 4. Upload area comes fourth */}
-              {!isRestoringSession && (
-                <div className="mb-8">
-                  <UploadArea onFileSelect={handleFileSelect} />
+                {/* Prominent service type selector - recycled from start page */}
+                <div className="bulk-section-group">
+                  <AppraisalTypeSelector
+                    value={appraisalType}
+                    onChange={setAppraisalType}
+                    itemCount={items.length}
+                  />
                 </div>
-              )}
 
-              {error && (
-                <div className="p-4 bg-red-50 text-red-600 border border-red-100 rounded-lg flex items-start gap-2">
-                  <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
-                  <p>{error}</p>
+                {/* 2. Email input comes second */}
+                <div className="bulk-section-group">
+                  <EmailInput
+                    value={email}
+                    onChange={setEmail}
+                    onBlur={handleEmailBlur}
+                    showConfirmation={emailSaved}
+                  />
                 </div>
-              )}
 
-              <ItemGrid
-                items={items}
-                sessionId={sessionId}
-                onRemoveItem={(id: string) => handleRemoveItem(id)}
-                onDescriptionChange={(id, description, status) => {
-                  setItems(prev => prev.map(i => 
-                    i.id === id ? { 
-                      ...i, 
-                      description,
-                      descriptionStatus: status
-                    } : i
-                  ));
-                }}
-                onFileSelect={handleFileSelect}
-              />
+                {/* 3. Session management section - in a more discrete style */}
+                <div className="flex flex-col md:flex-row gap-4 mb-8 bulk-section-group">
+                  {sessionId && <SessionInfo sessionId={sessionId} />}
+                  <SessionRestoreForm onRestore={handleSessionRestore} />
+                </div>
 
-              <div className="space-y-6 pt-6 border-t border-gray-100">
-                {/* Test Payment Option - Only in development mode */}
-                {process.env.NODE_ENV !== 'production' && (
-                  <div className="flex items-center gap-2 p-4 bg-stone-50 border border-stone-100 rounded-lg mb-4">
-                    <input
-                      type="checkbox"
-                      id="useTestPayment"
-                      checked={useTestPayment}
-                      onChange={(e) => setUseTestPayment(e.target.checked)}
-                      className="h-4 w-4 text-gray-600 rounded border-gray-300"
-                    />
-                    <label htmlFor="useTestPayment" className="text-sm font-medium text-gray-700">
-                      Use test payment link
-                    </label>
+                {isRestoringSession && (
+                  <div className="flex items-center justify-center py-12 bulk-section-group">
+                    <div className="flex items-center gap-3 text-gray-600">
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                      <span>Restoring session...</span>
+                    </div>
                   </div>
                 )}
-                
-                {/* Button first, then payment notice - matching start page layout */}
-                <ActionButtons
-                  onSubmit={handleSubmit}
-                  isUploading={isUploading}
-                  disabled={items.length === 0}
-                />
-                
-                {/* Payment Methods and Guarantee */}
-                <div className="space-y-4">
-                  <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500">
-                    <Lock className="h-3.5 w-3.5" />
-                    <span>Secure payment processing by Stripe</span>
+
+                {/* 4. Upload area comes fourth */}
+                {!isRestoringSession && (
+                  <div className="mb-8 bulk-section-group">
+                    <UploadArea onFileSelect={handleFileSelect} />
                   </div>
-                  
-                  <div className="flex flex-wrap justify-center items-center gap-5 pt-2">
-                    <div className="flex items-center gap-1.5 text-slate-600">
-                      <CreditCard className="h-4 w-4" />
-                      <span className="text-xs">Credit Card</span>
+                )}
+
+                {error && (
+                  <div className="p-4 bg-red-50 text-red-600 border border-red-100 rounded-lg flex items-start gap-2 bulk-section-group">
+                    <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
+                    <p>{error}</p>
+                  </div>
+                )}
+
+                <div className="bulk-section-group">
+                  <ItemGrid
+                    items={items}
+                    sessionId={sessionId}
+                    onRemoveItem={(id: string) => handleRemoveItem(id)}
+                    onDescriptionChange={(id, description, status) => {
+                      setItems(prev => prev.map(i => 
+                        i.id === id ? { 
+                          ...i, 
+                          description,
+                          descriptionStatus: status
+                        } : i
+                      ));
+                    }}
+                    onFileSelect={handleFileSelect}
+                  />
+                </div>
+
+                <div className="space-y-6 pt-6 border-t border-gray-100">
+                  {/* Test Payment Option - Only in development mode */}
+                  {process.env.NODE_ENV !== 'production' && (
+                    <div className="flex items-center gap-2 p-4 bg-stone-50 border border-stone-100 rounded-lg mb-4">
+                      <input
+                        type="checkbox"
+                        id="useTestPayment"
+                        checked={useTestPayment}
+                        onChange={(e) => setUseTestPayment(e.target.checked)}
+                        className="h-4 w-4 text-gray-600 rounded border-gray-300"
+                      />
+                      <label htmlFor="useTestPayment" className="text-sm font-medium text-gray-700">
+                        Use test payment link
+                      </label>
                     </div>
-                    <img 
-                      src="/images/payment-methods/new-paypal.svg" 
-                      alt="PayPal" 
-                      className="h-5" 
-                    />
-                    <img 
-                      src="/images/payment-methods/google-pay.svg" 
-                      alt="Google Pay" 
-                      className="h-5" 
-                    />
-                    <img 
-                      src="/images/payment-methods/apple-pay.svg" 
-                      alt="Apple Pay" 
-                      className="h-4" 
-                    />
-                  </div>
+                  )}
                   
-                  <Separator className="bg-slate-200 my-3" />
+                  {/* Button first, then payment notice - matching start page layout */}
+                  <ActionButtons
+                    onSubmit={handleSubmit}
+                    isUploading={isUploading}
+                    disabled={items.length === 0}
+                  />
                   
-                  <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500">
-                    <ShieldCheck className="h-3.5 w-3.5" />
-                    <span>100% Money-Back Satisfaction Guarantee</span>
+                  {/* Payment Methods and Guarantee */}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500">
+                      <Lock className="h-3.5 w-3.5" />
+                      <span>Secure payment processing by Stripe</span>
+                    </div>
+                    
+                    <div className="flex flex-wrap justify-center items-center gap-5 pt-2">
+                      <div className="flex items-center gap-1.5 text-slate-600">
+                        <CreditCard className="h-4 w-4" />
+                        <span className="text-xs">Credit Card</span>
+                      </div>
+                      <img 
+                        src="/images/payment-methods/new-paypal.svg" 
+                        alt="PayPal" 
+                        className="h-5" 
+                      />
+                      <img 
+                        src="/images/payment-methods/google-pay.svg" 
+                        alt="Google Pay" 
+                        className="h-5" 
+                      />
+                      <img 
+                        src="/images/payment-methods/apple-pay.svg" 
+                        alt="Apple Pay" 
+                        className="h-4" 
+                      />
+                    </div>
+                    
+                    <Separator className="bg-slate-200 my-3" />
+                    
+                    <div className="flex items-center justify-center gap-1.5 text-xs text-slate-500">
+                      <ShieldCheck className="h-3.5 w-3.5" />
+                      <span>100% Money-Back Satisfaction Guarantee</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -283,6 +304,6 @@ export default function BulkUploadPage() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

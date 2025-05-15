@@ -2,4 +2,13 @@
 @import './components/trust-bar';
 @import './components/service-option-card';
 @import './components/_turnaround-speed';
-@import './components/_pricing-summary'; 
+@import './components/_pricing-summary';
+
+// Mobile-only footer spacer
+@media (max-width: 640px) {
+  .mobile-footer-spacer {
+    height: 2.5rem;
+    width: 100%;
+    display: block;
+  }
+} 

@@ -92,31 +92,63 @@
 
   // Mobile adjustments
   @media (max-width: 640px) {
-    padding: 1rem 0.875rem;
+    padding: 1.25rem 1.25rem;
+    margin-bottom: 1.25rem;
     display: flex;
     flex-direction: column;
     
     &__icon {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       margin-bottom: 0;
-      margin-right: 0.5rem;
+      margin-right: 0.75rem;
+      stroke-width: 1.5;
+      color: #3f3f46; // lighter color (neutral-700)
+      opacity: 0.9;
     }
     
     &__title {
       font-size: 0.9375rem;
+      font-weight: 500; // less bold
       margin-bottom: 0.25rem;
       text-align: left;
+      color: #18181b; // neutral-900
+      letter-spacing: 0.01em;
     }
     
     &__price {
       font-size: 1.125rem;
       text-align: left;
+      font-weight: 600;
     }
     
     &__per {
       font-size: 0.6875rem;
       text-align: left;
+      margin-top: 0.125rem;
+    }
+    
+    // Better organization on mobile
+    .flex.flex-row {
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+    
+    .flex.flex-row.justify-between {
+      align-items: center;
+      padding-top: 0.5rem;
+    }
+    
+    // Selection indicator
+    .w-5.h-5.rounded-full {
+      width: 20px;
+      height: 20px;
+      border-width: 1px;
+    }
+    
+    // ADDITIONAL SPACING FOR GROUPS
+    .service-option-card + .service-option-card {
+      margin-top: 1.25rem;
     }
   }
 }

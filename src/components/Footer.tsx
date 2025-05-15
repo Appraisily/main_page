@@ -33,6 +33,8 @@ const links = {
 export default function Footer() {
   return (
     <footer className="relative overflow-hidden mt-mobile-footer-spacer">
+      {/* Mobile-only spacer for extra bottom space */}
+      <div className="mobile-footer-spacer block sm:hidden" />
       {/* Elegant background with dots and wave pattern */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gray-50" style={{ 
