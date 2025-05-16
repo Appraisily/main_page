@@ -37,12 +37,12 @@ export function UploadArea({ onFileSelect }: UploadAreaProps) {
   };
 
   return (
-    <div className="mb-8">
+    <div>
       <div
         className={`
           relative overflow-hidden bg-white 
           border-2 rounded-xl shadow-lg 
-          transition-all duration-300 mb-6
+          transition-all duration-300 mb-4
           flex flex-col items-center
           ${isDragActive ? 'border-emerald-500' : 'border-gray-200'}
           ${isHovered ? 'shadow-xl border-gray-300' : ''}
@@ -58,9 +58,9 @@ export function UploadArea({ onFileSelect }: UploadAreaProps) {
       >
         {isDragActive && (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-emerald-50/70 pointer-events-none transition-all">
-            <Upload className="h-16 w-16 text-emerald-500 mb-4 animate-bounce-slow" />
-            <p className="text-xl font-bold text-black mb-2">Drop to Upload</p>
-            <p className="text-base text-gray-700 font-light">Release your files here</p>
+            <Upload className="h-12 w-12 text-emerald-500 mb-3 animate-bounce-slow" />
+            <p className="text-lg font-bold text-black mb-1">Drop to Upload</p>
+            <p className="text-sm text-gray-700 font-light">Release your files here</p>
           </div>
         )}
         <label
@@ -71,27 +71,27 @@ export function UploadArea({ onFileSelect }: UploadAreaProps) {
         >
           <div 
             className={`
-              flex flex-col items-center justify-center py-16 px-8 
+              flex flex-col items-center justify-center py-8 px-6
               transition-all duration-300
               ${isHovered ? 'bg-gray-50' : ''}
             `}
             id="upload-area-desc"
           >
-            <div className="relative mb-8 transition-transform duration-300 transform group">
-              <div className="relative bg-gray-100 p-5 rounded-full shadow-sm group-hover:shadow transition-all duration-300">
-                <Upload className={`h-14 w-14 text-emerald-500 transition-all duration-300 ${isHovered ? 'scale-110' : ''}`} aria-hidden="true" />
+            <div className="relative mb-4 transition-transform duration-300 transform group">
+              <div className="relative bg-gray-100 p-3 rounded-full shadow-sm group-hover:shadow transition-all duration-300">
+                <Upload className={`h-10 w-10 text-emerald-500 transition-all duration-300 ${isHovered ? 'scale-110' : ''}`} aria-hidden="true" />
               </div>
             </div>
             
-            <h2 className="text-2xl font-semibold text-black mb-3 tracking-tight">
+            <h2 className="text-xl font-semibold text-black mb-2 tracking-tight">
               Upload Your Images
             </h2>
             
-            <p className="text-base text-gray-700 mb-3 max-w-md text-center font-light">
+            <p className="text-sm text-gray-700 mb-2 max-w-md text-center font-light">
               Drag and drop multiple images here, or <span className="font-medium text-emerald-600 hover:text-emerald-700 transition-colors">click to browse</span>
             </p>
             
-            <div className="flex items-center justify-center mt-1 px-4 py-2 bg-gray-100 rounded-full text-xs text-emerald-700">
+            <div className="flex items-center justify-center mt-1 px-3 py-1.5 bg-gray-100 rounded-full text-xs text-emerald-700">
               <span>Supported formats: JPG, PNG, WebP (max 10MB each)</span>
             </div>
           </div>
@@ -109,7 +109,7 @@ export function UploadArea({ onFileSelect }: UploadAreaProps) {
       </div>
       
       {/* Tips Card - Shadcn inspired note/reminder styling */}
-      <div className="bg-gray-50 border border-black rounded-lg p-4 shadow-sm -mt-2 mb-6" role="region" aria-label="Quick tips for uploading images">
+      <div className="bg-gray-50 border border-black rounded-lg p-4 shadow-sm" role="region" aria-label="Quick tips for uploading images">
         <div className="flex items-center gap-2 mb-3">
           <div className="p-1.5 bg-white rounded-full border border-gray-200">
             <Info className="h-4 w-4 text-black" aria-hidden="true" />

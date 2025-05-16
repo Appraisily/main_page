@@ -157,7 +157,7 @@ export default function BulkUploadPage() {
             {/* Main Content */}
             <div className="p-3 sm:p-8">
               <div className="space-y-8 sm:space-y-12">
-                {/* 1. Make the service type selector more prominent and first */}
+                {/* 1. Bulk discount callout */}
                 <div className="w-full p-3 sm:p-4 bg-gradient-to-r from-blue-50 to-emerald-50 border border-emerald-100 rounded-lg bulk-section-group">
                   <div className="flex items-center gap-3">
                     <div className="bg-emerald-100 p-2 rounded-full">
@@ -172,7 +172,7 @@ export default function BulkUploadPage() {
                   </div>
                 </div>
 
-                {/* Prominent service type selector - recycled from start page */}
+                {/* 2. Appraisal type selector */}
                 <div className="bulk-section-group">
                   <AppraisalTypeSelector
                     value={appraisalType}
@@ -181,7 +181,7 @@ export default function BulkUploadPage() {
                   />
                 </div>
 
-                {/* 2. Email input comes second */}
+                {/* 3. Email input */}
                 <div className="bulk-section-group">
                   <EmailInput
                     value={email}
@@ -191,8 +191,8 @@ export default function BulkUploadPage() {
                   />
                 </div>
 
-                {/* 3. Session management section - in a more discrete style */}
-                <div className="flex flex-col md:flex-row gap-4 mb-8 bulk-section-group">
+                {/* 4. Session management */}
+                <div className="flex flex-col md:flex-row gap-4 bulk-section-group">
                   {sessionId && <SessionInfo sessionId={sessionId} />}
                   <SessionRestoreForm onRestore={handleSessionRestore} />
                 </div>
@@ -206,13 +206,14 @@ export default function BulkUploadPage() {
                   </div>
                 )}
 
-                {/* 4. Upload area comes fourth */}
+                {/* 5. Upload area */}
                 {!isRestoringSession && (
-                  <div className="mb-8 bulk-section-group">
+                  <div className="bulk-section-group">
                     <UploadArea onFileSelect={handleFileSelect} />
                   </div>
                 )}
 
+                {/* 6. Display error if any */}
                 {error && (
                   <div className="p-4 bg-red-50 text-red-600 border border-red-100 rounded-lg flex items-start gap-2 bulk-section-group">
                     <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
@@ -220,24 +221,28 @@ export default function BulkUploadPage() {
                   </div>
                 )}
 
-                <div className="bulk-section-group">
-                  <ItemGrid
-                    items={items}
-                    sessionId={sessionId}
-                    onRemoveItem={(id: string) => handleRemoveItem(id)}
-                    onDescriptionChange={(id, description, status) => {
-                      setItems(prev => prev.map(i => 
-                        i.id === id ? { 
-                          ...i, 
-                          description,
-                          descriptionStatus: status
-                        } : i
-                      ));
-                    }}
-                    onFileSelect={handleFileSelect}
-                  />
-                </div>
+                {/* 7. Item Grid - Now positioned between upload area and payment section */}
+                {items.length > 0 && (
+                  <div className="bulk-section-group">
+                    <ItemGrid
+                      items={items}
+                      sessionId={sessionId}
+                      onRemoveItem={(id: string) => handleRemoveItem(id)}
+                      onDescriptionChange={(id, description, status) => {
+                        setItems(prev => prev.map(i => 
+                          i.id === id ? { 
+                            ...i, 
+                            description,
+                            descriptionStatus: status
+                          } : i
+                        ));
+                      }}
+                      onFileSelect={handleFileSelect}
+                    />
+                  </div>
+                )}
 
+                {/* 8. Payment and checkout section */}
                 <div className="space-y-6 pt-6 border-t border-gray-100">
                   {/* Test Payment Option - Only in development mode */}
                   {process.env.NODE_ENV !== 'production' && (
@@ -255,7 +260,7 @@ export default function BulkUploadPage() {
                     </div>
                   )}
                   
-                  {/* Button first, then payment notice - matching start page layout */}
+                  {/* Action buttons */}
                   <ActionButtons
                     onSubmit={handleSubmit}
                     isUploading={isUploading}
