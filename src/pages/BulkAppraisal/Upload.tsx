@@ -137,7 +137,7 @@ export default function BulkUploadPage() {
   return (
     <>
       <style>{mobileSectionSpacing}</style>
-      <div className="min-h-screen bg-stone-50 pt-24 pb-12">
+      <div className="min-h-screen bg-stone-50 pt-24 pb-16 sm:pb-12">
         <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
           <div className="bg-white rounded-xl shadow overflow-hidden">
             {/* Header */}

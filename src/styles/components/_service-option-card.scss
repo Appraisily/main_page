@@ -4,122 +4,123 @@
   border-radius: 0.75rem;
   transition: all .25s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
-  border: 1.5px solid #e5e7eb;
+  border: 1px solid #e5e7eb;
   background: #fff;
   height: 100%;
   width: 100%;
   padding: 1.75rem 1.5rem;
   text-align: center;
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.02);
 
   &__icon {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     margin: 0 auto 1rem;
-    color: #18181b; // neutral-900
+    color: #64748b;
+    stroke-width: 1.5;
     background: none;
     box-shadow: none;
   }
 
   &__title {
-    font-size: 1.05rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 500;
     margin-bottom: .75rem;
-    color: #18181b; // neutral-900
+    color: #334155;
     letter-spacing: -0.01em;
   }
 
   &__price {
-    font-size: 1.25rem;
-    font-weight: 700;
+    font-size: 1.125rem;
+    font-weight: 600;
     margin-bottom: .25rem;
-    color: #0f172a; // slate-900
+    color: #0f172a;
   }
 
   &__per {
     font-size: .75rem;
-    color: #64748b; // neutral-500
+    color: #64748b;
     display: block;
     letter-spacing: 0.02em;
   }
 
   // Selected
   &--selected {
-    border: 1.5px solid #18181b; // neutral-900
+    border: 1px solid #334155;
     background: #fff;
-    box-shadow: 0 4px 18px rgba(16, 24, 40, 0.08), 0 1px 3px rgba(16, 24, 40, 0.10);
+    box-shadow: 0 4px 12px rgba(16, 24, 40, 0.05), 0 1px 2px rgba(16, 24, 40, 0.05);
 
     .service-option-card__icon {
-      color: #18181b; // neutral-900
+      color: #334155;
     }
     .service-option-card__title {
-      color: #18181b; // neutral-900
+      color: #334155;
     }
   }
 
   // Hover state
   &:hover:not(.service-option-card--selected) {
-    border-color: #a3a3a3; // neutral-400
+    border-color: #cbd5e1;
     background: #fafafa;
-    box-shadow: 0 4px 12px rgba(16, 24, 40, 0.08), 0 1px 3px rgba(16, 24, 40, 0.05);
-    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(16, 24, 40, 0.05), 0 1px 2px rgba(16, 24, 40, 0.03);
+    transform: translateY(-1px);
   }
   
   // Selection indicator
   .w-5.h-5.rounded-full {
-    width: 22px;
-    height: 22px;
-    box-shadow: 0 0 0 2px #e5e7eb;
-    border: 1.5px solid #e5e7eb;
+    width: 20px;
+    height: 20px;
+    box-shadow: 0 0 0 1px #e5e7eb;
+    border: 1px solid #e5e7eb;
     background: #fff;
     transition: all 0.2s;
   }
   
   &--selected .w-5.h-5.rounded-full {
-    box-shadow: 0 0 0 2px #18181b;
-    background: #18181b;
-    border-color: #18181b;
+    box-shadow: 0 0 0 1px #334155;
+    background: #334155;
+    border-color: #334155;
   }
 
   // Popular tag
   .absolute.top-0.right-0 {
     .px-2.py-0\.5 {
-      background: #f4f4f5; // neutral-100
-      color: #18181b; // neutral-900
-      font-weight: 500;
+      background: #f8fafc;
+      color: #64748b;
+      font-weight: 400;
     }
   }
 
   // Mobile adjustments
   @media (max-width: 640px) {
-    padding: 1.25rem 1.25rem;
-    margin-bottom: 1.25rem;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
     display: flex;
     flex-direction: column;
     
     &__icon {
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
       margin-bottom: 0;
       margin-right: 0.75rem;
-      stroke-width: 1.5;
-      color: #3f3f46; // lighter color (neutral-700)
+      stroke-width: 1.25;
+      color: #64748b;
       opacity: 0.9;
     }
     
     &__title {
-      font-size: 0.9375rem;
-      font-weight: 500; // less bold
+      font-size: 0.875rem;
+      font-weight: 500;
       margin-bottom: 0.25rem;
       text-align: left;
-      color: #18181b; // neutral-900
+      color: #334155;
       letter-spacing: 0.01em;
     }
     
     &__price {
-      font-size: 1.125rem;
+      font-size: 1rem;
       text-align: left;
-      font-weight: 600;
+      font-weight: 500;
     }
     
     &__per {
@@ -131,7 +132,7 @@
     // Better organization on mobile
     .flex.flex-row {
       align-items: center;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.5rem;
     }
     
     .flex.flex-row.justify-between {
@@ -141,14 +142,14 @@
     
     // Selection indicator
     .w-5.h-5.rounded-full {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       border-width: 1px;
     }
     
     // ADDITIONAL SPACING FOR GROUPS
     .service-option-card + .service-option-card {
-      margin-top: 1.25rem;
+      margin-top: 0.75rem;
     }
   }
 }

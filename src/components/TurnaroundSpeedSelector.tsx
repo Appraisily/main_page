@@ -16,7 +16,7 @@ const speedOptions = [
   {
     id: 'standard',
     label: 'Standard 48h',
-    description: 'Delivered within 2 business days',
+    description: 'Delivered in 2 business days',
     icon: Clock,
     additionalPrice: 0,
     isDefault: true,
@@ -50,7 +50,7 @@ export default function TurnaroundSpeedSelector({
             key={option.id}
             onClick={() => onSelect(option.id as TurnaroundSpeed)}
             className={cn(
-              "turnaround-option relative flex items-center justify-between p-4 rounded-lg border transition-all cursor-pointer",
+              "turnaround-option relative flex items-center justify-between p-4 rounded-lg border transition-all cursor-pointer min-h-[84px]",
               selectedSpeed === option.id
                 ? "border-gray-400 bg-gray-50 shadow-sm"
                 : "border-gray-200 hover:border-gray-300 bg-white"
@@ -71,7 +71,7 @@ export default function TurnaroundSpeedSelector({
                 )} />
               </div>
               
-              <div className="turnaround-option__label-container">
+              <div className="flex flex-col gap-0.5">
                 <div className="flex items-center gap-2">
                   <span className={cn(
                     "option-label text-sm font-medium",
@@ -90,22 +90,19 @@ export default function TurnaroundSpeedSelector({
                   )}
                 </div>
                 
-                <span className="option-description text-xs text-gray-500">
+                <span className="option-description text-xs text-gray-500 whitespace-nowrap overflow-hidden text-ellipsis">
                   {option.description}
                 </span>
               </div>
             </div>
             
-            <div className="turnaround-option__price">
+            <div className="turnaround-option__price flex flex-col items-end min-w-[70px]">
               {option.isPromotion ? (
-                <div className="flex flex-col items-end">
-                  <span className="original-price text-sm line-through text-gray-400">
-                    +{formatCurrency(option.originalPrice / 100)}
-                  </span>
-                  <span className="free-label text-sm font-medium text-green-600">
-                    FREE
-                  </span>
-                </div>
+                <>
+                  <span className="limited-time-tag px-1.5 py-0.5 text-xs font-medium bg-red-500 text-white rounded mb-1 w-fit">Limited Time</span>
+                  <span className="original-price text-sm line-through text-gray-400 block">+{formatCurrency(option.originalPrice / 100)}</span>
+                  <span className="free-label text-sm font-medium text-green-600">FREE</span>
+                </>
               ) : (
                 <span className="included-label text-sm font-medium text-gray-700">
                   Included

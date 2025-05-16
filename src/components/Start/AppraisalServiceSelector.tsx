@@ -42,9 +42,9 @@ export default function AppraisalServiceSelector({
   prices
 }: AppraisalServiceSelectorProps) {
   return (
-    <div className="py-2 sm:py-4">
-      <div className="text-center mb-3 sm:mb-5">
-        <h2 className="text-lg sm:text-xl font-semibold text-slate-700 mb-1">Select Your Appraisal Service</h2>
+    <div className="py-4 sm:py-6 mt-2 sm:mt-0">
+      <div className="text-center mb-4 sm:mb-6">
+        <h2 className="text-base sm:text-lg font-medium text-slate-600 mb-1">Select Your Appraisal Service</h2>
       </div>
       
       <motion.div 

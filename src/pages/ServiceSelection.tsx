@@ -177,10 +177,10 @@ export default function ServiceSelection() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white pt-20 sm:pt-24">
-      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white pt-20 sm:pt-24 pb-8 sm:pb-12">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 pb-16 sm:pb-8">
         {/* Main Content Container with Service Selection and Bulk Appraisal */}
-        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mt-2 sm:mt-4">
           {/* Trust Ribbon */}
           <div className="bg-neutral-50 border-b border-slate-200">
             <TrustBadges />

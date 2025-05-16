@@ -2,6 +2,8 @@
 @media (max-width: 640px) {
   .turnaround-option {
     padding: 0.75rem 1rem;
+    min-height: 84px; // Ensure consistent height
+    align-items: center;
     
     // Fix two-line label issue
     &__label-container {
@@ -16,14 +18,17 @@
       .option-description {
         font-size: 0.75rem;
         margin-top: 0.125rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
     
     // Improved limited time tag
     .limited-time-tag {
-      position: absolute;
-      top: -0.125rem;
-      right: -0.125rem;
+      position: static;
+      display: inline-block;
+      margin-bottom: 0.25rem;
       font-size: 0.6875rem;
       font-weight: 600;
       background: linear-gradient(45deg, #f87171, #ef4444);
@@ -41,6 +46,10 @@
     // Price styling
     &__price {
       text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      min-width: 70px;
       
       .original-price {
         font-size: 0.75rem;
