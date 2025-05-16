@@ -38,6 +38,13 @@
   status = 301
   force = true
 
+# Redirect WordPress admin to resources subdomain
+[[redirects]]
+  from = "/wp-admin/*"
+  to = "https://resources.appraisily.com/wp-admin/:splat"
+  status = 301
+  force = true
+
 # Handle client-side routing
 [[redirects]]
   from = "/*"
