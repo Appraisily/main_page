@@ -31,6 +31,13 @@
 [build.processing.images]
   compress = true
 
+# Redirect WordPress content to resources subdomain
+[[redirects]]
+  from = "/wp-content/*"
+  to = "https://resources.appraisily.com/wp-content/:splat"
+  status = 301
+  force = true
+
 # Handle client-side routing
 [[redirects]]
   from = "/*"
