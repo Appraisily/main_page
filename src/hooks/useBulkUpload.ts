@@ -57,6 +57,28 @@ export function useBulkUpload() {
         if (urlSessionId) {
           setIsRestoringSession(true);
           setSessionId(urlSessionId);
+          
+          // Actually fetch the session data from the backend
+          try {
+            const response = await restoreSession(urlSessionId);
+            if (response.success && response.items) {
+              setItems(response.items.map(item => ({
+                images: [{
+                  id: item.item_id,
+                  preview: item.file_url,
+                  type: 'main',
+                  label: 'Main Photo'
+                }] as UploadedItem['images'],
+                id: item.item_id,
+                uploadStatus: item.status as UploadStatus,
+                description: item.description || '',
+                category: item.category || ''
+              })));
+            }
+          } catch (restoreErr) {
+            console.error('Failed to restore session from URL:', restoreErr);
+            setError('Failed to restore session. The session may have expired.');
+          }
         } else if (savedSessionData?.sessionId) {
           setIsRestoringSession(true);
           setSessionId(savedSessionData.sessionId);
