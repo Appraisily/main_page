@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, Loader2, AlertCircle, Lock, CreditCard, Percent, ShieldCheck } from 'lucide-react';
+import { Upload, Loader2, AlertCircle, Lock, CreditCard, Percent, ShieldCheck, Link2 } from 'lucide-react';
 import { finalizeBulkUpload, updateSessionEmail } from '@/lib/api/bulkUploadApi';
 import { useBulkUpload, type UploadedItem } from '@/hooks/useBulkUpload';
 import { useFileUpload } from '@/hooks/useFileUpload';
-import { SessionInfo } from '@/components/upload/SessionInfo';
+import { SessionInfo } from '@/components/upload/BulkUpload/SessionInfo';
 import { SessionRestoreForm } from '@/components/upload/BulkUpload/SessionRestoreForm';
 import { UploadArea } from '@/components/upload/BulkUpload/UploadArea';
 import { ItemGrid } from '@/components/upload/BulkUpload/ItemGrid';
@@ -37,6 +37,7 @@ export default function BulkUploadPage() {
   const [appraisalType, setAppraisalType] = useState<AppraisalType>('regular');
   const [useTestPayment, setUseTestPayment] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [showRestorePanel, setShowRestorePanel] = useState(false);
 
   // Reset scroll position when component mounts
   useEffect(() => {
@@ -50,7 +51,8 @@ export default function BulkUploadPage() {
     error,
     setItems,
     setError,
-    handleSessionRestore
+    handleSessionRestore,
+    refreshSession
   } = useBulkUpload();
 
   const { handleFileSelect, handleRemoveItem } = useFileUpload({
@@ -192,9 +194,27 @@ export default function BulkUploadPage() {
                 </div>
 
                 {/* 4. Session management */}
-                <div className="flex flex-col md:flex-row gap-4 bulk-section-group">
-                  {sessionId && <SessionInfo sessionId={sessionId} />}
-                  <SessionRestoreForm onRestore={handleSessionRestore} />
+                <div className="bulk-section-group">
+                  <div className="bg-white border-2 border-black rounded-lg p-4">
+                    {sessionId && 
+                      <SessionInfo 
+                        sessionId={sessionId} 
+                        onRefresh={refreshSession} 
+                      />
+                    }
+                    
+                    {!showRestorePanel ? (
+                      <button 
+                        onClick={() => setShowRestorePanel(true)}
+                        className="flex items-center gap-1.5 text-sm text-blue-600 hover:text-blue-800 transition-colors"
+                      >
+                        <Link2 className="h-3.5 w-3.5" />
+                        <span>Restore a previous session</span>
+                      </button>
+                    ) : (
+                      <SessionRestoreForm onRestore={handleSessionRestore} />
+                    )}
+                  </div>
                 </div>
 
                 {isRestoringSession && (
@@ -221,7 +241,7 @@ export default function BulkUploadPage() {
                   </div>
                 )}
 
-                {/* 7. Item Grid - Now positioned between upload area and payment section */}
+                {/* 7. Item Grid */}
                 {items.length > 0 && (
                   <div className="bulk-section-group">
                     <ItemGrid

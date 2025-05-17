@@ -31,13 +31,28 @@ export function useBulkUpload() {
   const [items, setItems] = useState<UploadedItem[]>([]);
   const [error, setError] = useState<string | null>(null);
 
+  const initSession = async () => {
+    try {
+      const { session_id } = await initBulkSession();
+      setSessionId(session_id);
+      localStorage.setItem('bulkAppraisalSession', JSON.stringify({
+        sessionId: session_id,
+        items: []
+      }));
+      return session_id;
+    } catch (err) {
+      setError('Failed to initialize upload session');
+      return null;
+    }
+  };
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const urlSessionId = params.get('session_id');
     const savedSession = localStorage.getItem('bulkAppraisalSession');
     const savedSessionData = savedSession ? JSON.parse(savedSession) : null;
 
-    const initSession = async () => {
+    const setupSession = async () => {
       try {
         if (urlSessionId) {
           setIsRestoringSession(true);
@@ -47,12 +62,7 @@ export function useBulkUpload() {
           setSessionId(savedSessionData.sessionId);
           setItems(savedSessionData.items || []);
         } else {
-          const { session_id } = await initBulkSession();
-          setSessionId(session_id);
-          localStorage.setItem('bulkAppraisalSession', JSON.stringify({
-            sessionId: session_id,
-            items: []
-          }));
+          await initSession();
         }
       } catch (err) {
         setError('Failed to initialize upload session');
@@ -61,7 +71,7 @@ export function useBulkUpload() {
       }
     };
 
-    initSession();
+    setupSession();
   }, [navigate]);
 
   const handleSessionRestore = async (id: string) => {
@@ -90,6 +100,18 @@ export function useBulkUpload() {
     }
   };
 
+  const refreshSession = async () => {
+    // Remove current session from local storage
+    localStorage.removeItem('bulkAppraisalSession');
+    
+    // Reset state
+    setItems([]);
+    setError(null);
+    
+    // Initialize a new session
+    await initSession();
+  };
+
   return {
     sessionId,
     isRestoringSession,
@@ -97,6 +119,7 @@ export function useBulkUpload() {
     error,
     setItems,
     setError,
-    handleSessionRestore
+    handleSessionRestore,
+    refreshSession
   };
 }

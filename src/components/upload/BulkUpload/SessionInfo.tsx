@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { Save, Check, Copy } from 'lucide-react';
+import { Save, Check, Copy, RefreshCw } from 'lucide-react';
 
 interface SessionInfoProps {
   sessionId: string;
+  onRefresh?: () => void;
 }
 
-export function SessionInfo({ sessionId }: SessionInfoProps) {
+export function SessionInfo({ sessionId, onRefresh }: SessionInfoProps) {
   const [copied, setCopied] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const handleSave = async () => {
     try {
@@ -16,6 +18,17 @@ export function SessionInfo({ sessionId }: SessionInfoProps) {
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       console.warn('Failed to copy session ID:', err);
+    }
+  };
+
+  const handleRefresh = async () => {
+    if (!onRefresh) return;
+    
+    setRefreshing(true);
+    try {
+      await onRefresh();
+    } finally {
+      setRefreshing(false);
     }
   };
 
@@ -47,6 +60,17 @@ export function SessionInfo({ sessionId }: SessionInfoProps) {
               </>
             )}
           </button>
+          {onRefresh && (
+            <button
+              onClick={handleRefresh}
+              className="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-blue-200 rounded-md hover:bg-blue-50 transition-colors"
+              title="Generate new session ID"
+              disabled={refreshing}
+            >
+              <RefreshCw className={`h-4 w-4 text-gray-600 ${refreshing ? 'animate-spin' : ''}`} />
+              <span className="text-sm">{refreshing ? 'Refreshing...' : 'New ID'}</span>
+            </button>
+          )}
         </div>
       </div>
     </div>
