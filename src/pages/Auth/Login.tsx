@@ -10,6 +10,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -19,6 +20,12 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    
+    if (!agreeToTerms) {
+      setError("You must agree to the terms of service");
+      return;
+    }
+    
     setIsLoading(true);
     
     try {
@@ -45,6 +52,12 @@ export default function Login() {
   const handleGoogleLogin = async () => {
     // Clear any previous errors
     setError('');
+    
+    if (!agreeToTerms) {
+      setError("You must agree to the terms of service");
+      return;
+    }
+    
     setIsLoading(true);
     
     try {
@@ -174,9 +187,29 @@ export default function Login() {
                     Forgot password?
                   </Link>
                 </div>
+                <div className="flex items-center space-x-2">
+                  <input
+                    id="terms"
+                    name="terms"
+                    type="checkbox"
+                    checked={agreeToTerms}
+                    onChange={(e) => setAgreeToTerms(e.target.checked)}
+                    className="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-900"
+                  />
+                  <label htmlFor="terms" className="text-sm text-gray-500">
+                    I agree to the{' '}
+                    <Link to="/terms" className="text-blue-600 hover:text-blue-500">
+                      Terms of Service
+                    </Link>{' '}
+                    and{' '}
+                    <Link to="/privacy" className="text-blue-600 hover:text-blue-500">
+                      Privacy Policy
+                    </Link>
+                  </label>
+                </div>
                 <button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={isLoading || !agreeToTerms}
                   className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 disabled:pointer-events-none disabled:opacity-50 bg-gray-900 text-gray-50 hover:bg-gray-800 h-10 px-4 py-2"
                 >
                   {isLoading ? (
@@ -219,7 +252,8 @@ export default function Login() {
             </div>
             <button
               onClick={handleGoogleLogin}
-              className="inline-flex items-center justify-center space-x-2 rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400"
+              disabled={!agreeToTerms}
+              className="inline-flex items-center justify-center space-x-2 rounded-md border border-gray-200 bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400 disabled:pointer-events-none disabled:opacity-50"
             >
               <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
                 <path d="M17.64 9.205c0-.639-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z" fill="#4285F4"/>

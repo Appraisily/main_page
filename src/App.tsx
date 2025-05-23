@@ -7,6 +7,7 @@ import { useGoogleTagManager } from './hooks/useGoogleTagManager';
 import ErrorBoundary from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import CookieBanner from './components/CookieBanner';
 import SEO from './components/SEO';
 import ScrollToTop from './components/ScrollToTop';
 import { AuthProvider } from './lib/auth/AuthContext';
@@ -209,6 +210,7 @@ export default function App() {
                 </Routes>
               </main>
               <Footer />
+              <CookieBanner />
             </div>
           </TooltipProvider>
         </AuthProvider>

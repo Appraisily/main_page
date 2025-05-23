@@ -96,11 +96,11 @@ export default function Hero() {
         <motion.div 
           className="absolute top-0 right-0 w-[800px] h-[800px] opacity-[0.07]"
           animate={{ 
-            y: [0, -10, 0],
-            x: [0, 5, 0]
+            y: [0, -40, 0],
+            x: [0, 20, 0]
           }}
           transition={{ 
-            duration: 20, 
+            duration: 15, 
             repeat: Infinity,
             ease: "easeInOut" 
           }}
@@ -110,14 +110,14 @@ export default function Hero() {
         <motion.div 
           className="absolute bottom-0 left-0 w-[600px] h-[600px] opacity-[0.05]"
           animate={{ 
-            y: [0, 10, 0],
-            x: [0, -5, 0]
+            y: [0, 40, 0],
+            x: [0, -20, 0]
           }}
           transition={{ 
-            duration: 18, 
+            duration: 13,
             repeat: Infinity,
             ease: "easeInOut",
-            delay: 1
+            delay: 0.5
           }}
         >
           <div className="absolute inset-0 bg-blue-600 rounded-full transform -translate-x-1/3 translate-y-1/4" />
@@ -125,10 +125,10 @@ export default function Hero() {
         <motion.div 
           className="absolute top-1/2 left-1/2 w-[500px] h-[500px] opacity-[0.07]"
           animate={{ 
-            scale: [1, 1.03, 1]
+            scale: [1, 1.08, 1]
           }}
           transition={{ 
-            duration: 15, 
+            duration: 12,
             repeat: Infinity, 
             ease: "easeInOut",
             delay: 2
