@@ -31,3 +31,4 @@ dist-ssr
 # Auth folder
 auth/
 auth-service/
+/bulk-upload-improvements.md

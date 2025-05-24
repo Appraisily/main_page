@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, Loader2, AlertCircle, Lock, CreditCard, Percent, ShieldCheck, Link2 } from 'lucide-react';
+import { Upload, Loader2, AlertCircle, Lock, CreditCard, Percent, ShieldCheck, Link2, ChevronDown } from 'lucide-react';
 import { finalizeBulkUpload, updateSessionEmail } from '@/lib/api/bulkUploadApi';
 import { useBulkUpload, type UploadedItem } from '@/hooks/useBulkUpload';
 import { useFileUpload } from '@/hooks/useFileUpload';
@@ -159,19 +159,20 @@ export default function BulkUploadPage() {
             {/* Main Content */}
             <div className="p-3 sm:p-8">
               <div className="space-y-8 sm:space-y-12">
-                {/* 1. Bulk discount callout */}
-                <div className="w-full p-3 sm:p-4 bg-gradient-to-r from-blue-50 to-emerald-50 border border-emerald-100 rounded-lg bulk-section-group">
-                  <div className="flex items-center gap-3">
-                    <div className="bg-emerald-100 p-2 rounded-full">
-                      <Percent className="h-5 w-5 text-emerald-600" />
+                {/* 1. Bulk discount (collapsible) */}
+                <div className="bulk-section-group">
+                  <details className="w-full bg-gradient-to-r from-blue-50 to-emerald-50/60 border border-emerald-100 rounded-lg group">
+                    <summary className="flex items-center gap-3 p-3 sm:p-4 cursor-pointer select-none list-none">  
+                      <div className="bg-emerald-100 p-2 rounded-full">
+                        <Percent className="h-5 w-5 text-emerald-600" />
+                      </div>
+                      <p className="font-medium text-gray-900 flex-1">Bulk Discount Available</p>
+                      <ChevronDown className="h-4 w-4 text-gray-500 transition-transform group-open:rotate-180" />
+                    </summary>
+                    <div className="px-3 sm:px-4 pb-4 pt-1 text-sm text-gray-700">
+                      Upload at least {BULK_DISCOUNT_THRESHOLD} items to receive a {BULK_DISCOUNT_PERCENTAGE}% discount on all appraisals.
                     </div>
-                    <div>
-                      <p className="font-medium text-gray-900">Bulk Discount Available</p>
-                      <p className="text-sm text-gray-700">
-                        Upload at least {BULK_DISCOUNT_THRESHOLD} items to receive a {BULK_DISCOUNT_PERCENTAGE}% discount on all appraisals.
-                      </p>
-                    </div>
-                  </div>
+                  </details>
                 </div>
 
                 {/* 2. Appraisal type selector */}
